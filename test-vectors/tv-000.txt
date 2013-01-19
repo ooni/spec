@@ -1,0 +1,5 @@
+Test vectors are specifications that confirm that we meet the requirements and
+expectations set forth in our data-formats, test-specs and other respective
+documents.
+
+We need an example test vector here.

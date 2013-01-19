@@ -1,0 +1,27 @@
+* Specification version number
+  * 19Jan2013-000
+* Specification name
+  * Bob's example quality test spec!
+* Test preconditions
+  * Example: an internet connection
+Alternate example: An x.25 network connection
+* Expected impact
+  * Example: Ability to detect TCP MITM
+* Expected inputs
+  * Import document or import data format
+  * Data specification version number
+  * Semantics
+* Expected output
+  * Output document or output data format
+  * Required output data (example: IP address, ASN, etc)
+  * Data specification version number
+  * Semantics
+  * Possible conclusions
+  * Expected Post-processing efforts
+  * Example output sample
+* Privacy considerations
+  * There are a few!
+* Packet capture considerations
+  * We capture all packets on the interface foo for bar units of time.
+* Other notes
+  * Bikesh{r}ed!

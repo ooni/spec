@@ -1,0 +1,37 @@
+This is an example specification for data format output Such a document should
+explain the required fields as well as the specific format of such a document.
+This is an example and it currently only has an example output to be used as a
+sample:
+
+# OONI Probe Report for Test example-test
+# 18th of April 2012 18:00:00
+---
+test_name: example-test
+asn: ASN-59395
+addr: 198.51.100.1
+start_time: 2012-04-18T18:00:00.00Z
+---
+start_time: 2012-04-18T18:00:00.00Z
+end_time: 2012-04-18T18:00:02.12Z
+result: {'thetestresult': 'data'}
+---
+start_time: 2012-04-18T18:00:00.00Z
+end_time: 2012-04-18T18:00:03.12Z
+result: {'thetestresult': 'data'}
+# Test ended in 200s
+---
+end_time: 2012-04-18T18:00:00.00Z
+traceroute:
+- dst: 80
+  src: 80
+  tcp:
+  - [10.0.2.1, 794.792, 6.323, 1.18]
+  - [198.51.100.2, 25.092, 11.716, 44.371]
+  - [203.0.113.5, 59.241, 12.302, 14.776]
+  - [203.0.113.8, 59.241, 12.302, 14.776]
+  timestamp: '2012-04-18T19:11:14'
+  udp:
+  - [10.0.2.1, 794.792, 6.323, 1.18]
+  - [198.51.100.2, 25.092, 11.716, 44.371]
+  - [203.0.113.5, 59.241, 12.302, 14.776]
+  - [203.0.113.8, 59.241, 12.302, 14.776]
