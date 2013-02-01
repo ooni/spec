@@ -21,6 +21,12 @@ Example: Ability to detect TCP MITM
   * Data specification version number
   * Semantics
 
+# Test description
+
+Describe what operations are done on the input to produce the output.
+Implementation details that could potentially affect the end result should also
+be mentioned here.
+
 # Expected output
 
   * Output document or output data format
