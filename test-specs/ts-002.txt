@@ -166,3 +166,12 @@ This test does not inherently risk leaking user information.
 We do not do any packet capturing, this test only requires to be able to create
 UDP sockets.
 
+# Notes
+
+Sites that do geolocation based load balancing via DNS will report a different
+set of IPv4 addresses depending on the source of the DNS request. For this
+reason we also do a reverse lookup to check to see if the domain pointers of
+the IP addresses match.
+This means of seeding out false positive, though, is also not that effective
+since in some circumstances also the PTR record will point to a different
+domain name.
