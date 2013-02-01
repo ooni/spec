@@ -92,3 +92,29 @@ Data Format Version: df-000-base-000
     ...
 
 
+# Report Entry data format
+
+Every iteration over an input given to a test will produce a Report Entry.
+
+A Report Entry is a YAML Stream as specified here:
+http://www.yaml.org/spec/1.2/spec.html#id2801681
+
+Here are specified the keys that will always be present inside of every report
+entry.
+
+## Specification
+
+input:
+  The item we this specific test instance is referring to. null in case no
+  input is being iterated over.
+
+test_name:
+  `string` the name of the test method this test is referring to (that is the
+  class method of a NetTestCase)
+
+test_runtime:
+  `float` the runtime of the test
+
+test_started:
+  `float` seconds since epoch from the starting of the test.
+
