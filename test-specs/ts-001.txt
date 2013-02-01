@@ -1,15 +1,19 @@
-* Specification version number
-  * 2013-01-19_001
+# Specification version number
 
-* Specification name
-  * bridgeT
+2013-01-19_000
 
-* Test preconditions
+# Specification name
+
+bridgeT
+
+# Test preconditions
+
   * Tor installed.
   * If testing pluggable transports, the host used for scanning the bridges
     should have the pluggable transport program.
 
-* Expected impact 
+# Expected impact
+
   * Detect whether or not a Tor bridge is reachable from a specific network
     vantage point on a network.
   * Implementations of bridget should not give the location of Tor bridges to
@@ -31,7 +35,8 @@
   * Basic active scanning tests which must be implemented: ICMP-8, TCP SYN,
     TCP SYNACK, TLS HANDSHAKE, FULL TOR PROTOCOL CONNECTION.
 
-* Expected inputs
+# Expected inputs
+
   * Import document or import data format:
     * A file with an IP[4/6]:PORT, one per line.
       Example:
@@ -41,15 +46,18 @@
       before the bridge's IP:PORT. Example:
             obfs2 66.66.66.66:443
 
-* Expected output
+# Expected output
+
   * Should output information in a format which is easily translatable for
     storage in BridgeDB, and parseable for use in metrics.
 
-* Privacy considerations
+# Privacy considerations
+
   * Bridge location should not be devolved to adversaries.
   * If possible, the fact that a scan is running should be difficult to detect.
 
-* Packet capture considerations
+# Packet capture considerations
+
   * A montitoring interface is temporarily constructed, when permitted, in
     order to listen for responses to packets sent in ICMP, TCP, and TLS based
     tests.
