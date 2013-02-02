@@ -9,7 +9,7 @@ DNS Tamper Test
 # Test preconditions
 
   * An internet connection
-  * A unfiltered connection to a DNS resolver that is not being censored
+  * A unfiltered connection to a DNS resolver that is not performing censorship
 
 # Expected impact
 
