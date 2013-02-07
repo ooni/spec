@@ -13,8 +13,7 @@ DNS Tamper Test
 
 # Expected impact
 
-Ability to detect if weither or not A DNS queries for a certain hostname are
-being tampered with.
+Ability to detect if A DNS queries for a certain hostname are being tampered with.
 
 # Expected inputs
 
@@ -43,7 +42,7 @@ Example:
 
 For each hostname to be tested we do the following:
 
-We perform a A DNS query (via UDP) to the control resolver. The answer to such
+We perform an A DNS query (via UDP) to the control resolver. The answer to such
 query is called the control answer.
 
 For each DNS resolver to be tested we perform an A DNS query for the domain in
