@@ -1,6 +1,6 @@
 # Specification version number
 
-2013-01-19_000
+2013-01-19-000
 
 # Specification name
 
