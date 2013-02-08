@@ -2,13 +2,13 @@
 
 The output of test is the composition of:
 
-+---------------------------+
-|   Base data format        |
-+---------------------------+
-| Test template data format |
-+---------------------------+
-| Test specific data format |
-+---------------------------+
+    +---------------------------+
+    |   Base data format        |
+    +---------------------------+
+    | Test template data format |
+    +---------------------------+
+    | Test specific data format |
+    +---------------------------+
 
 In this directory shall go only the data format specifications of Test
 templates. The Test specific data formats should go in the specification of the
