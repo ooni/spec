@@ -118,3 +118,42 @@ test_runtime:
 test_started:
   `float` seconds since epoch from the starting of the test.
 
+# Error strings
+
+Here are the mappings between twisted errors and the corresponding ooniprobe
+error_string:
+
+* twisted.internet.error.ConnectionRefusedError: `connection_refused_error`
+
+* socket.gaierror: `address_family_not_supported_error`
+
+* twisted.internet.error.DNSLookupError: `dns_lookup_error`
+
+* twisted.internet.error.TCPTimedOutError: `tcp_timed_out_error`
+
+* twisted.web._newclient.ResponseNeverReceived: `response_never_received`
+
+* twisted.internet.error.TimeoutError: `generic_timeout_error`
+
+* twisted.internet.defer.TimeoutError: `deferred_timeout_error`
+
+* txsocksx.errors.ServerFailure: `socks_server_failure`
+
+* txsocksx.errors.ConnectionNotAllowed: `socks_connection_not_allowed`
+
+* txsocksx.errors.NetworkUnreachable: `socks_network_unreachable`
+
+* txsocksx.errors.HostUnreachable: `socks_host_unreachable`
+
+* txsocksx.errors.ConnectionRefused: `socks_connection_refused`
+
+* txsocksx.errors.TTLExpired: `socks_ttl_expired`
+
+* txsocksx.errors.CommandNotSupported: `socks_command_not_supported`
+
+* txsocksx.errors.AddressNotSupported: `socks_address_not_supported`
+
+* txsocksx.errors.SOCKSError: `socks_error`
+
+* Every other failure: 'unknown_failure %s' % str(failure.value)
+
