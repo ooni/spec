@@ -132,7 +132,7 @@ df-001-httpt
 
   In all other cases 'censorship' is set to null.
 
-'trans_http_proxy': true|false
+'transparent_http_proxy': true|false
 
   if we have detected the presence of a transparent HTTP proxy or not.
 
