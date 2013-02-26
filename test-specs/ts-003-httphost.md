@@ -144,283 +144,283 @@ understand which censorship device the one being analyzed may be.
 
 ## Example output sample
 
-###########################################
-# OONI Probe Report for HTTP Host test
-# Tue Feb 26 16:27:07 2013
-###########################################
----
-options:
-  collector: httpo://nkvphnp3p6agi5qq.onion
-  help: 0
-  logfile: null
-  no-default-reporter: 0
-  parallelism: '10'
-  pcapfile: null
-  reportfile: null
-  resume: 0
-  subargs: [-b, 'http://93.95.227.200:80', -f, example_inputs/http_host_file.txt]
-  test: nettests/manipulation/http_host.py
-probe_asn: null
-probe_cc: null
-probe_ip: null
-software_name: ooniprobe
-software_version: 0.0.10
-start_time: 1361888827.0
-test_name: HTTP Host
-test_version: 0.2.3
-...
----
-input: torproject.org
-report:
-  agent: agent
-  censored: false
-  requests:
-  - request:
-      body: null
-      headers:
-      - - Host
-        - [oiZkiyEm4w.torproject.org]
-      method: GET
-      url: http://93.95.227.200:80
-    response:
-      body: '{"headers_dict": {"Connection": ["close"], "Host": ["oiZkiyEm4w.torproject.org"]},
-        "request_line": "GET / HTTP/1.1", "request_headers": [["Connection", "close"],
-        ["Host", "oiZkiyEm4w.torproject.org"]]}'
-      code: 200
-      headers: []
-  socksproxy: null
-  trans_http_proxy: false
-test_name: test_filtering_of_subdomain
-test_runtime: 0.27028393745422363
-test_started: 1361892427.285084
-...
----
-input: torproject.org
-report:
-  agent: agent
-  censored: false
-  requests:
-  - request:
-      body: null
-      headers:
-      - - Host
-        - [torproject.org]
-      method: '
+    ###########################################
+    # OONI Probe Report for HTTP Host test
+    # Tue Feb 26 16:27:07 2013
+    ###########################################
+    ---
+    options:
+      collector: httpo://nkvphnp3p6agi5qq.onion
+      help: 0
+      logfile: null
+      no-default-reporter: 0
+      parallelism: '10'
+      pcapfile: null
+      reportfile: null
+      resume: 0
+      subargs: [-b, 'http://93.95.227.200:80', -f, example_inputs/http_host_file.txt]
+      test: nettests/manipulation/http_host.py
+    probe_asn: null
+    probe_cc: null
+    probe_ip: null
+    software_name: ooniprobe
+    software_version: 0.0.10
+    start_time: 1361888827.0
+    test_name: HTTP Host
+    test_version: 0.2.3
+    ...
+    ---
+    input: torproject.org
+    report:
+      agent: agent
+      censored: false
+      requests:
+      - request:
+          body: null
+          headers:
+          - - Host
+            - [oiZkiyEm4w.torproject.org]
+          method: GET
+          url: http://93.95.227.200:80
+        response:
+          body: '{"headers_dict": {"Connection": ["close"], "Host": ["oiZkiyEm4w.torproject.org"]},
+            "request_line": "GET / HTTP/1.1", "request_headers": [["Connection", "close"],
+            ["Host", "oiZkiyEm4w.torproject.org"]]}'
+          code: 200
+          headers: []
+      socksproxy: null
+      trans_http_proxy: false
+    test_name: test_filtering_of_subdomain
+    test_runtime: 0.27028393745422363
+    test_started: 1361892427.285084
+    ...
+    ---
+    input: torproject.org
+    report:
+      agent: agent
+      censored: false
+      requests:
+      - request:
+          body: null
+          headers:
+          - - Host
+            - [torproject.org]
+          method: '
 
-        GET'
-      url: http://93.95.227.200:80
-    response:
-      body: '{"headers_dict": {"Connection": ["close"], "Host": ["torproject.org"]},
-        "request_line": "\nGET / HTTP/1.1", "request_headers": [["Connection", "close"],
-        ["Host", "torproject.org"]]}'
-      code: 200
-      headers: []
-  socksproxy: null
-  trans_http_proxy: false
-test_name: test_filtering_prepend_newline_to_method
-test_runtime: 0.27550721168518066
-test_started: 1361892427.287634
-...
----
-input: ooni.nu
-report:
-  agent: agent
-  censored: false
-  requests:
-  - request:
-      body: null
-      headers:
-      - - Host
-        - [zzEtRtreZiooni.nuEBQm4yXrpR]
-      method: GET
-      url: http://93.95.227.200:80
-    response:
-      body: '{"headers_dict": {"Connection": ["close"], "Host": ["zzEtRtreZiooni.nuEBQm4yXrpR"]},
-        "request_line": "GET / HTTP/1.1", "request_headers": [["Connection", "close"],
-        ["Host", "zzEtRtreZiooni.nuEBQm4yXrpR"]]}'
-      code: 200
-      headers: []
-  socksproxy: null
-  trans_http_proxy: false
-test_name: test_filtering_via_fuzzy_matching
-test_runtime: 0.9233081340789795
-test_started: 1361892427.290093
-...
----
-input: torproject.org
-report:
-  agent: agent
-  censored: false
-  requests:
-  - request:
-      body: null
-      headers:
-      - - Host
-        - [torproject.org]
-      method: GET
-      url: http://93.95.227.200:80
-    response:
-      body: '{"headers_dict": {"Connection": ["close"], "Host": ["torproject.org"]},
-        "request_line": "GET / HTTP/1.1", "request_headers": [["Connection", "close"],
-        ["Host", "torproject.org"]]}'
-      code: 200
-      headers: []
-  socksproxy: null
-  trans_http_proxy: false
-test_name: test_send_host_header
-test_runtime: 0.9341740608215332
-test_started: 1361892427.285841
-...
----
-input: ooni.nu
-report:
-  agent: agent
-  censored: false
-  requests:
-  - request:
-      body: null
-      headers:
-      - - Host
-        - ["ooni.nu\t"]
-      method: GET
-      url: http://93.95.227.200:80
-    response:
-      body: '{"headers_dict": {"Connection": ["close"], "Host": ["ooni.nu"]}, "request_line":
-        "GET / HTTP/1.1", "request_headers": [["Connection", "close"], ["Host", "ooni.nu"]]}'
-      code: 200
-      headers: []
-  socksproxy: null
-  trans_http_proxy: false
-test_name: test_filtering_add_tab_to_host
-test_runtime: 1.353187084197998
-test_started: 1361892427.289563
-...
----
-input: ooni.nu
-report:
-  agent: agent
-  censored: false
-  requests:
-  - request:
-      body: null
-      headers:
-      - - Host
-        - [ooni.nu]
-      method: '
+            GET'
+          url: http://93.95.227.200:80
+        response:
+          body: '{"headers_dict": {"Connection": ["close"], "Host": ["torproject.org"]},
+            "request_line": "\nGET / HTTP/1.1", "request_headers": [["Connection", "close"],
+            ["Host", "torproject.org"]]}'
+          code: 200
+          headers: []
+      socksproxy: null
+      trans_http_proxy: false
+    test_name: test_filtering_prepend_newline_to_method
+    test_runtime: 0.27550721168518066
+    test_started: 1361892427.287634
+    ...
+    ---
+    input: ooni.nu
+    report:
+      agent: agent
+      censored: false
+      requests:
+      - request:
+          body: null
+          headers:
+          - - Host
+            - [zzEtRtreZiooni.nuEBQm4yXrpR]
+          method: GET
+          url: http://93.95.227.200:80
+        response:
+          body: '{"headers_dict": {"Connection": ["close"], "Host": ["zzEtRtreZiooni.nuEBQm4yXrpR"]},
+            "request_line": "GET / HTTP/1.1", "request_headers": [["Connection", "close"],
+            ["Host", "zzEtRtreZiooni.nuEBQm4yXrpR"]]}'
+          code: 200
+          headers: []
+      socksproxy: null
+      trans_http_proxy: false
+    test_name: test_filtering_via_fuzzy_matching
+    test_runtime: 0.9233081340789795
+    test_started: 1361892427.290093
+    ...
+    ---
+    input: torproject.org
+    report:
+      agent: agent
+      censored: false
+      requests:
+      - request:
+          body: null
+          headers:
+          - - Host
+            - [torproject.org]
+          method: GET
+          url: http://93.95.227.200:80
+        response:
+          body: '{"headers_dict": {"Connection": ["close"], "Host": ["torproject.org"]},
+            "request_line": "GET / HTTP/1.1", "request_headers": [["Connection", "close"],
+            ["Host", "torproject.org"]]}'
+          code: 200
+          headers: []
+      socksproxy: null
+      trans_http_proxy: false
+    test_name: test_send_host_header
+    test_runtime: 0.9341740608215332
+    test_started: 1361892427.285841
+    ...
+    ---
+    input: ooni.nu
+    report:
+      agent: agent
+      censored: false
+      requests:
+      - request:
+          body: null
+          headers:
+          - - Host
+            - ["ooni.nu\t"]
+          method: GET
+          url: http://93.95.227.200:80
+        response:
+          body: '{"headers_dict": {"Connection": ["close"], "Host": ["ooni.nu"]}, "request_line":
+            "GET / HTTP/1.1", "request_headers": [["Connection", "close"], ["Host", "ooni.nu"]]}'
+          code: 200
+          headers: []
+      socksproxy: null
+      trans_http_proxy: false
+    test_name: test_filtering_add_tab_to_host
+    test_runtime: 1.353187084197998
+    test_started: 1361892427.289563
+    ...
+    ---
+    input: ooni.nu
+    report:
+      agent: agent
+      censored: false
+      requests:
+      - request:
+          body: null
+          headers:
+          - - Host
+            - [ooni.nu]
+          method: '
 
-        GET'
-      url: http://93.95.227.200:80
-    response:
-      body: '{"headers_dict": {"Connection": ["close"], "Host": ["ooni.nu"]}, "request_line":
-        "\nGET / HTTP/1.1", "request_headers": [["Connection", "close"], ["Host",
-        "ooni.nu"]]}'
-      code: 200
-      headers: []
-  socksproxy: null
-  trans_http_proxy: false
-test_name: test_filtering_prepend_newline_to_method
-test_runtime: 1.3599870204925537
-test_started: 1361892427.290647
-...
----
-input: ooni.nu
-report:
-  agent: agent
-  censored: false
-  requests:
-  - request:
-      body: null
-      headers:
-      - - Host
-        - [ooni.nu]
-      method: GET
-      url: http://93.95.227.200:80
-    response:
-      body: '{"headers_dict": {"Connection": ["close"], "Host": ["ooni.nu"]}, "request_line":
-        "GET / HTTP/1.1", "request_headers": [["Connection", "close"], ["Host", "ooni.nu"]]}'
-      code: 200
-      headers: []
-  socksproxy: null
-  trans_http_proxy: false
-test_name: test_send_host_header
-test_runtime: 2.463576078414917
-test_started: 1361892427.289032
-...
----
-input: ooni.nu
-report:
-  agent: agent
-  censored: false
-  requests:
-  - request:
-      body: null
-      headers:
-      - - Host
-        - [rnsLc4tA6s.ooni.nu]
-      method: GET
-      url: http://93.95.227.200:80
-    response:
-      body: '{"headers_dict": {"Connection": ["close"], "Host": ["rnsLc4tA6s.ooni.nu"]},
-        "request_line": "GET / HTTP/1.1", "request_headers": [["Connection", "close"],
-        ["Host", "rnsLc4tA6s.ooni.nu"]]}'
-      code: 200
-      headers: []
-  socksproxy: null
-  trans_http_proxy: false
-test_name: test_filtering_of_subdomain
-test_runtime: 3.4960269927978516
-test_started: 1361892427.288356
-...
----
-input: torproject.org
-report:
-  agent: agent
-  censored: false
-  requests:
-  - request:
-      body: null
-      headers:
-      - - Host
-        - [NNzbWQGgNltorproject.org5uosHwtVjn]
-      method: GET
-      url: http://93.95.227.200:80
-    response:
-      body: '{"headers_dict": {"Connection": ["close"], "Host": ["NNzbWQGgNltorproject.org5uosHwtVjn"]},
-        "request_line": "GET / HTTP/1.1", "request_headers": [["Connection", "close"],
-        ["Host", "NNzbWQGgNltorproject.org5uosHwtVjn"]]}'
-      code: 200
-      headers: []
-  socksproxy: null
-  trans_http_proxy: false
-test_name: test_filtering_via_fuzzy_matching
-test_runtime: 3.567512035369873
-test_started: 1361892427.286998
-...
----
-input: torproject.org
-report:
-  agent: agent
-  censored: false
-  requests:
-  - request:
-      body: null
-      headers:
-      - - Host
-        - ["torproject.org\t"]
-      method: GET
-      url: http://93.95.227.200:80
-    response:
-      body: '{"headers_dict": {"Connection": ["close"], "Host": ["torproject.org"]},
-        "request_line": "GET / HTTP/1.1", "request_headers": [["Connection", "close"],
-        ["Host", "torproject.org"]]}'
-      code: 200
-      headers: []
-  socksproxy: null
-  trans_http_proxy: false
-test_name: test_filtering_add_tab_to_host
-test_runtime: 3.5733180046081543
-test_started: 1361892427.286416
-...
+            GET'
+          url: http://93.95.227.200:80
+        response:
+          body: '{"headers_dict": {"Connection": ["close"], "Host": ["ooni.nu"]}, "request_line":
+            "\nGET / HTTP/1.1", "request_headers": [["Connection", "close"], ["Host",
+            "ooni.nu"]]}'
+          code: 200
+          headers: []
+      socksproxy: null
+      trans_http_proxy: false
+    test_name: test_filtering_prepend_newline_to_method
+    test_runtime: 1.3599870204925537
+    test_started: 1361892427.290647
+    ...
+    ---
+    input: ooni.nu
+    report:
+      agent: agent
+      censored: false
+      requests:
+      - request:
+          body: null
+          headers:
+          - - Host
+            - [ooni.nu]
+          method: GET
+          url: http://93.95.227.200:80
+        response:
+          body: '{"headers_dict": {"Connection": ["close"], "Host": ["ooni.nu"]}, "request_line":
+            "GET / HTTP/1.1", "request_headers": [["Connection", "close"], ["Host", "ooni.nu"]]}'
+          code: 200
+          headers: []
+      socksproxy: null
+      trans_http_proxy: false
+    test_name: test_send_host_header
+    test_runtime: 2.463576078414917
+    test_started: 1361892427.289032
+    ...
+    ---
+    input: ooni.nu
+    report:
+      agent: agent
+      censored: false
+      requests:
+      - request:
+          body: null
+          headers:
+          - - Host
+            - [rnsLc4tA6s.ooni.nu]
+          method: GET
+          url: http://93.95.227.200:80
+        response:
+          body: '{"headers_dict": {"Connection": ["close"], "Host": ["rnsLc4tA6s.ooni.nu"]},
+            "request_line": "GET / HTTP/1.1", "request_headers": [["Connection", "close"],
+            ["Host", "rnsLc4tA6s.ooni.nu"]]}'
+          code: 200
+          headers: []
+      socksproxy: null
+      trans_http_proxy: false
+    test_name: test_filtering_of_subdomain
+    test_runtime: 3.4960269927978516
+    test_started: 1361892427.288356
+    ...
+    ---
+    input: torproject.org
+    report:
+      agent: agent
+      censored: false
+      requests:
+      - request:
+          body: null
+          headers:
+          - - Host
+            - [NNzbWQGgNltorproject.org5uosHwtVjn]
+          method: GET
+          url: http://93.95.227.200:80
+        response:
+          body: '{"headers_dict": {"Connection": ["close"], "Host": ["NNzbWQGgNltorproject.org5uosHwtVjn"]},
+            "request_line": "GET / HTTP/1.1", "request_headers": [["Connection", "close"],
+            ["Host", "NNzbWQGgNltorproject.org5uosHwtVjn"]]}'
+          code: 200
+          headers: []
+      socksproxy: null
+      trans_http_proxy: false
+    test_name: test_filtering_via_fuzzy_matching
+    test_runtime: 3.567512035369873
+    test_started: 1361892427.286998
+    ...
+    ---
+    input: torproject.org
+    report:
+      agent: agent
+      censored: false
+      requests:
+      - request:
+          body: null
+          headers:
+          - - Host
+            - ["torproject.org\t"]
+          method: GET
+          url: http://93.95.227.200:80
+        response:
+          body: '{"headers_dict": {"Connection": ["close"], "Host": ["torproject.org"]},
+            "request_line": "GET / HTTP/1.1", "request_headers": [["Connection", "close"],
+            ["Host", "torproject.org"]]}'
+          code: 200
+          headers: []
+      socksproxy: null
+      trans_http_proxy: false
+    test_name: test_filtering_add_tab_to_host
+    test_runtime: 3.5733180046081543
+    test_started: 1361892427.286416
+    ...
 
 # Privacy considerations
 
