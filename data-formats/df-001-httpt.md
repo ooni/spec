@@ -50,72 +50,71 @@ data format.
 ## Example output
 
     input: http://google.com/
-    report:
-      agent: agent
-      requests:
-      - request:
-          body: null
-          headers:
-          - - User-Agent
-            - - &id001 [Mozilla/4.0 (compatible; MSIE 5.0; Windows NT 5.1; .NET CLR 1.1.4322),
-                'Internet Explorer 5, Windows XP']
-          method: GET
-          url: http://google.com/
-        response:
-          body: ''
-          code: 301
-          headers:
-          - - Content-Length
-            - ['219']
-          - - X-XSS-Protection
-            - [1; mode=block]
-          - - Expires
-            - ['Tue, 29 Jan 2013 14:29:19 GMT']
-          - - Server
-            - [gws]
-          - - Connection
-            - [close]
-          - - Location
-            - ['http://www.google.com/']
-          - - Cache-Control
-            - ['public, max-age=2592000']
-          - - Date
-            - ['Sun, 30 Dec 2012 14:29:19 GMT']
-          - - X-Frame-Options
-            - [SAMEORIGIN]
-          - - Content-Type
-            - [text/html; charset=UTF-8]
-      - request:
-          body: null
-          headers:
-          - - User-Agent
-            - - *id001
-          method: GET
-          url: shttp://google.com/
-        response:
-          body: ''
-          code: 301
-          headers:
-          - - Content-Length
-            - ['219']
-          - - X-XSS-Protection
-            - [1; mode=block]
-          - - Expires
-            - ['Tue, 29 Jan 2013 14:29:20 GMT']
-          - - Server
-            - [gws]
-          - - Connection
-            - [close]
-          - - Location
-            - ['http://www.google.com/']
-          - - Cache-Control
-            - ['public, max-age=2592000']
-          - - Date
-            - ['Sun, 30 Dec 2012 14:29:20 GMT']
-          - - X-Frame-Options
-            - [SAMEORIGIN]
-          - - Content-Type
-            - [text/html; charset=UTF-8]
-      socksproxy: null
+    agent: agent
+    requests:
+    - request:
+        body: null
+        headers:
+        - - User-Agent
+          - - &id001 [Mozilla/4.0 (compatible; MSIE 5.0; Windows NT 5.1; .NET CLR 1.1.4322),
+              'Internet Explorer 5, Windows XP']
+        method: GET
+        url: http://google.com/
+      response:
+        body: ''
+        code: 301
+        headers:
+        - - Content-Length
+          - ['219']
+        - - X-XSS-Protection
+          - [1; mode=block]
+        - - Expires
+          - ['Tue, 29 Jan 2013 14:29:19 GMT']
+        - - Server
+          - [gws]
+        - - Connection
+          - [close]
+        - - Location
+          - ['http://www.google.com/']
+        - - Cache-Control
+          - ['public, max-age=2592000']
+        - - Date
+          - ['Sun, 30 Dec 2012 14:29:19 GMT']
+        - - X-Frame-Options
+          - [SAMEORIGIN]
+        - - Content-Type
+          - [text/html; charset=UTF-8]
+    - request:
+        body: null
+        headers:
+        - - User-Agent
+          - - *id001
+        method: GET
+        url: shttp://google.com/
+      response:
+        body: ''
+        code: 301
+        headers:
+        - - Content-Length
+          - ['219']
+        - - X-XSS-Protection
+          - [1; mode=block]
+        - - Expires
+          - ['Tue, 29 Jan 2013 14:29:20 GMT']
+        - - Server
+          - [gws]
+        - - Connection
+          - [close]
+        - - Location
+          - ['http://www.google.com/']
+        - - Cache-Control
+          - ['public, max-age=2592000']
+        - - Date
+          - ['Sun, 30 Dec 2012 14:29:20 GMT']
+        - - X-Frame-Options
+          - [SAMEORIGIN]
+        - - Content-Type
+          - [text/html; charset=UTF-8]
+    socksproxy: null
 
 

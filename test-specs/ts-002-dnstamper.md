@@ -85,72 +85,71 @@ That the DNS resolver in question has provided a false response to a DNS Query.
 ## Example output sample
 
     input: example.com
-    report:
-      control_resolver: &id001 [203.0.113.1, 53]
-      queries:
-      - addrs: [203.0.113.2]
-        answers:
-        - [<RR name=example.com type=A class=IN ttl=2562s auth=False>, <A address=203.0.113.2
-            ttl=2562>]
-        query: '[Query(''example.com'', 1, 1)]'
-        query_type: A
-        resolver: *id001
-      - addrs: [203.0.113.2]
-        answers:
-        - [<RR name=example.com type=A class=IN ttl=7200s auth=False>, <A address=203.0.113.2
-            ttl=7200>]
-        query: '[Query(''example.com'', 1, 1)]'
-        query_type: A
-        resolver: [203.0.113.3, 53]
-      - addrs: [203.0.113.2]
-        answers:
-        - [<RR name=example.com type=A class=IN ttl=4007s auth=False>, <A address=203.0.113.2
-            ttl=4007>]
-        query: '[Query(''example.com'', 1, 1)]'
-        query_type: A
-        resolver: [203.0.113.4, 53]
-      - addrs: [203.0.113.2]
-        answers:
-        - [<RR name=example.com type=A class=IN ttl=7200s auth=False>, <A address=203.0.113.2
-            ttl=7200>]
-        query: '[Query(''example.com'', 1, 1)]'
-        query_type: A
-        resolver: [203.0.113.5, 53]
-      - addrs: [203.0.113.2]
-        answers:
-        - [<RR name=example.com type=A class=IN ttl=7200s auth=False>, <A address=203.0.113.2
-            ttl=7200>]
-        query: '[Query(''example.com'', 1, 1)]'
-        query_type: A
-        resolver: [203.0.113.6, 53]
-      - addrs: [203.0.113.2]
-        answers:
-        - [<RR name=example.com type=A class=IN ttl=7200s auth=False>, <A address=203.0.113.2
-            ttl=7200>]
-        query: '[Query(''example.com'', 1, 1)]'
-        query_type: A
-        resolver: [203.0.113.7, 53]
-      - addrs: [203.0.113.2]
-        answers:
-        - [<RR name=example.com type=A class=IN ttl=7200s auth=False>, <A address=203.0.113.2
-            ttl=7200>]
-        query: '[Query(''example.com'', 1, 1)]'
-        query_type: A
-        resolver: [203.0.113.8, 53]
-      - query: '[Query(''example.com'', 1, 1)]'
-        query_type: A
-        resolver: [203.0.113.9, 53]
-      - query: '[Query(''example.com'', 1, 1)]'
-        query_type: A
-        resolver: [203.0.113.1, 53]
-      - failure: deferred_timeout_error
-        query: '[Query(''example.com'', 1, 1)]'
-        query_type: A
-        resolver: [203.0.113.10, 53]
-      tampering: {203.0.113.11: no_answer, 203.0.113.6: false, 203.0.113.4: false, 203.0.113.5: false,
-        203.0.113.7: false, 203.0.113.3: false, 203.0.113.9: no_answer, 203.0.113.8: false}
-      test_resolvers: [203.0.113.3, 203.0.113.4, 203.0.113.5, 203.0.113.6, 203.0.113.7,
-        203.0.113.8, 203.0.113.9, 203.0.113.11, 203.0.113.10]
+    control_resolver: &id001 [203.0.113.1, 53]
+    queries:
+    - addrs: [203.0.113.2]
+      answers:
+      - [<RR name=example.com type=A class=IN ttl=2562s auth=False>, <A address=203.0.113.2
+          ttl=2562>]
+      query: '[Query(''example.com'', 1, 1)]'
+      query_type: A
+      resolver: *id001
+    - addrs: [203.0.113.2]
+      answers:
+      - [<RR name=example.com type=A class=IN ttl=7200s auth=False>, <A address=203.0.113.2
+          ttl=7200>]
+      query: '[Query(''example.com'', 1, 1)]'
+      query_type: A
+      resolver: [203.0.113.3, 53]
+    - addrs: [203.0.113.2]
+      answers:
+      - [<RR name=example.com type=A class=IN ttl=4007s auth=False>, <A address=203.0.113.2
+          ttl=4007>]
+      query: '[Query(''example.com'', 1, 1)]'
+      query_type: A
+      resolver: [203.0.113.4, 53]
+    - addrs: [203.0.113.2]
+      answers:
+      - [<RR name=example.com type=A class=IN ttl=7200s auth=False>, <A address=203.0.113.2
+          ttl=7200>]
+      query: '[Query(''example.com'', 1, 1)]'
+      query_type: A
+      resolver: [203.0.113.5, 53]
+    - addrs: [203.0.113.2]
+      answers:
+      - [<RR name=example.com type=A class=IN ttl=7200s auth=False>, <A address=203.0.113.2
+          ttl=7200>]
+      query: '[Query(''example.com'', 1, 1)]'
+      query_type: A
+      resolver: [203.0.113.6, 53]
+    - addrs: [203.0.113.2]
+      answers:
+      - [<RR name=example.com type=A class=IN ttl=7200s auth=False>, <A address=203.0.113.2
+          ttl=7200>]
+      query: '[Query(''example.com'', 1, 1)]'
+      query_type: A
+      resolver: [203.0.113.7, 53]
+    - addrs: [203.0.113.2]
+      answers:
+      - [<RR name=example.com type=A class=IN ttl=7200s auth=False>, <A address=203.0.113.2
+          ttl=7200>]
+      query: '[Query(''example.com'', 1, 1)]'
+      query_type: A
+      resolver: [203.0.113.8, 53]
+    - query: '[Query(''example.com'', 1, 1)]'
+      query_type: A
+      resolver: [203.0.113.9, 53]
+    - query: '[Query(''example.com'', 1, 1)]'
+      query_type: A
+      resolver: [203.0.113.1, 53]
+    - failure: deferred_timeout_error
+      query: '[Query(''example.com'', 1, 1)]'
+      query_type: A
+      resolver: [203.0.113.10, 53]
+    tampering: {203.0.113.11: no_answer, 203.0.113.6: false, 203.0.113.4: false, 203.0.113.5: false,
+      203.0.113.7: false, 203.0.113.3: false, 203.0.113.9: no_answer, 203.0.113.8: false}
+    test_resolvers: [203.0.113.3, 203.0.113.4, 203.0.113.5, 203.0.113.6, 203.0.113.7,
+      203.0.113.8, 203.0.113.9, 203.0.113.11, 203.0.113.10]
     test_name: test_a_lookup
     test_runtime: 2.6424369812011719
     test_started: 1357167921.0688701
