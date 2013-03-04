@@ -1,13 +1,14 @@
-                            oonib specification
+# oonib specification
 
-                              Arturo Filastò
+* version: 0.1
+* date: 2013-03-04
+* author: Arturo Filastò
 
 This document aims at providing a functional specification of oonib. At the
 time of writing this document not all parts are fully implemented, though the
 application interface to oonib is.
 
-version: 0.1
-date: 2013-03-04
+
 
 # 1.0 System overview
 
@@ -58,9 +59,9 @@ When a probe starts a test they will *create* a new report with the oonib
 collector backend.
 The HTTP request it performs is:
 
-POST /report
+`POST /report`
 
-  {
+    {
 
      'software_name':
         `string` the name of the software that is creating a report (ex. "ooni-probe")
@@ -89,12 +90,12 @@ POST /report
           test requires a test_helper the probe should inform oonib of it's IP
           address. We need to know this since we are not sure if the probe is
           accessing the report collector via Tor or not.
-  }
+     }
 
 The server will respond with a report identifier that will then allow the probe
 to update the report and the version of the backend software like follows:
 
-  {
+    {
 
       'backend_version':
         `string` containing the version of the backend
@@ -105,7 +106,7 @@ to update the report and the version of the backend software like follows:
       'test_helper_address':
         `string` the address of a test helper for the requested test.
 
-  }
+    }
 
 The report identifier allows the probe to update the report and it will be
 contructed as follows:
@@ -129,9 +130,9 @@ the report id may be changed in the future.
 Once the probe has a report ID they will be able to add test related content to
 the report by referencing it by id:
 
-PUT /report
+`PUT /report`
 
-  {
+    {
 
     'report_id':
       `string` the report identifier
@@ -140,35 +141,35 @@ PUT /report
       `string` content to be added to the report. This can be one or more
         report entries in the format specified in df-000-base.md
 
-  }
+    }
 
 The backend should validate the request to make sure it is a valid YAML Stream.
 
 New collectors should use the following format for updating reports:
 
-POST /report/<report_id>
+`POST /report/<report_id>`
 
-  {
+    {
 
     content:
       `string` content to be added to the report. This can be one or more
         report entries in the format specified in df-000-base.md
 
-  }
+    }
 
 ### 2.3.3 Closing a report
 
 This request is done by a probe to tell the backend that they have finished
 running the test and the report can be considered done:
 
-POST /report/<report_id>/close
+`POST /report/<report_id>/close`
 
 To create a new report a probe will peform an HTTP POST request to the resource
 /report.
 
 The collector MUST implement the following HTTP JSON RPC like API:
 
-  /report
+    /report
 
 ## 2.4 Report lifecycle
 
@@ -197,7 +198,7 @@ Reports should be discarded and deleted if:
 
 Reports should be published to:
 
-https://ooni.torproject.org/reports/ **reportFormatVersion** / **CC** /
+`https://ooni.torproject.org/reports/` **reportFormatVersion** `/` **CC** `/`
 
 Requesting such URL may also result in a 302 to the location of reports for
 that specific country.
@@ -261,9 +262,9 @@ be inside of a separate file that has the same name of the probe report but
 "-probe" should be replaced with "-backend".
 
 For example the backend part of the report for a traceroute test called
-two_way_traceroute-2012-01-01T120000Z-AS3-probe.yamloo, shall be called
+`two_way_traceroute-2012-01-01T120000Z-AS3-probe.yamloo`, shall be called
 
-two_way_traceroute-2012-01-01T120000Z-AS3-backend.yamloo
+`two_way_traceroute-2012-01-01T120000Z-AS3-backend.yamloo`
 
 # 3.0 Test Helpers
 
