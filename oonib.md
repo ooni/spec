@@ -183,14 +183,8 @@ not been updated with valid data for more than 2 hours.
 ## 2.5 Report publishing and cleaning
 
 Once a report is closed it should be made available to the public for download
-and analysis. This shall happen as soon as a report reaches the CLOSED state.
-
-Reports should be discarded and deleted if:
-
-  * They have been in the NEW state for more than 4 hours
-
-  * They are CLOSED, but contain only one Report Entry meaning that the report
-    entry contains only the base test data (see df-000-base.md).
+and analysis. This shall happen as soon as a report reaches the CLOSED state
+(either because the user closed it or because it entered a stale state).
 
 Reports should be published to:
 
