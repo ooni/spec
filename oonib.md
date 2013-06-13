@@ -32,7 +32,7 @@ service.
 
 ## 2.2 Theat model
 
-The collector shall provide end-to-end between the probe and the oonib
+The collector shall provide end-to-end encryption and authentication between the probe and the oonib
 collector.
 
 A malicious actor should not be able to update test results that they have not
