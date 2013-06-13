@@ -143,6 +143,9 @@ the report by referencing it by id:
 
     }
 
+This method is deprecated, because it is not proper usage of HTTP request methods.
+PUT should only be used for operations that are idempotent.
+
 The backend should validate the request to make sure it is a valid YAML Stream.
 
 New collectors should use the following format for updating reports:
