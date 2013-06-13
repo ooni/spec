@@ -167,13 +167,6 @@ running the test and the report can be considered done:
 
 `POST /report/<report_id>/close`
 
-To create a new report a probe will peform an HTTP POST request to the resource
-/report.
-
-The collector MUST implement the following HTTP JSON RPC like API:
-
-    /report
-
 ## 2.4 Report lifecycle
 
 When a report is created (section 2.3.1) it should be marked as NEW and a
