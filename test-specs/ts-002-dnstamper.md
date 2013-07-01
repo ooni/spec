@@ -11,6 +11,9 @@ DNS Tamper Test
   * An internet connection
   * A unfiltered connection to a DNS resolver that is not performing censorship
 
+For reporting to the backend to work that it is possible for the probe to
+establish a connection to the Tor network.
+
 # Expected impact
 
 Ability to detect if A DNS queries for a certain hostname are being tampered with.

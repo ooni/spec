@@ -9,8 +9,10 @@ HTTP Host test
 # Test preconditions
 
   * An internet connection.
-
   * That no special treatment is given to the supplied oonib test helper.
+
+For reporting to the backend to work that it is possible for the probe to
+establish a connection to the Tor network.
 
 # Expected impact
 

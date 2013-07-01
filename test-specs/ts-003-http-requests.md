@@ -8,9 +8,8 @@ HTTP Requests Test
 
 # Test preconditions
 
-* An internet connection
-
-* Ability to reach the Tor network (either Tor is not censored or the user has a Tor bridge)
+  * An internet connection
+  * Ability to reach the Tor network (either Tor is not censored or the user has a Tor bridge)
 
 # Expected impact
 
