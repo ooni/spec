@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.3, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="1097.953px" height="841.89px" viewBox="0 0 1097.953 841.89" enable-background="new 0 0 1097.953 841.89"
+	 xml:space="preserve">
+<line fill="none" stroke="#000000" stroke-width="5" stroke-miterlimit="10" x1="910.744" y1="149.314" x2="869.209" y2="414.627"/>
+<line fill="none" stroke="#A7A9AC" stroke-width="5" stroke-miterlimit="10" x1="393.303" y1="441.672" x2="749.953" y2="482.047"/>
+<line fill="none" stroke="#000000" stroke-width="5" stroke-miterlimit="10" x1="393.303" y1="281.418" x2="754.604" y2="445.312"/>
+<rect x="81.674" y="72.349" fill="#FFFFFF" stroke="#000000" stroke-width="3" stroke-miterlimit="10" width="311.628" height="277.674"/>
+<rect x="96.791" y="204.941" fill="#FFFFFF" stroke="#000000" stroke-width="3" stroke-miterlimit="10" width="276.745" height="50"/>
+<rect x="99.116" y="281.418" fill="#FFFFFF" stroke="#000000" stroke-width="3" stroke-miterlimit="10" width="276.745" height="50"/>
+<rect x="99.116" y="128.465" fill="#FFFFFF" stroke="#000000" stroke-width="3" stroke-miterlimit="10" width="276.745" height="50"/>
+<rect x="97.698" y="81.314" fill="none" width="197.674" height="34.302"/>
+<text transform="matrix(1 0 0 1 97.6978 106.9458)" font-family="'SourceCodePro-Regular'" font-size="36">Collector</text>
+<rect x="111.442" y="143.314" fill="none" width="197.675" height="26.732"/>
+<text transform="matrix(1 0 0 1 111.4424 160.4019)" font-family="'SourceCodePro-Regular'" font-size="24">Policy</text>
+<rect x="111.442" y="216.575" fill="none" width="197.675" height="26.732"/>
+<text transform="matrix(1 0 0 1 111.4424 233.6631)" font-family="'SourceCodePro-Regular'" font-size="24">Input list</text>
+<rect x="111.442" y="293.052" fill="none" width="256.978" height="26.732"/>
+<text transform="matrix(1 0 0 1 111.4424 310.1401)" font-family="'SourceCodePro-Regular'" font-size="24">NetTest deck list</text>
+<rect x="81.675" y="365.86" fill="#FFFFFF" stroke="#000000" stroke-width="3" stroke-miterlimit="10" width="311.628" height="277.675"/>
+<rect x="97.698" y="374.826" fill="none" width="286.046" height="34.302"/>
+<text transform="matrix(1 0 0 1 97.6982 400.4575)" font-family="'SourceCodePro-Regular'" font-size="36">Test Helpers</text>
+<rect x="107.698" y="420.945" fill="none" width="278.814" height="26.732"/>
+<text transform="matrix(1 0 0 1 107.6982 433.7598)" font-family="'SourceCodePro-Regular'" font-size="18">HTTP Return JSON Headers</text>
+<rect x="107.698" y="462.032" fill="none" width="278.814" height="26.733"/>
+<text transform="matrix(1 0 0 1 107.6982 474.8477)" font-family="'SourceCodePro-Regular'" font-size="18">DNS Test Helper</text>
+<rect x="107.698" y="503.119" fill="none" width="278.814" height="26.734"/>
+<text transform="matrix(1 0 0 1 107.6982 515.9355)" font-family="'SourceCodePro-Regular'" font-size="18">TCP Echo</text>
+<rect x="107.698" y="544.207" fill="none" width="278.814" height="26.733"/>
+<text transform="matrix(1 0 0 1 107.6982 557.0234)" font-family="'SourceCodePro-Regular'" font-size="18">Daphne</text>
+<rect x="107.698" y="585.295" fill="none" width="278.814" height="26.732"/>
+<text transform="matrix(1 0 0 1 107.6982 598.1104)" font-family="'SourceCodePro-Regular'" font-size="18">SSL</text>
+<rect x="840.744" y="48.229" fill="#FFFFFF" stroke="#000000" stroke-width="3" stroke-miterlimit="10" width="227.443" height="100.472"/>
+<rect x="856.768" y="57.195" fill="none" width="197.676" height="34.301"/>
+<text transform="matrix(1 0 0 1 856.7686 82.8262)" font-family="'SourceCodePro-Regular'" font-size="36">Bouncer</text>
+<line fill="none" stroke="#000000" stroke-width="5" stroke-miterlimit="10" x1="421.209" y1="211.186" x2="840.744" y2="98.465"/>
+<line fill="none" x1="415.209" y1="203.825" x2="834.744" y2="91.104"/>
+<text transform="matrix(0.9657 -0.2595 0.2595 0.9657 525.4668 174.2007)"><tspan x="0" y="0" font-family="'SourceCodePro-Regular'" font-size="18">E</tspan><tspan x="10.807" y="0" font-family="'SourceCodePro-Regular'" font-size="18">n</tspan><tspan x="21.624" y="0" font-family="'SourceCodePro-Regular'" font-size="18">d</tspan><tspan x="32.408" y="0" font-family="'SourceCodePro-Regular'" font-size="18"> </tspan><tspan x="43.235" y="0" font-family="'SourceCodePro-Regular'" font-size="18">t</tspan><tspan x="54.035" y="0" font-family="'SourceCodePro-Regular'" font-size="18">o</tspan><tspan x="64.82" y="0" font-family="'SourceCodePro-Regular'" font-size="18"> </tspan><tspan x="75.639" y="0" font-family="'SourceCodePro-Regular'" font-size="18">e</tspan><tspan x="86.428" y="0" font-family="'SourceCodePro-Regular'" font-size="18">n</tspan><tspan x="97.242" y="0" font-family="'SourceCodePro-Regular'" font-size="18">d</tspan><tspan x="108.035" y="0" font-family="'SourceCodePro-Regular'" font-size="18"> </tspan><tspan x="118.847" y="0" font-family="'SourceCodePro-Regular'" font-size="18">E</tspan><tspan x="129.631" y="0" font-family="'SourceCodePro-Regular'" font-size="18">n</tspan><tspan x="140.422" y="0" font-family="'SourceCodePro-Regular'" font-size="18">c</tspan><tspan x="151.232" y="0" font-family="'SourceCodePro-Regular'" font-size="18">r</tspan><tspan x="162.032" y="0" font-family="'SourceCodePro-Regular'" font-size="18">y</tspan><tspan x="172.829" y="0" font-family="'SourceCodePro-Regular'" font-size="18">p</tspan><tspan x="183.661" y="0" font-family="'SourceCodePro-Regular'" font-size="18">t</tspan><tspan x="194.45" y="0" font-family="'SourceCodePro-Regular'" font-size="18">e</tspan><tspan x="205.26" y="0" font-family="'SourceCodePro-Regular'" font-size="18">d</tspan></text>
+<circle fill="#00AEEF" cx="827.023" cy="471.047" r="79.07"/>
+<text transform="matrix(1 0 0 1 764 479.3984)" font-family="'SourceCodePro-Bold'" font-size="21">OONI Probe</text>
+<line fill="none" x1="393.303" y1="274.058" x2="752.604" y2="434.312"/>
+<text transform="matrix(0.9133 0.4073 -0.4073 0.9133 487.7412 316.1787)"><tspan x="0" y="0" font-family="'SourceCodePro-Regular'" font-size="18">E</tspan><tspan x="10.802" y="0" font-family="'SourceCodePro-Regular'" font-size="18">n</tspan><tspan x="21.617" y="0" font-family="'SourceCodePro-Regular'" font-size="18">d</tspan><tspan x="32.429" y="0" font-family="'SourceCodePro-Regular'" font-size="18"> </tspan><tspan x="43.23" y="0" font-family="'SourceCodePro-Regular'" font-size="18">t</tspan><tspan x="54.018" y="0" font-family="'SourceCodePro-Regular'" font-size="18">o</tspan><tspan x="64.827" y="0" font-family="'SourceCodePro-Regular'" font-size="18"> </tspan><tspan x="75.629" y="0" font-family="'SourceCodePro-Regular'" font-size="18">e</tspan><tspan x="86.428" y="0" font-family="'SourceCodePro-Regular'" font-size="18">n</tspan><tspan x="97.23" y="0" font-family="'SourceCodePro-Regular'" font-size="18">d</tspan><tspan x="108.043" y="0" font-family="'SourceCodePro-Regular'" font-size="18"> </tspan><tspan x="118.838" y="0" font-family="'SourceCodePro-Regular'" font-size="18">E</tspan><tspan x="129.653" y="0" font-family="'SourceCodePro-Regular'" font-size="18">n</tspan><tspan x="140.458" y="-0.001" font-family="'SourceCodePro-Regular'" font-size="18">c</tspan><tspan x="151.248" y="0" font-family="'SourceCodePro-Regular'" font-size="18">r</tspan><tspan x="162.054" y="0" font-family="'SourceCodePro-Regular'" font-size="18">y</tspan><tspan x="172.862" y="0" font-family="'SourceCodePro-Regular'" font-size="18">p</tspan><tspan x="183.649" y="0" font-family="'SourceCodePro-Regular'" font-size="18">t</tspan><tspan x="194.448" y="0" font-family="'SourceCodePro-Regular'" font-size="18">e</tspan><tspan x="205.266" y="0" font-family="'SourceCodePro-Regular'" font-size="18">d</tspan></text>
+<rect x="63.07" y="54.907" fill="none" stroke="#EC008C" stroke-width="4" stroke-miterlimit="10" width="358.139" height="610.465"/>
+<line fill="none" x1="393.303" y1="434.312" x2="747.953" y2="471.047"/>
+<text transform="matrix(0.9947 0.103 -0.103 0.9947 486.5156 443.9668)"><tspan x="0" y="0" font-family="'SourceCodePro-Regular'" font-size="18">C</tspan><tspan x="10.805" y="0" font-family="'SourceCodePro-Regular'" font-size="18">o</tspan><tspan x="21.599" y="-0.001" font-family="'SourceCodePro-Regular'" font-size="18">n</tspan><tspan x="32.419" y="0" font-family="'SourceCodePro-Regular'" font-size="18">t</tspan><tspan x="43.214" y="0" font-family="'SourceCodePro-Regular'" font-size="18">r</tspan><tspan x="54.036" y="-0.001" font-family="'SourceCodePro-Regular'" font-size="18">o</tspan><tspan x="64.814" y="0" font-family="'SourceCodePro-Regular'" font-size="18">l</tspan><tspan x="75.637" y="0" font-family="'SourceCodePro-Regular'" font-size="18"> </tspan><tspan x="86.44" y="0" font-family="'SourceCodePro-Regular'" font-size="18">C</tspan><tspan x="97.219" y="-0.001" font-family="'SourceCodePro-Regular'" font-size="18">h</tspan><tspan x="108.036" y="0" font-family="'SourceCodePro-Regular'" font-size="18">a</tspan><tspan x="118.837" y="0" font-family="'SourceCodePro-Regular'" font-size="18">n</tspan><tspan x="129.627" y="0" font-family="'SourceCodePro-Regular'" font-size="18">n</tspan><tspan x="140.443" y="0" font-family="'SourceCodePro-Regular'" font-size="18">e</tspan><tspan x="151.244" y="-0.001" font-family="'SourceCodePro-Regular'" font-size="18">l</tspan></text>
+<line fill="none" x1="923.744" y1="95.021" x2="882.209" y2="398.684"/>
+<text transform="matrix(-0.1154 0.8438 -0.9908 -0.1355 912.8262 174.8379)" font-family="'SourceCodePro-Regular'" font-size="21.1361">E</text>
+<text transform="matrix(-0.1154 0.8438 -0.9908 -0.1355 911.3613 185.543)" font-family="'SourceCodePro-Regular'" font-size="21.1361">n</text>
+<text transform="matrix(-0.1154 0.8438 -0.9908 -0.1355 909.8975 196.25)" font-family="'SourceCodePro-Regular'" font-size="21.1361">d</text>
+<text transform="matrix(-0.1154 0.8438 -0.9908 -0.1355 908.4355 206.939)" font-family="'SourceCodePro-Regular'" font-size="21.1361"> </text>
+<text transform="matrix(-0.1154 0.8438 -0.9908 -0.1355 906.9707 217.6533)" font-family="'SourceCodePro-Regular'" font-size="21.1361">t</text>
+<text transform="matrix(-0.1154 0.8438 -0.9908 -0.1355 905.5088 228.3389)" font-family="'SourceCodePro-Regular'" font-size="21.1361">o</text>
+<text transform="matrix(-0.1154 0.8438 -0.9908 -0.1355 904.042 239.0557)" font-family="'SourceCodePro-Regular'" font-size="21.1361"> </text>
+<text transform="matrix(-0.1154 0.8438 -0.9908 -0.1355 902.5791 249.7549)" font-family="'SourceCodePro-Regular'" font-size="21.1361">e</text>
+<text transform="matrix(-0.1154 0.8438 -0.9908 -0.1355 901.1172 260.4463)" font-family="'SourceCodePro-Regular'" font-size="21.1361">n</text>
+<text transform="matrix(-0.1154 0.8438 -0.9908 -0.1355 899.6514 271.1621)" font-family="'SourceCodePro-Regular'" font-size="21.1361">d</text>
+<text transform="matrix(-0.1154 0.8438 -0.9908 -0.1355 898.1895 281.8501)" font-family="'SourceCodePro-Regular'" font-size="21.1361"> </text>
+<text transform="matrix(-0.1154 0.8438 -0.9908 -0.1355 896.7246 292.5605)" font-family="'SourceCodePro-Regular'" font-size="21.1361">E</text>
+<text transform="matrix(-0.1154 0.8438 -0.9908 -0.1355 895.2617 303.252)" font-family="'SourceCodePro-Regular'" font-size="21.1361">n</text>
+<text transform="matrix(-0.1154 0.8438 -0.9908 -0.1355 893.7959 313.9712)" font-family="'SourceCodePro-Regular'" font-size="21.1361">c</text>
+<text transform="matrix(-0.1154 0.8438 -0.9908 -0.1355 892.333 324.6646)" font-family="'SourceCodePro-Regular'" font-size="21.1361">r</text>
+<text transform="matrix(-0.1154 0.8438 -0.9908 -0.1355 890.8691 335.3677)" font-family="'SourceCodePro-Regular'" font-size="21.1361">y</text>
+<text transform="matrix(-0.1154 0.8438 -0.9908 -0.1355 889.4053 346.0737)" font-family="'SourceCodePro-Regular'" font-size="21.1361">p</text>
+<text transform="matrix(-0.1154 0.8438 -0.9908 -0.1355 887.9395 356.7803)" font-family="'SourceCodePro-Regular'" font-size="21.1361">t</text>
+<text transform="matrix(-0.1154 0.8438 -0.9908 -0.1355 886.4766 367.4766)" font-family="'SourceCodePro-Regular'" font-size="21.1361">e</text>
+<text transform="matrix(-0.1154 0.8438 -0.9908 -0.1355 885.0107 378.1973)" font-family="'SourceCodePro-Regular'" font-size="21.1361">d</text>
+</svg>
