@@ -50,7 +50,9 @@ communicating to a collector.
 Such properties are to be provided by other software components, for example
 using Tor or obfsproxy.
 
-## 2.3 Test result submission interface
+## 2.3 Collector API
+
+## 2.3.1 Test result submission interface
 
 Unless otherwise stated all of the network operations below can be performed
 either via HTTPS or HTTPO (HTTP over Tor Hidden Service).
@@ -59,7 +61,7 @@ Note: we will eventually want to migrate over to using YAML instead of JSON as
 a data exchange format. Not doing so adds unnecessary overhead in including
 YAML data inside of JSON data.
 
-### 2.3.1 Create a new report
+### 2.3.1.1 Create a new report
 
 When a probe starts a test they will *create* a new report with the oonib
 collector backend.
@@ -161,7 +163,7 @@ the report id may be changed in the future.
 
 Probes should parse the report_status before proceeding with a report.
 
-### 2.3.2 Update a report
+### 2.3.1.2 Update a report
 
 Once the probe has a report ID they will be able to add test related content to
 the report by referencing it by id:
@@ -196,12 +198,157 @@ New collectors should use the following format for updating reports:
 
     }
 
-### 2.3.3 Closing a report
+### 2.3.1.3 Closing a report
 
 This request is done by a probe to tell the backend that they have finished
 running the test and the report can be considered done:
 
 `POST /report/<report_id>/close`
+
+## 2.3.2 Descriptors
+
+### 2.3.2.1 Decks (or Experiments)
+
+These are what a user will end up running. A deck is basically a set of nettests and one input (or none) per nettest.
+
+#### GET /deck
+
+This will list all the available decks.
+
+
+```
+[
+
+  {
+    'id': "The deck ID that is the hash of the YAML ooni deck",
+    'name': "The name of the deck",
+    'description': "The description of the deck",
+  },
+
+  ...
+]
+```
+
+#### GET /deck/<ID>
+
+This will return the descriptor for the specified deck
+
+```
+{ 
+ 'name': "the name of the deck",
+ 'description': "a description of the deck",
+ 'version': "the deck version number",
+ 'author': "the author name and email address in the format John Doe <john@example.com>",
+ 'date': "the deck creation time in ISO 8601",
+}
+
+```
+
+#### GET /deck/<ID>/yaml
+
+This will return the deck content in YAML format
+
+### 2.3.2.2 Inputs
+
+These are the inputs supported by the collector in question. Such inputs will then be given to a nettests or referenced by a deck.
+
+#### GET /input
+
+This will list all the available inputs:
+
+
+```
+{
+  'id': "The deck ID that is the hash of the input file",
+  'name': "The name of the input",
+  'description': "The description of the input",
+}
+```
+
+#### GET /input/<ID>
+
+This will return the descriptor for the specified input
+
+```
+{ 
+ 'name': "the name of the input",
+ 'description': "a description of the input",
+ 'version': "the input version number",
+ 'author': "the author name and email address in the format John Doe <john@example.com>",
+ 'date': "the input creation time in ISO 8601",
+}
+
+```
+
+#### GET /input/<ID>/file
+
+This will return the file content
+
+### 2.3.2.3 NetTest
+
+This is the code that gets run by ooniprobe to perform network measurements.
+
+#### GET /nettest
+
+This will list all the available nettests.
+
+
+```
+{
+  'id': "The nettest ID that is the hash of the nettest",
+  'name': "The name of the nettest",
+  'description': "The description of the nettest",
+}
+```
+
+#### GET /nettest/<ID>
+
+This will return the descriptor for the specified nettest
+
+```
+{ 
+ 'name': "the name of the deck",
+ 'description': "a description of the deck",
+ 'version': "the deck version number",
+ 'author': "the author name and email address in the format John Doe <john@example.com>",
+ 'date': "the deck creation time in ISO 8601",
+}
+
+```
+
+#### GET /nettest/<ID>/py
+
+This will return the nettest python file content.
+
+## 2.3.3 Policies
+
+This allows a collector administrator to specify which nettests and inputs it is willing to accept reports on.
+
+### 2.3.3.1 Input Policy
+
+This specifies which inputs are allowed.
+
+#### GET /policy/input
+
+```
+[
+  {'id': 'the ID of the input we accept reports for'},
+  ...
+  {'id': ''}
+]
+```
+
+### 2.3.3.2 Nettest Policy
+
+#### GET /policy/nettest
+
+```
+[
+  {'name': 'the name nettest we accept reports for',
+   'version': 'version number we accept reports for'},
+  ...
+]
+```
 
 ## 2.4 Report lifecycle
 
@@ -292,6 +439,7 @@ For example the backend part of the report for a traceroute test called
 
 `two_way_traceroute-2012-01-01T120000Z-AS3-backend.yamloo`
 
+
 # 3.0 Test Helpers
 
 These are services exposed to ooniprobe clients that are of assistance to
@@ -328,6 +476,16 @@ Although I am talking about the collector as two differnet software components
 they both run inside of the same process and are part of the same piece of
 software.
 
+## 3.1.1 Test Helper collector mapping
+
+When a report that requires a test helper is created with the collector
+component of oonib the test helper should be notified of the probes IP
+address (the probe_ip).
+
+This will allow the test helper to know from which IP address it should either
+expect the probe to come from or towards what IP address it should perform an
+active measurement.
+
 ## 3.2 Threat model (or non-goals)
 
 Because of the nature of the services that they are exposing it is not possible
@@ -338,15 +496,19 @@ Moreover we are currently not making any particular effort to make test helpers
 look like something that they are not (i.e. make test helper traffic not look
 like test helper traffic).
 
-## 3.3 Test Helper collector mapping
+## 3.3 Test helper listing API
 
-When a report that requires a test helper is created with the collector
-component of oonib the test helper should be notified of the probes IP
-address (the probe_ip).
+### GET /test-helper
 
-This will allow the test helper to know from which IP address it should either
-expect the probe to come from or towards what IP address it should perform an
-active measurement.
+This lists all the test helpers running on this machine:
+
+```
+{
+  'id': 'the name of the test helper',
+  'description': 'description of the test helper',
+  'address': 'the full address of the test helper (this should include at least IP and port)'
+}
+```
 
 ## 3.4 Reply Test Helpers
 
@@ -402,10 +564,37 @@ This shall expose a TCP echo service that is bound to port 80.
 This shall perform the ooniprobe traceroute test and attach the result to the
 final report as described in section 2.5.
 
+# 4.0 Bouncer
 
-# 4.0 Policy
+This is the service that will allow the ooni-probe to discover collectors that run test helpers that the probe needs.
 
-The oonib collector exposes a JSON RPC like HTTP interface and provides a set
-of test decks and input lists that it will accept reports for.
+## 4.1 API
 
-The policy is defined ... #XXX tbd
+### POST /bouncer
+
+This will return a list of required collectors and test helpers.
+
+Client sends:
+
+```
+{
+  'test-helpers': [
+     'id of first test helper I need',
+     'id of second test helper I need']
+}
+```
+
+Bouncer replies:
+
+```
+{
+  'collector': {
+      'dot onion address of collector1': {
+         'test-helper': {'test-helper1': 'address of test-helper1',
+                         'test-helper2': 'address of test-helper2'}
+       },
+       'dot onion address of collector2': {'etc.': 'etc'}
+  }
+}
+```
+
