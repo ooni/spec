@@ -1,8 +1,8 @@
 # oonib specification
 
-* version: 0.1
-* date: 2013-03-04
-* author: Arturo Filastò
+* version: 0.2
+* date: 2013-07-04
+* author: Arturo Filastò, Aaron Gibson
 
 This document aims at providing a functional specification of oonib. At the
 time of writing this document not all parts are fully implemented, though the
