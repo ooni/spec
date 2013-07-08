@@ -89,13 +89,11 @@ The HTTP request it performs is:
      'test_version':
         `string` the version of the test peforming the network measurement.
 
-     'input_name':
-        (optional) `string` the name of the input file. Not required or
-          available for all tests.
-
      'input_hash': 
         (optional) `string` the base64 encoded sha256sum of the contents
-          of input_name
+          of input_name. This field is required if the collector backend only
+          accepts certain inputs (that is it has a collector policy).
+          For more information on policies see section 2.3.
 
      'content':
         (optional) `string` it is optionally possible to create a report with
@@ -108,8 +106,11 @@ The HTTP request it performs is:
           accessing the report collector via Tor or not.
      }
 
-The server will respond with a report identifier that will then allow the probe
-to update the report and the version of the backend software like follows:
+When a report is created the backend will respond with a report identifier
+that will then allow the probe to update the report and the version of the
+backend software like follows:
+
+`Status Code: 201 (Created)`
 
     {
 
@@ -122,8 +123,6 @@ to update the report and the version of the backend software like follows:
       'test_helper_address':
         `string` the address of a test helper for the requested test.
 
-      'report_status':
-        `string` One of 'rejected' or 'created' or 'closed'.
     }
 
 The report identifier allows the probe to update the report and it will be
@@ -135,11 +134,12 @@ A report identifier can be for example:
 
   1912-06-23T101234Z_AS1234_ihvhaeZDcBpDwYTbmdyqZSLCDNuJSQuoOdJMciiQWwAWUKJwmR
 
-If the report does not match the collector policy, then the collector shall set
-the report_status to rejected, and will not create a report or return a valid
-report_id.
+If the report does not match the collector policy it will not create a report 
+or return a valid report_id.
 
 The collector will instead respond like follows:
+
+`Status Code: 406 (Not Acceptable)`
 
     {
 
