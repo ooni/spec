@@ -34,7 +34,7 @@ submit the results of their measurements. Once probe measurement is complete
 the test result is published as an ooni test report in the YAML format.
 
 The oonib collector shall be exposed as a Tor Hidden Service and as a HTTPS
-service.
+service. The reason for supporting both Tor HS and HTTPS is [better explained in this document](https://ooni.torproject.org/docs/architecture.html#why-tor-hidden-services)
 
 ## 2.2 Theat model
 
