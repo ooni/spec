@@ -9,6 +9,10 @@ time of writing this document not all parts are fully implemented, though the
 application interface to oonib is.
 
 
+# 0.0 Notes
+
+When we use the term **Network measurement** we are usually referring to a **NetTest**,
+that is a test to be run on the network written using the ooniprobe API.
 
 # 1.0 System overview
 
