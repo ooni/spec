@@ -99,6 +99,9 @@ The HTTP request it performs is:
           accepts certain inputs (that is it has a collector policy).
           For more information on policies see section 2.3.
 
+     'test_helper': 
+        (optional) `string` the name of the required test_helper for this test.
+
      'content':
         (optional) `string` it is optionally possible to create a report with
           already some data inside of it.
@@ -125,7 +128,7 @@ backend software like follows:
         `string` report identifier of the format detailed below.
 
       'test_helper_address':
-        `string` the address of a test helper for the requested test.
+        (conditional) `string` the address of a test helper that the client requested.
 
     }
 
