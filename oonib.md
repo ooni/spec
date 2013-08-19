@@ -195,7 +195,7 @@ The backend should validate the request to make sure it is a valid YAML Stream.
 
 New collectors should use the following format for updating reports:
 
-`POST /report/<report_id>`
+`POST /report/$report_id`
 
     {
 
@@ -210,7 +210,7 @@ New collectors should use the following format for updating reports:
 This request is done by a probe to tell the backend that they have finished
 running the test and the report can be considered done:
 
-`POST /report/<report_id>/close`
+`POST /report/$report_id/close`
 
 ## 2.3.2 Descriptors
 
@@ -236,7 +236,7 @@ This will list all the available decks.
 ]
 ```
 
-#### GET /deck/<ID>
+#### GET /deck/$deck_id
 
 This will return the descriptor for the specified deck
 
@@ -251,7 +251,7 @@ This will return the descriptor for the specified deck
 
 ```
 
-#### GET /deck/<ID>/yaml
+#### GET /deck/$deck_id/yaml
 
 This will return the deck content in YAML format
 
@@ -272,7 +272,7 @@ This will list all the available inputs:
 }
 ```
 
-#### GET /input/<ID>
+#### GET /input/$input_id
 
 This will return the descriptor for the specified input
 
@@ -287,7 +287,7 @@ This will return the descriptor for the specified input
 
 ```
 
-#### GET /input/<ID>/file
+#### GET /input/$input_id/file
 
 This will return the file content
 
@@ -308,7 +308,7 @@ This will list all the available nettests.
 }
 ```
 
-#### GET /nettest/<ID>
+#### GET /nettest/$nettest_id
 
 This will return the descriptor for the specified nettest
 
@@ -323,7 +323,7 @@ This will return the descriptor for the specified nettest
 
 ```
 
-#### GET /nettest/<ID>/py
+#### GET /nettest/$nettest_id/py
 
 This will return the nettest python file content.
 
