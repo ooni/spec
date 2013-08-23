@@ -284,42 +284,6 @@ This will return the descriptor for the specified input
 
 This will return the file content
 
-### 2.3.2.3 NetTest
-
-This is the code that gets run by ooniprobe to perform network measurements.
-
-#### GET /nettest
-
-This will list all the available nettests.
-
-
-```
-{
-  'id': "The nettest ID that is the hash of the nettest",
-  'name': "The name of the nettest",
-  'description': "The description of the nettest",
-}
-```
-
-#### GET /nettest/<ID>
-
-This will return the descriptor for the specified nettest
-
-```
-{ 
- 'name': "the name of the deck",
- 'description': "a description of the deck",
- 'version': "the deck version number",
- 'author': "the author name and email address in the format John Doe <john@example.com>",
- 'date': "the deck creation time in ISO 8601",
-}
-
-```
-
-#### GET /nettest/<ID>/py
-
-This will return the nettest python file content.
-
 ## 2.3.3 Policies
 
 This allows a collector administrator to specify which nettests and inputs it is willing to accept reports on.
