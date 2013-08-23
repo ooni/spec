@@ -9,6 +9,10 @@ time of writing this document not all parts are fully implemented, though the
 application interface to oonib is.
 
 
+# 0.0 Notes
+
+When we use the term **Network measurement** we are usually referring to a **NetTest**,
+that is a test to be run on the network written using the ooniprobe API.
 
 # 1.0 System overview
 
@@ -34,7 +38,7 @@ submit the results of their measurements. Once probe measurement is complete
 the test result is published as an ooni test report in the YAML format.
 
 The oonib collector shall be exposed as a Tor Hidden Service and as a HTTPS
-service.
+service. The reason for supporting both Tor HS and HTTPS is [better explained in this document](https://ooni.torproject.org/docs/architecture.html#why-tor-hidden-services)
 
 ## 2.2 Theat model
 
@@ -89,13 +93,14 @@ The HTTP request it performs is:
      'test_version':
         `string` the version of the test peforming the network measurement.
 
-     'input_name':
-        (optional) `string` the name of the input file. Not required or
-          available for all tests.
-
      'input_hash': 
         (optional) `string` the base64 encoded sha256sum of the contents
-          of input_name
+          of input_name. This field is required if the collector backend only
+          accepts certain inputs (that is it has a collector policy).
+          For more information on policies see section 2.3.
+
+     'test_helper': 
+        (optional) `string` the name of the required test_helper for this test.
 
      'content':
         (optional) `string` it is optionally possible to create a report with
@@ -108,8 +113,11 @@ The HTTP request it performs is:
           accessing the report collector via Tor or not.
      }
 
-The server will respond with a report identifier that will then allow the probe
-to update the report and the version of the backend software like follows:
+When a report is created the backend will respond with a report identifier
+that will then allow the probe to update the report and the version of the
+backend software like follows:
+
+`Status Code: 201 (Created)`
 
     {
 
@@ -120,10 +128,8 @@ to update the report and the version of the backend software like follows:
         `string` report identifier of the format detailed below.
 
       'test_helper_address':
-        `string` the address of a test helper for the requested test.
+        (conditional) `string` the address of a test helper that the client requested.
 
-      'report_status':
-        `string` One of 'rejected' or 'created' or 'closed'.
     }
 
 The report identifier allows the probe to update the report and it will be
@@ -135,11 +141,12 @@ A report identifier can be for example:
 
   1912-06-23T101234Z_AS1234_ihvhaeZDcBpDwYTbmdyqZSLCDNuJSQuoOdJMciiQWwAWUKJwmR
 
-If the report does not match the collector policy, then the collector shall set
-the report_status to rejected, and will not create a report or return a valid
-report_id.
+If the report does not match the collector policy it will not create a report 
+or return a valid report_id.
 
 The collector will instead respond like follows:
+
+`Status Code: 406 (Not Acceptable)`
 
     {
 
@@ -188,7 +195,7 @@ The backend should validate the request to make sure it is a valid YAML Stream.
 
 New collectors should use the following format for updating reports:
 
-`POST /report/<report_id>`
+`POST /report/$report_id`
 
     {
 
@@ -203,7 +210,7 @@ New collectors should use the following format for updating reports:
 This request is done by a probe to tell the backend that they have finished
 running the test and the report can be considered done:
 
-`POST /report/<report_id>/close`
+`POST /report/$report_id/close`
 
 ## 2.3.2 Descriptors
 
@@ -229,7 +236,7 @@ This will list all the available decks.
 ]
 ```
 
-#### GET /deck/<ID>
+#### GET /deck/$deck_id
 
 This will return the descriptor for the specified deck
 
@@ -244,7 +251,7 @@ This will return the descriptor for the specified deck
 
 ```
 
-#### GET /deck/<ID>/yaml
+#### GET /deck/$deck_id/yaml
 
 This will return the deck content in YAML format
 
@@ -265,7 +272,7 @@ This will list all the available inputs:
 }
 ```
 
-#### GET /input/<ID>
+#### GET /input/$input_id
 
 This will return the descriptor for the specified input
 
@@ -280,9 +287,45 @@ This will return the descriptor for the specified input
 
 ```
 
-#### GET /input/<ID>/file
+#### GET /input/$input_id/file
 
 This will return the file content
+
+### 2.3.2.3 NetTest
+
+This is the code that gets run by ooniprobe to perform network measurements.
+
+#### GET /nettest
+
+This will list all the available nettests.
+
+
+```
+{
+  'id': "The nettest ID that is the hash of the nettest",
+  'name': "The name of the nettest",
+  'description': "The description of the nettest",
+}
+```
+
+#### GET /nettest/$nettest_id
+
+This will return the descriptor for the specified nettest
+
+```
+{ 
+ 'name': "the name of the deck",
+ 'description': "a description of the deck",
+ 'version': "the deck version number",
+ 'author': "the author name and email address in the format John Doe <john@example.com>",
+ 'date': "the deck creation time in ISO 8601",
+}
+
+```
+
+#### GET /nettest/$nettest_id/py
+
+This will return the nettest python file content.
 
 ## 2.3.3 Policies
 
