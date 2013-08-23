@@ -552,13 +552,17 @@ Bouncer replies:
 
 ```
 {
-  'collector': {
-      'dot onion address of collector1': {
-         'test-helper': {'test-helper1': 'address of test-helper1',
-                         'test-helper2': 'address of test-helper2'}
-       },
-       'dot onion address of collector2': {'etc.': 'etc'}
-  }
+  
+  'test-helper1': 'address of test-helper1',
+  'test-helper2': 'address of test-helper2',
+  'collector': 'dot onion address of collector'
+
 }
+```
+
+If no collector exists that supports all the required test helpers, an empty result set is returned:
+
+```
+{}
 ```
 
