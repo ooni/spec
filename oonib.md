@@ -93,9 +93,9 @@ The HTTP request it performs is:
      'test_version':
         `string` the version of the test peforming the network measurement.
 
-     'input_hash': 
-        (optional) `string` the base64 encoded sha256sum of the contents
-          of input_name. This field is required if the collector backend only
+     'input_hashes': 
+        (optional) `list` of hex encoded sha256sum of the contents
+          of the inputs we are using for this test. This field is required if the collector backend only
           accepts certain inputs (that is it has a collector policy).
           For more information on policies see section 2.3.
 
