@@ -149,15 +149,7 @@ The collector will instead respond like follows:
 `Status Code: 406 (Not Acceptable)`
 
     {
-
-    'backend_version'
-      `string` containing the version of the backend
-
-    'report_status':
-      `string` 'rejected'
-
-    'test_helper_address':
-      `string` the address of a test helper for the requested test.
+      'error': 'invalid-input-hash'
     }
 
 Note:
@@ -595,17 +587,27 @@ Bouncer replies:
 
 ```
 {
-  
-  'test-helper1': 'address of test-helper1',
-  'test-helper2': 'address of test-helper2',
-  'collector': 'dot onion address of collector'
-
+   'id-of-test-helper': {
+       'address': '127.0.0.1',
+       'collector': 'httpo://thirteenchars1.onion'
+   },
+   'id-of-test-helper2': {
+       'address': '127.0.0.1:8081',
+       'collector': 'httpo://thirteenchars1.onion'
+   },
+   'id-of-test-helper3': {
+       'address': 'http://127.0.0.1',
+       'collector': 'httpo://thirteenchars2.onion'
+   },
+   'default': {
+       'collector': 'httpo://thirteenchars1.onion'
+   }
 }
 ```
 
-If no collector exists that supports all the required test helpers, an empty result set is returned:
+If it is not possible to find a test helper for one of the required test
+helpers an error message is returned:
 
 ```
-{}
+{'error': 'test-helper-not-found'}
 ```
-
