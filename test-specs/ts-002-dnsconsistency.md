@@ -4,7 +4,7 @@
 
 # Specification name
 
-DNS Tamper Test
+DNS Consistency Test
 
 # Test preconditions
 
