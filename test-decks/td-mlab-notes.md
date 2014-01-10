@@ -10,12 +10,6 @@ the server doesn’t match with what was sent, the conclusion is that tampering
 is occurring. The assumption driving this methodology is that certain
 transparent HTTP proxies may not properly parse the HTTP request line.
 
-## DNS Spoof
-
-This test detects DNS spoofing by performing a query to a test resolver and to
-a validated control resolver. The query is considered tampered with if the two
-responses do not match.
-
 ## Header Field Manipulation 
 
 This test client sends HTTP requests request headers that vary capitalization
