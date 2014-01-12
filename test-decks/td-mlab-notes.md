@@ -36,7 +36,7 @@ stream of data between an OONI client and an M-Lab server. If the response from
 the server doesn’t match the data sent, the test determines the presence of a
 transparent HTTP proxy.
 
-## DNS Tamper
+## DNS Consistency
 
 This test performs A queries to a set of test resolvers and a validated control
 resolver. If the two results do not match it performs a reverse DNS lookup on
