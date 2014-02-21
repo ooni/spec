@@ -34,6 +34,11 @@ data format.
           code:
             `int` the response status code
 
+        failure:
+            `string` (optional) this will be set if an error was returned.
+            For a list of error messages see the Error strings section of
+            df-000-base.md.
+
       - request:
             etc. etc.
 
