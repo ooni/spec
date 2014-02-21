@@ -155,5 +155,7 @@ error_string:
 
 * txsocksx.errors.SOCKSError: `socks_error`
 
+* This will be the error message if the task has timed out: `task_timed_out`
+
 * Every other failure: 'unknown_failure %s' % str(failure.value)
 
