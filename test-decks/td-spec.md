@@ -72,6 +72,16 @@ header:
   - no-collector
 ```
 
+The deck header can also contain metadata associated to the test deck. The
+possible fields are:
+
+1. name: The name of the test deck.
+2. description: A short description of the test deck.
+3. author: The author of the test deck.
+4. version: A version number for the test deck.
+5. requires-root: A flag to indicate that the test deck requires root to run. (FLAG)
+6. requires-tor: A flag to indicate that the test deck requires tor to run. (FLAG)
+
 The header may also be omitted.
 
 The body is a list composed of one element per nettest execution. Every nettest
@@ -173,6 +183,20 @@ Otherwise, the analyst would have to send to the tester the input files
 separately, which is unacceptable.
 
 The container proposed is tar+gzip because it's well supported in python. 
+
+# 4. Container format
+
+The container proposed is tar+gzip because it's well supported in python. The
+deck container will be composed of a directory named "deck" containing the deck
+file and the inputs.
+
+The directory layout will be:
+
+deck/test.deck
+deck/input-filename-1.txt
+deck/input-filename-2.txt
+
+This will then be compressed using tar+gzip.
 
 # 5. Example deck
 
