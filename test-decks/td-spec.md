@@ -203,6 +203,14 @@ This will then be compressed using tar+gzip.
 The complete.deck provided with each installation of ooni-probe would be:
 
 ```
+header:
+  name: Complete
+  description: Runs all the existing ooniprobe tests
+  author: 'OONI <ooni-dev@lists.torproject.org>'
+  version: 0.1.0
+  flags:
+  - requires-root
+  - requires-tor
 body:
 - nettest: blocking/http_request
   input_file: 'httpo://ihiderha53f36lsd.onion/input/37e60e13536f6afe47a830bfb6b371b5cf65da66d7ad65137344679b24fdccd1'
