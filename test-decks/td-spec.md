@@ -105,7 +105,7 @@ body:
 - nettest: manipulation/http_request
   local_options:
     url: 'http://torproject.org'
-    global_options:
+  global_options:
     collector: 'http://localhost'
     flags:
     - no-geoip
@@ -199,7 +199,9 @@ file and the inputs.
 The directory layout will be:
 
 deck/test.deck
+
 deck/input-filename-1.txt
+
 deck/input-filename-2.txt
 
 This will then be compressed using tar+gzip.
@@ -219,10 +221,12 @@ header:
   - requires-tor
 body:
 - nettest: blocking/http_request
-  input_file: 'httpo://ihiderha53f36lsd.onion/input/37e60e13536f6afe47a830bfb6b371b5cf65da66d7ad65137344679b24fdccd1'
+  local_options:
+    input_file: 'httpo://ihiderha53f36lsd.onion/input/37e60e13536f6afe47a830bfb6b371b5cf65da66d7ad65137344679b24fdccd1'
 
 - nettest: blocking/dns_consistency
-  input_file: 'httpo://ihiderha53f36lsd.onion/input/37e60e13536f6afe47a830bfb6b371b5cf65da66d7ad65137344679b24fdccd1'
+  local_options:
+    input_file: 'httpo://ihiderha53f36lsd.onion/input/37e60e13536f6afe47a830bfb6b371b5cf65da66d7ad65137344679b24fdccd1'
 
 - nettest: manipulation/http_invalid_request_line
 
@@ -231,5 +235,6 @@ body:
 - nettest: manipulation/traceroute
 
 - nettest: blocking/http_host
-  input_file: 'httpo://ihiderha53f36lsd.onion/input/37e60e13536f6afe47a830bfb6b371b5cf65da66d7ad65137344679b24fdccd1'
+  local_options:
+    input_file: 'httpo://ihiderha53f36lsd.onion/input/37e60e13536f6afe47a830bfb6b371b5cf65da66d7ad65137344679b24fdccd1'
 ```
