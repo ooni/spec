@@ -120,6 +120,22 @@ All other file paths should be ignored and raise an exception. This is because
 we do not want an analyst creating a deck to be pass as arguments to a test
 arbitrary files on the testers filesystem.
 
+# 3.1 Container format
+
+The container proposed is tar+gzip because it's well supported in python. The
+deck container will be composed of a directory named "deck" containing the deck
+file and the inputs.
+
+The directory layout will be:
+
+deck/test.deck
+
+deck/input-filename-1.txt
+
+deck/input-filename-2.txt
+
+This will then be compressed using tar+gzip.
+
 # 4. Implementation details
 
 ## 4.1 Introduction
@@ -198,23 +214,7 @@ separately, which is unacceptable.
 
 The container proposed is tar+gzip because it's well supported in python. 
 
-# 5. Container format
-
-The container proposed is tar+gzip because it's well supported in python. The
-deck container will be composed of a directory named "deck" containing the deck
-file and the inputs.
-
-The directory layout will be:
-
-deck/test.deck
-
-deck/input-filename-1.txt
-
-deck/input-filename-2.txt
-
-This will then be compressed using tar+gzip.
-
-# 6. Example deck
+# 5. Example deck
 
 The complete.deck provided with each installation of ooni-probe would be:
 
