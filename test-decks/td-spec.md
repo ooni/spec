@@ -1,3 +1,9 @@
+# Test deck specification
+
+* version: 0.1.0
+* date: 2014-08-13
+* author: Alejandro (kudrom), Arturo Filastò
+
 # 0. Terminology
 Analyst: The person who writes a deck.
 
