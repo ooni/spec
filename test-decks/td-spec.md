@@ -105,16 +105,16 @@ body:
 - nettest: manipulation/http_request
   local_options:
     url: 'http://torproject.org'
-    global_options:
+  global_options:
     collector: 'http://localhost'
     flags:
     - no-geoip
     - nettest: manipulation/captiveportal
 ```
 
-# 3. Implementation details
+# 4. Implementation details
 
-## 3.1 Introduction
+## 4.1 Introduction
 
 Each execution of a nettest in ooniprobe needs four main inputs. 
 
@@ -138,7 +138,7 @@ be passed (at least partially) in the deck. In fact, the deck is no more than
 the three last inputs, with some subtleties that I expect to explain in the
 following sections.
 
-## 3.2 Who overwrites who
+## 4.2 Who overwrites who
 
 In a single-nettest execution, the global config is parsed and a global object
 is built. Then the cmd line is parsed and it overwrites the global configs.
@@ -160,7 +160,7 @@ and the object is overwritten.
 We read the header section first to avoid the analyst overwrite some sensitive
 options of the config file, which only should be modified by the tester.
 
-## 3.3 Copy-on-write
+## 4.3 Copy-on-write
 
 To reduce the boilerplate in the deck, the file is splitted into a shared
 section for all nettests and a local one for each nettest.
@@ -177,7 +177,7 @@ ooni-probe. So what follows is that every change to the global options of
 ooni-probe in the local section of a deck should attend a copy-on-write policy
 regarding the global config object.
 
-## 3.4 The input file
+## 4.4 The input file
 
 Ooni-probe invokes every nettest method with the information saved in a file
 called the input file. This file is part of the local configuration of every
@@ -190,7 +190,7 @@ separately, which is unacceptable.
 
 The container proposed is tar+gzip because it's well supported in python. 
 
-# 4. Container format
+# 5. Container format
 
 The container proposed is tar+gzip because it's well supported in python. The
 deck container will be composed of a directory named "deck" containing the deck
@@ -199,12 +199,14 @@ file and the inputs.
 The directory layout will be:
 
 deck/test.deck
+
 deck/input-filename-1.txt
+
 deck/input-filename-2.txt
 
 This will then be compressed using tar+gzip.
 
-# 5. Example deck
+# 6. Example deck
 
 The complete.deck provided with each installation of ooni-probe would be:
 
@@ -219,10 +221,12 @@ header:
   - requires-tor
 body:
 - nettest: blocking/http_request
-  input_file: 'httpo://ihiderha53f36lsd.onion/input/37e60e13536f6afe47a830bfb6b371b5cf65da66d7ad65137344679b24fdccd1'
+  local_options:
+    input_file: 'httpo://ihiderha53f36lsd.onion/input/37e60e13536f6afe47a830bfb6b371b5cf65da66d7ad65137344679b24fdccd1'
 
 - nettest: blocking/dns_consistency
-  input_file: 'httpo://ihiderha53f36lsd.onion/input/37e60e13536f6afe47a830bfb6b371b5cf65da66d7ad65137344679b24fdccd1'
+  local_options:
+    input_file: 'httpo://ihiderha53f36lsd.onion/input/37e60e13536f6afe47a830bfb6b371b5cf65da66d7ad65137344679b24fdccd1'
 
 - nettest: manipulation/http_invalid_request_line
 
@@ -231,5 +235,6 @@ body:
 - nettest: manipulation/traceroute
 
 - nettest: blocking/http_host
-  input_file: 'httpo://ihiderha53f36lsd.onion/input/37e60e13536f6afe47a830bfb6b371b5cf65da66d7ad65137344679b24fdccd1'
+  local_options:
+    input_file: 'httpo://ihiderha53f36lsd.onion/input/37e60e13536f6afe47a830bfb6b371b5cf65da66d7ad65137344679b24fdccd1'
 ```
