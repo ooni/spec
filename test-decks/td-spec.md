@@ -112,6 +112,14 @@ body:
     - nettest: manipulation/captiveportal
 ```
 
+All file paths must be relative and they must start with "deck/" if they are
+referring to files contained inside of the test deck. They must start with
+"http(o|s)://" if they are referring to files to be downloaded via Tor.
+
+All other file paths should be ignored and raise an exception. This is because
+we do not want an analyst creating a deck to be pass as arguments to a test
+arbitrary files on the testers filesystem.
+
 # 3. Implementation details
 
 ## 3.1 Introduction
