@@ -64,13 +64,15 @@ header section is the following:
 
 ```
 header:
-collector: 'http://localhost'
-annotations: 
-key1: value1
-key2: value2
-flags: 
-- no-collector
+  collector: 'http://localhost'
+  annotations: 
+  key1: value1
+  key2: value2
+  flags: 
+  - no-collector
 ```
+
+The header may also be omitted.
 
 The body is a list composed of one element per nettest execution. Every nettest
 execution is a dictionary composed of the following three keys:
@@ -85,13 +87,13 @@ list if that options doesn't have any arguments. A valid body can be:
 ```
 body:
 - nettest: manipulation/http_request
-local_options:
-url: 'http://torproject.org'
-global_options:
-collector: 'http://localhost'
-flags:
-- no-geoip
-- nettest: manipulation/captiveportal
+  local_options:
+    url: 'http://torproject.org'
+    global_options:
+    collector: 'http://localhost'
+    flags:
+    - no-geoip
+    - nettest: manipulation/captiveportal
 ```
 
 # 3. Implementation details
@@ -177,13 +179,12 @@ The container proposed is tar+gzip because it's well supported in python.
 The complete.deck provided with each installation of ooni-probe would be:
 
 ```
-header:
 body:
 - nettest: blocking/http_request
-input_file: 'httpo://ihiderha53f36lsd.onion/input/37e60e13536f6afe47a830bfb6b371b5cf65da66d7ad65137344679b24fdccd1'
+  input_file: 'httpo://ihiderha53f36lsd.onion/input/37e60e13536f6afe47a830bfb6b371b5cf65da66d7ad65137344679b24fdccd1'
 
 - nettest: blocking/dns_consistency
-input_file: 'httpo://ihiderha53f36lsd.onion/input/37e60e13536f6afe47a830bfb6b371b5cf65da66d7ad65137344679b24fdccd1'
+  input_file: 'httpo://ihiderha53f36lsd.onion/input/37e60e13536f6afe47a830bfb6b371b5cf65da66d7ad65137344679b24fdccd1'
 
 - nettest: manipulation/http_invalid_request_line
 
@@ -192,5 +193,5 @@ input_file: 'httpo://ihiderha53f36lsd.onion/input/37e60e13536f6afe47a830bfb6b371
 - nettest: manipulation/traceroute
 
 - nettest: blocking/http_host
-input_file: 'httpo://ihiderha53f36lsd.onion/input/37e60e13536f6afe47a830bfb6b371b5cf65da66d7ad65137344679b24fdccd1'
+  input_file: 'httpo://ihiderha53f36lsd.onion/input/37e60e13536f6afe47a830bfb6b371b5cf65da66d7ad65137344679b24fdccd1'
 ```
