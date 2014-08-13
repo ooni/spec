@@ -33,7 +33,7 @@
 
  Every deck is a yaml file composed of two major sections: the header and the body.
  
- The header is a dictionary that provides all the shared and global configuration of every nettest included in the deck. It's main purpose is to reduce boilerplate by letting the analyst express common behaviour in one section instead that in every nettest execution. The ooni-probe options allowed in this section are:
+ The header is a dictionary that provides all the shared and global configuration of every nettest included in the deck. Its main purpose is to reduce boilerplate by letting the analyst express common behaviour in one section instead of in every nettest execution. The ooni-probe options allowed in this section are:
  
   1. collector: Address of the collector of test results.
   2. bouncer: Address of the bouncer for test helpers.
@@ -45,16 +45,17 @@
   
     header:
       collector: 'http://localhost'
-      annotations: 'key1:val1, key2:val2'
+      annotations: 
+        key1: value1
+        key2: value2
       flags: 
         - no-collector
   
- The body is a list composed of one element per nettest execution. Every nettest execution is a dictionary composed of the following four keys:
+ The body is a list composed of one element per nettest execution. Every nettest execution is a dictionary composed of the following three keys:
  
  1. nettest: name of the nettest to execute (MANDATORY)
  2. local_options: local_options of the test execution (OPTIONAL)
  3. global_options: global options of the test execution (OPTIONAL)
- 4. input_file: the input file of the net test (OPTIONAL)
  
  In the same way that with the header, every option can be a member of a flag list if that options doesn't have any arguments. A valid body can be:
 
