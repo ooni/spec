@@ -132,6 +132,9 @@ tor_log:
 bridge_address:
     **string** the address of the bridge being used.
 
+obfsproxy_version (since 0.1.1):
+    **string** indicating the version string of the obfsproxy client being used.
+
 ## Possible conclusions
 
 Which bridges are functioning from the given network vantage point and which
