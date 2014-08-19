@@ -177,6 +177,14 @@ pub   4096R/150FE210 2011-10-23 [expires: 2014-11-24]
 
 All OONI tools follow [semantic versioning](http://semver.org/).
 
+## Updating packages
+
+To upload a new version to pypi run:
+
+```
+python setup.py sdist upload -s
+```
+
 # Build systems & environments
 
 We currently only support packages for debian and ubuntu based systems.
