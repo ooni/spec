@@ -42,6 +42,7 @@ inside of a fresh virtuale environment and then run all the manual tests
 needed.
 
 ```
+python setup.py sdist
 rmvirtualenv ooni-testsdist; mkvirtualenv ooni-testsdist
 pip install dist/ooniprobe-$OONIPROBE_VERSION.tar.gz
 ```
