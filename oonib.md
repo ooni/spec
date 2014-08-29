@@ -575,6 +575,8 @@ This will return a list of required collectors.
 
 Currently a client has two ways to request the required collectors.
 
+#### POST /bouncer/test-helpers
+
 The first and old way is to provide a bunch of test-helpers, oonib then will return the identity of 
 the collectors and the addresses of machines that can run the requested test helpers.
 
@@ -614,6 +616,8 @@ helpers an error message is returned:
 ```
 {'error': 'test-helper-not-found'}
 ```
+
+#### POST /bouncer/net-tests
 
 The second and policy respectful way is to provide a bunch of nettests, then the bouncer
 will return the identity of the machines that:
@@ -668,10 +672,4 @@ And the bouncer replies:
 If it's not possible to find a collector for the request, oonib will respond with:
 ```
 {'error': 'collector-not-found'}
-```
-
-Both ways to communicate with the bouncer are explicitly set with the proper JSON object in the
-payload of the POST request. If an invalid JSON object is provided, oonib will respond with:
-```
-{'error': 'test-helpers-or-net-test-key-missing'}
 ```
