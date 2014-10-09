@@ -105,6 +105,22 @@ ooniprobe -n manipulation/http_header_field_manipulation
 ooniprobe -n blocking/http_requests -f httpo://ihiderha53f36lsd.onion/input/37e60e13536f6afe47a830bfb6b371b5cf65da66d7ad65137344679b24fdccd1
 ```
 
+### Testing oonideckgen
+
+This command must produce a deck in the current working directory.
+
+```
+oonideckgen --country-code IT
+```
+
+### Testing ooniresource
+
+This command must update the resources.
+
+```
+ooniresources --update-geoip --update-inputs
+```
+
 ### Testing vagrant installation
 
 To setup and test ooniprobe on a fresh ubuntu installation with
