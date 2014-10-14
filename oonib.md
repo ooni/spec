@@ -571,10 +571,16 @@ This is the service that will allow the ooni-probe to discover collectors that r
 
 ### POST /bouncer
 
-This will return a list of required collectors and test helpers.
+This will return a list of required collectors.
 
-Client sends:
+Currently a client has two ways to request the required collectors.
 
+#### POST /bouncer/test-helpers
+
+The first and old way is to provide a bunch of test-helpers, oonib then will return the identity of 
+the collectors and the addresses of machines that can run the requested test helpers.
+
+This way, the client sends:
 ```
 {
   'test-helpers': [
@@ -583,7 +589,7 @@ Client sends:
 }
 ```
 
-Bouncer replies:
+And the bouncer replies:
 
 ```
 {
@@ -607,7 +613,63 @@ Bouncer replies:
 
 If it is not possible to find a test helper for one of the required test
 helpers an error message is returned:
-
 ```
 {'error': 'test-helper-not-found'}
+```
+
+#### POST /bouncer/net-tests
+
+The second and policy respectful way is to provide a bunch of nettests, then the bouncer
+will return the identity of the machines that:
+ 1. Can run the required test-helpers
+ 2. Can send back to the client a set of required inputs
+ 3. Can collect the report of the nettest
+ 
+If a known collector to the bouncer cannot provide any of the three previous requirements,
+the collector won't be sent back to the client in the bouncer request.
+
+If no policy respectful collector can be returned to the client, a default one will be sent
+when the bouncer knows the identity of a collector that accepts any request, which is 
+expressed as a lack of any policy for that collector in the oonib.conf file.
+
+Both the test-helpers and the input-hashed attributes are optional for the client's request,
+but the nettest's name is mandatory.
+
+This way the client sends:
+```
+{
+    'net-tests': [
+        {
+            'test-helpers': ['required test helper', ...],
+            'input-hashed': ['required input id', ...],
+            'name': 'name of nettest',
+            'version': 'version of nettest'
+        },
+        ....
+    ]
+}
+```
+
+And the bouncer replies:
+```
+{
+    'net-tests': [
+        {
+            'test-helpers': [
+                {'requested test helper': 'address'},
+                ...
+            ],
+            'input-hashed': ['requested input id', ...],
+            'name': 'name of nettest',
+            'version': 'version of nettest',
+            'collector': 'address'
+        },
+        ....
+    ]
+}
+```
+
+If it's not possible to find a collector for the request, oonib will respond with:
+```
+{'error': 'collector-not-found'}
 ```
