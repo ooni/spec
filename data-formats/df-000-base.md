@@ -108,14 +108,14 @@ input:
   The item we this specific test instance is referring to. null in case no
   input is being iterated over.
 
-test_name:
+test_method:
   `string` the name of the test method this test is referring to (that is the
   class method of a NetTestCase)
 
 test_runtime:
   `float` the runtime of the test
 
-test_started:
+test_start_time:
   `float` seconds since epoch from the starting of the test.
 
 # Error strings
