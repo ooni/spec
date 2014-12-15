@@ -1,6 +1,6 @@
 # Specification version number
 
-2014-12-08-000
+2014-12-15-000
 
 # Specification name
 
@@ -12,7 +12,7 @@ The Raw TCPEcho Test Helper listens on a TCP port for incoming connections.
 When a connection is initiated, it accepts the connection, reads a dummy HTTP
 request and sends an HTTP reply containing an encoding of the IP packets that
 made up the TCP 3 way handshake [[Wikipedia-3WHS][]] which can be compared
-against the packets sent by an ooniprobe test.
+against the packets sent by an ooni-probe meter.
 
 # Helper preconditions
 
