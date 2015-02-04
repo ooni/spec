@@ -641,7 +641,7 @@ This way the client sends:
     'net-tests': [
         {
             'test-helpers': ['required test helper', ...],
-            'input-hashed': ['required input id', ...],
+            'input-hashes': ['required input id', ...],
             'name': 'name of nettest',
             'version': 'version of nettest'
         },
