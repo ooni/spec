@@ -18,8 +18,8 @@ Before running OONI inside of a country with controversial internet access
 related laws you should consult a lawyer. You may also reach out to us with
 specific inquiries at legal@ooni.nu.
 
-Some things that OONI does may be against the terms of service of your ISP or
-legally questionable by your country.
+Some network tests that OONI does may be against the terms of service of your
+ISP or legally questionable by your country.
 
 OONI's http test will download data from controversial websites,
 specifically targeting those which may be censored in your country.
@@ -31,7 +31,7 @@ Even where these sites are not blocked, it may be illegal to access
 them. It may also be illegal to bypass censorship, as OONI attempts by
 using Tor.
 
-In the most extreme case, any form of network monitoring could be
+In the most extreme case, any form of active network measurement could be
 illegal or banned, or even considered a form of espionage.
 
 Some useful resources may be:
@@ -47,7 +47,7 @@ about your internet connection to the whole world. Particular groups,
 such as your ISP and web services used by the ooni tests, will be able
 to discover even more detailed information about you.
 
-THE PUBLIC will be able to see the information collected by OONIprobe.
+THE PUBLIC will be able to see the information collected by ooniprobe.
 This will definitely include your approximate location, the network
 (ASN) you are connecting from, and when you ran ooniprobe. Other
 identifying information, such as your IP address, is not deliberately
@@ -69,7 +69,7 @@ likely be able to link it to you personally. These organizations might
 include your government, your ISP, and your employer.
 
 ANYBODY WITH ACCESS TO YOUR COMPUTER, now or in the future, may be able
-to detect that you have installed or run ooni
+to detect that you have installed or run ooni.
 
 SERVICES CONNECTED TO BY OONI will be able to see your IP address, and
-may be able to detect that you are using OONI
+may be able to detect that you are using OONI.
