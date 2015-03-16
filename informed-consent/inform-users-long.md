@@ -1,3 +1,17 @@
+# GOAL
+
+OONI is a project aimed at mapping network anomalies by performing measurements
+from the vantage point of a users.
+You may find details on what exactly it is that we measure by reading through
+our [test specifications](https://github.com/TheTorProject/ooni-spec/tree/master/test-specs).
+The data we collect is then made available to the public for further analysis.
+
+The goal of this study is to have a better understanding on how the internet
+works around the world and what is stopping it from working as it should.
+
+Please take a minute to go through what can be the possible implications for
+running ooniprobe and make sure you properly understand them before proceeding.
+
 # LEGALITY
 
 Before running OONI inside of a country with controversial internet access
