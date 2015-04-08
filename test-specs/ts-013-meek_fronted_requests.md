@@ -36,9 +36,12 @@ Example:
 
 # Test description
 
-Performs a HTTP GET request to a list of fronted domains with the Host
-Header of the "inside" meek-server. The meek-server handles a GET request and
-response with: "I’m just a happy little web server.\n".
+Performs a HTTP GET request over TLS (HTTPS) to a list of fronted domains with
+the Host Header of the "inside" meek-server. For diagnostic purposes the
+meek-server handles a GET request and respond with: "I’m just a happy little
+web server.\n". The GET request is sent over TLS to the root of the fronted
+domain with the Host Header option of the desired meek-server host.
+
 
 # Expected output
 
@@ -55,12 +58,12 @@ df-001-httpt-000
 
 * The received responses
 
-* If the meek request is blocked
+* If the meek server is blocked or unreachable
 
 ## Semantics
 
-censored:
-	**boolean** indicates if an HTTP GET response to the meek server is
+success:
+	**boolean** indicates if an HTTPS GET response to the meek server is
 	successfull
 
 ## Possible conclusions
@@ -71,7 +74,6 @@ If the fronted request/response to the meek server is successful.
 
 ```
 agent: agent
-censored: false
 input: ajax.aspnetcdn.com:az668014.vo.msecnd.net
 requests:
 - request:
@@ -105,4 +107,5 @@ requests:
     - - Content-Type
       - [text/plain; charset=utf-8]
 socksproxy: null
+success: true
 ```
