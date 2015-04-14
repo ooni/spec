@@ -14,6 +14,7 @@ for test_filename in glob("../test-specs/*"):
     <link rel="stylesheet" href="css/pure-min.css">
     <link rel="stylesheet" href="css/main.css">
 </head>
+<div class="content">
 """
     info_text = ""
     begin_desc = False
@@ -39,7 +40,7 @@ for test_filename in glob("../test-specs/*"):
     html = markdown.markdown(info_text,
                              extensions=["markdown.extensions.fenced_code",
                                          "markdown.extensions.nl2br"])
-    info_html += html + "</html>"
+    info_html += html + "</div></html>"
     input_file.close()
     output_filename = os.path.basename(test_filename)
     output_filename = output_filename.replace(".md", ".html")
