@@ -1,9 +1,18 @@
+
+<html>
+<head>
+    <link rel="stylesheet" href="css/pure-min.css">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<h1></h1>
+<h1>HTTP Requests Test</h1>
+<h1></h1>
 <h1>Test description</h1>
-<p>For every URL given as input we perform a HTTP GET request over the probes
+<p>For every URL given as input we perform a HTTP GET request over the probes<br />
 network and one over the Tor network.</p>
-<p>By default the HTTP User Agent is chosen at random and is different between the
+<p>By default the HTTP User Agent is chosen at random and is different between the<br />
 control request and the experiment request.</p>
-<p>Since version 0.2.3 the User Agent is chosen at random, but is the same between
+<p>Since version 0.2.3 the User Agent is chosen at random, but is the same between<br />
 the control request and the experiment request.</p>
 <p>The user agent is chosen amongst this set of possible user agents:</p>
 <pre><code>"Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7",
@@ -17,13 +26,13 @@ the control request and the experiment request.</p>
 "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7",
 "Mozilla/5.0 (Windows; U; Windows NT 5.1; de; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7 (.NET CLR 3.5.30729)"
 </code></pre>
-<p>These user agents are taken from the "How Unique Is Your Web Browser?"
-(https://panopticlick.eff.org/browser-uniqueness.pdf) paper as the browser user
+<p>These user agents are taken from the "How Unique Is Your Web Browser?"<br />
+(https://panopticlick.eff.org/browser-uniqueness.pdf) paper as the browser user<br />
 agents with largest anonymity set.</p>
-<p>We compare the HTTP response body and HTTP response headers to of the request
+<p>We compare the HTTP response body and HTTP response headers to of the request<br />
 made over Tor and that made over the probes network for consistency.</p>
-<p>The response body is considered to match if the proportion between the body of
-the response over Tor and the response over the probes network is greater than
+<p>The response body is considered to match if the proportion between the body of<br />
+the response over Tor and the response over the probes network is greater than<br />
 a certain factor (by default 0.8).</p>
 <h1>Expected output</h1>
 <h2>Parent data format</h2>
@@ -54,7 +63,7 @@ a certain factor (by default 0.8).</p>
 </ul>
 <p>Present only in test version &gt;= 0.2.2:</p>
 <ul>
-<li>If the control responses or experiment requests have failed their error
+<li>If the control responses or experiment requests have failed their error<br />
   message.</li>
 </ul>
 <h2>Semantics</h2>
@@ -160,4 +169,4 @@ requests:
     - - Content-Type
       - [text/html; charset=UTF-8]
 socksproxy: null
-</code></pre>
+</code></pre></html>

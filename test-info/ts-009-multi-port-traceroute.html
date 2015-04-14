@@ -1,38 +1,46 @@
+
+<html>
+<head>
+    <link rel="stylesheet" href="css/pure-min.css">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<h1></h1>
+<h1>Multi Port Traceroute test</h1>
+<h1></h1>
 <h1>Test description</h1>
-<p>A series of packets are constructed and sent to the backend
+<p>A series of packets are constructed and sent to the backend<br />
 host with incrementing TTL values (traceroute).</p>
 <p>See also: https://tools.ietf.org/rfc/rfc792.txt</p>
-<p>For protocols UDP and TCP, a traceroute is performed for each
-of the following ports: 0, 22, 23, 53, 80, 123, 443, 8080,
+<p>For protocols UDP and TCP, a traceroute is performed for each<br />
+of the following ports: 0, 22, 23, 53, 80, 123, 443, 8080,<br />
 65535.</p>
-<p>For protocol ICMP, there is only a single series of packets
+<p>For protocol ICMP, there is only a single series of packets<br />
 as there is no concept of ports.</p>
 <p>The time-exceeded ICMP responses are added to the report. </p>
 <h1>Expected output</h1>
-<p>The collected ICMP time-exceeded responses from IP routers
-that properly implement RFC792 in the forward path towards
+<p>The collected ICMP time-exceeded responses from IP routers<br />
+that properly implement RFC792 in the forward path towards<br />
 the backend host. </p>
 <h2>Parent data format</h2>
 <p>df-003-scapyt</p>
 <h2>Semantics</h2>
-<p>The report object will contain keys of the format "hops_" +
-port, e.g. report['hops_22']. The corresponding value is an
+<p>The report object will contain keys of the format "hops_" +<br />
+port, e.g. report['hops_22']. The corresponding value is an<br />
 ordered list of the parsed responses, encoded like so:</p>
-<p>{'ttl': The TTL of the packet sent,
- 'address', The address of the remote host at which the TTL expired,
- 'rtt', the round-trip-time, measured as the difference between the received response and sent packet time.
- 'sport', the source port of the sent packet
+<p>{'ttl': The TTL of the packet sent,<br />
+ 'address', The address of the remote host at which the TTL expired,<br />
+ 'rtt', the round-trip-time, measured as the difference between the received response and sent packet time.<br />
+ 'sport', the source port of the sent packet<br />
 }</p>
 <h2>Possible conclusions</h2>
 <p>By examining the differences in the responses between protocols and destination ports, it is possible to ascertain that routing decisions are made on a protocol layer above IP, and determine what path was taken for different protocols.</p>
 <h2>Example output sample</h2>
-<p>```</p>
-<h6></h6>
-<h1>OONI Probe Report for multi_protocol_traceroute_test (0.2)</h1>
-<h1>Thu Jan  2 16:54:10 2014</h1>
-<h6></h6>
-<hr />
-<p>input_hashes: []
+<pre><code>###########################################
+# OONI Probe Report for multi_protocol_traceroute_test (0.2)
+# Thu Jan  2 16:54:10 2014
+###########################################
+---
+input_hashes: []
 options: [-b, 8.8.8.8]
 probe_asn: AS0
 probe_cc: null
@@ -43,9 +51,9 @@ software_version: 1.0.0-rc5
 start_time: 1388678050.83065
 test_name: multi_protocol_traceroute_test
 test_version: '0.2'
-...</p>
-<hr />
-<p>answer_flags: [ipsrc]
+...
+---
+answer_flags: [ipsrc]
 answered_packets:
 - - raw_packet: !!binary |
       RQAAOIKHAAD/ASMzCgABAX8AAAELAHHxAAAAAEUAAChcPgAAAQZCeQoAAQoICAgIgw4AAAAAAAAA
@@ -2322,6 +2330,7 @@ test_udp_traceroute:
   - {address: 89.96.200.134, rtt: 3.823248863220215, sport: 18840, ttl: 14}
 timeout: 5
 ...
-```</p>
+</code></pre>
+
 <h1>Privacy considerations</h1>
-<p>The scapyt report format includes the binary packets as sent or received. In the ICMP response payload a portion (64 bits) or all of the original packet is returned. The client source address will be contained in the report.</p>
+<p>The scapyt report format includes the binary packets as sent or received. In the ICMP response payload a portion (64 bits) or all of the original packet is returned. The client source address will be contained in the report.</p></html>
