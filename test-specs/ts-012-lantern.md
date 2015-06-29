@@ -38,7 +38,7 @@ None.
 
 ## Required output data
 
-bootstrapped:
+success:
 **boolean** The bootstrap status of Lantern (success or failure).
 
 lantern_linux --headless:
@@ -61,7 +61,7 @@ failure:
 
 ## Semantics
 
-'bootstrapped' - True or False - whether Lantern has bootstrapped.
+'success' - True or False - whether Lantern has bootstrapped.
 'body' - http page body if successfully requested.
 'failure' - optional, present if there is a failure.
 'lantern_linux --headless': 
