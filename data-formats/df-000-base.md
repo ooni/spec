@@ -135,6 +135,8 @@ error_string:
 
 * twisted.internet.error.TCPTimedOutError: `tcp_timed_out_error`
 
+* twisted.internet.error.ConnectionDone: `connection_done`
+
 * twisted.web._newclient.ResponseNeverReceived: `response_never_received`
 
 * twisted.internet.error.TimeoutError: `generic_timeout_error`
