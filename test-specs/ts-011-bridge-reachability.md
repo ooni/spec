@@ -107,6 +107,8 @@ transport_name:
 
     obfs3: for [obfs3 obfsproxy](https://gitweb.torproject.org/pluggable-transports/obfsproxy.git/blob/HEAD:/obfsproxy/transports/obfs3.py).
 
+    obfs4: for [obfs4 obfsproxy](https://gitweb.torproject.org/pluggable-transports/obfs4.git/tree/obfs4proxy/obfs4proxy.go).
+
     fte: for [fte-proxy](https://fteproxy.org/)
 
     scramblesuit: for [ScrambleSuit](http://www.cs.kau.se/philwint/scramblesuit/)
@@ -134,6 +136,9 @@ bridge_address:
 
 obfsproxy_version (since 0.1.1):
     **string** indicating the version string of the obfsproxy client being used.
+
+obfsproxy_log (since 0.1.2):
+    **string** info level log output of obfsproxy
 
 ## Possible conclusions
 
