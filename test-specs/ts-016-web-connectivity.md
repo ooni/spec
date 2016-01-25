@@ -35,7 +35,7 @@ This test is divided into multiple steps that will each test a different aspect
 related to connectivity of the website in question.
 
 The first step is to inform the web_connectivity test helper of our intention
-to the measurement against the URL in question and hence have it perform a
+to run the measurement against the URL in question and hence have it perform a
 control measurement from an un-censored vantage point.
 
 The control measurement shall include in the response the following information:
@@ -76,6 +76,10 @@ The experiment itself consists of the following steps:
 4. **HTTP GET request**
    Perform a HTTP GET request for the path specified in the URI and record the
    response.
+   The headers sent in the request shall be:
+    **User-Agent**: `Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36`
+    Corresponding to the most popular version (47.0.2526.106) of the most
+    popular browser (Chrome) on the most popular OS (Windows 7).
 
 5. **Control comparison**
    We then begin to poll the test-helper to learn if the control measurement
