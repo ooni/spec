@@ -129,6 +129,7 @@ The experiment itself consists of the following steps:
 
 ## Semantics
 
+```
 {
     "client_resolver": "xxx.xxx.xxx.xxx",
     "dns_consistency": "consistent" | "reverse_match" | "inconsistent",
@@ -147,6 +148,7 @@ The experiment itself consists of the following steps:
     "accessible": true | false | null,
     "blocking": "tcp_ip" | "dns" | "http" | null
 }
+```
 
 The meaning of the keys "dns_consistency", "body_length_match" and
 "tcp_connect" is described above.
