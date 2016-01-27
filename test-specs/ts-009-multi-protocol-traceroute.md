@@ -4,7 +4,7 @@
 
 # Specification name
 
-Multi Port Traceroute test
+Multi Protocol Traceroute test
 
 # Test preconditions
 
@@ -51,13 +51,13 @@ of the following ports: 0, 22, 23, 53, 80, 123, 443, 8080,
 For protocol ICMP, there is only a single series of packets
 as there is no concept of ports.
 
-The time-exceeded ICMP responses are added to the report. 
+The time-exceeded ICMP responses are added to the report.
 
 # Expected output
 
 The collected ICMP time-exceeded responses from IP routers
 that properly implement RFC792 in the forward path towards
-the backend host. 
+the backend host.
 
 ## Parent data format
 

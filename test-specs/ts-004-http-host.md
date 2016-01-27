@@ -254,4 +254,3 @@ transparent_http_proxy: false
 
 If the user is behind a transparent HTTP proxy that sets the X-Forwarded-For
 header their IP address will end up being part of the final report.
-

@@ -42,7 +42,7 @@ are all valid entries
 For every item given as input we perform a TCP connect. If
 the connection is succesful, we record 'success' for the
 test. If the connection fails, we record the reason for the
-failure. 
+failure.
 
 # Expected output
 
