@@ -1,10 +1,10 @@
 # Specification version number
 
-2013-01-30-000
+0.2.0
 
 # Specification name
 
-DNS Consistency Test
+DNS Consistency
 
 # Test preconditions
 
@@ -64,20 +64,33 @@ In any other case we mark the result as: tampering: True.
 
 # Expected output
 
-## Data format
+## Parent Data format
 
 df-002-dnst
 
 ## Semantics
 
-Two extra dicts will be present inside of every report entry:
+The following extra fields will be present in every measurement entry.
 
-tampering:
-  **dict** containing as keys the IPv4 addresses of the test resolvers
-  and as values True|False|'reverse_match'
+```
+{
+    "successful": [
+        "The list of addresses of the resolvers that provided a consistent"
+        "answer to our query."
+    ],
+    "failures": [
+        "The list of addresses that failed to resolve the query."
+        "Note: in the case of NXDOMAIN these will turn up as failures."
+    ],
+    "inconsistent": [
+        "The list of addresses that returned an inconsistent result"
+    ],
+    "errors": {
+        "RESOLVER_IP": "error string of the failure"
+    }
 
-test_resolvers:
-  **list** of IPv4 addresses of the test resolvers
+}
+```
 
 ## Possible conclusions
 
@@ -87,76 +100,132 @@ That the DNS resolver in question has provided a false response to a DNS Query.
 
 ## Example output sample
 
-    input: example.com
-    control_resolver: &id001 [203.0.113.1, 53]
-    queries:
-    - addrs: [203.0.113.2]
-      answers:
-      - [<RR name=example.com type=A class=IN ttl=2562s auth=False>, <A address=203.0.113.2
-          ttl=2562>]
-      query: '[Query(''example.com'', 1, 1)]'
-      query_type: A
-      resolver: *id001
-    - addrs: [203.0.113.2]
-      answers:
-      - [<RR name=example.com type=A class=IN ttl=7200s auth=False>, <A address=203.0.113.2
-          ttl=7200>]
-      query: '[Query(''example.com'', 1, 1)]'
-      query_type: A
-      resolver: [203.0.113.3, 53]
-    - addrs: [203.0.113.2]
-      answers:
-      - [<RR name=example.com type=A class=IN ttl=4007s auth=False>, <A address=203.0.113.2
-          ttl=4007>]
-      query: '[Query(''example.com'', 1, 1)]'
-      query_type: A
-      resolver: [203.0.113.4, 53]
-    - addrs: [203.0.113.2]
-      answers:
-      - [<RR name=example.com type=A class=IN ttl=7200s auth=False>, <A address=203.0.113.2
-          ttl=7200>]
-      query: '[Query(''example.com'', 1, 1)]'
-      query_type: A
-      resolver: [203.0.113.5, 53]
-    - addrs: [203.0.113.2]
-      answers:
-      - [<RR name=example.com type=A class=IN ttl=7200s auth=False>, <A address=203.0.113.2
-          ttl=7200>]
-      query: '[Query(''example.com'', 1, 1)]'
-      query_type: A
-      resolver: [203.0.113.6, 53]
-    - addrs: [203.0.113.2]
-      answers:
-      - [<RR name=example.com type=A class=IN ttl=7200s auth=False>, <A address=203.0.113.2
-          ttl=7200>]
-      query: '[Query(''example.com'', 1, 1)]'
-      query_type: A
-      resolver: [203.0.113.7, 53]
-    - addrs: [203.0.113.2]
-      answers:
-      - [<RR name=example.com type=A class=IN ttl=7200s auth=False>, <A address=203.0.113.2
-          ttl=7200>]
-      query: '[Query(''example.com'', 1, 1)]'
-      query_type: A
-      resolver: [203.0.113.8, 53]
-    - query: '[Query(''example.com'', 1, 1)]'
-      query_type: A
-      resolver: [203.0.113.9, 53]
-    - query: '[Query(''example.com'', 1, 1)]'
-      query_type: A
-      resolver: [203.0.113.1, 53]
-    - failure: deferred_timeout_error
-      query: '[Query(''example.com'', 1, 1)]'
-      query_type: A
-      resolver: [203.0.113.10, 53]
-    tampering: {203.0.113.11: no_answer, 203.0.113.6: false, 203.0.113.4: false, 203.0.113.5: false,
-      203.0.113.7: false, 203.0.113.3: false, 203.0.113.9: no_answer, 203.0.113.8: false}
-    test_resolvers: [203.0.113.3, 203.0.113.4, 203.0.113.5, 203.0.113.6, 203.0.113.7,
-      203.0.113.8, 203.0.113.9, 203.0.113.11, 203.0.113.10]
-    test_name: test_a_lookup
-    test_runtime: 2.6424369812011719
-    test_started: 1357167921.0688701
-    ...
+```
+{
+    "bucket_date": "2015-11-23",
+    "data_format_version": "0.2.0",
+    "id": "e6f6257f-e7c2-48fa-8345-b7ed055ab1d2",
+    "input": "198.175.124.185",
+    "options": [
+        "-f",
+        "citizenlab-urls-global.txt",
+        "-T",
+        "dns-server-jo.txt"
+    ],
+    "probe_asn": "AS8376",
+    "probe_cc": "JO",
+    "probe_ip": "127.0.0.1",
+    "report_filename": "2015-11-23/20151123T161428Z-JO-AS8376-dns_consistency-F1KI1WusW4c1T6OGyQDgHJjaSQ1bfpqV2G39bpmuHiLAJnse8R1F44vdRuTz6nO4-0.1.0-probe.json",
+    "report_id": "F1KI1WusW4c1T6OGyQDgHJjaSQ1bfpqV2G39bpmuHiLAJnse8R1F44vdRuTz6nO4",
+    "software_name": "ooniprobe",
+    "software_version": "1.3.1",
+    "test_helpers": {
+        "backend": "8.8.8.8:53"
+    },
+    "input_hashes": [
+        "0055f0881fba857d8b48123017d7aec83014e89f057e44b66107f657ec5e2eab"
+    ],
+    "probe_city": null,
+    "backend_version": "1.1.4",
+    "test_keys": {
+        "control_resolver": "8.8.8.8:53",
+        "errors": {
+            "212.118.0.1": "no_answer",
+            "212.118.0.2": "no_answer",
+            "212.38.128.3": "dns_lookup_error",
+            "217.144.6.6": "no_answer",
+            "8.8.8.8:53": "no_answer",
+            "80.90.160.135": "dns_lookup_error",
+            "80.90.160.172": "dns_lookup_error",
+            "81.28.112.2": "dns_lookup_error"
+        },
+        "failed": [
+            "80.90.160.172",
+            "8.8.8.8:53",
+            "212.118.0.2",
+            "80.90.160.135",
+            "212.38.128.3",
+            "212.118.0.1",
+            "217.144.6.6",
+            "81.28.112.2"
+        ],
+        "inconsistent": [
+        ],
+        "queries": [
+            {
+                "answers": [],
+                "failure": "no_answer",
+                "hostname": "198.175.124.185",
+                "query_type": "A",
+                "resolver_hostname": "8.8.8.8",
+                "resolver_port": 53
+            },
+            {
+                "answers": [],
+                "failure": "deferred_timeout_error",
+                "hostname": "198.175.124.185",
+                "query_type": "A",
+                "resolver_hostname": "212.38.128.3",
+                "resolver_port": 53
+            },
+            {
+                "answers": [],
+                "failure": "no_answer",
+                "hostname": "198.175.124.185",
+                "query_type": "A",
+                "resolver_hostname": "217.144.6.6",
+                "resolver_port": 53
+            },
+            {
+                "answers": [],
+                "failure": "deferred_timeout_error",
+                "hostname": "198.175.124.185",
+                "query_type": "A",
+                "resolver_hostname": "81.28.112.2",
+                "resolver_port": 53
+            },
+            {
+                "answers": [],
+                "failure": "deferred_timeout_error",
+                "hostname": "198.175.124.185",
+                "query_type": "A",
+                "resolver_hostname": "80.90.160.135",
+                "resolver_port": 53
+            },
+            {
+                "answers": [],
+                "failure": "deferred_timeout_error",
+                "hostname": "198.175.124.185",
+                "query_type": "A",
+                "resolver_hostname": "80.90.160.172",
+                "resolver_port": 53
+            },
+            {
+                "answers": [],
+                "failure": "no_answer",
+                "hostname": "198.175.124.185",
+                "query_type": "A",
+                "resolver_hostname": "212.118.0.1",
+                "resolver_port": 53
+            },
+            {
+                "answers": [],
+                "failure": "no_answer",
+                "hostname": "198.175.124.185",
+                "query_type": "A",
+                "resolver_hostname": "212.118.0.2",
+                "resolver_port": 53
+            }
+        ],
+        "start_time": 1448291668.0,
+        "successful": []
+    },
+    "test_name": "dns_consistency",
+    "test_runtime": 0.0837070942,
+    "test_start_time": "2015-11-23 16:14:28",
+    "test_version": "0.6"
+}
+```
 
 # Privacy considerations
 

@@ -1,6 +1,6 @@
 # Specification version number
 
-2013-02-26-000
+0.2.0
 
 # Specification name
 
@@ -150,104 +150,82 @@ understand which censorship device the one being analyzed may be.
 ## Example output sample
 
 ```
-###########################################
-# OONI Probe Report for http_host (0.2.4)
-# Fri Jan 10 14:27:41 2014
-###########################################
----
-input_hashes: [82c5cebe7a7cced3aad75e304b6e84b8ec97f808db835b7d641f7612216624f9]
-options: [-f, example_inputs/alexa-head.txt]
-probe_asn: AS3269
-probe_cc: IT
-probe_city: Formia
-probe_ip: 127.0.0.1
-software_name: ooniprobe
-software_version: 1.0.0-rc5
-start_time: 1389360461.066207
-test_name: http_host
-test_version: 0.2.4
-...
----
-agent: agent
-filtering_add_tab_to_host: false
-filtering_of_subdomain: false
-filtering_prepend_newline_to_method: false
-filtering_via_fuzzy_matching: false
-input: google.com
-requests:
-- request:
-    body: null
-    headers:
-    - - Host
-      - [MQEEayVEc3google.comVjAZPi29bT]
-    method: GET
-    tor: false
-    url: http://93.95.227.200
-  response:
-    body: '{"headers_dict": {"Connection": ["close"], "Host": ["MQEEayVEc3google.comVjAZPi29bT"]},
-      "request_line": "GET / HTTP/1.1", "request_headers": [["Connection", "close"],
-      ["Host", "MQEEayVEc3google.comVjAZPi29bT"]]}'
-    code: 200
-    headers: []
-- request:
-    body: null
-    headers:
-    - - Host
-      - ["google.com\t"]
-    method: GET
-    tor: false
-    url: http://93.95.227.200
-  response:
-    body: '{"headers_dict": {"Connection": ["close"], "Host": ["google.com"]}, "request_line":
-      "GET / HTTP/1.1", "request_headers": [["Connection", "close"], ["Host", "google.com"]]}'
-    code: 200
-    headers: []
-- request:
-    body: null
-    headers:
-    - - Host
-      - [google.com]
-    method: '
-
-      GET'
-    tor: false
-    url: http://93.95.227.200
-  response:
-    body: '{"headers_dict": {"Connection": ["close"], "Host": ["google.com"]}, "request_line":
-      "\nGET / HTTP/1.1", "request_headers": [["Connection", "close"], ["Host", "google.com"]]}'
-    code: 200
-    headers: []
-- request:
-    body: null
-    headers:
-    - - Host
-      - [google.com]
-    method: GET
-    tor: false
-    url: http://93.95.227.200
-  response:
-    body: '{"headers_dict": {"Connection": ["close"], "Host": ["google.com"]}, "request_line":
-      "GET / HTTP/1.1", "request_headers": [["Connection", "close"], ["Host", "google.com"]]}'
-    code: 200
-    headers: []
-- request:
-    body: null
-    headers:
-    - - Host
-      - [36YQ5NpXV6.google.com]
-    method: GET
-    tor: false
-    url: http://93.95.227.200
-  response:
-    body: '{"headers_dict": {"Connection": ["close"], "Host": ["36YQ5NpXV6.google.com"]},
-      "request_line": "GET / HTTP/1.1", "request_headers": [["Connection", "close"],
-      ["Host", "36YQ5NpXV6.google.com"]]}'
-    code: 200
-    headers: []
-send_host_header: false
-socksproxy: null
-transparent_http_proxy: false
-...
+{
+    "bucket_date": "2015-11-25",
+    "data_format_version": "0.2.0",
+    "id": "a59899ab-cd33-49db-8ca4-7bf5dd2d317d",
+    "input": null,
+    "options": [],
+    "probe_asn": "AS3269",
+    "probe_cc": "IT",
+    "probe_ip": "127.0.0.1",
+    "report_filename": "2015-11-25/20151125T214003Z-IT-AS3269-http_host-FKByhJTXzseUDZOSvQkPiZur0ji6csV5UCiyarEoCCUCiKicGTgXq06fcJVA6XfA-0.1.0-probe.json",
+    "report_id": "FKByhJTXzseUDZOSvQkPiZur0ji6csV5UCiyarEoCCUCiKicGTgXq06fcJVA6XfA",
+    "software_name": "ooniprobe",
+    "software_version": "1.3.2",
+    "test_helpers": {
+        "backend": "http://216.156.197.144:80"
+    },
+    "input_hashes": [],
+    "probe_city": null,
+    "backend_version": "1.1.4",
+    "test_keys": {
+        "agent": "agent",
+        "filtering_prepend_newline_to_method": false,
+        "requests": [
+            {
+                "request": {
+                    "body": null,
+                    "headers": {
+                        "Host": null
+                    },
+                    "method": "GET",
+                    "tor": {
+                        "exit_ip": false,
+                        "exit_name": false,
+                        "is_tor": false
+                    },
+                    "url": "http://216.156.197.144:80"
+                },
+                "response": {
+                    "body": "{\"headers_dict\": {\"Connection\": [\"close\"], \"Host\": [\"None\"]}, \"request_line\": \"GET / HTTP/1.1\", \"request_headers\": [[\"Connection\", \"close\"], [\"Host\", \"None\"]]}",
+                    "code": 200,
+                    "headers": {}
+                },
+                "response_length": null
+            },
+            {
+                "request": {
+                    "body": null,
+                    "headers": {
+                        "Host": null
+                    },
+                    "method": "\nGET",
+                    "tor": {
+                        "exit_ip": false,
+                        "exit_name": false,
+                        "is_tor": false
+                    },
+                    "url": "http://216.156.197.144:80"
+                },
+                "response": {
+                    "body": "{\"headers_dict\": {\"Connection\": [\"close\"], \"Host\": [\"None\"]}, \"request_line\": \"\\nGET / HTTP/1.1\", \"request_headers\": [[\"Connection\", \"close\"], [\"Host\", \"None\"]]}",
+                    "code": 200,
+                    "headers": {}
+                },
+                "response_length": null
+            }
+        ],
+        "send_host_header": false,
+        "socksproxy": null,
+        "start_time": 1448484003.0,
+        "transparent_http_proxy": false
+    },
+    "test_name": "http_host",
+    "test_runtime": 0.3475949764,
+    "test_start_time": "2015-11-25 21:40:03",
+    "test_version": "0.2.4"
+}
 ```
 
 # Privacy considerations

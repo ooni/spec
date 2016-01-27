@@ -1,6 +1,6 @@
 # Specification version number
 
-2014-12-09-001
+0.2.0
 
 # Specification name
 

@@ -6,6 +6,8 @@
 
 bridgeT
 
+Note: This test is deprecated
+
 # Test preconditions
 
   * Tor installed.

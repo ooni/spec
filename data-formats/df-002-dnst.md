@@ -125,6 +125,8 @@ data format.
             "217.144.6.6",
             "81.28.112.2"
         ],
+        "inconsistent": [
+        ],
         "queries": [
             {
                 "answers": [],

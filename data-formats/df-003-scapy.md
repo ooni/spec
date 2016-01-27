@@ -3,7 +3,7 @@
 Data Format Version: 0.2.0
 
 This specifies the data format for tests that are based on
-ooni.templates.scapyt.ScapyTest.
+`ooni.templates.scapyt.ScapyTest`.
 
 ## Specification
 
