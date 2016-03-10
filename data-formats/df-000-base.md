@@ -146,6 +146,10 @@ error_string:
 
 * twisted.internet.defer.TimeoutError: `deferred_timeout_error`
 
+* twisted.names.error.DNSNameError: `dns_name_error`
+
+* twisted.names.error.DNSServerError: `dns_name_failure`
+
 * txsocksx.errors.ServerFailure: `socks_server_failure`
 
 * txsocksx.errors.ConnectionNotAllowed: `socks_connection_not_allowed`
