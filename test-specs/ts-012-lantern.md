@@ -8,7 +8,7 @@ Lantern Test
 
 # Test preconditions
 
-Downloaded or compiled the "lantern_linux" binary and made executable and in
+Downloaded or compiled the "lantern" binary and made executable and in
 the users PATH environment variable.
 
 # Expected impact
@@ -28,7 +28,7 @@ if it has bootstrapped.  After bootstrap, it fetches the URL supplied by the
 --url option using Lanterns http proxy interface listening on 127.0.0.1.8787.
 
 The specific string used to determine bootstrap from Lantern output in version
-"0.0.1" is "client (http) proxy at" from standard output.
+"2.0.10" is "Connected to proxy on localhost" from standard output.
 
 # Expected output
 
@@ -41,7 +41,7 @@ None.
 success:
 **boolean** The bootstrap status of Lantern (success or failure).
 
-lantern_linux --headless:
+lantern --headless:
 **dictionary** the parent key of Lanterns output that contains the keys stdout and stderr
 
 stdout:
@@ -64,7 +64,7 @@ failure:
 'success' - True or False - whether Lantern has bootstrapped.
 'body' - http page body if successfully requested.
 'failure' - optional, present if there is a failure.
-'lantern_linux --headless': 
+'lantern --headless':
   'stdout' - Contents of standard output produced by Lantern.
   'stderr' - Contents of standard error produced by Lantern.
 
@@ -95,7 +95,7 @@ body: "<HTML><HEAD><meta http-equiv=\"content-type\" content=\"text/html;charset
   <A HREF=\"http://www.google.com/\">here</A>.\r\n</BODY></HTML>\r\n"
 bootstrapped: true
 input: null
-lantern_linux --headless: {exit_reason: process_done, stderr: '', stdout: ''}
+lantern --headless: {exit_reason: process_done, stderr: '', stdout: ''}
 ```
 
 ## Expected Post-processing efforts
