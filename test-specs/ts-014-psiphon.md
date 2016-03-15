@@ -1,6 +1,6 @@
 # Specification version number
 
-2015-10-11-000
+0.1.0
 
 # Specification name
 
@@ -8,7 +8,9 @@ Psiphon Test
 
 # Test preconditions
 
-Have psiphon-circumvention-system (including psiphon-circumvention-system/pyclient/psi_client.py) cloned in the home of the user that runs ooni or somewhere else accessible to the user that runs ooni.
+Have psiphon-circumvention-system (including
+psiphon-circumvention-system/pyclient/psi_client.py) cloned in the home of the
+user that runs ooni or somewhere else accessible to the user that runs ooni.
 
 # Expected impact
 
@@ -17,13 +19,17 @@ Ability to measure whether Psiphon is working from the given network vantage poi
 # Expected inputs
 
 Optionally:
-A single URL to fetch, supplied by command line argument "--url (-u)".
 Psiphon path, specified by the command line argument "--psiphonpath (-p)"
 The ip:port that Psiphon will use for the SOCKS proxy, with the command line argument "--socksproxy (-s)"
 
 # Test description
 
-This test first check that the Psiphon path exists, then launches Psiphon and parses output to determine if it has bootstrapped. After bootstrap, it fetches google.com (or other URL specified by the --url argument) using Psiphons SOCKS proxy listening on 127.0.0.1:1080 (or otherwise specified by the --socksproxy argument).
+This test first check that the Psiphon path exists, then launches Psiphon and
+parses output to determine if it has bootstrapped. After bootstrap, it fetches
+`http://www.google.com/humans.txt` using Psiphons SOCKS
+proxy listening on 127.0.0.1:1080 (or otherwise specified by the --socksproxy
+argument).
+It will then check to see if the response body contains the string: "Google is built by a large"
 
 The specific string used to determine bootstrap from Psiphon output in version
 "0.0.1" is "Press Ctrl-C to terminate." from standard output.
@@ -68,13 +74,13 @@ stderr:
 
 We can determine whether or not Psiphon is found.
 We can determine whether or not Psiphon is able to bootstrap, according to its output.
-We can determine whether or not a given URL is reachable via Psiphon.
+We can determine whether or not a URL is reachable via Psiphon.
 
 ## Example output sample
 ```
 ---
 input_hashes: []
-options: [-u, google.com]
+options: []
 probe_asn: AS0
 probe_cc: ZZ
 probe_city: null
@@ -102,9 +108,7 @@ requests:
     tor: {is_tor: false}
     url: http://google.com
   response:
-    body: "<HTML><HEAD><meta http-equiv=\"content-type\" content=\"text/html;charset=utf-8\"\
-      >\n<TITLE>301 Moved</TITLE></HEAD><BODY>\n<H1>301 Moved</H1>\nThe document has\
-      \ moved\n<A HREF=\"http://www.google.com/\">here</A>.\r\n</BODY></HTML>\r\n"
+    body: "Google is built by a large team of engineers, designers, researchers, robots, and others in many different sites across the globe. It is updated continuously, and built with more tools and technologies than we can shake a stick at. If you'd like to help us out, see google.com/careers."
     code: 301
     headers:
     - - Content-Length
@@ -137,7 +141,7 @@ test_start_time: 1444686052.0
 
 # Privacy considerations
 
-Psiphon does not seek to provide anonymity. 
+Psiphon does not seek to provide anonymity.
 An adversary can observe that a user is connecting to Psiphon servers.
 Psiphon servers can also determine the users location.
 
