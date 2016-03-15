@@ -17,9 +17,7 @@ Ability to measure whether Lantern is working from the given network vantage poi
 
 # Expected inputs
 
-A single URL to fetch, supplied by command line argument "--url (-u)". To test
-Lantern, it must be a URL from the whitelisted set.
-See: https://github.com/getlantern/flashlight/blob/master/genconfig/proxiedsites/
+None
 
 # Test description
 

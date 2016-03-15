@@ -86,7 +86,7 @@ tor_log:
 
 ## Possible conclusions
 
-Based on the ouput data what conclusions can you draw?
+If Tor with the default configuration can successfully bootstrap.
 
 ## Example output sample
 
