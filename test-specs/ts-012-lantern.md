@@ -1,6 +1,6 @@
 # Specification version number
 
-2015-04-03-000
+0.1.0
 
 # Specification name
 
@@ -24,11 +24,14 @@ See: https://github.com/getlantern/flashlight/blob/master/genconfig/proxiedsites
 # Test description
 
 This test launches Lantern in --headless mode, and parses output to determine
-if it has bootstrapped.  After bootstrap, it fetches the URL supplied by the
---url option using Lanterns http proxy interface listening on 127.0.0.1.8787.
+if it has bootstrapped.  After bootstrap, it fetches a URL using Lanterns HTTP
+proxy interface listening on 127.0.0.1.8787 and checks to see if the response
+body matches the expected result.
+As a URL for testing we use http://www.google.com/humans.txt and look for the
+string "Google is built by a large" in the response body.
 
 The specific string used to determine bootstrap from Lantern output in version
-"2.0.10" is "Connected to proxy on localhost" from standard output.
+"2.0.10" is "Successfully dialed via" from standard output.
 
 # Expected output
 
@@ -72,13 +75,13 @@ failure:
 ## Possible conclusions
 
 We can determine whether or not Lantern is able to bootstrap, according to its output.
-We can determine whether or not a given URL is reachable via Lantern.
+We can determine whether or not a URL is reachable via Lantern.
 
 ## Example output sample
 ```
 ---
 input_hashes: []
-options: [-u, google.com]
+options: []
 probe_asn: AS1234
 probe_cc: US
 probe_city: null
@@ -87,12 +90,10 @@ software_name: ooniprobe
 software_version: 1.2.3-rc1
 start_time: 1428344311.0
 test_name: lantern_circumvention_tool_test
-test_version: 0.0.1
+test_version: 0.1.0
 ...
 ---
-body: "<HTML><HEAD><meta http-equiv=\"content-type\" content=\"text/html;charset=utf-8\"\
-  >\n<TITLE>301 Moved</TITLE></HEAD><BODY>\n<H1>301 Moved</H1>\nThe document has moved\n\
-  <A HREF=\"http://www.google.com/\">here</A>.\r\n</BODY></HTML>\r\n"
+body: "Google is built by a large team of engineers, designers, researchers, robots, and others in many different sites across the globe. It is updated continuously, and built with more tools and technologies than we can shake a stick at. If you'd like to help us out, see google.com/careers."
 bootstrapped: true
 input: null
 lantern --headless: {exit_reason: process_done, stderr: '', stdout: ''}
