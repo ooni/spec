@@ -68,7 +68,7 @@ stderr:
 '/tmp/<temporary file>': 
   'stdout' - Contents of standard output produced by Psiphon.
   'stderr' - Contents of standard error produced by Psiphon.
-
+'default_configuration' - True or False - whether it is using the default, sane, configuration or not
 
 ## Possible conclusions
 
@@ -100,6 +100,7 @@ test_version: 0.0.1
 agent: agent
 input: null
 psiphon_installed: true
+default_configuration: true
 requests:
 - request:
     body: null
@@ -138,6 +139,9 @@ test_start_time: 1444686052.0
 ```
 
 ## Expected Post-processing efforts
+
+You should be aware of the `default_confguration` parameter as the user may
+have misconfigured the test leading to inconsistent results.
 
 # Privacy considerations
 

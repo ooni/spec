@@ -68,7 +68,7 @@ failure:
 'lantern --headless':
   'stdout' - Contents of standard output produced by Lantern.
   'stderr' - Contents of standard error produced by Lantern.
-
+'default_configuration' - True or False - whether it is using the default, sane, configuration or not
 
 ## Possible conclusions
 
@@ -93,11 +93,15 @@ test_version: 0.1.0
 ---
 body: "Google is built by a large team of engineers, designers, researchers, robots, and others in many different sites across the globe. It is updated continuously, and built with more tools and technologies than we can shake a stick at. If you'd like to help us out, see google.com/careers."
 bootstrapped: true
+default_configuration: true
 input: null
 lantern --headless: {exit_reason: process_done, stderr: '', stdout: ''}
 ```
 
 ## Expected Post-processing efforts
+
+You should be aware of the `default_confguration` parameter as the user may
+have misconfigured the test leading to inconsistent results.
 
 # Privacy considerations
 
