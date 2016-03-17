@@ -177,16 +177,12 @@ All tags should be incremental and they will be signed with either of the
 following GPG keys:
 
 ```
-pub   4096R/150FE210 2011-10-23 [expires: 2014-11-24]
-      Key fingerprint = 46E5 EF37 DE26 4EA6 8DCF  53EA E3A2 1297 150F E210
-      uid                  Arturo Filastò <art@torproject.org>
-      uid                  Arturo Filastò <arturo@filasto.net>
-      uid                  Arturo Filastò <arturo.filasto@logioshermes.org>
-      uid                  Arturo Filastò <art@fuffa.org>
-      uid                  Arturo Filastò <art@globaleaks.org>
-      uid                  Arturo Filastò <art@baculo.org>
-      uid                  Arturo Filastò <hellais@gmail.com>
-      sub   4096R/F423B27C 2011-10-23 [expires: 2014-11-24]
+pub   3072D/702287F4 2015-10-19 [expires: 2018-05-06]
+      Key fingerprint = 67EF 3966 5099 86E9 6ACE  E84E 5D67 CD18 7022 87F4
+uid       [ultimate] Arturo Filastò <arturo@filasto.net>
+uid       [ultimate] Arturo Filastò <art@fuffa.org>
+uid       [ultimate] Arturo Filastò <art@torproject.org>
+sub   2752g/C58FC4EE 2015-10-19 [expires: 2018-05-06]
 ```
 
 ## Versioning scheme
@@ -198,7 +194,7 @@ All OONI tools follow [semantic versioning](http://semver.org/).
 To upload a new version to pypi run:
 
 ```
-python setup.py sdist upload -s
+python setup.py sdist upload -s --identity=702287F4
 ```
 
 # Build systems & environments
