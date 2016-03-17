@@ -103,9 +103,9 @@ The HTTP request it performs is:
         `string` that must be either "json" or "yaml" to identify the format
         of the content.
 
-     'start_time':
+     'test_start_time':
         NEW since oonibackend 1.3
-        `float` seconds since epoch in UTC of when the measurement was started.
+        `string` timestamp in UTC of when the test was started using the format "%Y-%m-%d %H:%M:%S"
 
      'input_hashes':
         (optional) `list` of hex encoded sha256sum of the contents
