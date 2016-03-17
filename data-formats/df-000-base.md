@@ -83,8 +83,12 @@ Data Format Version: 0.2.0
 
     "test_runtime": null,
 
-    "test_start_time": "Timestamp of when the measurement was performed in "
-        "UTC time coordinates (ex. 2015-08-24 12:02:23)",
+    "measurement_start_time": "Timestamp of when the measurement was performed in "
+        "UTC time coordinates (ex. 2015-08-24 12:02:23) (Note: ooniprobe <= 1.4.0 generates skewed timing information)",
+
+    "test_start_time": "Timestamp of when the test was started in "
+        "UTC time coordinates (ex. 2015-08-24 12:02:23) (Note: ooniprobe <= 1.4.0 generates skewed timing information)",
+
 
     "test_keys": {
         "The keys that are specific to the test"
