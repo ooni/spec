@@ -29,9 +29,11 @@ A list of URLs to be tested for censorship.
 
 The input document may contain an http or https URL, an IP:PORT, or a FQDN:PORT per line. e.g.
 
-  http://www.google.com
-  google.com:80
-  8.8.8.8:53
+```
+ http://www.google.com
+ google.com:80
+ 8.8.8.8:53
+```
 
 are all valid entries
 
@@ -59,7 +61,7 @@ The result of the connection attempt, 'success' or failure type.
 Ability to determine that a specific host:port is blocked.
 
 ## Example output sample
-
+```
   ###########################################
   # OONI Probe Report for tcp_connect (0.1)
   # Wed Sep 18 20:41:49 2013
@@ -93,3 +95,4 @@ Ability to determine that a specific host:port is blocked.
   ...
   ---
   {connection: success, input: 'blogspot.com:80'}
+  ```
