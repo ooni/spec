@@ -662,7 +662,7 @@ will return the identity of the machines that:
  1. Can run the required test-helpers
  2. Can send back to the client a set of required inputs
  3. Can collect the report of the nettest
- 
+
 If a known collector to the bouncer cannot provide any of the three previous requirements,
 the collector won't be sent back to the client in the bouncer request.
 
@@ -700,7 +700,18 @@ And the bouncer replies:
             'input-hashed': ['requested input id', ...],
             'name': 'name of nettest',
             'version': 'version of nettest',
-            'collector': 'address'
+            'collector': 'httpo://thirteenchars1.onion',
+            'collector-alternate': [
+                {
+                    'type': 'cloudfront',
+                    'hostname': 'xxx.yyy.tld',
+                    'front': 'xxx.yyy.tld'
+                },
+                {
+                    'type': 'https',
+                    'address': 'https://xxx.yyy.tld/'
+                }
+            ]
         },
         ....
     ]
