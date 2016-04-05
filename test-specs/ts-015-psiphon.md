@@ -56,12 +56,14 @@ stderr:
 
 ## Semantics
 
+```
 'psiphon_installed' - True or False - whether Psiphon is found.
 'success' - True or False - whether Psiphon has bootstrapped.
 'body' - http page body if successfully requested.
 '/tmp/<temporary file>': 
   'stdout' - Contents of standard output produced by Psiphon.
   'stderr' - Contents of standard error produced by Psiphon.
+```
 
 
 ## Possible conclusions
