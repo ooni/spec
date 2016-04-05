@@ -1,6 +1,6 @@
 # Specification version number
 
-2014-08-06-001
+0.2.0
 
 # Specification name
 
@@ -24,24 +24,31 @@ applicable).
 
 They should be in a flat text file one per line in the format:
 
-    IP:ORPort
+```
+IP:ORPort
+```
 
 Example:
 
-    203.0.113.27:1828
-    198.51.100.45:9045
+```
+203.0.113.27:1828
+198.51.100.45:9045
+```
 
-For normal Tor bridges.
+For vanilla Tor bridges.
 
 For pluggable transport bridges the format is:
 
-    TransportType IP:ORPort
+```
+TransportType IP:ORPort
+```
 
 Example:
-  
-    obfs2 203.0.113.27:1828
-    obfs3 198.51.100.45:9045
 
+```
+obfs2 203.0.113.27:1828
+obfs3 198.51.100.45:9045
+```
 
 # Test description
 
@@ -100,7 +107,7 @@ timeout:
 
 transport_name:
     **string** indicating the name of transport name used by the bridge.
-    
+
     vanilla: a regular, non pluggable transport, bridge.
 
     obfs2: for [obfs2 obfsproxy](https://gitweb.torproject.org/pluggable-transports/obfsproxy.git/blob/HEAD:/obfsproxy/transports/obfs2.py).
@@ -119,7 +126,7 @@ tor_version:
 tor_progress:
     **integer** indicating the percentage of tor bootstrapping at which we
     stopped.
-  
+
 tor_progress_tag:
     **string** a string giving a textual description of what the progress
     percentage means.
@@ -146,6 +153,8 @@ Which bridges are functioning from the given network vantage point and which
 ones are not.
 
 ## Example output sample
+
+XXX update this
 
 ```
 ###########################################

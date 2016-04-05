@@ -1,63 +1,95 @@
-# ScapyTest data format
+# Specification version number
 
-Data Format Version: 0.2.0
+0.2.0
 
-This specifies the data format for tests that are based on
-`ooni.templates.scapyt.ScapyTest`.
+# Specification name
 
-## Specification
+Multi Protocol Traceroute test
 
-**sent_packets** are the packets that have been generated and sent over the
-network by the probe.
+# Test preconditions
 
-**answered_packets** are the packets that match up as answers according to the
-rules defined in the **answers_flags** options.
+  * An internet connection.
+  * Ability to run ooni-probe as root or with raw sockets capabilities
+
+For reporting to the backend to work that it is possible for the probe to
+establish a connection to the Tor network.
+
+# Expected impact
+
+  * Ability to determine differences in network paths of
+    different protocols and ports
+
+
+# Expected inputs
+
+  * No additional inputs are required as the destination host
+    (backend) defaults to 8.8.8.8. The backend can optionally
+    be specified with argument -b.
+
+  * Additional parameters such as source port, maximum TTL,
+    and timeout values can also be set
+
+
+## Semantics
+
+  * The backend host is specified as a dotted-quad IPv4
+    address.
+
+  * Maximum TTL defaults to 30.
+
+# Test description
+
+A series of packets are constructed and sent to the backend
+host with incrementing TTL values (traceroute).
+
+See also: https://tools.ietf.org/rfc/rfc792.txt
+
+For protocols UDP and TCP, a traceroute is performed for each
+of the following ports: 0, 22, 23, 53, 80, 123, 443, 8080,
+65535.
+
+For protocol ICMP, there is only a single series of packets
+as there is no concept of ports.
+
+The time-exceeded ICMP responses are added to the report.
+
+# Expected output
+
+The collected ICMP time-exceeded responses from IP routers
+that properly implement RFC792 in the forward path towards
+the backend host.
+
+## Parent data format
+
+df-003-scapyt
+
+## Semantics
+
+The report object will contain keys of the format "hops_" +
+port, e.g. report['hops_22']. The corresponding value is an
+ordered list of the parsed responses, encoded like so:
 
 ```
 {
-    "answer_flags": [
-          "List of options that are set for determining how to understand if a"
-          "received packet is answer to a sent packet (these only apply to ICMP"
-          "messages)"
+    "ttl": "The TTL of the sent packet",
 
-          "'ipsrc' means that we check to see if the src and destination ports in"
-          "the ICMP IP citation match."
+    "address": "The address of the remote host at which the TTL expired",
 
-          "'ipid' means that we look at the IPID in the response to match it up"
-          "to sent packets."
+    "rtt": "The round-trip-time, measured as the difference between "
+        "the received response and sent packet time."
 
-          "'seqack' means that we check if TCP sequence number and ACK match in"
-          "the ICMP citation when processing TCP inside of ICMP."
-
-    ],
-    "answered_packets": [
-        {
-            "raw_packet": {
-                "data": "Encoding of packet the packet inclusive of IP header. "
-                    "The type of encoding is specified in the format field."
-                "format": "The encoding of the data field. Currently only supports base64."
-            },
-            "summary":
-                "A human readable representation of the packet as is the output "
-                "of repr on the scapy.packet object."
-        },
-    ],
-    "sent_packets": [
-        {
-            "raw_packet": {
-                "data": "Encoding of packet the packet inclusive of IP header. "
-                    "The type of encoding is specified in the format field."
-                "format": "The encoding of the data field. Currently only supports base64."
-            },
-            "summary":
-                "A human readable representation of the packet as is the output "
-                "of repr on the scapy.packet object."
-        },
-    ],
+    "sport": "The source port of the sent packet"
 }
 ```
 
-## Example output
+## Possible conclusions
+
+By examining the differences in the responses between protocols and destination
+ports, it is possible to ascertain that routing decisions are made on a
+protocol layer above IP, and determine what path was taken for different
+protocols.
+
+## Example output sample
 
 ```
 {
@@ -582,15 +614,6 @@ rules defined in the **answers_flags** options.
 }
 ```
 
-## Privacy considerations
+# Privacy considerations
 
-When the user has configured to not include their IP Address in the reports we
-will replace the src IP address of the IP Header with "127.0.0.1" of sent
-packets and the dst field of the IP header of received packets with
-"127.0.0.1".
-Note though that such strategy will not fully prevent the leaking of the users
-IP address via the IP packet payload (for example ICMP error messages will cite
-the packet they are referring to and it will contain the non anonymized user IP
-address).
-On this specific issue there is an open ticket here:
-https://trac.torproject.org/projects/tor/ticket/7933.
+The scapyt report format includes the binary packets as sent or received. In the ICMP response payload a portion (64 bits) or all of the original packet is returned. The client source address will be contained in the report.

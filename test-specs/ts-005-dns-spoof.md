@@ -1,10 +1,12 @@
 # Specification version number
 
-2013-9-10-000
+0.2.0
 
 # Specification name
 
 DNS Spoof Test
+
+Note: this test is deprecated.
 
 # Test preconditions
 
@@ -54,7 +56,7 @@ occurring, it shall be True. Otherwise, it is False.
 
 ## Parent data format
 
-df-001-scapyt-000
+df-003-scapyt
 
 ## Required output data
 
