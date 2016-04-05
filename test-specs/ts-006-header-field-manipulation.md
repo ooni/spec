@@ -41,30 +41,28 @@ then we have detected tampering.
 If the optional headers yaml file is not supplied, the
 headers will be constructed as so:
 
-{
-  "User-Agent": [random.choice(net.userAgents)],
-  "Accept":["text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"],
-  "Accept-Encoding": ["gzip,deflate,sdch"],
-  "Accept-Language": ["en-US,en;q=0.8"],
-  "Accept-Charset": ["ISO-8859-1,utf-8;q=0.7,*;q=0.3"],
-  "Host": [randomStr(15)+'.com']
-}
+    {
+      "User-Agent": [random.choice(net.userAgents)],
+      "Accept":["text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"],
+      "Accept-Encoding": ["gzip,deflate,sdch"],
+      "Accept-Language": ["en-US,en;q=0.8"],
+      "Accept-Charset": ["ISO-8859-1,utf-8;q=0.7,*;q=0.3"],
+      "Host": [randomStr(15)+'.com']
+    }
 
 The Host header is a random string of 15 characters + .com
 The User-Agent header is randomly selected from one of the following:
 
-[
-  "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7",
-  "Mozilla/5.0 (iPhone; U; CPU iPhone OS 3 1 2 like Mac OS X; en-us) AppleWebKit/528.18 (KHTML, like Gecko) Mobile/7D11",
-  "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6",
-  "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6",
-  "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6",
-  "Mozilla/5.0 (Windows; U; Windows NT 5.1; de; rv:1.9.2) Gecko/20100115 Firefox/3.6",
-  "Mozilla/5.0 (Windows; U; Windows NT 6.1; de; rv:1.9.2) Gecko/20100115 Firefox/3.6",
-  "Mozilla/5.0 (Windows; U; Windows NT 5.1; de; rv:1.9.2) Gecko/20100115 Firefox/3.6",
-  "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7",
-  "Mozilla/5.0 (Windows; U; Windows NT 5.1; de; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7 (.NET CLR 3.5.30729)")
-]
+    "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7",
+    "Mozilla/5.0 (iPhone; U; CPU iPhone OS 3 1 2 like Mac OS X; en-us) AppleWebKit/528.18 (KHTML, like Gecko) Mobile/7D11",
+    "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6",
+    "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6",
+    "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.2) Gecko/20100115 Firefox/3.6",
+    "Mozilla/5.0 (Windows; U; Windows NT 5.1; de; rv:1.9.2) Gecko/20100115 Firefox/3.6",
+    "Mozilla/5.0 (Windows; U; Windows NT 6.1; de; rv:1.9.2) Gecko/20100115 Firefox/3.6",
+    "Mozilla/5.0 (Windows; U; Windows NT 5.1; de; rv:1.9.2) Gecko/20100115 Firefox/3.6",
+    "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7",
+    "Mozilla/5.0 (Windows; U; Windows NT 5.1; de; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7 (.NET CLR 3.5.30729)")
 
 A request is then made towards the backend.
 
@@ -107,81 +105,78 @@ headers not present in both the sent and received headers.
 
 ## Semantics
 
-{
-  'total': True|False,
-  'request_line_capitalization': True|False,
-  'header_name_capitalization': True|False,
-  'header_field_value': True|False,
-  'header_field_number': True|False
-  'header_name_diff': []
-}
+    {
+      'total': True|False,
+      'request_line_capitalization': True|False,
+      'header_name_capitalization': True|False,
+      'header_field_value': True|False,
+      'header_field_number': True|False
+      'header_name_diff': []
+    }
 
 ## Example output sample
 
-
-```
-  ###########################################
-  # OONI Probe Report for http_header_field_manipulation (0.1.3)
-  # Wed Oct  9 10:57:42 2013
-  ###########################################
-  ---
-  input_hashes: []
-  options: [-b, 'http://12.34.56.78']
-  probe_asn: AS1234
-  probe_cc: US
-  probe_ip: 127.0.0.1
-  software_name: ooniprobe
-  software_version: 1.0.0-rc3
-  start_time: 1381316262.744312
-  test_name: http_header_field_manipulation
-  test_version: 0.1.3
-  ...
-  ---
-  agent: agent
-  input: null
-  requests:
-  - request:
-      body: null
-      headers:
-      - - accEpt-LANGuAGE
-        - ['en-US,en;q=0.8']
-      - - aCcepT-ENCoDIng
-        - ['gzip,deflate,sdch']
-      - - AccEpT
-        - ['text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8']
-      - - uSEr-AGenT
-        - ['Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2) Gecko/20100115
-            Firefox/3.6']
-      - - aCCEPT-cHarseT
-        - ['ISO-8859-1,utf-8;q=0.7,*;q=0.3']
-      - - hoSt
-        - [XJs7REREvvxO3wL.com]
-      method: geT
-      url: http://12.34.56.78
-    response:
-      body: '{"headers_dict": {"accEpt-LANGuAGE": ["en-US,en;q=0.8"], "aCcepT-ENCoDIng":
-        ["gzip,deflate,sdch"], "hoSt": ["XJs7REREvvxO3wL.com"], "AccEpT": ["text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"],
-        "uSEr-AGenT": ["Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2) Gecko/20100115
-        Firefox/3.6"], "aCCEPT-cHarseT": ["ISO-8859-1,utf-8;q=0.7,*;q=0.3"], "Connection":
-        ["close"]}, "request_line": "geT / HTTP/1.1", "request_headers": [["Connection",
-        "close"], ["accEpt-LANGuAGE", "en-US,en;q=0.8"], ["aCcepT-ENCoDIng", "gzip,deflate,sdch"],
-        ["AccEpT", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"],
-        ["uSEr-AGenT", "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2) Gecko/20100115
-        Firefox/3.6"], ["aCCEPT-cHarseT", "ISO-8859-1,utf-8;q=0.7,*;q=0.3"], ["hoSt",
-        "XJs7REREvvxO3wL.com"]]}'
-      code: 200
-      headers: []
-  socksproxy: null
-  tampering:
-    header_field_name: false
-    header_field_number: false
-    header_field_value: false
-    header_name_capitalization: false
-    header_name_diff: []
-    request_line_capitalization: false
-    total: false
-  ...
-```
+    ###########################################
+    # OONI Probe Report for http_header_field_manipulation (0.1.3)
+    # Wed Oct  9 10:57:42 2013
+    ###########################################
+    ---
+    input_hashes: []
+    options: [-b, 'http://12.34.56.78']
+    probe_asn: AS1234
+    probe_cc: US
+    probe_ip: 127.0.0.1
+    software_name: ooniprobe
+    software_version: 1.0.0-rc3
+    start_time: 1381316262.744312
+    test_name: http_header_field_manipulation
+    test_version: 0.1.3
+    ...
+    ---
+    agent: agent
+    input: null
+    requests:
+    - request:
+        body: null
+        headers:
+        - - accEpt-LANGuAGE
+          - ['en-US,en;q=0.8']
+        - - aCcepT-ENCoDIng
+          - ['gzip,deflate,sdch']
+        - - AccEpT
+          - ['text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8']
+        - - uSEr-AGenT
+          - ['Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2) Gecko/20100115
+              Firefox/3.6']
+        - - aCCEPT-cHarseT
+          - ['ISO-8859-1,utf-8;q=0.7,*;q=0.3']
+        - - hoSt
+          - [XJs7REREvvxO3wL.com]
+        method: geT
+        url: http://12.34.56.78
+      response:
+        body: '{"headers_dict": {"accEpt-LANGuAGE": ["en-US,en;q=0.8"], "aCcepT-ENCoDIng":
+          ["gzip,deflate,sdch"], "hoSt": ["XJs7REREvvxO3wL.com"], "AccEpT": ["text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"],
+          "uSEr-AGenT": ["Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2) Gecko/20100115
+          Firefox/3.6"], "aCCEPT-cHarseT": ["ISO-8859-1,utf-8;q=0.7,*;q=0.3"], "Connection":
+          ["close"]}, "request_line": "geT / HTTP/1.1", "request_headers": [["Connection",
+          "close"], ["accEpt-LANGuAGE", "en-US,en;q=0.8"], ["aCcepT-ENCoDIng", "gzip,deflate,sdch"],
+          ["AccEpT", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"],
+          ["uSEr-AGenT", "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.2) Gecko/20100115
+          Firefox/3.6"], ["aCCEPT-cHarseT", "ISO-8859-1,utf-8;q=0.7,*;q=0.3"], ["hoSt",
+          "XJs7REREvvxO3wL.com"]]}'
+        code: 200
+        headers: []
+    socksproxy: null
+    tampering:
+      header_field_name: false
+      header_field_number: false
+      header_field_value: false
+      header_name_capitalization: false
+      header_name_diff: []
+      request_line_capitalization: false
+      total: false
+    ...
 
 # Privacy considerations
 

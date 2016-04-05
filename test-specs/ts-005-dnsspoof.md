@@ -75,72 +75,71 @@ Whether or not DNS spoofing is occurring for a particular FQDN.
 
 ## Example output sample
 
-
-  ###########################################
-  # OONI Probe Report for dns_spoof (0.0.1)
-  # Wed Sep 25 15:39:32 2013
-  ###########################################
-  ---
-  input_hashes: []
-  options: [-r, '10.211.0.10:53', -h, google.com]
-  probe_asn: AS2819
-  probe_cc: CZ
-  probe_ip: 127.0.0.1
-  software_name: ooniprobe
-  software_version: 1.0.0-rc3
-  start_time: 1380116372.573729
-  test_name: dns_spoof
-  test_version: 0.0.1
-  ...
-  ---
-  answer_flags: [ipsrc]
-  answered_packets:
-  - - raw_packet: !!binary |
-        RbgA6OumAAAyEY4+CAgICH8AAAEANQA1ANSshgAAgYAAAQALAAAAAAZnb29nbGUDY29tAAABAAEG
-        Z29vZ2xlA2NvbQAAAQABAAAA4AAErcIs5QZnb29nbGUDY29tAAABAAEAAADgAAStwizkBmdvb2ds
-        ZQNjb20AAAEAAQAAAOAABK3CLOYGZ29vZ2xlA2NvbQAAAQABAAAA4AAErcIs6QZnb29nbGUDY29t
-        AAABAAEAAADgAAStwizoBmdvb2dsZQNjb20AAAEAAQAAAOAABK3CLOcGZ29vZ2xlA2NvbQAAAQAB
-        AAAA4AAErcIs4gZnb29nbGUDY29tAAABAAEAAADgAAStwizjBmdvb2dsZQNjb20AAAEAAQAAAOAA
-        BK3CLOAGZ29vZ2xlA2NvbQAAAQABAAAA4AAErcIs4QZnb29nbGUDY29tAAABAAEAAADgAAStwizu
-      summary: 'IP / UDP / DNS Ans "173.194.44.229" '
-  - - raw_packet: !!binary |
-        RbgA6J0DAABAEdQUCtMACn8AAAEANQA1ANSxxAAAgYAAAQALAAAAAAZnb29nbGUDY29tAAABAAEG
-        Z29vZ2xlA2NvbQAAAQABAAAA3wAErcIs5wZnb29nbGUDY29tAAABAAEAAADfAAStwizoBmdvb2ds
-        ZQNjb20AAAEAAQAAAN8ABK3CLOkGZ29vZ2xlA2NvbQAAAQABAAAA3wAErcIs5gZnb29nbGUDY29t
-        AAABAAEAAADfAAStwizkBmdvb2dsZQNjb20AAAEAAQAAAN8ABK3CLOUGZ29vZ2xlA2NvbQAAAQAB
-        AAAA3wAErcIs7gZnb29nbGUDY29tAAABAAEAAADfAAStwizhBmdvb2dsZQNjb20AAAEAAQAAAN8A
-        BK3CLOAGZ29vZ2xlA2NvbQAAAQABAAAA3wAErcIs4wZnb29nbGUDY29tAAABAAEAAADfAAStwizi
-      summary: 'IP / UDP / DNS Ans "173.194.44.231" '
-  input: null
-  sent_packets:
-  - - raw_packet: !!binary |
-        RQAAOAABAABAEeujfwAAAQgICAgANQA1ACRccgAAAQAAAQAAAAAAAAZnb29nbGUDY29tAAABAAE=
-      summary: 'IP / UDP / DNS Qry "google.com" '
-  - - raw_packet: !!binary |
-        RQAAOAABAABAEfDWfwAAAQrTAAoANQA1ACRhpQAAAQAAAQAAAAAAAAZnb29nbGUDY29tAAABAAE=
-      summary: 'IP / UDP / DNS Qry "google.com" '
-  spoofing: false
-  test_a_lookup:
+    ###########################################
+    # OONI Probe Report for dns_spoof (0.0.1)
+    # Wed Sep 25 15:39:32 2013
+    ###########################################
+    ---
+    input_hashes: []
+    options: [-r, '10.211.0.10:53', -h, google.com]
+    probe_asn: AS2819
+    probe_cc: CZ
+    probe_ip: 127.0.0.1
+    software_name: ooniprobe
+    software_version: 1.0.0-rc3
+    start_time: 1380116372.573729
+    test_name: dns_spoof
+    test_version: 0.0.1
+    ...
+    ---
+    answer_flags: [ipsrc]
     answered_packets:
-    - raw_packet: !!binary |
-        RbgA6J0DAABAEdQUCtMACn8AAAEANQA1ANSxxAAAgYAAAQALAAAAAAZnb29nbGUDY29tAAABAAEG
-        Z29vZ2xlA2NvbQAAAQABAAAA3wAErcIs5wZnb29nbGUDY29tAAABAAEAAADfAAStwizoBmdvb2ds
-        ZQNjb20AAAEAAQAAAN8ABK3CLOkGZ29vZ2xlA2NvbQAAAQABAAAA3wAErcIs5gZnb29nbGUDY29t
-        AAABAAEAAADfAAStwizkBmdvb2dsZQNjb20AAAEAAQAAAN8ABK3CLOUGZ29vZ2xlA2NvbQAAAQAB
-        AAAA3wAErcIs7gZnb29nbGUDY29tAAABAAEAAADfAAStwizhBmdvb2dsZQNjb20AAAEAAQAAAN8A
-        BK3CLOAGZ29vZ2xlA2NvbQAAAQABAAAA3wAErcIs4wZnb29nbGUDY29tAAABAAEAAADfAAStwizi
-      summary: 'IP / UDP / DNS Ans "173.194.44.231" '
-  test_control_a_lookup:
-    answered_packets:
-    - raw_packet: !!binary |
-        RbgA6OumAAAyEY4+CAgICH8AAAEANQA1ANSshgAAgYAAAQALAAAAAAZnb29nbGUDY29tAAABAAEG
-        Z29vZ2xlA2NvbQAAAQABAAAA4AAErcIs5QZnb29nbGUDY29tAAABAAEAAADgAAStwizkBmdvb2ds
-        ZQNjb20AAAEAAQAAAOAABK3CLOYGZ29vZ2xlA2NvbQAAAQABAAAA4AAErcIs6QZnb29nbGUDY29t
-        AAABAAEAAADgAAStwizoBmdvb2dsZQNjb20AAAEAAQAAAOAABK3CLOcGZ29vZ2xlA2NvbQAAAQAB
-        AAAA4AAErcIs4gZnb29nbGUDY29tAAABAAEAAADgAAStwizjBmdvb2dsZQNjb20AAAEAAQAAAOAA
-        BK3CLOAGZ29vZ2xlA2NvbQAAAQABAAAA4AAErcIs4QZnb29nbGUDY29tAAABAAEAAADgAAStwizu
-      summary: 'IP / UDP / DNS Ans "173.194.44.229" '
-  ...
+    - - raw_packet: !!binary |
+          RbgA6OumAAAyEY4+CAgICH8AAAEANQA1ANSshgAAgYAAAQALAAAAAAZnb29nbGUDY29tAAABAAEG
+          Z29vZ2xlA2NvbQAAAQABAAAA4AAErcIs5QZnb29nbGUDY29tAAABAAEAAADgAAStwizkBmdvb2ds
+          ZQNjb20AAAEAAQAAAOAABK3CLOYGZ29vZ2xlA2NvbQAAAQABAAAA4AAErcIs6QZnb29nbGUDY29t
+          AAABAAEAAADgAAStwizoBmdvb2dsZQNjb20AAAEAAQAAAOAABK3CLOcGZ29vZ2xlA2NvbQAAAQAB
+          AAAA4AAErcIs4gZnb29nbGUDY29tAAABAAEAAADgAAStwizjBmdvb2dsZQNjb20AAAEAAQAAAOAA
+          BK3CLOAGZ29vZ2xlA2NvbQAAAQABAAAA4AAErcIs4QZnb29nbGUDY29tAAABAAEAAADgAAStwizu
+        summary: 'IP / UDP / DNS Ans "173.194.44.229" '
+    - - raw_packet: !!binary |
+          RbgA6J0DAABAEdQUCtMACn8AAAEANQA1ANSxxAAAgYAAAQALAAAAAAZnb29nbGUDY29tAAABAAEG
+          Z29vZ2xlA2NvbQAAAQABAAAA3wAErcIs5wZnb29nbGUDY29tAAABAAEAAADfAAStwizoBmdvb2ds
+          ZQNjb20AAAEAAQAAAN8ABK3CLOkGZ29vZ2xlA2NvbQAAAQABAAAA3wAErcIs5gZnb29nbGUDY29t
+          AAABAAEAAADfAAStwizkBmdvb2dsZQNjb20AAAEAAQAAAN8ABK3CLOUGZ29vZ2xlA2NvbQAAAQAB
+          AAAA3wAErcIs7gZnb29nbGUDY29tAAABAAEAAADfAAStwizhBmdvb2dsZQNjb20AAAEAAQAAAN8A
+          BK3CLOAGZ29vZ2xlA2NvbQAAAQABAAAA3wAErcIs4wZnb29nbGUDY29tAAABAAEAAADfAAStwizi
+        summary: 'IP / UDP / DNS Ans "173.194.44.231" '
+    input: null
+    sent_packets:
+    - - raw_packet: !!binary |
+          RQAAOAABAABAEeujfwAAAQgICAgANQA1ACRccgAAAQAAAQAAAAAAAAZnb29nbGUDY29tAAABAAE=
+        summary: 'IP / UDP / DNS Qry "google.com" '
+    - - raw_packet: !!binary |
+          RQAAOAABAABAEfDWfwAAAQrTAAoANQA1ACRhpQAAAQAAAQAAAAAAAAZnb29nbGUDY29tAAABAAE=
+        summary: 'IP / UDP / DNS Qry "google.com" '
+    spoofing: false
+    test_a_lookup:
+      answered_packets:
+      - raw_packet: !!binary |
+          RbgA6J0DAABAEdQUCtMACn8AAAEANQA1ANSxxAAAgYAAAQALAAAAAAZnb29nbGUDY29tAAABAAEG
+          Z29vZ2xlA2NvbQAAAQABAAAA3wAErcIs5wZnb29nbGUDY29tAAABAAEAAADfAAStwizoBmdvb2ds
+          ZQNjb20AAAEAAQAAAN8ABK3CLOkGZ29vZ2xlA2NvbQAAAQABAAAA3wAErcIs5gZnb29nbGUDY29t
+          AAABAAEAAADfAAStwizkBmdvb2dsZQNjb20AAAEAAQAAAN8ABK3CLOUGZ29vZ2xlA2NvbQAAAQAB
+          AAAA3wAErcIs7gZnb29nbGUDY29tAAABAAEAAADfAAStwizhBmdvb2dsZQNjb20AAAEAAQAAAN8A
+          BK3CLOAGZ29vZ2xlA2NvbQAAAQABAAAA3wAErcIs4wZnb29nbGUDY29tAAABAAEAAADfAAStwizi
+        summary: 'IP / UDP / DNS Ans "173.194.44.231" '
+    test_control_a_lookup:
+      answered_packets:
+      - raw_packet: !!binary |
+          RbgA6OumAAAyEY4+CAgICH8AAAEANQA1ANSshgAAgYAAAQALAAAAAAZnb29nbGUDY29tAAABAAEG
+          Z29vZ2xlA2NvbQAAAQABAAAA4AAErcIs5QZnb29nbGUDY29tAAABAAEAAADgAAStwizkBmdvb2ds
+          ZQNjb20AAAEAAQAAAOAABK3CLOYGZ29vZ2xlA2NvbQAAAQABAAAA4AAErcIs6QZnb29nbGUDY29t
+          AAABAAEAAADgAAStwizoBmdvb2dsZQNjb20AAAEAAQAAAOAABK3CLOcGZ29vZ2xlA2NvbQAAAQAB
+          AAAA4AAErcIs4gZnb29nbGUDY29tAAABAAEAAADgAAStwizjBmdvb2dsZQNjb20AAAEAAQAAAOAA
+          BK3CLOAGZ29vZ2xlA2NvbQAAAQABAAAA4AAErcIs4QZnb29nbGUDY29tAAABAAEAAADgAAStwizu
+        summary: 'IP / UDP / DNS Ans "173.194.44.229" '
+    ...
 
 # Privacy considerations
 

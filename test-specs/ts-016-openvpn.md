@@ -56,12 +56,12 @@ failure:
 
 ## Semantics
 
-'success' - True or False - whether OpenVPN has bootstrapped.
-'body' - http page body if successfully requested.
-'failure' - optional, present if there is a failure.
-'l/usr/sbin/openvpn --config configfile': 
-  'stdout' - Contents of standard output produced by OpenVPN.
-  'stderr' - Contents of standard error produced by OpenVPN.
+    'success' - True or False - whether OpenVPN has bootstrapped.
+    'body' - http page body if successfully requested.
+    'failure' - optional, present if there is a failure.
+    'l/usr/sbin/openvpn --config configfile': 
+      'stdout' - Contents of standard output produced by OpenVPN.
+      'stderr' - Contents of standard error produced by OpenVPN.
 
 ## Possible conclusions
 

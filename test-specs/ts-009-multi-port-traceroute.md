@@ -69,11 +69,11 @@ The report object will contain keys of the format "hops_" +
 port, e.g. report['hops_22']. The corresponding value is an
 ordered list of the parsed responses, encoded like so:
 
-{'ttl': The TTL of the packet sent,
- 'address', The address of the remote host at which the TTL expired,
- 'rtt', the round-trip-time, measured as the difference between the received response and sent packet time.
- 'sport', the source port of the sent packet
-}
+    {'ttl': The TTL of the packet sent,
+     'address', The address of the remote host at which the TTL expired,
+     'rtt', the round-trip-time, measured as the difference between the received response and sent packet time.
+     'sport', the source port of the sent packet
+    }
 
 ## Possible conclusions
 
