@@ -49,6 +49,9 @@ Data Format Version: 0.2.0
 
     "data_format_version": "0.1.0|0.2.0",
 
+    "annotations": "Optional user provided annotations to the report that "
+            "provide metadata to this measurement",
+
     "report_filename": "{bucket_date}/{timestamp as '%Y%m%dT%h%M%sZ'}-{probe_cc}-{probe_asn}-{test_name}-{report_id}-{data_format_version}-{probe|backend}.json",
 
     "options": ["A list of options passed to the test as command line arguments"],
@@ -74,7 +77,7 @@ Data Format Version: 0.2.0
 
     "backend_version": "The version of the backend that collected this measurement",
 
-    "test_helpers": null,
+    "test_helpers": {"test_helper_name": "The address of the test helper used"},
 
     "test_name": "The name of the test that generated "
         "this measurement (ex. http_requests)",
