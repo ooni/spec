@@ -86,7 +86,7 @@ The HTTP request it performs is:
           related to prefixed by "AS" (ex. "AS1234")
 
      'probe_cc':
-        NEW since oonibackend 1.3
+        NEW since oonibackend 1.2.0
         `string` the two-letter country code of the probe as defined in
         ISO3166-1 alpha-2 or ZZ when undefined (ex. "IT")
 
@@ -99,12 +99,12 @@ The HTTP request it performs is:
         `string` the version of the test peforming the network measurement.
 
      'data_format_version':
-        NEW since oonibackend 1.3
+        NEW since oonibackend 1.2.0
         `string` that must be either "json" or "yaml" to identify the format
         of the content.
 
      'test_start_time':
-        NEW since oonibackend 1.3
+        NEW since oonibackend 1.2.0
         `string` timestamp in UTC of when the test was started using the format "%Y-%m-%d %H:%M:%S"
 
      'input_hashes':
@@ -117,7 +117,7 @@ The HTTP request it performs is:
         (optional) `string` the name of the required test_helper for this test.
 
      'content':
-        DEPRECATED since oonibackend 1.3
+        DEPRECATED since oonibackend 1.2.0
         (optional) `string` it is optionally possible to create a report with
           already some data inside of it.
 
@@ -130,7 +130,7 @@ The HTTP request it performs is:
      'format':
         `string` that must be either "json" or "yaml" to identify the format
         of the content.
-        New since version 0.2.0 of the data format or 1.2 of the backend.
+        New since version 0.2.0 of the data format or 1.2.0 of the backend.
 
      }
 
@@ -152,7 +152,7 @@ backend software like follows:
         (conditional) `string` the address of a test helper that the client requested.
 
       'supported_formats':
-        NEW since oonibackend 1.3
+        NEW since oonibackend 1.2.0
         `list` of strings detailing what are the supported formats for
         submitted reports. Can either be "json" or "yaml".
 
