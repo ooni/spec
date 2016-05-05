@@ -135,7 +135,7 @@ automatically sent to OONI's measurement collector by default.
 Users can choose to *opt-out* from sending OONI their measurements by running
 ooniprobe with the `-n` command line option.
 
-### Data OONI stores
+### Data OONI Stores
 
 OONI stores all of the aforementioned data that it collects and processes,
 including users' IP addresses and other potentially personally-identifiable
@@ -205,3 +205,14 @@ OONI encourages its website visitors and software users to frequently check this
 page for any changes to its Data Policy. The continued use of OONI's website and
 software after any change in this Data Policy will constitute acceptance of such
 change.
+
+
+
+Thoughts or questions about this Data Policy? Please send an email to
+**contact@ooni.io**. 
+
+pub   4096R/0CB177B7 2016-03-23 [expires: 2017-03-23]
+Key fingerprint = 4C15 DDA9 96C6 C0CF 48BD  3309 6B29 43F0 0CB1 77B7  
+uid  [ultimate] OONI -Open Observatory of Network Interference 
+sub   4096R/374399AB 2016-03-23
+[expires: 2017-03-23]
