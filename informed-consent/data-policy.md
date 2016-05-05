@@ -36,9 +36,9 @@ spec), the OONI project can collect the following types of data:
 
 OONI *by default* collects the code which corresponds to the country from which
 the user is running OONI tests from, by automatically searching for it based on
-the user's IP address through the [MaxMind
-GeoIPdatabase](https://www.maxmind.com/en/home). The collection of country codes
-is an important part of OONI's research, as it enables OONI to map out global
+the user's IP address through the [MaxMind GeoIP 
+database](https://www.maxmind.com/en/home). The collection of country codes is
+an important part of OONI's research, as it enables OONI to map out global
 network measurements and to identify where network interferences take place.
 This information could potentially be useful to local researchers, journalists
 and advocates who aim to discover network interferences (such as censorship and
@@ -46,7 +46,7 @@ traffic manipulation) in a country.
 
 OONI software users can choose to *opt-out* from the collection of country codes
 by editing the ooniprobe configuration file inside of
-**~/.ooni/ooniprobe.conf**.
+`~/.ooni/ooniprobe.conf`.
 
 **Autonomous System Number (ASN)**
 
@@ -58,8 +58,8 @@ regards to which network providers are implementing censorship or other forms of
 network interference.
 
 OONI software users can choose to *opt-out* from the collection of their
-network's ASN by editing the ooniprobe configuration file inside of
-**~/.ooni/ooniprobe.conf**.
+network's ASN by editing the ooniprobe configuration file inside of 
+`~/.ooni/ooniprobe.conf`.
 
 **Date of measurement**
 
@@ -82,7 +82,7 @@ based on a user's network location.
 
 By default, OONI does *not* collect users' IP addresses, but they can choose to
 *opt-in* (to provide more accurate information) by editing the ooniprobe
-configuration file inside of *~/.ooni/ooniprobe.conf**.
+configuration file inside of `~/.ooni/ooniprobe.conf`.
 
 **Network measurements**
 
@@ -94,7 +94,7 @@ details about what collected network measurements entail can be viewed through
 [public list of measurements](https://measurements.ooni.torproject.org/).
 
 OONI software users can choose to *opt-out* from sending OONI their measurements
-by running **ooniprobe -n**.
+by running `ooniprobe -n`.
 
 ### Data OONI Processes
 
@@ -126,7 +126,7 @@ To answer such questions, OONI's pipeline is designed to process data which is
 automatically sent to OONI's measurement collector by default.
 
 Users can choose to *opt-out* from sending OONI their measurements by running
-**ooniprobe -n**.
+`ooniprobe -n`.
 
 ### Data OONI stores
 
@@ -137,8 +137,8 @@ despite OONI's efforts to prevent this from happening.
 
 Users can *opt-out* from sending specific types of data to OONI's measurement
 collector as described in previous sections of this Data Policy, or they can
-*opt-out* from sending OONI any of their measurements by running **ooniprobe
--n**.
+*opt-out* from sending OONI any of their measurements by running
+`ooniprobe -n`.
 
 ### Data OONI Publishes
 
@@ -149,8 +149,7 @@ through:
 
 * [OONI Explorer](https://explorer.ooni.torproject.org/world/)
 
-* OONI's [public list of
-* measurements](https://measurements.ooni.torproject.org/)
+* [OONI's list of measurements](https://measurements.ooni.torproject.org/)
 
 Both resources include the same measurements; the only difference is that OONI
 Explorer is an interactive visualization of the measurements.
@@ -170,7 +169,7 @@ of this Data Policy.
 
 OONI software users can *opt-out* from sending OONI's measurement collector
 specific types of data by editing the ooniprobe configuration file inside of
-**~/.ooni/ooniprobe.conf**. Through this file, users can opt-out from sending
+`~/.ooni/ooniprobe.conf`. Through this file, users can opt-out from sending
 OONI the following types of information:
 
 * Country code
@@ -182,7 +181,7 @@ By default, OONI does *not* collect users' IP addresses, but users can choose to
 file.
 
 Users can also choose to *opt-out* from sending OONI's measurement collector any
-data at all, by running **ooniprobe -n**. This option is quite often chosen by
+data at all, by running `ooniprobe -n`. This option is quite often chosen by
 users who prefer to *not* have their measurements published, due to potential
 risks that could emerge as a result of such publication.
 
