@@ -148,7 +148,7 @@ In summary, OONI tests are designed to:
 
 We urge you to review the
 **[specifications](https://github.com/TheTorProject/ooni- spec/tree/master/test-
-specs)** for each OONI test carefully, prior to running it.
+specs)** for each OONI test carefully, prior to running them.
 
 **Legality of tested websites**
 
@@ -213,7 +213,7 @@ Please note though that we are *not* lawyers, but we might be able to seek legal
 advice for you or to put you in touch with lawyers who could address your
 questions and/or concerns.
 
-Some relevant resources include
+Some relevant resources include:
 
 * [Tor Legal FAQ](https://www.eff.org/torchallenge/faq.html)
 
