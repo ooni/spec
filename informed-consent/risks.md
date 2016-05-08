@@ -16,14 +16,13 @@ considered a form of espionage.
 Some questions worth asking lawyers relating to the use of OONI can include
 the following:
 
-* Does country X have laws in force that restrict or prohibit the use of
-  **network measurement software**?
+* Does country X have laws in force that restrict or prohibit the use of:
 
-* Does country X have laws in force that restrict or prohibit the use of
-  **censorship detection software**?
+  * **network measurement software**?
 
-* Does country X have laws in force that restrict or prohibit the use of
-  **censorship circumvention software**?
+  * **censorship detection software**?
+
+  * **censorship circumvention software**?
 
 * Does country X have laws in force that restrict or prohibit certain types
   of **internet access**? (for example, is it illegal to access certain
@@ -32,9 +31,6 @@ the following:
 * Does country X have laws in force or ISP License Agreements that require
   Internet Service Providers (ISPs) to track users' online activities and to
   retain such records?
-
-* Does country X have laws in force that could potentially be used to
-  criminalize the use of software like OONI?
 
 * Have laws or rules in country X ever been used to criminalize groups or
   individuals based on their internet activity? (this does not necessarily need
@@ -71,11 +67,7 @@ consult with lawyers and understand legal risks *prior* to using OONI.
 
 ## Risks: Detection of OONI usage
 
-Even though OONI is one of the various projects hosted under the [Tor
-Project](https://www.torproject.org/), OONI is *not* designed for online
-anonymity. On the contrary, OONI tests should be run *without* the use of Tor
-software to increase the accuracy of network measurements. This means that
-various legal and extra-legal risks (as explained in the previous section) might
+Various legal and extra-legal risks (as explained in the previous section) might
 potentially emerge if third parties (such as governments and ISPs) who view the
 use of OONI as an illegal or generally "suspicious" activity detect an OONI
 user.
@@ -116,7 +108,7 @@ published through:
 
 * [OONI's list of measurements](https://measurements.ooni.torproject.org/)
 
-Unless users **[opt-out](https://github.com/agrabeli/ooni-spec/blob/data-policy
+Unless users **[opt-out](https://github.com/TheTorProject/ooni-spec/blob/master
 /informed-consent/data-policy.md#opt-out)**, all measurements that are generated
 through OONI tests are by default sent to OONI's measurement collector and
 automatically published through the above resources.
@@ -188,24 +180,41 @@ your ISP (and possibly, of your government) if detected.
 
 **Legality of anonymity software**
 
-We encourage you to check whether the use of anonymity software (such as a VPN
-or proxy) is illegal in your country if you plan on running OONI's
-**[Psiphon](https://github.com/TheTorProject/ooni-spec/blob/master/test-
-specs/ts-015-psiphon.md)**, **[Lantern](https://github.com/TheTorProject/ooni-
-spec/blob/master/test-specs/ts-013-lantern.md)** and
-**[OpenVPN](https://github.com/TheTorProject/ooni-spec/blob/master/test-
-specs/ts-016-openvpn.md)** tests which require the installation of circumvention
-software.
+The installation of [Tor](https://www.torproject.org/) software, which is
+designed for online anonymity, is a *prerequisite* for using OONI due to the
+following:
 
-Similarly, prior to running OONI's **[bridge-
-reachability](https://github.com/TheTorProject/ooni-spec/blob/master/test-
-specs/ts-011-bridge-reachability.md)** test which is designed to check whether
-[Tor bridges](https://bridges.torproject.org/) are blocked or not, we encourage
-you to consult with a lawyer on potential risks of connecting to Tor software.
+* OONI's [HTTP-request test](https://github.com/TheTorProject/ooni-
+  spec/blob/master/test-specs/ts-003-http-requests.md) is designed to compare
+  HTTP requests over the network of the user and over Tor
+
+* Unless users [opt-out](https://github.com/TheTorProject/ooni-
+  spec/blob/master/informed-consent/data-policy.md#opt-out), all measurements
+  are by default sent to OONI over Tor
+
+Furthermore, OONI's **[bridge-reachability](https://github.com/TheTorProject
+/ooni-spec/blob/master/test- specs/ts-011-bridge-reachability.md)** test is
+designed to check whether [Tor bridges](https://bridges.torproject.org/) are
+blocked or not. 
+
+Similarly, the following OONI tests require the installation of circumvention
+software:
+
+* **[Psiphon](https://github.com/TheTorProject/ooni-spec/blob/master/test-
+specs/ts-015-psiphon.md)**
+
+* **[Lantern](https://github.com/TheTorProject/ooni-
+spec/blob/master/test-specs/ts-013-lantern.md)**
+
+* **[OpenVPN](https://github.com/TheTorProject/ooni-spec/blob/master/test-
+specs/ts-016-openvpn.md)**
+
+We therefore encourage you to consult with a lawyer on the legality of anonymity
+software (such as Tor, a VPN or a proxy) prior to using OONI.
 
 ## Legal advice
 
-We strongly encourage you to consult with lawyers and understand legal risks
+We strongly urge you to consult with lawyers and to understand legal risks
 *prior* to using OONI.
 
 You can also reach out to us with specific inquiries at **legal@ooni.nu**.
