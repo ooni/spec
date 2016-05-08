@@ -172,9 +172,7 @@ of service of your Internet Service Provider (ISP)* or legally questionable in
 your country. 
 
 OONI's **[HTTP-invalid-request-line](https://github.com/TheTorProject/ooni-
-spec/blob/master/test-specs/ts-007-http-invalid-request-line.md)** and **[HTTP-
-header-field-manipulation](https://github.com/TheTorProject/ooni-
-spec/blob/master/test-specs/ts-006-header-field-manipulation.md)** tests, for
+spec/blob/master/test-specs/ts-007-http-invalid-request-line.md)** test, for
 example, might not be considered illegal, but might trigger the suspicion of
 your ISP (and possibly, of your government) if detected.
 
