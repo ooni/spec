@@ -7,7 +7,7 @@
 This Data Policy explains what data is collected, processed, stored and
 published by the [Open Observatory of Network Interference
 (OONI)](https://ooni.torproject.org/) project, as well as how users can opt-out
-from sending OONI their network measurements.
+from sending OONI their network measurements. 
 
 The use of OONI's software and website constitutes an acceptance of the policies
 outlined in this Data Policy.
@@ -17,6 +17,10 @@ outlined in this Data Policy.
 OONI does *not* use tracking cookies, analytics or any other tracking
 technologies through its [website](https://ooni.torproject.org/) and does *not*
 collect any information about its website visitors.
+
+Access logs, which only include the date of the requested page, can be stored
+for up to 2 weeks and do *not* include the IP addresses of website visitors nor
+the time of access.
 
 If this changes in the future, users will be notified through this Data Policy.
 
@@ -67,12 +71,12 @@ network's ASN by [editing the ooniprobe
 configuration](https://github.com/TheTorProject/ooni-probe#configuring-
 ooniprobe) file inside of  `~/.ooni/ooniprobe.conf`.
 
-**Date of measurement**
+**Date and time of measurements**
 
-OONI *by default* collects the date of when tests were run. This information
-helps OONI evaluate when network interferences occur and to compare them across
-time. Users *cannot* opt-out from this type of data collection, as it is a core
-component of OONI's research.
+OONI *by default* collects the time and date of when tests were run. This
+information helps OONI evaluate when network interferences occur and to compare
+them across time. Users *cannot* opt-out from this type of data collection, as
+it is a core component of OONI's research.
 
 **IP addresses and other information**
 
@@ -179,7 +183,7 @@ of this Data Policy.
 OONI software users can *opt-out* from sending OONI's measurement collector
 specific types of data by [editing the ooniprobe 
  configuration](https://github.com/TheTorProject/ooni-probe#configuring-ooniprobe)
- file inside of ~/.ooni/ooniprobe.conf`. Through this file, users can opt-out 
+ file inside of `~/.ooni/ooniprobe.conf`. Through this file, users can opt-out 
 from sending OONI the following types of information:
 
 * Country code
@@ -208,11 +212,12 @@ change.
 
 
 
+
+
 Thoughts or questions about this Data Policy? Please send an email to
 **contact@ooni.io**. 
 
-pub   4096R/0CB177B7 2016-03-23 [expires: 2017-03-23]
-Key fingerprint = 4C15 DDA9 96C6 C0CF 48BD  3309 6B29 43F0 0CB1 77B7  
-uid  [ultimate] OONI -Open Observatory of Network Interference 
-sub   4096R/374399AB 2016-03-23
-[expires: 2017-03-23]
+Key ID:
+    0CB177B7
+Fingerprint:
+    4C15 DDA9 96C6 C0CF 48BD 3309 6B29 43F0 0CB1 77B7
