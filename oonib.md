@@ -694,7 +694,22 @@ And the bouncer replies:
     'net-tests': [
         {
             'test-helpers': [
-                {'requested test helper': 'address'},
+                {'requested test helper name': 'address'},
+                ...
+            ],
+            'test-helpers-alternate': [
+                {'requested test helper name': [
+                        {
+                            'type': 'cloudfront',
+                            'address': 'https://xxx.yyy.tld/',
+                            'front': 'zzz.ttt.tld'
+                        },
+                        {
+                            'type': 'https',
+                            'address': 'https://xxx.yyy.tld/'
+                        }
+                    ]
+                },
                 ...
             ],
             'input-hashed': ['requested input id', ...],
@@ -704,8 +719,8 @@ And the bouncer replies:
             'collector-alternate': [
                 {
                     'type': 'cloudfront',
-                    'hostname': 'xxx.yyy.tld',
-                    'front': 'xxx.yyy.tld'
+                    'address': 'https://xxx.yyy.tld/',
+                    'front': 'zzz.ttt.tld'
                 },
                 {
                     'type': 'https',
