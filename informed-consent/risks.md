@@ -96,7 +96,11 @@ able to detect that you are using OONI. You can view which services OONI tests
 **Physical or remote access to a user's device**
 
 Anybody with physical or remote access to your computer, now or in the future,
-might be able to see that you have installed or run OONI.
+might be able to see that you have downloaded, installed or run OONI.
+
+To delete traces of ooniprobe usage, you can re-install your operating system or
+wipe your computer and remove everything (operating system, programs and files)
+from your hard drive.
 
 **Publication of measurements**
 
@@ -135,8 +139,10 @@ In summary, OONI tests are designed to:
 * Detect the presence of systems which might be responsible for censorship,
   surveillance and traffic manipulation
 
-* Examine whether censorship circumvention tools, such as Tor bridges, Psiphon,
-  Lantern and OpenVPN, are blocked
+* Examine whether censorship circumvention tools, such as [Tor
+bridges](https://bridges.torproject.org/), [Psiphon](https://psiphon.ca/),
+[Lantern](https://getlantern.org/) and [OpenVPN](https://openvpn.net/), are
+blocked
 
 We urge you to review the
 **[specifications](https://github.com/TheTorProject/ooni- spec/tree/master/test-
@@ -172,11 +178,58 @@ of service of your Internet Service Provider (ISP)* or legally questionable in
 your country. 
 
 OONI's **[HTTP-invalid-request-line](https://github.com/TheTorProject/ooni-
-spec/blob/master/test-specs/ts-007-http-invalid-request-line.md)** test, for
-example, might not be considered illegal, but might trigger the suspicion of
-your ISP (and possibly, of your government) if detected.
+spec/blob/master/test-specs/ts-007-http-invalid-request-line.md)** test (which
+is included in oonideckgen) probably presents the *highest risk* as its use
+*might* trigger the suspicion of your ISP (and possibly, of your government) and
+lead to prosecution under **computer misuse laws** (or other laws) if detected.
 
-**Legality of anonymity software**
+Specifically, OONI's **[HTTP-invalid-request-
+line](https://github.com/TheTorProject/ooni- spec/blob/master/test-specs/ts-007
+-http-invalid-request-line.md)** test is designed to send "out-of-spec
+messages", which are protocol messages that are *not* valid according to the
+relevant protocol speficiation. Such messages are part of an invalid HTTP
+request line, containing an invalid HTTP version number, an invalid field count
+and a huge request method. This test sends "out-of-spec" messages to an echo
+service, which is designed to simply send back to the originating source any
+data that it receives. If a network component (which could potentially include
+censorship and/or surveillance software) is present in the network between the
+user and an echo service, it will intercept the invalid HTTP request line ("out-
+of-spec message") and trigger an error, which will be sent back to the user.
+Such errors indicate the presence of network components (some of which may or
+may not responsible for censorship and traffic manipulation) and, in some cases,
+the vendors of such technologies are identified (like in the case of BlueCoat,
+for example).
+
+However, it's important to note that running this test can potentially be very
+**risky**, as **the operators of network components affected by out-of-spec
+messages might view them as attacks**. There have been
+[cases](http://www.theregister.co.uk/2005/10/11/tsunami_hacker_followup/)
+(though unrelated to OONI) where people were convicted under **computer misuse
+laws** for sending out-of-spec messages (or messages that were perceived to be
+out-of-spec), even when there is considerable doubt that they intended to
+perform an attack. Such risks have been documented in Western democracies, and
+are likely to be even worse in countries where the rule of law is less
+consistently applied.
+
+By running oonideckgen, you *by default* run OONI's HTTP-invalid-request-line
+test (in addition to the HTTP-request, DNS-consistency and HTTP-header-field-
+manipulation tests). You can *opt-out* from running this test by specifying the
+test(s) that you want to run and by running it/them manually. You can view how
+to run each OONI test through the ooniprobe `-s` command line option.
+
+You can run each test included in oonideckgen separately through the following:
+
+* **HTTP-request test:** `ooniprobe blocking/http_requests`
+
+* **DNS consistency test:** `ooniprobe blocking/dns_consistency`
+
+* **HTTP header field manipulation test:** `ooniprobe
+    manipulation/http_header_field_manipulation`
+
+* **HTTP invalid request line test:** `ooniprobe
+    manipulation/http_invalid_request_line`
+
+**Legality of anonymity software
 
 The installation of [Tor](https://www.torproject.org/) software, which is
 designed for online anonymity, is a *prerequisite* for using OONI due to the
@@ -208,7 +261,7 @@ spec/blob/master/test-specs/ts-013-lantern.md)**
 specs/ts-016-openvpn.md)**
 
 We therefore encourage you to consult with a lawyer on the legality of anonymity
-software (such as Tor, a VPN or a proxy) prior to using OONI.
+software (such as Tor, a VPN or a proxy) *prior* to using OONI.
 
 ## Legal advice
 
