@@ -21,8 +21,8 @@ it's not always clear what that software is. In some cases though, we are able
 to identify censorship and/or surveillance vendors through the error messages in
 the received invalid HTTP response.
 
-So far, based on this technique we have detected the use of BlueCoat, Squid and
-Privoxy in networks across 11 countries around the world.
+So far, based on this technique we have detected the use of **BlueCoat**,
+**Squid** and **Privoxy** in networks across 11 countries around the world.
 
 **Note:** A false negative could potentially occur in the hypothetical instance
 that ISPs are using highly sophisticated censorship and/or surveillance software
