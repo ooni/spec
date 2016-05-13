@@ -234,7 +234,7 @@ You can run each test included in oonideckgen separately through the following:
 * **HTTP invalid request line test:** `ooniprobe
     manipulation/http_invalid_request_line`
 
-**Legality of anonymity software
+**Legality of anonymity software**
 
 The installation of [Tor](https://www.torproject.org/) software, which is
 designed for online anonymity, is a *prerequisite* for using OONI due to the
