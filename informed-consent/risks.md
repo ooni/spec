@@ -95,10 +95,11 @@ able to detect that you are using OONI. You can view which services OONI tests
 
 **Physical or remote access to a user's device**
 
-Anybody with physical or remote access to your computer, now or in the future,
-might be able to see that you have downloaded, installed or run OONI.
+As with any other software, the usage of ooniprobe can leave traces. As such,
+anybody with physical or remote access to your computer might be able to see
+that you have downloaded, installed or run OONI.
 
-To delete traces of ooniprobe usage, you can re-install your operating system or
+To remove traces of ooniprobe usage, you can re-install your operating system or
 wipe your computer and remove everything (operating system, programs and files)
 from your hard drive.
 
@@ -169,6 +170,10 @@ country. We therefore recommend that you examine carefully whether you are
 willing to take the risk of accessing and downloading data from such websites
 through OONI tests, especially if this could potentially lead to various forms
 of retribution.
+
+If you are uncertain of the potential implications of connecting to and
+downloading data from the websites listed in the above lists, you can pass your
+*own* test list with the ooniprobe `-f` command line option.
 
 **Legality of OONI software tests**
 
