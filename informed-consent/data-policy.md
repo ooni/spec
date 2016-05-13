@@ -37,8 +37,8 @@ all types of data collection by OONI, though this would limit OONI's research.
 
 ### Data OONI Collects
 
-When a user runs [OONI software tests](https://github.com/TheTorProject/ooni-
-spec), the OONI project can collect the following types of data:
+When a user runs [OONI software tests](https://github.com/TheTorProject/ooni-spec),
+ the OONI project can collect the following types of data:
 
 **Country code**
 
@@ -68,8 +68,8 @@ network interference.
 
 OONI software users can choose to *opt-out* from the collection of their
 network's ASN by [editing the ooniprobe 
-configuration](https://github.com/TheTorProject/ooni-probe#configuring-
-ooniprobe) file inside of  `~/.ooni/ooniprobe.conf`.
+configuration](https://github.com/TheTorProject/ooni-probe#configuring-ooniprobe)
+file inside of  `~/.ooni/ooniprobe.conf`.
 
 **Date and time of measurements**
 
@@ -91,7 +91,7 @@ occur if the tested websites include tracking technologies or custom content
 based on a user's network location.
 
 By default, OONI does *not* collect users' IP addresses, but they can choose to
-*opt-in* (to provide more accurate information) by [editing the ooniprobe 
+*opt-in* (to provide more accurate information) by [editing the ooniprobe
  configuration](https://github.com/TheTorProject/ooni-probe#configuring-ooniprobe) 
 file inside of `~/.ooni/ooniprobe.conf`.
 
