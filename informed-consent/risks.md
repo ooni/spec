@@ -156,13 +156,13 @@ request](https://github.com/TheTorProject/ooni-spec/blob/master/test-
 specs/ts-003-http-requests.md)** test, you will connect to and download data
 from various websites which are included in the following two lists:
 
-* **Country-specific test list:** https://github.com/citizenlab/test-
-  lists/tree/master/lists (search for your country's test list based on its
-  country code)
+* **Country-specific test list:**
+  https://github.com/citizenlab/test-lists/tree/master/lists
+  (search for your country's test list based on its country code)
 
-* **Global test list:** https://github.com/citizenlab/test-
-  lists/blob/master/lists/global.csv (including a list of globally accessed
-  websites)
+* **Global test list:**
+  https://github.com/citizenlab/test-lists/blob/master/lists/global.csv
+  (including a list of globally accessed websites)
 
 Many websites included in the above lists will likely be controversial and can
 include pornography or hate speech, which might be illegal to access in your
@@ -180,30 +180,30 @@ downloading data from the websites listed in the above lists, you can pass your
 While network measurements or the use of censorship detection software might not
 be illegal per se, some network tests that OONI does might be against the *terms
 of service of your Internet Service Provider (ISP)* or legally questionable in
-your country. 
+your country.
 
-OONI's **[HTTP-invalid-request-line](https://github.com/TheTorProject/ooni-
-spec/blob/master/test-specs/ts-007-http-invalid-request-line.md)** test (which
-is included in oonideckgen) probably presents the *highest risk* as its use
-*might* trigger the suspicion of your ISP (and possibly, of your government) and
-lead to prosecution under **computer misuse laws** (or other laws) if detected.
+OONI's
+**[HTTP-invalid-request-line](https://github.com/TheTorProject/ooni-spec/blob/master/test-specs/ts-007-http-invalid-request-line.md)**
+test (which is included in oonideckgen) probably presents the *highest risk* as
+its use *might* trigger the suspicion of your ISP (and possibly, of your
+government) and lead to prosecution under **computer misuse laws** (or other
+laws) if detected.
 
 Specifically, OONI's **[HTTP-invalid-request-
-line](https://github.com/TheTorProject/ooni- spec/blob/master/test-specs/ts-007
--http-invalid-request-line.md)** test is designed to send "out-of-spec
-messages", which are protocol messages that are *not* valid according to the
-relevant protocol speficiation. Such messages are part of an invalid HTTP
-request line, containing an invalid HTTP version number, an invalid field count
-and a huge request method. This test sends "out-of-spec" messages to an echo
-service, which is designed to simply send back to the originating source any
-data that it receives. If a network component (which could potentially include
-censorship and/or surveillance software) is present in the network between the
-user and an echo service, it will intercept the invalid HTTP request line ("out-
-of-spec message") and trigger an error, which will be sent back to the user.
-Such errors indicate the presence of network components (some of which may or
-may not responsible for censorship and traffic manipulation) and, in some cases,
-the vendors of such technologies are identified (like in the case of BlueCoat,
-for example).
+line](https://github.com/TheTorProject/ooni- spec/blob/master/test-specs/ts-007-http-invalid-request-line.md)**
+test is designed to send "out-of-spec messages", which are protocol messages
+that are *not* valid according to the relevant protocol speficiation. Such
+messages are part of an invalid HTTP request line, containing an invalid HTTP
+version number, an invalid field count and a huge request method. This test
+sends "out-of-spec" messages to an echo service, which is designed to simply
+send back to the originating source any data that it receives. If a network
+component (which could potentially include censorship and/or surveillance
+software) is present in the network between the user and an echo service, it
+will intercept the invalid HTTP request line ("out- of-spec message") and
+trigger an error, which will be sent back to the user. Such errors indicate the
+presence of network components (some of which may or may not responsible for
+censorship and traffic manipulation) and, in some cases, the vendors of such
+technologies are identified (like in the case of BlueCoat, for example).
 
 However, it's important to note that running this test can potentially be very
 **risky**, as **the operators of network components affected by out-of-spec
@@ -240,30 +240,28 @@ The installation of [Tor](https://www.torproject.org/) software, which is
 designed for online anonymity, is a *prerequisite* for using OONI due to the
 following:
 
-* OONI's [HTTP-request test](https://github.com/TheTorProject/ooni-
-  spec/blob/master/test-specs/ts-003-http-requests.md) is designed to compare
-  HTTP requests over the network of the user and over Tor
+* OONI's
+  [HTTP-request test](https://github.com/TheTorProject/ooni-spec/blob/master/test-specs/ts-003-http-requests.md)
+  is designed to compare HTTP requests over the network of the user and over
+  Tor
 
-* Unless users [opt-out](https://github.com/TheTorProject/ooni-
-  spec/blob/master/informed-consent/data-policy.md#opt-out), all measurements
-  are by default sent to OONI over Tor
+* Unless users
+  [opt-out](https://github.com/TheTorProject/ooni-spec/blob/master/informed-consent/data-policy.md#opt-out),
+  all measurements are by default sent to OONI over Tor
 
 Furthermore, OONI's **[bridge-reachability](https://github.com/TheTorProject
 /ooni-spec/blob/master/test- specs/ts-011-bridge-reachability.md)** test is
 designed to check whether [Tor bridges](https://bridges.torproject.org/) are
-blocked or not. 
+blocked or not.
 
 Similarly, the following OONI tests require the installation of circumvention
 software:
 
-* **[Psiphon](https://github.com/TheTorProject/ooni-spec/blob/master/test-
-specs/ts-015-psiphon.md)**
+* **[Psiphon](https://github.com/TheTorProject/ooni-spec/blob/master/test-specs/ts-015-psiphon.md)**
 
-* **[Lantern](https://github.com/TheTorProject/ooni-
-spec/blob/master/test-specs/ts-013-lantern.md)**
+* **[Lantern](https://github.com/TheTorProject/ooni-spec/blob/master/test-specs/ts-013-lantern.md)**
 
-* **[OpenVPN](https://github.com/TheTorProject/ooni-spec/blob/master/test-
-specs/ts-016-openvpn.md)**
+* **[OpenVPN](https://github.com/TheTorProject/ooni-spec/blob/master/test-specs/ts-016-openvpn.md)**
 
 We therefore encourage you to consult with a lawyer on the legality of anonymity
 software (such as Tor, a VPN or a proxy) *prior* to using OONI.
@@ -282,7 +280,7 @@ Some relevant resources include:
 
 * [Tor Legal FAQ](https://www.eff.org/torchallenge/faq.html)
 
-* [EFF Know Your Rights](https://www.eff.org/issues/know-your-rights) 
+* [EFF Know Your Rights](https://www.eff.org/issues/know-your-rights)
 
 
 **Note:** The use of OONI is at your *own risk* in accordance to OONI's software
