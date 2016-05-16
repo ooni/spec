@@ -23,4 +23,6 @@ cloud-fronted domains, such as google.com, through the following way:
 [user]
 
 In short, this test does an encrypted connection to cloud-fronted domains over
-HTTPS and examines whether it can connect to them or not.
+HTTPS and examines whether it can connect to them or not. As such, this test
+enables users to check whether Meek enables the circumvention of censorship in
+an automated way.
