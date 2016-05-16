@@ -3,14 +3,14 @@
 This test tries to detect the presence of network components (“middle box”)
 which could be responsible for censorship and/or traffic manipulation.
 
-A very useful debugging and measurement tool is an echo service, which simply
-sends back to the originating source any data it receives. Instead of sending a
-normal HTTP request, this test sends an invalid HTTP request line - containing
-an invalid HTTP version number, an invalid field count and a huge request method
-– to an echo service listening on the standard HTTP port. If a middle box is not
-present in the network between the user and an echo service, then the echo
-service will send the invalid HTTP request line back to the user, exactly as it
-received it. In such cases, we assume that there is no visible traffic
+Instead of sending a normal HTTP request, this test sends an invalid HTTP
+request line - containing an invalid HTTP version number, an invalid field count
+and a huge request method – to an echo service listening on the standard HTTP
+port. An echo service is a very useful debugging and measurement tool, which
+simply sends back to the originating source any data it receives. If a middle
+box is not present in the network between the user and an echo service, then the
+echo service will send the invalid HTTP request line back to the user, exactly
+as it received it. In such cases, we assume that there is no visible traffic
 manipulation in the tested network.
 
 If, however, a middle box is present in the tested network, the invalid HTTP
@@ -19,10 +19,12 @@ and that will subsequently be sent back to OONI. Such errors indicate that
 software for traffic manipulation is likely placed in the tested network, though
 it's not always clear what that software is. In some cases though, we are able
 to identify censorship and/or surveillance vendors through the error messages in
-the received invalid HTTP response.
+the received HTTP response.
 
-So far, based on this technique we have detected the use of **BlueCoat**,
-**Squid** and **Privoxy** in networks across 11 countries around the world.
+So far, based on this technique we have
+[detected](https://explorer.ooni.torproject.org/highlights/) the use of
+**BlueCoat**, **Squid** and **Privoxy** in networks across 11 countries around
+the world.
 
 **Note:** A false negative could potentially occur in the hypothetical instance
 that ISPs are using highly sophisticated censorship and/or surveillance software
