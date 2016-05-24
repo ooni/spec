@@ -133,6 +133,11 @@ The experiment itself consists of the following steps:
       The report key "status_code_match" is set to false if the status code
       of the experiment is inconsistent with the control.
 
+    * Does the HTML title tag match between the control and experiment?
+      The report key "title_match" is set to false if the first word in the title
+      is longer than 5 characters and matches the first word in the title tag of
+      the experiment.
+
 6. **Reason for blocking**
 
 The report key **blocking** is used to identify the reason for blocking. This
@@ -165,6 +170,7 @@ either fails or we get back a HTTP response contains a page we don't expect.
     "body_length_match": true | false | null,
     "headers_match": true | false | null,
     "status_code_match": true | false | null,
+    "title_match": true | false | null,
     "tcp_connect": [
         {
             "ip": "xxx.xxx.xxx.xxx",
@@ -177,7 +183,7 @@ either fails or we get back a HTTP response contains a page we don't expect.
         }
     ],
     "accessible": true | false | null,
-    "blocking": "tcp_ip" | "dns" | "http" | null
+    "blocking": "tcp_ip" | "dns" | "http-diff" | "http-failure" | null
 }
 ```
 
@@ -190,8 +196,9 @@ and the expected HTTP response is received).
 
 The flag "blocking" is set to null if "accessible" is true, otherwise it
 indicates the reason for blocking, if that is due to inconsistent DNS
-responses (dns), TCP/IP based blocking (tcp_ip) or if the body lengths mismatch
-(http).
+responses (dns), TCP/IP based blocking (tcp_ip), if the HTTP page response
+matches with the control (http-diff) or if the HTTP response failed
+(http-failure).
 
 ## Possible conclusions
 
