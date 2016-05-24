@@ -6,20 +6,20 @@ This consent form outlines the roles, responsibilities and rights of partners
 under the OONI Partnership Program, as well as the purpose, benefits, risks and
 duration of the partnership.
 
-## PARTNERSHIP
+## Partnership
 
 This consent form establishes a partnership between the Open Observatory of
 Network Interference (OONI) and
 
 ...............................................................................
 
-## PURPOSE OF THE PARTNERSHIP
+## Purpose of the partnership
 
 The aim of the partnership is to study network measurements and to increase
 transparency and public awareness about online censorship and other forms of
 network interference.
 
-## PARTNERSHIP REQUIREMENTS: ROLES AND RESPONSIBILITIES
+## Partnership requirements: Roles and Responsibilities
 
 The roles and responsibilities of partners are outlined below. 
 
@@ -82,7 +82,7 @@ partnership:
 
 * [ ] Providing (socio-political) context to the measurements based on research
 
-## PARTNERSHIP BENEFITS
+## Benefits
 
 Throughout the duration of the partnership you will contribute to the study of
 network measurements which can enhance your understanding of the prevalence,
@@ -91,7 +91,7 @@ within the partnership, you can benefit from technical support by OONI, as well
 as from support in other areas (such as communicating the main findings from the
 study to the public, as outlined in the previous section).
 
-## RISKS
+## Risks
 
 Participation in the OONI Partnership Program can potentially lead to various
 legal and/or extra-legal risks, as explained in OONI's relevant
@@ -122,7 +122,7 @@ choices to us.
 OONI is *not* responsible and cannot be held liable for any consequences that
 might emerge as a result of the partnership.
 
-## DURATION OF PARTNERSHIP
+## Duration of partnership
 
 The partnership between OONI and .......................... will last for a
 duration of up to ............. months.
@@ -133,22 +133,22 @@ the duration of the partnership, as selected in this form). You can decide not
 to take part in this partnership and if you do take part, you are free to
 withdraw your consent and discontinue participation at any time.
 
-## YOUR RIGHTS AS A PARTNER
+## Your rights as a partner
 
 Participation in this partnership is voluntary. You may choose to leave the
 partnership at any time.
 
-## PARTICIPATION COSTS
+## Participation costs
 
 There are no costs for participating in this partnership. Select partners will
 be provided with Raspberry Pis and SD cards free of charge for the purpose of
 running network measurements.
 
-## COMPENSATION
+## Compensation
 
 You will not receive compensation for participation in this partnership.
 
-## CONSENT 
+## Consent 
 
 My signature on this consent form means the following:
 
@@ -175,7 +175,7 @@ Date: ...............................................
 Signature ..............................................
 
 
-## CONTACT INFORMATION
+## Contact information
 
 If you have any questions regarding the OONI Partnership Program, please contact
 **maria@openobservatory.org**.
