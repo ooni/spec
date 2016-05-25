@@ -29,11 +29,11 @@ Our role is primarily that of a *technical* partner and our responsibilities
 towards you can include the following (depending on your role as a partner):
 
 * **Technical support:** We will guide you through the entire process of using
-OONI's software, whether that involves running ooniprobe from a computer   or
+OONI's software, whether that involves running ooniprobe from a computer or
 setting up a Raspberry Pi to run ooniprobe (Lepidopter). We might also supply
-you with Raspberry Pis and SD cards, which are already set-up with   ooniprobe
-and ready to be used for testing. Throughout the duration of the   partnership,
-we will provide you technical support in terms of using ooniprobe or Lepidopter.
+you with Raspberry Pis and SD cards, which are already set-up with ooniprobe and
+ready to be used for testing. Throughout the duration of the partnership, we
+will provide you technical support in terms of using ooniprobe or Lepidopter.
 
 * **Creating/Reviewing URL lists to test for online censorship:** We will
 support you in terms of creating and/or reviewing (country-specific) URL lists
@@ -61,6 +61,8 @@ partnership:
 * [ ] Research partner (e.g. academic group)
 
 * [ ] Media partner 
+
+* [ ] Other (please specify:...........................................)
 
 Based on your role, please select one or more of the following
 **responsibilities** that you would like to have throughout the duration of the
@@ -102,8 +104,8 @@ of such software is illegal or viewed as a threat) and/or based on the URLs that
 are tested for censorship (many of which might be viewed as controversial).
 Legal and/or extra- legal risks might also potentially emerge once measurements
 and findings are published. Please read the relevant documentation pertaining to
-the description of [OONI's software tests](https://github.com/agrabeli/ooni-
-spec/tree/test-descriptions/test-descriptions) and associated
+the description of [OONI's software tests](https://github.com/TheTorProject
+/ooni-spec/tree/master/test-descriptions) and associated
 [risks](https://github.com/TheTorProject/ooni-spec/blob/master/informed-
 consent/risks.md). We also advise you to consult with lawyers, prior to engaging
 as a partner.
@@ -115,9 +117,9 @@ which tests to run, which URLs to test for censorship, which data to send to
 OONI's measurement collector and whether you would like to have your collected
 measurements published (and if so, how). Learn more through [OONI's Data
 Policy](https://github.com/TheTorProject/ooni-spec/blob/master/informed-consent
-/data-policy.md#opt-out) and [test descriptions](https://github.com/agrabeli
-/ooni-spec/tree/test-descriptions/test-descriptions), and please specify your
-choices to us.
+/data-policy.md#opt-out) and [test
+descriptions](https://github.com/TheTorProject/ooni-spec/tree/master/test-
+descriptions), and please specify your choices to us.
 
 OONI is *not* responsible and cannot be held liable for any consequences that
 might emerge as a result of the partnership.
