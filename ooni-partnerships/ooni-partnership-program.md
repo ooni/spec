@@ -3,7 +3,7 @@
 **Uncovering Evidence of Online Censorship Around the World**
 
 
-Hunderds of volunteers around the world have made the OONI project possible over
+Hundreds of volunteers around the world have made the OONI project possible over
 the last years by contributing to the collection of millions of network
 measurements across more than 95 countries. These measurements have unveiled
 numerous cases of online censorship and traffic manipulation around the world,
@@ -27,7 +27,7 @@ Through the Partnership Program, we aim to:
 * increase transparency and public awareness about online censorship and other
   network anomalies
 
-* increase the stable collection of measurements across time
+* increase the continuous collection of measurements across time
 
 * improve the quality of collected measurements
 
@@ -40,15 +40,15 @@ We aim to study network measurements with input from partners not only in terms
 of *which URLs* would be interesting to test for censorship within their
 country's context, but also in terms of *when* would be an interesting period
 for such testing (for example, during demonstrations or leading up to the
-inauguaration of their Prime Minister).
+inauguration of their Prime Minister).
 
 ## What does the OONI Partnership Program entail?
 
 The OONI Partnership Program was developed in an attempt to study online
 censorship and other network interferences more strategically and within local
 context through partnerships. To this end, depending on the role of each partner
-organization, the partnerships can include (but not necessarily limited to) the
-following:
+organization, the partnerships can include (but are not necessarily limited to)
+the following:
 
 * Lepidopter: Running ooniprobe from a Raspberry Pi 
 
@@ -90,7 +90,7 @@ Through the use of Lepidopter by partners, we aim to create stable vantage
 points which will allow for the continuous collection of daily measurements.
 This can enable us to compare results across time and to better detect and
 evaluate network interferences. Lepidopter is also particularly useful because
-it allows us to provision it with new URLs to be tested, since it is meant to
+it allows for the provision of new URLs to be tested, since it is meant to
 constantly be connected to a network.
 
 **More types of data collection**
@@ -107,7 +107,7 @@ directly connected to a user's computer.
 
 **More accurate measurements**
 
-The various security products, such as firewalls, that users might have
+The various security products, such as personal firewalls, that users might have
 installed on their devices can impact the accuracy of measurements. As Raspberry
 Pis running ooniprobe would be independent from such products, the accuracy of
 such measurements would be greater.
@@ -153,7 +153,8 @@ like to provide local context to the findings. Through consultation with legal
 partners, for example, we would like to shed light on how and whether cases of
 online censorship are legally justified within their country. We would also like
 to collaborate with partners in terms of understanding the socio-political
-context of their country and reporting on internet controls within that context.
+context of their country and reporting on internet censorship within that
+context.
 
 ## Who can join the OONI Partnership Program?
 
@@ -173,7 +174,7 @@ OONI Partnership Program. This can include (but not necessarily limited to):
 
 Ideally, we would like to foster collaboration between various different types
 of groups/organizations, each of which could contribute to the study of network
-interferences from a difference lens and which would also allow for the
+interferences from a different lens and which would also allow for the
 distribution of efforts amongst different groups.
 
 Various hackerspaces, for example, could contribute to the data collection by
@@ -187,7 +188,8 @@ this collaborative approach between groups and organizations, we aim to improve
 the study and reporting of network interferences.
 
 If you're interested in joining the OONI Partnership Program, please drop us an
-email at **contact@ooni.io**.
+email at **contact@ooni.io** (PGP Key Fingerprint: 4C15 DDA9 96C6 C0CF 48BD 3309
+6B29 43F0 0CB1 77B7).
 
 ## How can OONI support its partners?
 
