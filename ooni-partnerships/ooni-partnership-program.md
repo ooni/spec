@@ -124,12 +124,9 @@ study and a core objective of the Partnership Program.
 The Citizen Lab has supported OONI over the last years through the creation of
 lists of URLs to test for online censorship. These lists include the following:
 
-* **Country-specific test lists:** https://github.com/citizenlab/test-
-  lists/tree/master/lists 
+* **Country-specific test lists:** https://github.com/citizenlab/test-lists/tree/master/lists 
 
-* **Global test list:** https://github.com/citizenlab/test-
-  lists/blob/master/lists/global.csv (including a list of globally accessed
-  websites)
+* **Global test list:** https://github.com/citizenlab/test-lists/blob/master/lists/global.csv (including a list of globally accessed websites)
 
 Through the OONI Partnership Program, we aim to collaborate with groups and
 organizations that are interested in reviewing the test lists that are specific
