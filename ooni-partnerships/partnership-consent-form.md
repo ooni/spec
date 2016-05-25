@@ -97,29 +97,23 @@ study to the public, as outlined in the previous section).
 
 Participation in the OONI Partnership Program can potentially lead to various
 legal and/or extra-legal risks, as explained in OONI's relevant
-[documentation](https://github.com/TheTorProject/ooni-spec/blob/master/informed-
-consent/risks.md), which vary from country to country. In summary, such risks
+[documentation](https://github.com/TheTorProject/ooni-spec/blob/master/informed-consent/risks.md), which vary from country to country. In summary, such risks
 might emerge through the use of OONI's network measurement software (if the use
 of such software is illegal or viewed as a threat) and/or based on the URLs that
 are tested for censorship (many of which might be viewed as controversial).
 Legal and/or extra- legal risks might also potentially emerge once measurements
 and findings are published. Please read the relevant documentation pertaining to
-the description of [OONI's software tests](https://github.com/TheTorProject
-/ooni-spec/tree/master/test-descriptions) and associated
-[risks](https://github.com/TheTorProject/ooni-spec/blob/master/informed-
-consent/risks.md). We also advise you to consult with lawyers, prior to engaging
+the description of [OONI's software tests](https://github.com/TheTorProject/ooni-spec/tree/master/test-descriptions) and associated
+[risks](https://github.com/TheTorProject/ooni-spec/blob/master/informed-consent/risks.md). We also advise you to consult with lawyers, prior to engaging
 as a partner.
 
 Potential risks can be limited through the various
-*[choices](https://github.com/TheTorProject/ooni-spec/blob/master/informed-
-consent/data-policy.md#opt-out)* that you can make. Specifically, you can choose
+*[choices](https://github.com/TheTorProject/ooni-spec/blob/master/informed-consent/data-policy.md#opt-out)* that you can make. Specifically, you can choose
 which tests to run, which URLs to test for censorship, which data to send to
 OONI's measurement collector and whether you would like to have your collected
 measurements published (and if so, how). Learn more through [OONI's Data
-Policy](https://github.com/TheTorProject/ooni-spec/blob/master/informed-consent
-/data-policy.md#opt-out) and [test
-descriptions](https://github.com/TheTorProject/ooni-spec/tree/master/test-
-descriptions), and please specify your choices to us.
+Policy](https://github.com/TheTorProject/ooni-spec/blob/master/informed-consent/data-policy.md#opt-out) and [test
+descriptions](https://github.com/TheTorProject/ooni-spec/tree/master/test-descriptions), and please specify your choices to us.
 
 OONI is *not* responsible and cannot be held liable for any consequences that
 might emerge as a result of the partnership.
