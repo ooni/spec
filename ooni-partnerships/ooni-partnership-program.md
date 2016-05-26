@@ -5,10 +5,9 @@
 
 Hundreds of volunteers around the world have made the OONI project possible over
 the last years by contributing to the collection of millions of network
-measurements across more than 95 countries. These measurements have unveiled
-numerous cases of online censorship and traffic manipulation around the world,
-and they have even shed light on the covert presence of proxy technologies which
-might have been used for the purposes of surveillance.
+measurements across more than 95 countries. These measurements have discovered
+online censorship and traffic manipulation around the world, and have brought
+transparency to covert surveillance through proxies and traffic monitoring.
 
 Now we aim to take OONI a step further by studying network anomalies more
 systematically and within local context, through OONI's Partnership Program. 
@@ -18,14 +17,15 @@ systematically and within local context, through OONI's Partnership Program.
 The OONI Partnership Program is a collaboration between the [Open Observatory of
 Network Interference (OONI)](https://ooni.torproject.org/) and groups or
 organizations around the world on the study of network interferences, such as
-online censorship.
+online censorship. Such groups/organizations can include NGOs, hackerspaces,
+media organizations, legal associations and research groups.
 
 ## What is the aim of the OONI Partnership Program?
 
 Through the Partnership Program, we aim to:
 
 * increase transparency and public awareness about online censorship and other
-  network anomalies
+  network interferences
 
 * increase the continuous collection of measurements across time
 
@@ -36,11 +36,13 @@ Through the Partnership Program, we aim to:
 * directly support partner organizations in terms of using ooniprobe and
   reporting on the results
 
-We aim to study network measurements with input from partners not only in terms
-of *which URLs* would be interesting to test for censorship within their
-country's context, but also in terms of *when* would be an interesting period
-for such testing (for example, during demonstrations or leading up to the
-inauguration of their Prime Minister).
+Input from partners is essential in terms of understanding:
+
+* the local network landscape and how ISPs are structured
+
+* which URLs and apps would be interesting to test for censorship
+
+* the governmental landscape and how to publicize results effectively 
 
 ## What does the OONI Partnership Program entail?
 
@@ -57,6 +59,9 @@ the following:
 * Story-telling: Reports, blogs and data visualizations
 
 ### Lepidopter: Running ooniprobe from a Raspberry Pi
+
+We want to work with partners to deploy plug-and-play, cheap devices that keep
+tabs on censorship.
 
 Over the last years, the collection of measurements based on OONI's [free
 software tests](https://github.com/TheTorProject/ooni-spec) was mostly dependent
