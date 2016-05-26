@@ -107,6 +107,11 @@ the description of [OONI's software tests](https://github.com/TheTorProject/ooni
 [risks](https://github.com/TheTorProject/ooni-spec/blob/master/informed-consent/risks.md). We also advise you to consult with lawyers, prior to engaging
 as a partner.
 
+If you have measurements running from other people's houses, we want to make
+sure you get informed consent from them and take responsibility for the risk you
+put them at as well. We will work with you to make sure your deployment has been
+performed ethically.
+
 Potential risks can be limited through the various
 *[choices](https://github.com/TheTorProject/ooni-spec/blob/master/informed-consent/data-policy.md#opt-out)* that you can make. Specifically, you can choose
 which tests to run, which URLs to test for censorship, which data to send to
@@ -120,14 +125,11 @@ might emerge as a result of the partnership.
 
 ## Duration of partnership
 
-The partnership between OONI and .......................... will last for a
-duration of up to ............. months.
+The partnership between OONI and .......................... will be ongoing from
+....................., but with at-will conclusion.
 
-OONI may withdraw you from participating in this research if circumstances arise
-which warrant doing so (if you do not carry out your responsibilities throughout
-the duration of the partnership, as selected in this form). You can decide not
-to take part in this partnership and if you do take part, you are free to
-withdraw your consent and discontinue participation at any time.
+You can decide not to take part in this partnership and if you do take part, you
+are free to withdraw your consent and discontinue participation at any time.
 
 ## Your rights as a partner
 
@@ -146,7 +148,7 @@ You will not receive compensation for participation in this partnership.
 
 ## Consent 
 
-My signature on this consent form means the following:
+My consent means the following:
 
 The partnership has been fully explained to me and all of my questions have been
 answered to my satisfaction.
@@ -161,15 +163,8 @@ into this partnership.
 
 I have reviewed the partnership consent form.
 
-I agree to take part in the OONI Partnership titled: Uncovering
+[ ] I consent to take part in the OONI Partnership titled: Uncovering
 Evidence of Online Censorship Around the World.
-
-
-Date: ...............................................
-
-
-Signature ..............................................
-
 
 ## Contact information
 
