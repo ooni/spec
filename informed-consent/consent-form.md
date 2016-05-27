@@ -7,7 +7,7 @@ measurements with the aim of detecting network anomalies, such as censorship and
 traffic manipulation. 
 
 Running OONI's software tests can potentially be a *risky* activity, depending on
-the laws and jurisdition of the country that you are running them from. This
+the laws and jurisdiction of the country that you are running them from. This
 also largely depends on which tests you run and on which URLs you test. Please
 read the Risks section of this document to understand more about the risks related to
 the use of ooniprobe.
@@ -37,7 +37,7 @@ The recommended set of tests that users run through the
 **Web connectivity:** This test examines whether websites are reachable and if
 they are not, it attempts to determine whether access to them is blocked through
 DNS tampering, TCP connection RST/IP blocking or by having a transparent HTTP
-proxy. It does so by identifiying the resolver of the user, performing a DNS
+proxy. It does so by identifying the resolver of the user, performing a DNS
 lookup, attempting to establish a TCP session and by sending HTTP GET requests
 to the servers that are hosting tested websites.
 
