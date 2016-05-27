@@ -6,11 +6,13 @@ Project](https://www.torproject.org/), which collects and processes network
 measurements with the aim of detecting network anomalies, such as censorship and
 traffic manipulation. 
 
-Running OONI's software tests can potentially be a *risky* activity, depending on
-the laws and jurisdiction of the country that you are running them from. This
-also largely depends on which tests you run and on which URLs you test. Please
-read the Risks section of this document to understand more about the risks related to
-the use of ooniprobe.
+Running OONI may be against the terms of service of your ISP or legally
+questionable in your country. By running OONI you will connect to web services
+which may be banned, and use web censorship circumvention methods such as Tor.
+The OONI project will publish data submitted by probes, possibly including your
+IP address or other identifying information. In addition, your use of OONI will
+be clear to anybody who has access to your computer, and to anybody who can
+monitor your internet connection (such as your employer, ISP or government).
 
 By running ooniprobe, you are participating as a volunteer in this project. This
 form includes information that you should be aware of and consent to *prior* to
@@ -213,9 +215,10 @@ measurements to our collector for publication or not, as outlined below.
 
 **Tests**
 
-You can *opt-out* from running all of the tests included in `oonideckgen` by specifying the
-test(s) that you want to run and by running it/them manually. You can view how
-to run each OONI test through the ooniprobe `-s` command line option.
+You can *opt-out* from running all of the tests included in `oonideckgen` by
+specifying the test(s) that you want to run and by running it/them manually. You
+can view how to run each OONI test through the ooniprobe `-s` command line
+option.
 
 You can run each test included in `oonideckgen` separately through the following:
 
@@ -257,6 +260,8 @@ My consent means the following:
 
 I understand the requirements and the risks of running ooniprobe.
 
-I understand that, unless I opt-out (as explained in the previous section), the results of the tests that I run will by default be sent to the OONI project and published by it. 
+I understand that, unless I opt-out (as explained in the previous section), the
+results of the tests that I run will by default be sent to the OONI project and
+published by it.
 
 [ ] I have reviewed the form and provide my consent.
