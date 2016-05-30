@@ -76,19 +76,17 @@ identified:
 * **TCP/IP blocking:** If a TCP session to connect to websites was *not*
     established over the network of the user
 
-* **HTTP blocking:** If the HTTP request over the user's network failed and/or
-    if one or more of the following applies:
+* **HTTP blocking:** If the HTTP request over the user's network failed, or the
+* **HTTP status codes don't match, or all of the following apply:
 
     * The body length of compared websites (over the control server and the
       network of the user) differs by some percentage
 
-    * The HTTP headers do not match
-
-    * The HTTP status codes do not match
+    * The HTTP headers names do not match
 
     * The HTML title tags do not match
 
-The examples below (testing piratebay.se and google.com for censorship) show
+The examples below (testing piratebay.se and google.com for censorship in Italy) show
 what the output of the web connectivity test could look like:
 
 ```
