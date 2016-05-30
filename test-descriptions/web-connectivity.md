@@ -2,7 +2,7 @@
 
 This test examines whether websites are reachable and if they are not, it
 attempts to determine whether access to them is blocked through DNS tampering,
-TCP connection RST/IP blocking or by having a transparent HTTP proxy.
+TCP connection RST/IP blocking or by a transparent HTTP proxy.
 
 Specifically, this test is designed to perform the following:
 
@@ -14,10 +14,11 @@ Specifically, this test is designed to perform the following:
 
 * HTTP GET request
 
-By default, this test performs the above both over a control server and over the
-network of the user. If the results from both networks match, then there is no
-clear sign of network interference; but if the results are different, then the
-websites that the user is testing are likely censored.
+By default, this test performs the above (excluding the first step, which is
+performed only over the network of the user) both over a control server and over
+the network of the user. If the results from both networks match, then there is
+no clear sign of network interference; but if the results are different, then
+the websites that the user is testing are likely censored.
 
 Below we provide information about how each step performed under the web
 connectivity test works.
@@ -25,10 +26,10 @@ connectivity test works.
 ## 1. Resolver identification
 
 The domain name system (DNS) is what is responsible for transforming a host name
-(e.g. torproject.org) into an IP address (e.g. 38.229.72.16). ISPs, amongst
-others, run DNS resolvers which map IP addresses to host names. In some
-circumstances though, ISPs map the wrong IP addresses to the wrong host names,
-which is a form of tampering.
+(e.g. torproject.org) into an IP address (e.g. 38.229.72.16). Internet Service
+Providers, amongst others, run DNS resolvers which map IP addresses to host
+names. In some circumstances though, ISPs map the requested host names to the
+wrong IP addresses, which is a form of tampering.
 
 As a first step, the web connectivity test attempts to identify which DNS
 resolver is being used by the user. It does so by performing a DNS query to
@@ -56,7 +57,7 @@ previous step (DNS lookup).
 As the web connectivity test connects to tested websites (through the previous
 step), it sends requests through the HTTP protocol to the servers which are
 hosting those websites. A server normally responds to an HTTP GET request with
-the content of the website that it is hosting.
+the content of the webpage that is requested.
 
 ## Comparison of results: Identifying censorship
 
@@ -86,6 +87,54 @@ identified:
     * The HTTP status codes do not match
 
     * The HTML title tags do not match
+
+The examples below (testing piratebay.se and google.com for censorship) show
+what the output of the web connectivity test could look like:
+
+```**Starting test for http://thepiratebay.se/**
+
+* doing DNS query for thepiratebay.se
+
+* connecting to 216.58.198.46:443
+
+* doing HTTP(s) request http://thepiratebay.se/
+
+* performing control request with backend
+
+**Result for http://thepiratebay.se/**
+----------------------------------
+* BLOCKING DETECTED due to dns
+* Is NOT accessible
+
+**Starting test for https://google.com/**
+
+* doing DNS query for google.com
+
+* connecting to 83.224.65.41:80
+
+* doing HTTP(s) request https://google.com/
+
+* performing control request with backend
+
+**Result for https://google.com/**
+------------------------------
+* No blocking detected
+* Is accessible
+
+**Summary for web_connectivity**
+----------------------------
+
+Accessible URLS
+---------------
+* https://google.com/
+
+Not accessible URLS
+-------------------
+* http://thepiratebay.se/
+
+URLS possibly blocked due to dns
+--------------------------------
+* http://thepiratebay.se/```
 
 **Note:** DNS resolvers, such as Google or your local ISP, often provide users
 with IP addresses that are closest to them geographically. Often this is not
