@@ -91,7 +91,8 @@ identified:
 The examples below (testing piratebay.se and google.com for censorship) show
 what the output of the web connectivity test could look like:
 
-```**Starting test for http://thepiratebay.se/**
+```
+Starting test for http://thepiratebay.se/
 
 * doing DNS query for thepiratebay.se
 
@@ -101,12 +102,12 @@ what the output of the web connectivity test could look like:
 
 * performing control request with backend
 
-**Result for http://thepiratebay.se/**
+Result for http://thepiratebay.se/
 ----------------------------------
 * BLOCKING DETECTED due to dns
 * Is NOT accessible
 
-**Starting test for https://google.com/**
+Starting test for https://google.com/
 
 * doing DNS query for google.com
 
@@ -116,12 +117,12 @@ what the output of the web connectivity test could look like:
 
 * performing control request with backend
 
-**Result for https://google.com/**
+Result for https://google.com/
 ------------------------------
 * No blocking detected
 * Is accessible
 
-**Summary for web_connectivity**
+Summary for web_connectivity
 ----------------------------
 
 Accessible URLS
@@ -134,7 +135,8 @@ Not accessible URLS
 
 URLS possibly blocked due to dns
 --------------------------------
-* http://thepiratebay.se/```
+* http://thepiratebay.se/
+```
 
 **Note:** DNS resolvers, such as Google or your local ISP, often provide users
 with IP addresses that are closest to them geographically. Often this is not
