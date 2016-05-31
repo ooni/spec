@@ -146,22 +146,21 @@ bridges](https://bridges.torproject.org/), [Psiphon](https://psiphon.ca/),
 blocked
 
 We urge you to review the
-**[specifications](https://github.com/TheTorProject/ooni- spec/tree/master/test-
-specs)** for each OONI test carefully, prior to running them.
+**[specifications](https://github.com/TheTorProject/ooni-spec/tree/master/test-specs)**
+for each OONI test carefully, prior to running them.
 
 **Legality of tested websites**
 
-When running either oonideckgen (OONI's software package) or OONI's **[HTTP-
-request](https://github.com/TheTorProject/ooni-spec/blob/master/test-
-specs/ts-003-http-requests.md)** test, you will connect to and download data
-from various websites which are included in the following two lists:
+When running either oonideckgen (which includes the web-connectivity test) or
+OONI's
+**[HTTP- request](https://github.com/TheTorProject/ooni-spec/blob/master/test-specs/ts-003-http-requests.md)**
+test, you will connect to and download data from various websites which are
+included in the following two lists:
 
-* **Country-specific test list:**
-  https://github.com/citizenlab/test-lists/tree/master/lists
+* **Country-specific test list:** https://github.com/citizenlab/test-lists/tree/master/lists
   (search for your country's test list based on its country code)
 
-* **Global test list:**
-  https://github.com/citizenlab/test-lists/blob/master/lists/global.csv
+* **Global test list:** https://github.com/citizenlab/test-lists/blob/master/lists/global.csv
   (including a list of globally accessed websites)
 
 Many websites included in the above lists will likely be controversial and can
@@ -217,22 +216,18 @@ are likely to be even worse in countries where the rule of law is less
 consistently applied.
 
 By running oonideckgen, you *by default* run OONI's HTTP-invalid-request-line
-test (in addition to the HTTP-request, DNS-consistency and HTTP-header-field-
+test (in addition to the web-connectivity and HTTP header field
 manipulation tests). You can *opt-out* from running this test by specifying the
 test(s) that you want to run and by running it/them manually. You can view how
 to run each OONI test through the ooniprobe `-s` command line option.
 
 You can run each test included in oonideckgen separately through the following:
 
-* **HTTP-request test:** `ooniprobe blocking/http_requests`
+* **Web connectivity test:** `ooniprobe blocking/web_connectivity`
 
-* **DNS consistency test:** `ooniprobe blocking/dns_consistency`
+* **HTTP header field manipulation test:** `ooniprobe manipulation/http_header_field_manipulation`
 
-* **HTTP header field manipulation test:** `ooniprobe
-    manipulation/http_header_field_manipulation`
-
-* **HTTP invalid request line test:** `ooniprobe
-    manipulation/http_invalid_request_line`
+* **HTTP invalid request line test:** `ooniprobe manipulation/http_invalid_request_line`
 
 **Legality of anonymity software**
 
@@ -240,8 +235,8 @@ The installation of [Tor](https://www.torproject.org/) software, which is
 designed for online anonymity, is a *prerequisite* for using OONI due to the
 following:
 
-* OONI's
-  [HTTP-request test](https://github.com/TheTorProject/ooni-spec/blob/master/test-specs/ts-003-http-requests.md)
+* OONI's [HTTP-request
+  test](https://github.com/TheTorProject/ooni-spec/blob/master/test-specs/ts-003-http-requests.md)
   is designed to compare HTTP requests over the network of the user and over
   Tor
 
@@ -249,10 +244,10 @@ following:
   [opt-out](https://github.com/TheTorProject/ooni-spec/blob/master/informed-consent/data-policy.md#opt-out),
   all measurements are by default sent to OONI over Tor
 
-Furthermore, OONI's **[bridge-reachability](https://github.com/TheTorProject
-/ooni-spec/blob/master/test- specs/ts-011-bridge-reachability.md)** test is
-designed to check whether [Tor bridges](https://bridges.torproject.org/) are
-blocked or not.
+Furthermore, OONI's
+**[bridge-reachability](https://github.com/TheTorProject/ooni-spec/blob/master/test-
+specs/ts-011-bridge-reachability.md)** test is designed to check whether [Tor
+bridges](https://bridges.torproject.org/) are blocked or not.
 
 Similarly, the following OONI tests require the installation of circumvention
 software:
@@ -268,13 +263,10 @@ software (such as Tor, a VPN or a proxy) *prior* to using OONI.
 
 ## Legal advice
 
-We strongly urge you to consult with lawyers and to understand legal risks
-*prior* to using OONI.
-
-You can also reach out to us with specific inquiries at **legal@ooni.nu**.
-Please note though that we are *not* lawyers, but we might be able to seek legal
-advice for you or to put you in touch with lawyers who could address your
-questions and/or concerns.
+In addition to consulting with laywers, you can also reach out to us with
+specific inquiries at **legal@openobservatory.org**. Please note though that we
+are *not* lawyers, but we might be able to seek legal advice for you or to put
+you in touch with lawyers who could address your questions and/or concerns.
 
 Some relevant resources include:
 
