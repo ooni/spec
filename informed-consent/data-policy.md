@@ -7,7 +7,7 @@
 This Data Policy explains what data is collected, processed, stored and
 published by the [Open Observatory of Network Interference
 (OONI)](https://ooni.torproject.org/) project, as well as how users can opt-out
-from sending OONI their network measurements. 
+from sending OONI their network measurements.
 
 The use of OONI's software and website constitutes an acceptance of the policies
 outlined in this Data Policy.
@@ -37,14 +37,15 @@ all types of data collection by OONI, though this would limit OONI's research.
 
 ### Data OONI Collects
 
-When a user runs [OONI software tests](https://github.com/TheTorProject/ooni-
-spec), the OONI project can collect the following types of data:
+When a user runs [OONI software
+tests](https://github.com/TheTorProject/ooni-spec), the OONI project can
+collect the following types of data:
 
 **Country code**
 
 OONI *by default* collects the code which corresponds to the country from which
 the user is running OONI tests from, by automatically searching for it based on
-the user's IP address through the [MaxMind GeoIP 
+the user's IP address through the [MaxMind GeoIP
 database](https://www.maxmind.com/en/home). The collection of country codes is
 an important part of OONI's research, as it enables OONI to map out global
 network measurements and to identify where network interferences take place.
@@ -53,9 +54,9 @@ and advocates who aim to discover network interferences (such as censorship and
 traffic manipulation) in a country.
 
 OONI software users can choose to *opt-out* from the collection of country codes
-by [editing the ooniprobe 
+by [editing the ooniprobe
  configuration](https://github.com/TheTorProject/ooni-probe#configuring-ooniprobe)
- file inside of `~/.ooni/ooniprobe.conf`.
+file inside of `~/.ooni/ooniprobe.conf`.
 
 **Autonomous System Number (ASN)**
 
@@ -67,9 +68,9 @@ regards to which network providers are implementing censorship or other forms of
 network interference.
 
 OONI software users can choose to *opt-out* from the collection of their
-network's ASN by [editing the ooniprobe 
-configuration](https://github.com/TheTorProject/ooni-probe#configuring-
-ooniprobe) file inside of  `~/.ooni/ooniprobe.conf`.
+network's ASN by [editing the ooniprobe
+configuration](https://github.com/TheTorProject/ooni-probe#configuring-ooniprobe)
+file inside of  `~/.ooni/ooniprobe.conf`.
 
 **Date and time of measurements**
 
@@ -91,8 +92,8 @@ occur if the tested websites include tracking technologies or custom content
 based on a user's network location.
 
 By default, OONI does *not* collect users' IP addresses, but they can choose to
-*opt-in* (to provide more accurate information) by [editing the ooniprobe 
- configuration](https://github.com/TheTorProject/ooni-probe#configuring-ooniprobe) 
+*opt-in* (to provide more accurate information) by [editing the ooniprobe
+ configuration](https://github.com/TheTorProject/ooni-probe#configuring-ooniprobe)
 file inside of `~/.ooni/ooniprobe.conf`.
 
 **Network measurements**
@@ -181,7 +182,7 @@ of this Data Policy.
 ### Opt-out
 
 OONI software users can *opt-out* from sending OONI's measurement collector
-specific types of data by [editing the ooniprobe 
+specific types of data by [editing the ooniprobe
  configuration](https://github.com/TheTorProject/ooni-probe#configuring-ooniprobe)
  file inside of `~/.ooni/ooniprobe.conf`. Through this file, users can opt-out 
 from sending OONI the following types of information:
@@ -211,13 +212,12 @@ software after any change in this Data Policy will constitute acceptance of such
 change.
 
 
-
-
-
 Thoughts or questions about this Data Policy? Please send an email to
-**contact@openobservatory.org**. 
+**contact@openobservatory.org**.
 
+```
 Key ID:
     0CB177B7
 Fingerprint:
-    4C15 DDA9 96C6 C0CF 48BD 3309 6B29 43F0 0CB1 77B7
+4C15 DDA9 96C6 C0CF 48BD 3309 6B29 43F0 0CB1 77B7
+```
