@@ -202,8 +202,11 @@ the report by referencing it by id:
       `string` the report identifier
 
     'content':
-      `string` content to be added to the report. This can be one or more
+      `string` or `document` content to be added to the report. This can be one or more
         report entries in the format specified in df-000-base.md
+        When in format YAML this is the content of the report to be added as a
+        string serialised in YAML, when in JSON it's the actual JSON document of the report entry.
+
 
      'format':
         `string` that must be either "json" or "yaml" to identify the format
@@ -226,8 +229,10 @@ New collectors should use the following format for updating reports:
 {
 
     content:
-      `string` content to be added to the report. This can be one or more
+      `string` or `document` content to be added to the report. This can be one or more
         report entries in the format specified in df-000-base.md
+        When in format YAML this is the content of the report to be added as a
+        string serialised in YAML, when in JSON it's the actual JSON document of the report entry.
 
      'format':
         `string` that must be either "json" or "yaml" to identify the format
