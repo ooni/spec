@@ -138,7 +138,7 @@ When a report is created the backend will respond with a report identifier
 that will then allow the probe to update the report and the version of the
 backend software like follows:
 
-`Status Code: 201 (Created)`
+`Status Code: 200 (OK)`
 
 {
 
@@ -241,6 +241,17 @@ New collectors should use the following format for updating reports:
 
 }
 ```
+
+When a request for update is successful the backend will return:
+
+`Status code: 200 (OK)`
+
+Message:
+```
+{'status': 'success'}
+```
+
+If it doesn't find the report it will set the status code to `404`.
 
 ### 2.3.1.3 Closing a report
 
