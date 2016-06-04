@@ -61,10 +61,6 @@ using Tor or obfsproxy.
 Unless otherwise stated all of the network operations below can be performed
 either via HTTPS or HTTPO (HTTP over Tor Hidden Service).
 
-Note: we will eventually want to migrate over to using YAML instead of JSON as
-a data exchange format. Not doing so adds unnecessary overhead in including
-YAML data inside of JSON data.
-
 ### 2.3.1.1 Create a new report
 
 When a probe starts a test they will *create* a new report with the oonib
