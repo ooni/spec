@@ -57,7 +57,7 @@ information, for example if a website includes tracking codes or custom
 content based on your network location.
 
 You can see what information OONI releases to the public at
-https://ooni.torproject.org/reports/. You should expect this information
+https://ooni.torproject.org/data/. You should expect this information
 to remain online PERMANENTLY.
 
 THE OONI PROJECT when running some tests against our backends will be able to
