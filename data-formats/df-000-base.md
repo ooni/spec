@@ -65,7 +65,7 @@ Data Format Version: 0.2.0
     "probe_ip": "The IPv4 address of the probe or 127.0.0.1 if "
         "includeip is set to false.",
 
-    "probe_ip": "The name of the city of the probe or null if "
+    "probe_city": "The name of the city of the probe or null if "
         "includecity is set to false.",
 
     "report_id": "20140130T111423Z_ELNkuajQzUWfktBupbfZUxseQDczEvEaIhtciykhoLSuiNiCCV",
