@@ -8,7 +8,7 @@ your network**.
 Interested in collecting evidence of Internet censorship? Curious about the
 speed and performance of the network that you are using?
 
-By running the tests in this app, you will examine the following:
+By running ooniprobe's tests, you will examine the following:
 
 * Blocking of websites 
 
