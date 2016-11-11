@@ -1,6 +1,6 @@
 # OONI mobile
 
-The OONI mobile version for Android and iOS can be called **OONI-probe: Test
+The OONI mobile version for Android and iOS can be called **ooniprobe - Test
 your network**.
 
 ## App description (for Android and iOS)
@@ -30,9 +30,7 @@ designed to examine whether websites are blocked and if so, how. This test, in
 particular, attempts to determine whether access to sites is blocked through DNS
 tampering, TCP connection RST/IP blocking, or by a transparent HTTP proxy. By
 knowing how access to sites is interfered with, you can more easily evaluate how
-to circumvent that specific type of censorship. As OONI is committed to
-transparency through the publication of all network measurement data, you can
-use it as evidence of any censorship events that you come across.
+to circumvent specific types of censorship.
 
 * **Detecting systems responsible for censorship and surveillance.** Various types of
 proxy technologies are used in networks for implementing censorship,
@@ -45,7 +43,7 @@ technologies, for example, are used in networks for caching purposes.
 * **Measuring the speed and performance of your network.** Sometimes the network that
 we are using doesn't work as well as we'd like it to. OONI's implementation of
 the Network Diagnostic Test (NDT) attempts to measure the speed of your network
-by connecting to mLab servers near you and by subsequently uploading and
+by connecting to [M-Lab](https://www.measurementlab.net/) servers near you and by subsequently uploading and
 downloading random data. In doing so, NDT collects low level TCP/IP information
 that can help characterize the speed and performance of your network. Such
 information can also be useful in examining cases of throttling.
