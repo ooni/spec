@@ -82,8 +82,10 @@ For every IP we have found to be consistent (i.e. within the net blocks
 assigned to WhatsApp) we then try to establish a TCP session to port `443`
 and `5222`.
 
-If any of these connections succeeds (to any of the IP and port combinations)
-we consider the endpoint to not be blocked.
+For a given IP address we consider the connection successful if either connecting to `IP:443` or `IP:5222` succeeds.
+
+If ALL of the connections succeed then we consider the endpoint to no be
+blocked.
 
 Conversely if all attempts fail then we consider the endpoint to be blocked
 and mark is as such in the report:
