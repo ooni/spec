@@ -194,7 +194,12 @@ All OONI tools follow [semantic versioning](http://semver.org/).
 To upload a new version to pypi run:
 
 ```
-python setup.py sdist upload -s --identity=702287F4
+make man
+git add data/
+git commit -a 'update manpages'
+make sdist
+make sign
+make upload
 ```
 
 # Build systems & environments
@@ -208,3 +213,8 @@ the corresponding changelog entry shall be updated.
 
 Following a new release we should write an email to the ooni-dev mailing list
 announcing the new release.
+
+# Notes
+
+See txtorcon release procedure:
+https://github.com/meejah/txtorcon/blob/master/docs/release-checklist.rst
