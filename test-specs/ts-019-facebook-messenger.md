@@ -23,25 +23,28 @@ None
 # Test description
 
 This test verifies if the following Facebook Messenger endpoints resolve to
-consistent IPs and if it's possible to establish TCP connection to them on port
-443:
+consistent IPs and if it's possible to establish TCP connection to them on
+port 443:
 
-* stun.fbsbx.com (stun)
+* stun.fbsbx.com (`stun`)
 
-* b-api.facebook.com (b-api)
+* b-api.facebook.com (`b_api`)
 
-* b-graph.facebook.com (b-graph)
+* b-graph.facebook.com (`b_graph`)
 
-* edge-mqtt.facebook.com (edge)
+* edge-mqtt.facebook.com (`edge`)
 
-* external.xx.fbcdn.net (external-cdn)
+* external.xx.fbcdn.net (`external_cdn`)
 
-* scontent.xx.fbcdn.net (scontent-cdn)
+* scontent.xx.fbcdn.net (`scontent_cdn`)
 
-* star.c10r.facebook.com (star)
+* star.c10r.facebook.com (`star`)
 
 In parens is the identifier used inside of the report file to identify that
 particular endpoint.
+
+**NOTE** Up until version 0.3.0 (including 0.3.0) all keys had `-` in place
+of `_`.
 
 For each endpoint we do an A lookup for the domain name in question and
 consider it to be consistent if the IP is inside of a netblock linked to the
@@ -52,26 +55,26 @@ the report file:
 
 ```json
 {
-    "facebook-$ENDPOINT_NAME-dns-consistent": false,
-    "facebook-dns-blocking": true
+    "facebook_$ENDPOINT_NAME_dns_consistent": false,
+    "facebook_dns_blocking": true
 }
 ```
 
-Where `$ENDPOINT_NAME` is one of `stun`, `b-api`, `b-graph`, `edge`,
-`external-cdn`, `scontent-cdn`, `star`.
+Where `$ENDPOINT_NAME` is one of `stun`, `b_api`, `b_graph`, `edge`,
+`external_cdn`, `scontent_cdn`, `star`.
 
 If the endpoint is consistent then we write:
 
 ```json
 {
-    "facebook-$ENDPOINT_NAME-dns-consistent": true,
+    "facebook_$ENDPOINT_NAME_dns_consistent": true,
 }
 ``` 
 
 If all endpoints are consistent then we write:
 ```json
 {
-    "facebook-dns-blocking": false,
+    "facebook_dns_blocking": false,
 }
 ``` 
 
@@ -85,8 +88,8 @@ and mark it as such in the report:
 
 ```json
 {
-    "facebook-$ENDPOINT_NAME-reachable": false,
-    "facebook-tcp-blocking": true
+    "facebook_$ENDPOINT_NAME_reachable": false,
+    "facebook_tcp_blocking": true
 }
 ```
 
@@ -94,8 +97,8 @@ If the endpoint is not blocked we write:
 
 ```json
 {
-    "facebook-$ENDPOINT_NAME-reachable": true,
-    "facebook-tcp-blocking": true
+    "facebook_$ENDPOINT_NAME_reachable": true,
+    "facebook_tcp_blocking": true
 }
 ```
 
@@ -103,7 +106,7 @@ If all the endpoints are not blocked then we write:
 
 ```json
 {
-    "facebook-tcp-blocking": false
+    "facebook_tcp_blocking": false
 }
 ```
 
@@ -119,29 +122,48 @@ If all the endpoints are not blocked then we write:
 
 ```json
 {
-	"facebook-b-api-dns-consistent": true | false | null,
-	"facebook-b-api-reachable": true | false | null,
-
-	"facebook-b-graph-dns-consistent": true | false | null,
-	"facebook-b-graph-reachable": true | false | null,
-
+	"facebook-b-api-dns-consistent": true | false | null, (up to version 0.3.0)
+	"facebook-b-api-reachable": true | false | null, (up to version 0.3.0)
+	"facebook-b-graph-dns-consistent": true | false | null, (up to version 0.3.0)
+	"facebook-b-graph-reachable": true | false | null, (up to version 0.3.0)
 	"facebook-edge-dns-consistent": true | false | null,
-	"facebook-edge-reachable": true | false | null,
-
+	"facebook-edge-reachable": true | false | null, (up to version 0.3.0)
 	"facebook-external-cdn-dns-consistent": true | false | null,
-	"facebook-external-cdn-reachable": true | false | null,
-
+	"facebook-external-cdn-reachable": true | false | null, (up to version 0.3.0)
 	"facebook-scontent-cdn-dns-consistent": true | false | null,
-	"facebook-scontent-cdn-reachable": true | false | null,
+	"facebook-scontent-cdn-reachable": true | false | null, (up to version 0.3.0)
+	"facebook-star-dns-consistent": true | false | null, (up to version 0.3.0)
+	"facebook-star-reachable": true | false | null, (up to version 0.3.0)
+	"facebook-stun-dns-consistent": true | false | null, (up to version 0.3.0)
+	"facebook-stun-reachable": null, (up to version 0.3.0)
 
-	"facebook-star-dns-consistent": true | false | null,
-	"facebook-star-reachable": true | false | null,
+    "facebook-tcp-blocking": true | false | null, (up to version 0.3.0)
+    "facebook-dns-blocking": true | false | null, (up to version 0.3.0)
 
-	"facebook-stun-dns-consistent": true | false | null,
-	"facebook-stun-reachable": null,
 
-    "facebook-tcp-blocking": true | false | null,
-    "facebook-dns-blocking": true | false | null,
+	"facebook_b_api_dns_consistent": true | false | null, (from version 0.4.0)
+	"facebook_b_api_reachable": true | false | null, (from version 0.4.0)
+
+	"facebook_b_graph_dns_consistent": true | false | null, (from version 0.4.0)
+	"facebook_b_graph_reachable": true | false | null, (from version 0.4.0)
+
+	"facebook_edge_dns_consistent": true | false | null, (from version 0.4.0)
+	"facebook_edge_reachable": true | false | null, (from version 0.4.0)
+
+	"facebook_external_cdn_dns_consistent": true | false | null, (from version 0.4.0)
+	"facebook_external_cdn_reachable": true | false | null, (from version 0.4.0)
+
+	"facebook_scontent_cdn_dns_consistent": true | false | null, (from version 0.4.0)
+	"facebook_scontent_cdn_reachable": true | false | null, (from version 0.4.0)
+
+	"facebook_star_dns_consistent": true | false | null, (from version 0.4.0)
+	"facebook_star_reachable": true | false | null, (from version 0.4.0)
+
+	"facebook_stun_dns_consistent": true | false | null, (from version 0.4.0)
+	"facebook_stun_reachable": null, (from version 0.4.0)
+
+    "facebook_tcp_blocking": true | false | null, (from version 0.4.0)
+    "facebook_dns_blocking": true | false | null, (from version 0.4.0)
 
     "tcp_connect": [
         {
@@ -189,22 +211,22 @@ The meaning of the various keys is described in the above section.
     "test_helpers": {},
     "test_keys": {
         "agent": "redirect",
-        "facebook-b-api-dns-consistent": true,
-        "facebook-b-api-reachable": true,
-        "facebook-b-graph-dns-consistent": true,
-        "facebook-b-graph-reachable": true,
-        "facebook-dns-blocking": false,
-        "facebook-edge-dns-consistent": true,
-        "facebook-edge-reachable": true,
-        "facebook-external-cdn-dns-consistent": true,
-        "facebook-external-cdn-reachable": true,
-        "facebook-scontent-cdn-dns-consistent": true,
-        "facebook-scontent-cdn-reachable": true,
-        "facebook-star-dns-consistent": true,
-        "facebook-star-reachable": true,
-        "facebook-stun-dns-consistent": true,
-        "facebook-stun-reachable": null,
-        "facebook-tcp-blocking": false,
+        "facebook_b_api_dns_consistent": true,
+        "facebook_b_api_reachable": true,
+        "facebook_b_graph_dns_consistent": true,
+        "facebook_b_graph_reachable": true,
+        "facebook_dns_blocking": false,
+        "facebook_edge_dns_consistent": true,
+        "facebook_edge_reachable": true,
+        "facebook_external_cdn_dns_consistent": true,
+        "facebook_external_cdn_reachable": true,
+        "facebook_scontent_cdn_dns_consistent": true,
+        "facebook_scontent_cdn_reachable": true,
+        "facebook_star_dns_consistent": true,
+        "facebook_star_reachable": true,
+        "facebook_stun_dns_consistent": true,
+        "facebook_stun_reachable": null,
+        "facebook_tcp_blocking": false,
         "queries": [
             {
                 "answers": [
@@ -377,6 +399,6 @@ The meaning of the various keys is described in the above section.
     "test_name": "facebook_messenger",
     "test_runtime": 0.43950486183166504,
     "test_start_time": "2016-11-25 12:52:05",
-    "test_version": "0.3.0"
+    "test_version": "0.4.0"
 }
 ```
