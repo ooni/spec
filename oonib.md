@@ -674,7 +674,7 @@ will return the identity of the machines that:
  1. Can run the required test-helpers
  2. Can send back to the client a set of required inputs
  3. Can collect the report of the nettest
- 
+
 If a known collector to the bouncer cannot provide any of the three previous requirements,
 the collector won't be sent back to the client in the bouncer request.
 
@@ -706,13 +706,39 @@ And the bouncer replies:
     'net-tests': [
         {
             'test-helpers': [
-                {'requested test helper': 'address'},
+                {'requested test helper name': 'address'},
+                ...
+            ],
+            'test-helpers-alternate': [
+                {'requested test helper name': [
+                        {
+                            'type': 'cloudfront',
+                            'address': 'https://xxx.yyy.tld/',
+                            'front': 'zzz.ttt.tld'
+                        },
+                        {
+                            'type': 'https',
+                            'address': 'https://xxx.yyy.tld/'
+                        }
+                    ]
+                },
                 ...
             ],
             'input-hashed': ['requested input id', ...],
             'name': 'name of nettest',
             'version': 'version of nettest',
-            'collector': 'address'
+            'collector': 'httpo://thirteenchars1.onion',
+            'collector-alternate': [
+                {
+                    'type': 'cloudfront',
+                    'address': 'https://xxx.yyy.tld/',
+                    'front': 'zzz.ttt.tld'
+                },
+                {
+                    'type': 'https',
+                    'address': 'https://xxx.yyy.tld/'
+                }
+            ]
         },
         ....
     ]
