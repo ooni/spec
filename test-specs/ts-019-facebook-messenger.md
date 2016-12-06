@@ -97,8 +97,7 @@ If the endpoint is not blocked we write:
 
 ```json
 {
-    "facebook_$ENDPOINT_NAME_reachable": true,
-    "facebook_tcp_blocking": true
+    "facebook_$ENDPOINT_NAME_reachable": true
 }
 ```
 
