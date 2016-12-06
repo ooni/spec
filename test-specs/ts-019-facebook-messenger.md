@@ -122,45 +122,45 @@ If all the endpoints are not blocked then we write:
 
 ```json
 {
-	"facebook-b-api-dns-consistent": true | false | null, (up to version 0.3.0)
-	"facebook-b-api-reachable": true | false | null, (up to version 0.3.0)
-	"facebook-b-graph-dns-consistent": true | false | null, (up to version 0.3.0)
-	"facebook-b-graph-reachable": true | false | null, (up to version 0.3.0)
-	"facebook-edge-dns-consistent": true | false | null,
-	"facebook-edge-reachable": true | false | null, (up to version 0.3.0)
-	"facebook-external-cdn-dns-consistent": true | false | null,
-	"facebook-external-cdn-reachable": true | false | null, (up to version 0.3.0)
-	"facebook-scontent-cdn-dns-consistent": true | false | null,
-	"facebook-scontent-cdn-reachable": true | false | null, (up to version 0.3.0)
-	"facebook-star-dns-consistent": true | false | null, (up to version 0.3.0)
-	"facebook-star-reachable": true | false | null, (up to version 0.3.0)
-	"facebook-stun-dns-consistent": true | false | null, (up to version 0.3.0)
-	"facebook-stun-reachable": null, (up to version 0.3.0)
+    "facebook-b-api-dns-consistent": true | false | null, (up to version 0.3.0)
+    "facebook-b-api-reachable": true | false | null, (up to version 0.3.0)
+    "facebook-b-graph-dns-consistent": true | false | null, (up to version 0.3.0)
+    "facebook-b-graph-reachable": true | false | null, (up to version 0.3.0)
+    "facebook-edge-dns-consistent": true | false | null,
+    "facebook-edge-reachable": true | false | null, (up to version 0.3.0)
+    "facebook-external-cdn-dns-consistent": true | false | null,
+    "facebook-external-cdn-reachable": true | false | null, (up to version 0.3.0)
+    "facebook-scontent-cdn-dns-consistent": true | false | null,
+    "facebook-scontent-cdn-reachable": true | false | null, (up to version 0.3.0)
+    "facebook-star-dns-consistent": true | false | null, (up to version 0.3.0)
+    "facebook-star-reachable": true | false | null, (up to version 0.3.0)
+    "facebook-stun-dns-consistent": true | false | null, (up to version 0.3.0)
+    "facebook-stun-reachable": null, (up to version 0.3.0)
 
     "facebook-tcp-blocking": true | false | null, (up to version 0.3.0)
     "facebook-dns-blocking": true | false | null, (up to version 0.3.0)
 
 
-	"facebook_b_api_dns_consistent": true | false | null, (from version 0.4.0)
-	"facebook_b_api_reachable": true | false | null, (from version 0.4.0)
+    "facebook_b_api_dns_consistent": true | false | null, (from version 0.4.0)
+    "facebook_b_api_reachable": true | false | null, (from version 0.4.0)
 
-	"facebook_b_graph_dns_consistent": true | false | null, (from version 0.4.0)
-	"facebook_b_graph_reachable": true | false | null, (from version 0.4.0)
+    "facebook_b_graph_dns_consistent": true | false | null, (from version 0.4.0)
+    "facebook_b_graph_reachable": true | false | null, (from version 0.4.0)
 
-	"facebook_edge_dns_consistent": true | false | null, (from version 0.4.0)
-	"facebook_edge_reachable": true | false | null, (from version 0.4.0)
+    "facebook_edge_dns_consistent": true | false | null, (from version 0.4.0)
+    "facebook_edge_reachable": true | false | null, (from version 0.4.0)
 
-	"facebook_external_cdn_dns_consistent": true | false | null, (from version 0.4.0)
-	"facebook_external_cdn_reachable": true | false | null, (from version 0.4.0)
+    "facebook_external_cdn_dns_consistent": true | false | null, (from version 0.4.0)
+    "facebook_external_cdn_reachable": true | false | null, (from version 0.4.0)
 
-	"facebook_scontent_cdn_dns_consistent": true | false | null, (from version 0.4.0)
-	"facebook_scontent_cdn_reachable": true | false | null, (from version 0.4.0)
+    "facebook_scontent_cdn_dns_consistent": true | false | null, (from version 0.4.0)
+    "facebook_scontent_cdn_reachable": true | false | null, (from version 0.4.0)
 
-	"facebook_star_dns_consistent": true | false | null, (from version 0.4.0)
-	"facebook_star_reachable": true | false | null, (from version 0.4.0)
+    "facebook_star_dns_consistent": true | false | null, (from version 0.4.0)
+    "facebook_star_reachable": true | false | null, (from version 0.4.0)
 
-	"facebook_stun_dns_consistent": true | false | null, (from version 0.4.0)
-	"facebook_stun_reachable": null, (from version 0.4.0)
+    "facebook_stun_dns_consistent": true | false | null, (from version 0.4.0)
+    "facebook_stun_reachable": null, (from version 0.4.0)
 
     "facebook_tcp_blocking": true | false | null, (from version 0.4.0)
     "facebook_dns_blocking": true | false | null, (from version 0.4.0)

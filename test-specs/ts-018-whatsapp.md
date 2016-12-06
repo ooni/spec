@@ -14,7 +14,7 @@ WhatsApp
 
 Ability to detect if the WhatsApp instant messaging platform is working, by
 checking if the DNS resolutions are consistent and if it's possible to
-establish a TCP session with the IPs of the endpoints.
+establish a TCP connection with the IPs of the endpoints.
 
 
 # Expected inputs
@@ -25,7 +25,7 @@ None
 
 This test will check if 3 services are working as they should:
 
-1. The whatsapp endpoints
+1. The whatsapp endpoints (the addresses used by the WhatsApp mobile client to work)
 
 2. The registration service
 
@@ -56,16 +56,18 @@ These endpoints have the following hostnames:
 
 When the `--all-endpoints` option is **not** specified we will be testing one
 of this endpoints picked at random, while when that option is specified we
-will be testing all of them.
+will be testing all of the ones listed above.
 
 To check if they work properly we will first do a DNS A lookup to the
 endpoint in question. We then check if any of the returned IPs (we ignore
-anything that is not an IPv4 or IPv6 address) are part of the address space
-used by whatsapp.
+anything that is not an IPv4 address, like a CNAME) are part of the address
+space used by whatsapp.
 
 As a reference point to know if a certain IP is part of the WhatsApp network
 we use the list of IP blocks published by WhatsApp here:
-https://www.whatsapp.com/cidr.txt
+https://www.whatsapp.com/cidr.txt.
+The test contains a harcoded version of the cirdr list with a timestamp of when
+it was last retrieved from the URL.
 
 If any of the returned IPs are part of any network block listed in `cidr.txt`
 we consider the DNS response to be consistent. If that is not the case we
@@ -73,7 +75,7 @@ consider the endpoint to be blocked and write in the report:
 
 ```json
 {
-    "whatsapp_endpoints_status": "blocked"
+    "whatsapp_endpoints_status": "blocked",
     "whatsapp_endpoints_dns_inconsistent": ["eN.whatsapp.net"]
 }
 ```
@@ -84,7 +86,7 @@ and `5222`.
 
 For a given IP address we consider the connection successful if either connecting to `IP:443` or `IP:5222` succeeds.
 
-If ALL of the connections succeed then we consider the endpoint to no be
+If ALL of the connections succeed then we consider the endpoint to not be
 blocked.
 
 Conversely if all attempts fail then we consider the endpoint to be blocked
@@ -135,11 +137,11 @@ When it fails we write:
 WhatsApp web is the service by which users are able to use WhatsApp from a
 web browser on their computer.
 When using WhatsApp web users scan a QR code displayed in the browser from
-their phone hence authenticating the web app.
+their phone to authenticate the web app.
 
 For the service to work a user needs to have whatsapp be working properly
 from their phone (it needs to be unblocked there) and if the "Keep me signed
-in" option in unticked their phone needs to be connected to the internet and
+in" option is unticked their phone needs to be connected to the internet and
 be able to reach the whatsapp endpoints for the duration of the session.
 
 We check to see if WhatsApp web is working properly by doing a HTTPS GET request to the following URLs:
@@ -191,7 +193,7 @@ If none of the endpoints are blocked then we write:
     "registration_server_status": "blocked" | "ok" | null,
 
     "registration_server_failure": "FAILURE STRING (since 0.5.0)",
-    "registratison_server_failure": "FAILURE STRING (note: up until 0.4.0 this was the name of the key)",
+    "registratison_server_failure": "FAILURE STRING (note: up until 0.4.0 name of the key was mispelled)",
 
     "tcp_connect": [
         {
