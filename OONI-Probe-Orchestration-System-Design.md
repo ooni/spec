@@ -167,12 +167,12 @@ number of seconds going from `0-60`.
 
 `schedule`: The scheduling for the job, in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format. Consists of 3 parts separated by /:
 
-    * The number of times to repeat the job: Rn to repeat n times, or R to repeat forever
+* The number of times to repeat the job: Rn to repeat n times, or R to repeat forever
 
-    * The start time of the job in ISO 8601 (YYYY-MM-DDThh:mm:ssTZ, where TZ is the timezone of `Z` for UTC).
-      An empty start time means start immediately.
+* The start time of the job in ISO 8601 (YYYY-MM-DDThh:mm:ssTZ, where TZ is the timezone of `Z` for UTC).
+  An empty start time means start immediately.
 
-    * The run interval, defined following the ["Duration" component of the ISO 8601](https://en.wikipedia.org/wiki/ISO_8601#Durations) standard.
+* The run interval, defined following the ["Duration" component of the ISO 8601](https://en.wikipedia.org/wiki/ISO_8601#Durations) standard.
 
 The Management Interface will assign to a given job a unique id (hereafter
 referred to as `job_id`) that can be used to unschedule jobs.
