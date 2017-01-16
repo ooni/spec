@@ -123,7 +123,7 @@ serialization protocol we are not necessarily tied to it.
 
 The base data format is the following:
 
-```
+```json
 {
     name: "I am a happy OPOS schedule",
     "filter": {
@@ -159,7 +159,6 @@ style filters](https://github.com/strongloop/loopback-filters).
 
 run now contains a boolean value that if true means this client should execute
 the action, false if it should not.
-```
 
 `delay`: is an upper bound on the number of seconds to delay the action by. For
 example by specifying `"delay": 60` the action will be triggerred after a
