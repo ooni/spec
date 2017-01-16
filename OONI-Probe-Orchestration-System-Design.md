@@ -236,22 +236,17 @@ Example:
 ### Job lifecycle
 
 
-![OPOS Job Lifecycle](http://g.gravizo.com/g?
-@startuml;
-
+![OPOS Job Lifecycle](http://g.gravizo.com/g?@startuml;
     [*] --> READY;
     READY --> ASSIGNED;
-
     ASSIGNED --> STARTING;
     ASSIGNED --> REJECTED;
-
-    REJECTED --> RUNNING;
+    STARTING --> RUNNING;
     RUNNING --> COMPLETED;
-
     COMPLETED --> [*];
-
     @enduml
 )
+
 
 The OPOS Scheduler keeps track of the lifecycle of a job. With respect to an
 **OPOS Client** a job can be in one of the following states:
