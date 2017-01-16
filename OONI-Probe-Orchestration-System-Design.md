@@ -100,11 +100,11 @@ The requirements for this are:
 * It SHOULD be possible to know how many *active* **OPOS Clients** there are at
   a given time.
 
-## Actions
+## Jobs
 
-Actions represent operations to be performed by **OPOS Clients** and are
-submitted via the **OPOS Management Interface**. **OPOS Clients** are notified
-of actions via the **OPOS Event feed**.
+Jobs represent operations to be performed by **OPOS Clients** and are submitted
+via the **OPOS Management Interface**. **OPOS Clients** are notified of actions
+via the **OPOS Event feed**.
 
 It is possible to specify a target for an action so that only clients that
 match the target criteria will respond to the specified action.
@@ -138,7 +138,9 @@ The base data format is the following:
             "probe_id": "",
             "probe_family": "",
 
-            "network_type": "wifi",
+            "platform": "lepidopter | macos | linux | mobile | android | ios",
+
+            "network_type": "wifi | mobile | 3g | 4g | edge",
             "available_bandwidth": {"gt": 10000}
         }
     },
