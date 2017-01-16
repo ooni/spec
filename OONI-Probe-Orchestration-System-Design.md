@@ -125,7 +125,7 @@ The base data format is the following:
 
 ```json
 {
-    name: "I am a happy OPOS schedule",
+    "name": "I am a happy OPOS schedule",
     "filter": {
         "where": {
             "probe_cc": {
@@ -234,6 +234,24 @@ Example:
 ```
 
 ### Job lifecycle
+
+
+![OPOS Job Lifecycle](http://g.gravizo.com/g?
+@startuml;
+
+    [*] --> READY;
+    READY --> ASSIGNED;
+
+    ASSIGNED --> STARTING;
+    ASSIGNED --> REJECTED;
+
+    REJECTED --> RUNNING;
+    RUNNING --> COMPLETED;
+
+    COMPLETED --> [*];
+
+    @enduml
+)
 
 The OPOS Scheduler keeps track of the lifecycle of a job. With respect to an
 **OPOS Client** a job can be in one of the following states:
