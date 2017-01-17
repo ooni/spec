@@ -130,17 +130,17 @@ The base data format is the following:
         "where": {
             "probe_cc": {
                 "or": [
-                    {"inq": ["IT", "NZ"]},
-                    {"limit": 10, "inq": ["US"]}
+                    {"in": ["IT", "NZ"]},
+                    {"limit": 10, "in": ["US"]}
                 ]
             },
             "probe_asn": "",
             "probe_id": "",
             "probe_family": "",
 
-            "platform": "lepidopter | macos | linux | mobile | android | ios",
+            "platform": "macos", # Can be one of lepidopter, macos, linux, mobile, android, ios
 
-            "network_type": "wifi | mobile | 3g | 4g | edge",
+            "network_type": "wifi" # can be one of wifi, mobile, 3g, 4g, edge
             "available_bandwidth": {"gt": 10000}
         }
     },
@@ -157,7 +157,8 @@ The base data format is the following:
 ```
 
 The where clause in the filter definition is an implementation of the [loopback
-style filters](https://github.com/strongloop/loopback-filters).
+style filters](https://github.com/strongloop/loopback-filters), but with "in"
+in place of "inq".
 
 run now contains a boolean value that if true means this client should execute
 the action, false if it should not.
