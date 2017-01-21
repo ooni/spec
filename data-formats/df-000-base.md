@@ -128,9 +128,9 @@ Data Format Version: 0.2.0
     "test_name": "http_requests",
     "test_runtime": 0.1842639446,
     "test_start_time": "2015-11-22 10:32:02",
-    "test_version": "0.2.4"
+    "test_version": "0.2.4",
     "test_keys": {
-    },
+    }
 }
 ```
 
