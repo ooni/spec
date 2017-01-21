@@ -49,8 +49,8 @@ Data Format Version: 0.2.0
 
     "data_format_version": "0.1.0|0.2.0",
 
-    "annotations": "Optional list of user provided key-value annotations to the report that "
-            "provide metadata to this measurement. Apps SHOULD always add to the list of"
+    "annotations": "Optional map of user provided key-value annotations to the report that"
+            "provide metadata to this measurement. Apps SHOULD always add to the map of"
             "annotations the platform, which could be one of: macos, linux, windows, ios, android",
 
     "report_filename": "{bucket_date}/{timestamp as '%Y%m%dT%h%M%sZ'}-{probe_cc}-{probe_asn}-{test_name}-{report_id}-{data_format_version}-{probe|backend}.json",
