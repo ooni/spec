@@ -273,3 +273,14 @@ The OPOS Scheduler keeps track of the lifecycle of a job. With respect to an
   progress of any given task.
 
 * **COMPLETED**: when a job has finished executing it enters the COMPLETED state.
+
+
+# Links
+
+These
+
+* https://mesos.github.io/chronos/
+
+* https://facebook.github.io/bistro/
+
+* https://loopback.io/doc/en/lb2/Where-filter.html

@@ -19,7 +19,7 @@ to gather network measurement data.
    considered for testing.
 
 6. Only people in the governance roster can trigger measurements and a
-   measurement must be signed off by at least 2 people.
+   measurement must be signed off by at least one other person.
 
 7. Anybody in the governance roster can nominate somebody else to join the
    roster. Their inclusion shall be discussed and once there is consensus they
