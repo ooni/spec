@@ -1,6 +1,8 @@
 # OONI Probe Orchestration System Design
 
-## Introduction
+* version: 0.0.1
+* date: 2017-01-23
+* author: Arturo Filastò
 
 The goal of the OONI Probe Orchestration System (OPOS) is to support a more dynamic
 and adaptive way of instrumenting instances of ooniprobe.
@@ -14,9 +16,9 @@ In particular the OPOS should allow us (the OONI project) to:
 
 Out of scope is the ability to push new tests, as in test code, to probes.
 
-## Design goals
+# 1.0 Design goals
 
-### Resiliency
+## 1.1 Resiliency
 
 The OPOS should be as resilient as possible to censorship and should use
 concepts such as [collateral freedom](https://en.greatfire.org/blog/2014/jan/collateral-freedom-faq).
@@ -24,13 +26,13 @@ concepts such as [collateral freedom](https://en.greatfire.org/blog/2014/jan/col
 Yet, it is still important that a probe can properly function even when the
 OPOS is unreachable.
 
-### Latency
+## 1.2 Latency
 
 The target latency for the OPOS is of around 1 minute. This means that from the
 time a new instruction is inserted into the OPOS to the moment that the
 affected probes receive it 1 minute should pass.
 
-### Granular
+## 1.3 Granular
 
 It should be possible to give instructions based on:
 
@@ -43,14 +45,14 @@ Moreover it should be possible to say something like:
 * Run this instruction on at most `N` probes inside of network `K` of country
   `C`.
 
-### Transparent
+## 1.4 Transparent
 
 There should be full transparency over what is being scheduled to be run on
 orchestrated probes. That is to say that it should be possible for anybody to
 inspect the log of all the instructions and determine which ones have affected
 their probe.
 
-## High level overview
+# 2.0 High level overview
 
 Components:
 
@@ -80,7 +82,7 @@ event will be notified and will begin performing the specified action.
 A user interested in seeing what has been scheduled in the past can visit the
 **OPOS Event log** and see a history of what has happenned.
 
-## Transport protocol requirements
+# 3.0 Transport protocol requirements
 
 We use the term "Transport" loosely here to mean the protocol that is being
 used for communicating between the **OPOS Client** and the **Event Feed**.
@@ -100,7 +102,7 @@ The requirements for this are:
 * It SHOULD be possible to know how many *active* **OPOS Clients** there are at
   a given time.
 
-## Jobs
+# 4.0 Jobs
 
 Jobs represent operations to be performed by **OPOS Clients** and are submitted
 via the **OPOS Management Interface**. **OPOS Clients** are notified of actions
@@ -182,7 +184,7 @@ referred to as `job_id`) that can be used to unschedule jobs.
 It should be possible for somebody interacting with the Management Interface to
 schedule the following types of actions.
 
-#### Run test
+### 4.1.1 Run test
 
 This action is used to instruct a probe to run a certain OONI test once. For
 sake of clarity we omit the common elements from the above format.
@@ -205,7 +207,7 @@ Example:
 }
 ```
 
-#### Schedule test
+### 4.1.2 Schedule test
 
 This action is used to schedule a test to be run:
 
@@ -224,7 +226,7 @@ Example:
 }
 ```
 
-#### Unschedule job
+### 4.1.3 Unschedule job
 
 This action is used to unschedule a job to be run by referencing it's ID.
 
@@ -236,7 +238,7 @@ Example:
 }
 ```
 
-### Job lifecycle
+## 4.2 Job lifecycle
 
 
 ![OPOS Job Lifecycle](http://g.gravizo.com/g?@startuml;
