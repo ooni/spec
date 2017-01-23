@@ -6,6 +6,8 @@
 
 bridgeT
 
+Note: This test is deprecated
+
 # Test preconditions
 
   * Tor installed.
@@ -53,7 +55,7 @@ bridgeT
 
 # Privacy considerations
 
-  * Bridge location should not be devolved to adversaries.
+  * Bridge location should not be revealed to adversaries.
   * If possible, the fact that a scan is running should be difficult to detect.
 
 # Packet capture considerations

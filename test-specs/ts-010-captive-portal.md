@@ -1,10 +1,10 @@
 # Specification version number
 
-  2014-05-11-000
+0.2.0
 
 # Specification name
 
-  Captive portal test.
+Captive portal test.
 
 # Test preconditions
 
@@ -12,11 +12,11 @@
 
 # Expected impact
 
-  The ability to detect a captive portal.
+The ability to detect a captive portal.
 
 # Test description
 
-  The test is split in four smaller tests:
+The test is split in four smaller tests:
 
     1. Http test that compares a requested document against the control one (vendor_tests).
     2. DNS test that checks a NXDOMAIN response to random hostnames requests (part of the vendor_dns_tests).
@@ -25,12 +25,13 @@
 
 # Expected output
 
-  Relevant data to think about the existence of a captive portal grouped between the http and dns tests.
+Relevant data to think about the existence of a captive portal grouped between the http and dns tests.
 
 ## Parent data format
 
-  df-001-httpt.md
-  df-002-dnst.md
+df-001-httpt
+
+df-002-dnst
 
 ## Required output data
 
@@ -40,53 +41,99 @@
 
 ## Semantics
 
-  In addition to the data specified in the parent data format, the following fields are added to the report.
+In addition to the data specified in the parent data format, the following fields are added to the report.
 
-  Version 0.2:
+Version 0.2:
 
-    vendor_dns_tests:
-      google_dns_cp: set(IP address(es) of the random hostnames that don't resolve to NXDOMAIN)
-      ms_dns_cp: [IP address of the requested domain name]
+```
+{
+   "vendor_dns_tests": {
+      "google_dns_cp": [
+            "IP address(es) of the random hostnames that don't resolve "
+            "to NXDOMAIN"
+       ],
+      "ms_dns_cp": [
+            "IP address of the requested domain name"
+      ]
+    },
 
-    vendor_tests:
-      result: true|false
-      vt: [URL, http_status_summary, http_status_number, User_Agent, name_test]
+    "vendor_tests": {
+        "result": "true|false"
+        "vt": [
+            "URL",
+            "http_status_summary",
+            "http_status_number",
+            "User_Agent",
+            "name_test"
+        ]
+    },
 
-    check0x20:
-      (name_match, serial_match, querynames, answernames, SOA_serials)
+    "check0x20": [
+        ["name_match", "serial_match", "querynames", "answernames", "SOA_serials"]
+    ]
+}
+```
 
-  Version 0.3:
+Version 0.3:
 
-    vendor_dns_tests:
-      google_dns_cp:
-        result: true|false
-        addresses: set(IP address(es) of the random hostnames that don't resolve to NXDOMAIN)
+```
+{
+    "vendor_dns_tests": {
+        "google_dns_cp": {
+            "result": "true|false"
+            "addresses": [
+                "IP address(es) of the random hostnames that don't resolve to NXDOMAIN"
+            ]
+        }
+        "ms_dns_cp": {
+            "result": "true|false"
+            "address": "IP address of the requested domain name"
+        }
+    },
 
-      ms_dns_cp:
-        result: true|false
-        address: IP address of the requested domain name
+    "vendor_tests": {
+        "MS HTTP Captive Portal": {
+            "result": "true|false",
+            "url": "string",
+            "http_status_summary": "string",
+            "http_status_number": "number",
+            "User_Agent": "string"
+        },
+        "W3 Captive Portal": {
+            "result": "true|false",
+            "url": "string",
+            "http_status_summary": "string",
+            "http_status_number": "number",
+            "User_Agent": "string"
+        },
+        "Apple HTTP Captive Portal": {
+            "result": "true|false",
+            "url": "string",
+            "http_status_summary": "string",
+            "http_status_number": "number",
+            "User_Agent": "string"
+        }
+    },
 
-    vendor_tests:
-      name_test: string
-        result: true|false
-        url: string
-        http_status_summary: string
-        http_status_number: number
-        User_Agent: string
+    "check0x20": {
+        "result": "true|false",
+        "name_match": "true|false"
+        "serial_match": "true|false"
+        "querynames": ["domain names of requested hostnames"]
+        "answernames": ["domain names of answered requests"]
+        "SOA_serials": ["serials of the DNSs zones of the requested queries"]
+    }
 
-    check0x20:
-      result: true|false
-      name_match: true|false
-      serial_match: true|false
-      querynames: [domain names of requested hostnames]
-      answernames: [domain names of answered requests]
-      SOA_serials: [serials of the DNSs zones of the requested queries]
+}
+```
 
 ## Possible conclusions
 
   Whether or not the tester is under a captive portal.
 
 ## Example output sample
+
+XXX update this
 
     ###########################################
     # OONI Probe Report for captiveportal (0.2)

@@ -1,7 +1,7 @@
 # oonib specification
 
-* version: 0.2
-* date: 2013-07-04
+* version: 1.3.0
+* date: 2016-02-05
 * author: Arturo Filastò, Aaron Gibson
 
 This document aims at providing a functional specification of oonib. At the
@@ -61,10 +61,6 @@ using Tor or obfsproxy.
 Unless otherwise stated all of the network operations below can be performed
 either via HTTPS or HTTPO (HTTP over Tor Hidden Service).
 
-Note: we will eventually want to migrate over to using YAML instead of JSON as
-a data exchange format. Not doing so adds unnecessary overhead in including
-YAML data inside of JSON data.
-
 ### 2.3.1.1 Create a new report
 
 When a probe starts a test they will *create* a new report with the oonib
@@ -85,6 +81,11 @@ The HTTP request it performs is:
         `string` the Authonomous System Number of the network the test is
           related to prefixed by "AS" (ex. "AS1234")
 
+     'probe_cc':
+        NEW since oonibackend 1.2.0
+        `string` the two-letter country code of the probe as defined in
+        ISO3166-1 alpha-2 or ZZ when undefined (ex. "IT")
+
      'test_name':
         `string` the name of the test performing the network measurement. In
           the case of ooni-probe this is the test filename without the ".py"
@@ -93,16 +94,26 @@ The HTTP request it performs is:
      'test_version':
         `string` the version of the test peforming the network measurement.
 
-     'input_hashes': 
+     'data_format_version':
+        NEW since oonibackend 1.2.0
+        `string` that must be either "json" or "yaml" to identify the format
+        of the content.
+
+     'test_start_time':
+        NEW since oonibackend 1.2.0
+        `string` timestamp in UTC of when the test was started using the format "%Y-%m-%d %H:%M:%S"
+
+     'input_hashes':
         (optional) `list` of hex encoded sha256sum of the contents
           of the inputs we are using for this test. This field is required if the collector backend only
           accepts certain inputs (that is it has a collector policy).
           For more information on policies see section 2.3.
 
-     'test_helper': 
+     'test_helper':
         (optional) `string` the name of the required test_helper for this test.
 
      'content':
+        DEPRECATED since oonibackend 1.2.0
         (optional) `string` it is optionally possible to create a report with
           already some data inside of it.
 
@@ -111,15 +122,21 @@ The HTTP request it performs is:
           test requires a test_helper the probe should inform oonib of it's IP
           address. We need to know this since we are not sure if the probe is
           accessing the report collector via Tor or not.
+
+     'format':
+        `string` that must be either "json" or "yaml" to identify the format
+        of the content.
+        New since version 0.2.0 of the data format or 1.2.0 of the backend.
+
      }
 
 When a report is created the backend will respond with a report identifier
 that will then allow the probe to update the report and the version of the
 backend software like follows:
 
-`Status Code: 201 (Created)`
+`Status Code: 200 (OK)`
 
-    {
+{
 
       'backend_version':
         `string` containing the version of the backend
@@ -130,7 +147,12 @@ backend software like follows:
       'test_helper_address':
         (conditional) `string` the address of a test helper that the client requested.
 
-    }
+      'supported_formats':
+        NEW since oonibackend 1.2.0
+        `list` of strings detailing what are the supported formats for
+        submitted reports. Can either be "json" or "yaml".
+
+}
 
 The report identifier allows the probe to update the report and it will be
 contructed as follows:
@@ -139,7 +161,7 @@ contructed as follows:
 
 A report identifier can be for example:
 
-  1912-06-23T101234Z_AS1234_ihvhaeZDcBpDwYTbmdyqZSLCDNuJSQuoOdJMciiQWwAWUKJwmR
+  19120623T101234Z_AS1234_ihvhaeZDcBpDwYTbmdyqZSLCDNuJSQuoOdJMciiQWwAWUKJwmR
 
 If the report does not match the collector policy it will not create a report 
 or return a valid report_id.
@@ -169,16 +191,26 @@ the report by referencing it by id:
 
 `PUT /report`
 
-    {
+```
+{
 
     'report_id':
       `string` the report identifier
 
     'content':
-      `string` content to be added to the report. This can be one or more
+      `string` or `document` content to be added to the report. This can be one or more
         report entries in the format specified in df-000-base.md
+        When in format YAML this is the content of the report to be added as a
+        string serialised in YAML, when in JSON it's the actual JSON document of the report entry.
 
-    }
+
+     'format':
+        `string` that must be either "json" or "yaml" to identify the format
+        of the content.
+        New since version 0.3 of the data format or 1.2 of the backend.
+
+}
+```
 
 This method is deprecated, because it is not proper usage of HTTP request methods.
 PUT should only be used for operations that are idempotent.
@@ -189,13 +221,33 @@ New collectors should use the following format for updating reports:
 
 `POST /report/$report_id`
 
-    {
+```
+{
 
     content:
-      `string` content to be added to the report. This can be one or more
+      `string` or `document` content to be added to the report. This can be one or more
         report entries in the format specified in df-000-base.md
+        When in format YAML this is the content of the report to be added as a
+        string serialised in YAML, when in JSON it's the actual JSON document of the report entry.
 
-    }
+     'format':
+        `string` that must be either "json" or "yaml" to identify the format
+        of the content.
+        New since version 0.3 of the data format or 1.2 of the backend.
+
+}
+```
+
+When a request for update is successful the backend will return:
+
+`Status code: 200 (OK)`
+
+Message:
+```
+{'status': 'success'}
+```
+
+If it doesn't find the report it will set the status code to `404`.
 
 ### 2.3.1.3 Closing a report
 
@@ -233,14 +285,13 @@ This will list all the available decks.
 This will return the descriptor for the specified deck
 
 ```
-{ 
- 'name': "the name of the deck",
- 'description': "a description of the deck",
- 'version': "the deck version number",
- 'author': "the author name and email address in the format John Doe <john@example.com>",
- 'date': "the deck creation time in ISO 8601",
+{
+    'name': "the name of the deck",
+    'description': "a description of the deck",
+    'version': "the deck version number",
+    'author': "the author name and email address in the format John Doe <john@example.com>",
+    'date': "the deck creation time in ISO 8601",
 }
-
 ```
 
 #### GET /deck/$deck_id/yaml
@@ -269,14 +320,13 @@ This will list all the available inputs:
 This will return the descriptor for the specified input
 
 ```
-{ 
+{
  'name': "the name of the input",
  'description': "a description of the input",
  'version': "the input version number",
  'author': "the author name and email address in the format John Doe <john@example.com>",
  'date': "the input creation time in ISO 8601",
 }
-
 ```
 
 #### GET /input/$input_id/file
@@ -624,7 +674,7 @@ will return the identity of the machines that:
  1. Can run the required test-helpers
  2. Can send back to the client a set of required inputs
  3. Can collect the report of the nettest
- 
+
 If a known collector to the bouncer cannot provide any of the three previous requirements,
 the collector won't be sent back to the client in the bouncer request.
 
@@ -656,13 +706,39 @@ And the bouncer replies:
     'net-tests': [
         {
             'test-helpers': [
-                {'requested test helper': 'address'},
+                {'requested test helper name': 'address'},
+                ...
+            ],
+            'test-helpers-alternate': [
+                {'requested test helper name': [
+                        {
+                            'type': 'cloudfront',
+                            'address': 'https://xxx.yyy.tld/',
+                            'front': 'zzz.ttt.tld'
+                        },
+                        {
+                            'type': 'https',
+                            'address': 'https://xxx.yyy.tld/'
+                        }
+                    ]
+                },
                 ...
             ],
             'input-hashed': ['requested input id', ...],
             'name': 'name of nettest',
             'version': 'version of nettest',
-            'collector': 'address'
+            'collector': 'httpo://thirteenchars1.onion',
+            'collector-alternate': [
+                {
+                    'type': 'cloudfront',
+                    'address': 'https://xxx.yyy.tld/',
+                    'front': 'zzz.ttt.tld'
+                },
+                {
+                    'type': 'https',
+                    'address': 'https://xxx.yyy.tld/'
+                }
+            ]
         },
         ....
     ]
