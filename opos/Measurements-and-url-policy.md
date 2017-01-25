@@ -23,8 +23,7 @@ to gather network measurement data.
 
 7. Anybody in the governance roster can nominate somebody else to join the
    roster. Their inclusion shall be discussed and once there is consensus they
-   are added.
-   To be included in the roster you need to:
+   are added. To be included in the roster you need to:
 
    a. Have a legittimate reason to do so (ex. you do research on censorship)
 
