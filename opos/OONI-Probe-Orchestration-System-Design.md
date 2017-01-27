@@ -48,16 +48,16 @@ Moreover it should be possible to say something like:
 ## 1.4 Transparent
 
 There should be full transparency over what is being scheduled to be run on
-orchestrated probes. That is to say that it should be possible for anybody to
-inspect the log of all the instructions and determine which ones have affected
-their probe.
+orchestrated probes. That is to say that all measurements scheduled via OPOS
+must be recorded in an append only log so that it's possible, upon request,
+for a user to learn what jobs have affected their probe.
 
 # 2.0 High level overview
 
 Components:
 
 **OPOS Client**: This is generally an instance of ooniprobe (or
-ooniprobe-mobile) that is subscribing to the OPOC event feed.
+ooniprobe-mobile) that is subscribing to the OPOS event feed.
 
 **OPOS Scheduler**: This is the component that knows the status of the jobs
 scheduled via the OPOS Management Interface, which OPOS Clients have taken them
@@ -78,6 +78,9 @@ information on what it should do.
 When somebody with proper access permissions adds an event to via the **OPOS
 Management Interface** all the subscribed probes that are affected by that
 event will be notified and will begin performing the specified action.
+
+The **OPOS Scheudler** is the scheduling engine responsible for figuring out
+which clients to notify of jobs and how.
 
 A user interested in seeing what has been scheduled in the past can visit the
 **OPOS Event log** and see a history of what has happenned.
@@ -117,7 +120,7 @@ specified action.
 It is sometimes desirable to avoid having all probes run the specific action at
 the same time, for example because it could lead to a denial of service of the
 affected resources, to this end it's also possible to delay the action by a random delay
-by specifying the `random_delay` key.
+by specifying the optional `delay` key.
 
 We use JSON serialization for representing the message structures inside of
 this document, however if due to other contraints JSON is not an adequate
@@ -140,7 +143,7 @@ The base data format is the following:
             "probe_id": "",
             "probe_family": "",
 
-            "platform": "macos", # Can be one of lepidopter, macos, linux, mobile, android, ios
+            "platform": "macos", # Can be one of lepidopter, macos, linux, android, ios
 
             "network_type": "wifi" # can be one of wifi, mobile, 3g, 4g, edge
             "available_bandwidth": {"gt": 10000}
@@ -158,12 +161,12 @@ The base data format is the following:
 }
 ```
 
-The where clause in the filter definition is an implementation of the [loopback
+`filter`:
+The `where` clause in the filter definition is an implementation of the [loopback
 style filters](https://github.com/strongloop/loopback-filters), but with "in"
-in place of "inq".
-
-run now contains a boolean value that if true means this client should execute
-the action, false if it should not.
+in place of "inq" for clarity.
+Any of the sub-keys inside of the "where" keys support the filters. This means
+you can say: `"platform": "macos"` or `"platform": ["macos", "android"]`.
 
 `delay`: is an upper bound on the number of seconds to delay the action by. For
 example by specifying `"delay": 60` the action will be triggerred after a
@@ -174,15 +177,30 @@ number of seconds going from `0-60`.
 * The number of times to repeat the job: Rn to repeat n times, or R to repeat forever
 
 * The start time of the job in ISO 8601 (YYYY-MM-DDThh:mm:ssTZ, where TZ is the timezone of `Z` for UTC).
-  An empty start time means start immediately.
+  An empty start time means start immediately taking into account the eventual
+  random delay when the `delay` key is specified.
 
 * The run interval, defined following the ["Duration" component of the ISO 8601](https://en.wikipedia.org/wiki/ISO_8601#Durations) standard.
+  Durations are indicated as a string in the format
+  `P[n]Y[n]M[n]DT[n]H[n]M[n]S`, where `[n]` is a number representing a value
+  for the follwoing date or time element.
+  The capital letters `P, Y, M, W, D, T, H, M, S` are designators for each of the date and time elements.
+  * `P`: is the duration designator and is placed at the beginning.
+  * `Y`: is the year designator that follows the number of years (ex. P2Y means every two years)
+  * `M: is the month designator
+  * `W`: is the week designator
+  * `D`: is the day designator
+  * `T`: is the time designator, it preceds the time components in the representation (ex. `PT2M` means every two minutes).
+  * `H`: is the hour designator
+  * `M`: is the minute designator
+  * `S`: is the second designator
+  Decimal fractions are also allowed. For example `P0.5D` means twice a day (every half day).
 
 The Management Interface will assign to a given job a unique id (hereafter
 referred to as `job_id`) that can be used to unschedule jobs.
 
-It should be possible for somebody interacting with the Management Interface to
-schedule the following types of actions.
+It should be possible for an authorized operator interacting with the
+Management Interface to schedule the following types of actions.
 
 ### 4.1.1 Run test
 
@@ -276,8 +294,6 @@ The OPOS Scheduler keeps track of the lifecycle of a job. With respect to an
 
 
 # Links
-
-These
 
 * https://mesos.github.io/chronos/
 
