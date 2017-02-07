@@ -1,8 +1,8 @@
 # Measurements and URL policy
 
 This document explains the policy we follow when considering what URLs and
-Measurements should be scheduled via OPOS and/or any other system run by OONI
-to gather network measurement data.
+Measurements should be scheduled via the OONI Probe Orchestration System (OPOS)
+and/or any other system run by OONI to gather network measurement data.
 
 1. To the extent that it is possible we will always do what is best for users of OONI.
 
@@ -25,7 +25,7 @@ to gather network measurement data.
    roster. Their inclusion shall be discussed and once there is consensus they
    are added. To be included in the roster you need to:
 
-   a. Have a legittimate reason to do so (ex. you do research on censorship)
+   a. Have a legitimate reason to do so (ex. you do research on censorship)
 
    b. Be a respected member of the OONI community
 
