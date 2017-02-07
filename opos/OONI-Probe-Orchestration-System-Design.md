@@ -80,7 +80,7 @@ When somebody with proper access permissions adds an event to via the **OPOS
 Management Interface** all the subscribed probes that are affected by that
 event will be notified and will begin performing the specified action.
 
-The **OPOS Scheudler** is the scheduling engine responsible for figuring out
+The **OPOS Scheduler** is the scheduling engine responsible for figuring out
 which clients to notify of jobs and how.
 
 A user interested in seeing what has been scheduled in the past can visit the
