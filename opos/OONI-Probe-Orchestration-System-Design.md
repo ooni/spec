@@ -28,9 +28,10 @@ OPOS is unreachable.
 
 ## 1.2 Latency
 
-The target latency for the OPOS is of around 1 minute. This means that from the
-time a new instruction is inserted into the OPOS to the moment that the
-affected probes receive it 1 minute should pass.
+The target latency for the OPOS is in the range of minutes. This means that
+from the time a new instruction is inserted into the OPOS to the moment that
+the affected probes receive minutes should pass, as opposed to seconds or
+hours.
 
 ## 1.3 Granular
 
