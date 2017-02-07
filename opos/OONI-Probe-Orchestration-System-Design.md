@@ -38,7 +38,7 @@ It should be possible to give instructions based on:
 
 * The country of a probe
 
-* The Network of a probe
+* The network of a probe
 
 Moreover it should be possible to say something like:
 
@@ -83,11 +83,11 @@ The **OPOS Scheudler** is the scheduling engine responsible for figuring out
 which clients to notify of jobs and how.
 
 A user interested in seeing what has been scheduled in the past can visit the
-**OPOS Event log** and see a history of what has happenned.
+**OPOS Event log** and see a history of what has happened.
 
 # 3.0 Transport protocol requirements
 
-We use the term "Transport" loosely here to mean the protocol that is being
+We use the term "transport" loosely here to mean the protocol that is being
 used for communicating between the **OPOS Client** and the **Event Feed**.
 
 It will most likely be something similar to WebSockets or some sort of pub-sub
@@ -117,13 +117,20 @@ match the target criteria will respond to the specified action.
 When no target is specified the action will affect all clients that support the
 specified action.
 
+In order to ensure that a probe is capable of performing a given job the
+scheduler needs to be informed of a series of metadata about a probe such as:
+
+* Which network measurements are installed and supported by a given probe
+
+* How much disk space the probe in question has available
+
 It is sometimes desirable to avoid having all probes run the specific action at
 the same time, for example because it could lead to a denial of service of the
 affected resources, to this end it's also possible to delay the action by a random delay
 by specifying the optional `delay` key.
 
 We use JSON serialization for representing the message structures inside of
-this document, however if due to other contraints JSON is not an adequate
+this document, however if due to other constraints JSON is not an adequate
 serialization protocol we are not necessarily tied to it.
 
 The base data format is the following:
@@ -163,16 +170,16 @@ The base data format is the following:
 
 `filter`:
 The `where` clause in the filter definition is an implementation of the [loopback
-style filters](https://github.com/strongloop/loopback-filters), but with "in"
-in place of "inq" for clarity.
+style filters](https://github.com/strongloop/loopback-filters).
+The keyword "in" is synomymous with "inq" for clarity.
 Any of the sub-keys inside of the "where" keys support the filters. This means
 you can say: `"platform": "macos"` or `"platform": ["macos", "android"]`.
 
 `delay`: is an upper bound on the number of seconds to delay the action by. For
-example by specifying `"delay": 60` the action will be triggerred after a
+example by specifying `"delay": 60` the action will be triggered after a
 number of seconds going from `0-60`.
 
-`schedule`: The scheduling for the job, in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format. Consists of 3 parts separated by /:
+`schedule`: The scheduling for the job, in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format. Consists of 3 parts separated by `/`:
 
 * The number of times to repeat the job: Rn to repeat n times, or R to repeat forever
 
@@ -183,11 +190,11 @@ number of seconds going from `0-60`.
 * The run interval, defined following the ["Duration" component of the ISO 8601](https://en.wikipedia.org/wiki/ISO_8601#Durations) standard.
   Durations are indicated as a string in the format
   `P[n]Y[n]M[n]DT[n]H[n]M[n]S`, where `[n]` is a number representing a value
-  for the follwoing date or time element.
+  for the following date or time element.
   The capital letters `P, Y, M, W, D, T, H, M, S` are designators for each of the date and time elements.
   * `P`: is the duration designator and is placed at the beginning.
   * `Y`: is the year designator that follows the number of years (ex. P2Y means every two years)
-  * `M: is the month designator
+  * `M`: is the month designator
   * `W`: is the week designator
   * `D`: is the day designator
   * `T`: is the time designator, it preceds the time components in the representation (ex. `PT2M` means every two minutes).
@@ -291,12 +298,3 @@ The OPOS Scheduler keeps track of the lifecycle of a job. With respect to an
   progress of any given task.
 
 * **COMPLETED**: when a job has finished executing it enters the COMPLETED state.
-
-
-# Links
-
-* https://mesos.github.io/chronos/
-
-* https://facebook.github.io/bistro/
-
-* https://loopback.io/doc/en/lb2/Where-filter.html
