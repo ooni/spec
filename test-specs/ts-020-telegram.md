@@ -42,9 +42,9 @@ These access points have the following IP addresses:
 * 149.154.167.91
 * 149.154.171.5
 
-The test establishes TCP connection to all the access points IP addresses.
-If any TCP connections on ports 80 and 443 to Telegram’s access points IP fail
-we consider the access point to be blocked:
+The test establishes TCP connection to all the access point IP addresses.
+If all TCP connections on ports 80 and 443 to Telegram’s access point IPs fail
+we consider Telegram to be blocked:
 
 ```json
 {
@@ -61,8 +61,8 @@ we consider the access point to be blocked:
 }
 ```
 
-Regardless of the status of the TCP connectivity this test sends HTTP GET
-requests on ports 80 and 443 to all access points. If any HTTP(S) requests do
+Regardless of the status of the TCP connectivity this test sends HTTP POST
+requests on ports 80 and 443 to all access points. If any HTTP requests do
 not get back a response from an access point IP then it is considered as
 blocked:
 
@@ -104,8 +104,8 @@ the report:
 
 ```json
 {
-    "telegram_web_failure": "FAILURE STRING"
-    "telegram_web_status": "blocked",
+    "telegram_web_failure": "FAILURE STRING",
+    "telegram_web_status": "blocked"
 }
 ```
 
@@ -113,8 +113,8 @@ If none of the access points are blocked then we write:
 
 ```json
 {
-    "telegram_web_failure": null
-    "telegram_web_status": "ok",
+    "telegram_web_failure": null,
+    "telegram_web_status": "ok"
 }
 ```
 
@@ -132,7 +132,7 @@ If none of the access points are blocked then we write:
     "telegram_tcp_blocking": true | false,
 
     "telegram_web_failure": "failure_string" | null,
-    "telegram_web_status": "blocked" | "ok" | null
+    "telegram_web_status": "blocked" | "ok" | null,
 
     "tcp_connect": [
         {
