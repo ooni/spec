@@ -4,7 +4,7 @@
 
 # Specification name
 
-OpenVPN Test
+OpenVPN Client Test
 
 # Test preconditions
 
@@ -72,139 +72,42 @@ We can determine whether or not a given URL is reachable via OpenVPN.
 
 ## Example output sample
 ```
----
-input_hashes: []
-options: [-c, openvpnconfigfile.ovpn, -u, '']
-probe_asn: AS0
-probe_cc: ZZ
-probe_city: null
-probe_ip: 127.0.0.1
-report_id: nqvK7YrK6J5Di7BiWDwPUBfyKcbLoVWeU4DgnxTzzKWMQABvhC2l3q6aLUwF0CA9
-software_name: ooniprobe
-software_version: 1.3.1
-start_time: 1444925440.0
-test_helpers: {}
-test_name: test_openvpn_circumvent
-test_version: 0.0.1
-...
----
-/usr/sbin/openvpn --config /pathtoopenvpnconfigfile/openvpnconfigfile.ovpn: {
-  exit_reason: process_done, stderr: '', stdout: 'Thu Oct 15 20:10:40 2015 OpenVPN
-    2.3.2 x86_64-pc-linux-gnu [SSL (OpenSSL)] [LZO] [EPOLL] [PKCS11] [eurephia] [MH]
-    [IPv6] built on Dec  1 2014
-
-    Thu Oct 15 20:10:40 2015 WARNING: file ''/tmp/openvpn.txt'' is group or others
-    accessible
-
-    Thu Oct 15 20:10:40 2015 Control Channel Authentication: tls-auth using INLINE
-    static key file
-
-    Thu Oct 15 20:10:40 2015 Attempting to establish TCP connection with [AF_INET]10.0.0.10:993
-    [nonblock]
-
-    Thu Oct 15 20:10:41 2015 TCP connection established with [AF_INET]10.0.0.10:993
-
-    Thu Oct 15 20:10:41 2015 TCPv4_CLIENT link local: [undef]
-
-    Thu Oct 15 20:10:41 2015 TCPv4_CLIENT link remote: [AF_INET]10.0.0.10:993
-
-    Thu Oct 15 20:10:41 2015 WARNING: this configuration may cache passwords in memory
-    -- use the auth-nocache option to prevent this
-
-    Thu Oct 15 20:10:46 2015 [server] Peer Connection Initiated with [AF_INET]10.0.0.10:993
-
-    Thu Oct 15 20:10:48 2015 Options error: Unrecognized option or missing parameter(s)
-    in [PUSH-OPTIONS]:3: dhcp (2.3.2)
-
-    Thu Oct 15 20:10:48 2015 TUN/TAP device tun0 opened
-
-    Thu Oct 15 20:10:48 2015 do_ifconfig, tt->ipv6=0, tt->did_ifconfig_ipv6_setup=0
-
-    Thu Oct 15 20:10:48 2015 /sbin/ip link set dev tun0 up mtu 1500
-
-    Thu Oct 15 20:10:48 2015 /sbin/ip addr add dev tun0 local 10.10.0.34 peer 10.10.0.33
-
-    Thu Oct 15 20:10:48 2015 Initialization Sequence Completed
-
-    '}
-body: "<?xml version=\"1.0\"?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\
-  \n    \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\"\
-  >\n<head>\n<meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\"\
-  \ />\n<title>This is a Tor Exit Router</title>\n\n<!--\n\nThis notice is intended\
-  \ to be placed on a virtual host for a domain that\nyour Tor exit node IP reverse\
-  \ resolves to so that people who may be about\nto file an abuse complaint would\
-  \ check it first before bothering you or\nyour ISP. Ex:\nhttp://tor-exit.yourdomain.org\
-  \ or http://tor-readme.yourdomain.org.\n\nThis type of setup has proven very effective\
-  \ at reducing abuse complaints\nfor exit node operators.\n\nThere are a few places\
-  \ in this document that you may want to customize.\nThey are marked with FIXME.\n\
-  \n-->\n\n</head>\n<body>\n\n<p style=\"text-align:center; font-size:xx-large; font-weight:bold\"\
-  >This is a\nTor Exit Router</p>\n\n<p>\nMost likely you are accessing this website\
-  \ because you had some issue with\nthe traffic coming from this IP. This router\
-  \ is part of the <a\nhref=\"https://www.torproject.org/\">Tor Anonymity Network</a>,\
-  \ which is\ndedicated to <a href=\"https://www.torproject.org/about/overview\">providing\n\
-  privacy</a> to people who need it most: average computer users. This\nrouter IP\
-  \ should be generating no other traffic, unless it has been\ncompromised.</p>\n\n\
-  <p style=\"text-align:center\">\n<a href=\"https://www.torproject.org/about/overview\"\
-  >\n<img src=\"how_tor_works_thumb.png\" alt=\"How Tor works\" style=\"border-style:none\"\
-  />\n</a></p>\n\n<p>\nTor sees use by <a href=\"https://www.torproject.org/about/torusers\"\
-  >many\nimportant segments of the population</a>, including whistle blowers,\njournalists,\
-  \ Chinese dissidents skirting the Great Firewall and oppressive\ncensorship, abuse\
-  \ victims, stalker targets, the US military, and law\nenforcement, just to name\
-  \ a few.  While Tor is not designed for malicious\ncomputer users, it is true that\
-  \ they can use the network for malicious ends.\nIn reality however, the actual amount\
-  \ of <a\nhref=\"https://www.torproject.org/docs/faq-abuse\">abuse</a> is quite low.\
-  \ This\nis largely because criminals and hackers have significantly better access\
-  \ to\nprivacy and anonymity than do the regular users whom they prey upon. Criminals\n\
-  can and do <a\nhref=\"http://voices.washingtonpost.com/securityfix/2008/08/web_fraud_20_tools.html\"\
-  >build,\nsell, and trade</a> far larger and <a\nhref=\"http://voices.washingtonpost.com/securityfix/2008/08/web_fraud_20_distributing_your.html\"\
-  >more\npowerful networks</a> than Tor on a daily basis. Thus, in the mind of this\n\
-  operator, the social need for easily accessible censorship-resistant private,\n\
-  anonymous communication trumps the risk of unskilled bad actors, who are\nalmost\
-  \ always more easily uncovered by traditional police work than by\nextensive monitoring\
-  \ and surveillance anyway.</p>\n\n<p>\nIn terms of applicable law, the best way\
-  \ to understand Tor is to consider it a\nnetwork of routers operating as common\
-  \ carriers, much like the Internet\nbackbone. However, unlike the Internet backbone\
-  \ routers, Tor routers\nexplicitly do not contain identifiable routing information\
-  \ about the source of\na packet, and no single Tor node can determine both the origin\
-  \ and destination\nof a given transmission.</p>\n\n<p>\nAs such, there is little\
-  \ the operator of this router can do to help you track\nthe connection further.\
-  \ This router maintains no logs of any of the Tor\ntraffic, so there is little that\
-  \ can be done to trace either legitimate or\nillegitimate traffic (or to filter\
-  \ one from the other).  Attempts to\nseize this router will accomplish nothing.</p>\n\
-  \n<!-- FIXME: May or may not be US-only. Some non-US tor nodes have in\n     fact\
-  \ reported DMCA harassment... -->\n\n<p>\nIf you are a representative of a company\
-  \ who feels that this router is being\nused to violate the DMCA, please be aware\
-  \ that this machine does not host or\ncontain any illegal content. Also be aware\
-  \ that network infrastructure\nmaintainers are not liable for the type of content\
-  \ that passes over their\nequipment, in accordance with <a\nhref=\"http://www.law.cornell.edu/uscode/text/17/512\"\
-  >DMCA\n\"safe harbor\" provisions</a>. In other words, you will have just as much\
-  \ luck\nsending a takedown notice to the Internet backbone providers. Please consult\n\
-  <a href=\"https://www.torproject.org/eff/tor-dmca-response\">EFF's prepared\nresponse</a>\
-  \ for more information on this matter.</p>\n\n<p>For more information, please consult\
-  \ the following documentation:</p>\n\n<ol>\n<li><a href=\"https://www.torproject.org/about/overview\"\
-  >Tor Overview</a></li>\n<li><a href=\"https://www.torproject.org/docs/faq-abuse\"\
-  >Tor Abuse FAQ</a></li>\n<li><a href=\"https://www.torproject.org/eff/tor-legal-faq\"\
-  >Tor Legal FAQ</a></li>\n</ol>\n\n<p>\nThat being said, if you still have a complaint\
-  \ about the router,  you may\nemail the <a href=\"mailto:tor@openvpnconfigfile.ie\">maintainer</a>.\
-  \ If\ncomplaints are related to a particular service that is being abused, I will\n\
-  consider removing that service from my exit policy, which would prevent my\nrouter\
-  \ from allowing that traffic to exit through it. I can only do this on an\nIP+destination\
-  \ port basis, however. Common P2P ports are\nalready blocked.</p>\n\n<p>\nYou also\
-  \ have the option of blocking this IP address and others on\nthe Tor network if\
-  \ you so desire. The Tor project provides a <a\nhref=\"https://check.torproject.org/cgi-bin/TorBulkExitList.py\"\
-  >web service</a>\nto fetch a list of all IP addresses of Tor exit nodes that allow\
-  \ exiting to a\nspecified IP:port combination, and an official <a\nhref=\"https://www.torproject.org/tordnsel/dist/\"\
-  >DNSRBL</a> is also available to\ndetermine if a given IP address is actually a\
-  \ Tor exit server. Please\nbe considerate\nwhen using these options. It would be\
-  \ unfortunate to deny all Tor users access\nto your site indefinitely simply because\
-  \ of a few bad apples.</p>\n\n<p style=\"text-align:center; margin-bottom: 0.5em\"\
-  >Exit Node provided by:<p>\n<h2 style=\"text-align: center\"><a style=\"color: black\"\
-  \ href=\"http://www.openvpnconfigfile.ie\">DU Pirate Party</a><h2>\n\n</body>\n</html>\n"
-input: null
-success: true
-test_runtime: 8.374207019805908
-test_start_time: 1444925440.0
-...
+{
+    "annotations": {
+        "platform": "linux"
+    },
+    "backend_version": null,
+    "bucket_date": "2016-12-12",
+    "data_format_version": "0.2.0",
+    "id": "05fbc0d8-ea13-4a46-937e-a69d761171a2",
+    "input": null,
+    "input_hashes": [],
+    "measurement_start_time": "2016-12-11 19:51:00",
+    "options": [
+        "-c",
+        "se-256b.ovpn",
+        "-u",
+        "khilafa.org"
+    ],
+    "probe_asn": "AS29073",
+    "probe_cc": "RU",
+    "probe_city": null,
+    "probe_ip": "191.96.249.110",
+    "report_filename": "2016-12-12/20161211T195056Z-RU-AS29073-openvpn_client_test-20161211T195048Z_AS29073_LFctdQRP2nAKUFGyw2vexp7Ey1ryyg9prOVrUdUdaK7vUfqw5b-0.2.0-probe.json",
+    "report_id": "20161211T195048Z_AS29073_LFctdQRP2nAKUFGyw2vexp7Ey1ryyg9prOVrUdUdaK7vUfqw5b",
+    "software_name": "ooniprobe",
+    "software_version": "2.0.1",
+    "test_helpers": {},
+    "test_keys": {
+        "body": "<!DOCTYPE html>\n<!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]-->\n<!--[if IE 7]>    <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]-->\n<!--[if IE 8]>    <html class=\"no-js ie8 oldie\" lang=\"en-US\"> <![endif]-->\n<!--[if gt IE 8]><!--> <html class=\"no-js\" lang=\"en-US\"> <!--<![endif]-->\n<head>\n<title>Attention Required! | CloudFlare</title>\n<meta charset=\"UTF-8\" />\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />\n<meta http-equiv=\"X-UA-Compatible\" content=\"IE=Edge,chrome=1\" />\n<meta name=\"robots\" content=\"noindex, nofollow\" />\n<meta name=\"viewport\" content=\"width=device-width,initial-scale=1,maximum-scale=1\" />\n<link rel=\"stylesheet\" id=\"cf_styles-css\" href=\"/cdn-cgi/styles/cf.errors.css\" type=\"text/css\" media=\"screen,projection\" />\n<!--[if lt IE 9]><link rel=\"stylesheet\" id='cf_styles-ie-css' href=\"/cdn-cgi/styles/cf.errors.ie.css\" type=\"text/css\" media=\"screen,projection\" /><![endif]-->\n<style type=\"text/css\">body{margin:0;padding:0}</style>\n<!--[if lte IE 9]><script type=\"text/javascript\" src=\"/cdn-cgi/scripts/jquery.min.js\"></script><![endif]-->\n<!--[if gte IE 10]><!--><script type=\"text/javascript\" src=\"/cdn-cgi/scripts/zepto.min.js\"></script><!--<![endif]-->\n<script type=\"text/javascript\" src=\"/cdn-cgi/scripts/cf.common.js\"></script>\n\n\n</head>\n<body>\n  <div id=\"cf-wrapper\">\n    <div class=\"cf-alert cf-alert-error cf-cookie-error\" id=\"cookie-alert\" data-translate=\"enable_cookies\">Please enable cookies.</div>\n    <div id=\"cf-error-details\" class=\"cf-error-details-wrapper\">\n      <div class=\"cf-wrapper cf-header cf-error-overview\">\n        <h1 data-translate=\"challenge_headline\">One more step</h1>\n        <h2 class=\"cf-subheadline\"><span data-translate=\"complete_sec_check\">Please complete the security check to access</span> khilafa.org</h2>\n      </div><!-- /.header -->\n\n      <div class=\"cf-section cf-highlight cf-captcha-container\">\n        <div class=\"cf-wrapper\">\n          <div class=\"cf-columns two\">\n            <div class=\"cf-column\">\n              <div class=\"cf-highlight-inverse cf-form-stacked\">\n                <form class=\"challenge-form\" id=\"challenge-form\" action=\"/cdn-cgi/l/chk_captcha\" method=\"get\">\n  <script type=\"text/javascript\" src=\"/cdn-cgi/scripts/cf.challenge.js\" data-type=\"normal\"  data-ray=\"30fb78bd545f4e96\" async data-sitekey=\"6LfOYgoTAAAAAInWDVTLSc8Yibqp-c9DaLimzNGM\" data-stoken=\"fl5gc_M14MlvBWkagabZ2331buzai7si3RQwWaoZ2VW5hSm4wEZ8L1YKpEo4Y0i1pIz1ritxlzKjMC1447g_j_I0fPASTkKG6EZ0E_o-7GA\"></script>\n  <div class=\"g-recaptcha\"></div>\n  <noscript id=\"cf-captcha-bookmark\" class=\"cf-captcha-info\">\n    <div><div style=\"width: 302px\">\n      <div>\n        <iframe src=\"https://www.google.com/recaptcha/api/fallback?k=6LfOYgoTAAAAAInWDVTLSc8Yibqp-c9DaLimzNGM&stoken=fl5gc_M14MlvBWkagabZ2331buzai7si3RQwWaoZ2VW5hSm4wEZ8L1YKpEo4Y0i1pIz1ritxlzKjMC1447g_j_I0fPASTkKG6EZ0E_o-7GA\" frameborder=\"0\" scrolling=\"no\" style=\"width: 302px; height:422px; border-style: none;\"></iframe>\n      </div>\n      <div style=\"width: 300px; border-style: none; bottom: 12px; left: 25px; margin: 0px; padding: 0px; right: 25px; background: #f9f9f9; border: 1px solid #c1c1c1; border-radius: 3px;\">\n        <textarea id=\"g-recaptcha-response\" name=\"g-recaptcha-response\" class=\"g-recaptcha-response\" style=\"width: 250px; height: 40px; border: 1px solid #c1c1c1; margin: 10px 25px; padding: 0px; resize: none;\"></textarea>\n        <input type=\"submit\" value=\"Submit\"></input>\n      </div>\n    </div></div>\n  </noscript>\n</form>\n\n              </div>\n            </div>\n\n            <div class=\"cf-column\">\n              <div class=\"cf-screenshot-container\">\n              \n                <span class=\"cf-no-screenshot\"></span>\n              \n              </div>\n            </div>\n          </div><!-- /.columns -->\n        </div>\n      </div><!-- /.captcha-container -->\n\n      <div class=\"cf-section cf-wrapper\">\n        <div class=\"cf-columns two\">\n          <div class=\"cf-column\">\n            <h2 data-translate=\"why_captcha_headline\">Why do I have to complete a CAPTCHA?</h2>\n\n            <p data-translate=\"why_captcha_detail\">Completing the CAPTCHA proves you are a human and gives you temporary access to the web property.</p>\n          </div>\n\n          <div class=\"cf-column\">\n            <h2 data-translate=\"resolve_captcha_headline\">What can I do to prevent this in the future?</h2>\n\n            <p data-translate=\"resolve_captcha_antivirus\">If you are on a personal connection, like at home, you can run an anti-virus scan on your device to make sure it is not infected with malware.</p>\n\n            <p data-translate=\"resolve_captcha_network\">If you are at an office or shared network, you can ask the network administrator to run a scan across the network looking for misconfigured or infected devices.</p>\n          </div>\n        </div>\n      </div><!-- /.section -->\n\n      <div class=\"cf-error-footer cf-wrapper\">\n  <p>\n    <span class=\"cf-footer-item\">CloudFlare Ray ID: <strong>30fb78bd545f4e96</strong></span>\n    <span class=\"cf-footer-separator\">&bull;</span>\n    <span class=\"cf-footer-item\"><span data-translate=\"your_ip\">Your IP</span>: 94.242.57.2</span>\n    <span class=\"cf-footer-separator\">&bull;</span>\n    <span class=\"cf-footer-item\"><span data-translate=\"performance_security_by\">Performance &amp; security by</span> <a data-orig-proto=\"https\" data-orig-ref=\"www.cloudflare.com/5xx-error-landing?utm_source=error_footer\" id=\"brand_link\" target=\"_blank\">CloudFlare</a></span>\n    \n  </p>\n</div><!-- /.error-footer -->\n\n\n    </div><!-- /#cf-error-details -->\n  </div><!-- /#cf-wrapper -->\n\n  <script type=\"text/javascript\">\n  window._cf_translation = {};\n  \n  \n</script>\n\n</body>\n</html>\n",
+        "failure": "unknown_failure openvpn_exited_unexpectedly",
+        "success": true
+    },
+    "test_name": "openvpn_client_test",
+    "test_runtime": 56.0091958046,
+    "test_start_time": "2016-12-11 19:50:56",
+    "test_version": "0.0.2"
+}
 ```
 
 ## Expected Post-processing efforts
