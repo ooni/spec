@@ -31,8 +31,7 @@ This test will check if 2 services are working as they should:
 
 ## Telegram access points check
 
-The Telegram access points (DCs) are those used by the [Telegram desktop client]
-(https://github.com/telegramdesktop/tdesktop/blob/e6d94b5ee7d96a97ee5976dacb87bafd00beac1d/Telegram/SourceFiles/config.h#L205).
+The Telegram access points (DCs) are those used by the [Telegram desktop client](https://github.com/telegramdesktop/tdesktop/blob/e6d94b5ee7d96a97ee5976dacb87bafd00beac1d/Telegram/SourceFiles/config.h#L205).
 
 These access points have the following IP addresses:
 
@@ -53,7 +52,7 @@ we consider Telegram to be blocked:
         "ip": "149.154.167.50",
         "port": 443,
         "status": {
-            "failure": generic_timeout_error,
+            "failure": "generic_timeout_error",
             "success": false
         }
     }
