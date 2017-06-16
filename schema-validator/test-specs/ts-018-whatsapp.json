@@ -1,0 +1,324 @@
+{
+	"annotations": {
+		"platform": "macos"
+	},
+	"data_format_version": "0.2.0",
+	"id": "3efd4e05-be03-46b7-a21d-034cb03bdde9",
+	"input": null,
+	"input_hashes": [],
+	"measurement_start_time": "2016-11-25 12:33:30",
+	"options": [],
+	"probe_asn": "AS30722",
+	"probe_cc": "IT",
+	"probe_city": null,
+	"probe_ip": "127.0.0.1",
+	"report_id": "m2fUNCj20WEaAHZaiNBf1vIUFkytNqCLQboP0XJrSFPpDpy5me7tDfEaAQktPHDe",
+	"software_name": "ooniprobe",
+	"software_version": "2.0.3.dev0",
+	"test_helpers": {},
+	"test_keys": {
+		"agent": "redirect",
+		"queries": [
+			{
+				"answers": [
+					{
+						"answer_type": "A",
+						"ipv4": "169.47.5.199"
+					},
+					{
+						"answer_type": "A",
+						"ipv4": "174.36.208.132"
+					},
+					{
+						"answer_type": "A",
+						"ipv4": "173.192.231.41"
+					},
+					{
+						"answer_type": "A",
+						"ipv4": "174.37.217.84"
+					},
+					{
+						"answer_type": "A",
+						"ipv4": "169.45.214.245"
+					},
+					{
+						"answer_type": "A",
+						"ipv4": "169.45.219.230"
+					},
+					{
+						"answer_type": "A",
+						"ipv4": "169.45.248.175"
+					},
+					{
+						"answer_type": "A",
+						"ipv4": "169.45.248.107"
+					}
+				],
+				"failure": null,
+				"hostname": "e14.whatsapp.net",
+				"query_type": "A",
+				"resolver_hostname": null,
+				"resolver_port": null
+			}
+		],
+		"registration_server_failure": null,
+		"registration_server_status": "ok",
+		"requests": [
+			{
+				"failure": null,
+				"request": {
+					"body": null,
+					"headers": {},
+					"method": "GET",
+					"tor": {
+						"exit_ip": null,
+						"exit_name": null,
+						"is_tor": false
+					},
+					"url": "https://web.whatsapp.com/"
+				},
+				"response": {
+					"body": "<!DOCTYPE html>\n<!--[if lt IE 7]>      <html class=\"no-js lt-ie9 lt-ie8 lt-ie7\"> <![endif]-->\n<!--[if IE 7]>         <html class=\"no-js lt-ie9 lt-ie8\"> <![endif]-->\n<!--[if IE 8]>         <html class=\"no-js lt-ie9\"> <![endif]-->\n<!--[if gt IE 8]><!-->\n<html class=\"no-js\" dir=\"ltr\">\n<!--<![endif]-->\n\n<head>\n    <meta charset=\"utf-8\">\n    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge,chrome=1\">\n    <title>WhatsApp Web</title>\n    <meta name=\"viewport\" content=\"width=device-width\">\n    <meta name=\"google\" content=\"notranslate\">\n\n    <meta name=\"description\" content=\"Quickly send and receive WhatsApp messages right from your computer.\"/>\n    <meta name=\"og:description\" content=\"Quickly send and receive WhatsApp messages right from your computer.\"/>\n    <meta name=\"og:url\" content=\"https://web.whatsapp.com/\"/>\n    <meta name=\"og:title\" content=\"WhatsApp Web\"/>\n    <meta name=\"og:image\" content=\"https://www.whatsapp.com/img/fb-post.jpg\"/>\n\n    <link id=\"favicon\" rel=\"icon\" href=\"/favicon.ico\" type=\"image/x-icon\" />\n    <link rel=\"stylesheet\" href=\"/browsers_15ddf4e13bd4ffb48b8b78ddbc6c0c27.css\">\n    <link href='//fonts.googleapis.com/css?family=Roboto:300,400' rel='stylesheet' type='text/css'>\n\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com\" hreflang=\"x-default\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/aa\" hreflang=\"aa\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/ar\" hreflang=\"ar\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/az\" hreflang=\"az\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/bg\" hreflang=\"bg\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/bn\" hreflang=\"bn\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/ca\" hreflang=\"ca\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/cs\" hreflang=\"cs\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/da\" hreflang=\"da\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/de\" hreflang=\"de\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/el\" hreflang=\"el\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/en\" hreflang=\"en\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/es\" hreflang=\"es\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/fa\" hreflang=\"fa\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/fi\" hreflang=\"fi\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/fil\" hreflang=\"fil\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/fr\" hreflang=\"fr\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/he\" hreflang=\"he\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/hi\" hreflang=\"hi\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/hr\" hreflang=\"hr\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/hu\" hreflang=\"hu\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/id\" hreflang=\"id\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/it\" hreflang=\"it\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/kk\" hreflang=\"kk\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/kn\" hreflang=\"kn\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/lt\" hreflang=\"lt\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/lv\" hreflang=\"lv\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/mk\" hreflang=\"mk\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/ml\" hreflang=\"ml\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/mr\" hreflang=\"mr\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/ms\" hreflang=\"ms\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/nb\" hreflang=\"nb\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/nl\" hreflang=\"nl\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/pl\" hreflang=\"pl\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/pt\" hreflang=\"pt\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/pt-br\" hreflang=\"pt-BR\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/ro\" hreflang=\"ro\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/ru\" hreflang=\"ru\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/sk\" hreflang=\"sk\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/sl\" hreflang=\"sl\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/sn\" hreflang=\"sn\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/sq\" hreflang=\"sq\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/sr\" hreflang=\"sr\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/sv\" hreflang=\"sv\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/sw\" hreflang=\"sw\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/ta\" hreflang=\"ta\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/th\" hreflang=\"th\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/tr\" hreflang=\"tr\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/uk\" hreflang=\"uk\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/ur\" hreflang=\"ur\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/uz\" hreflang=\"uz\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/vi\" hreflang=\"vi\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/zh-cn\" hreflang=\"zh-CN\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/zh-tw\" hreflang=\"zh-TW\">\n</head>\n\n<body>\n    <div class=\"app-wrapper\">\n        <div id=\"wrapper\">\n            <div id=\"window\">\n                <div class=\"window-body\">\n                    <div class=\"window-text\">\n                        <h1 class=\"window-title\">WhatsApp Web</h1>\n                        <div class=\"window-subtitle\">Send and receive WhatsApp messages right from your computer.</div>\n                        <div class=\"text-tip\">We recommend using WhatsApp with one of the following browsers:</div>\n                        <div class=\"browsers\">\n                            <div class=\"browser\">\n                                <a class=\"image\" href=\"http://www.google.com/chrome/\" target=\"_blank\">\n                                    <span class=\"icon-chrome\"></span>\n                                </a>\n                                <a href=\"http://www.google.com/chrome/\" class=\"browser-title\" target=\"_blank\">Google Chrome</a>\n                            </div>\n                            <div class=\"browser\">\n                                <a class=\"image\" href=\"http://www.firefox.com\" target=\"_blank\">\n                                    <span class=\"icon-firefox\"></span>\n                                </a>\n                                <a href=\"http://www.firefox.com\" class=\"browser-title\" target=\"_blank\">Mozilla Firefox</a>\n                            </div>\n                            <div class=\"browser\">\n                                <a class=\"image\" href=\"http://www.opera.com\" target=\"_blank\">\n                                    <span class=\"icon-opera\"></span>\n                                </a>\n                                <a href=\"http://www.opera.com\" class=\"browser-title\" target=\"_blank\">Opera</a>\n                            </div>\n                        </div>\n                        <div class=\"text-tip\">WhatsApp also supports:</div>\n                        <div class=\"browsers\">\n                            <div class=\"browser\">\n                                <a class=\"image\" href=\"https://www.microsoft.com/en-us/windows/microsoft-edge\" target=\"_blank\">\n                                    <span class=\"icon-edge\"></span>\n                                </a>\n                                <a href=\"https://www.microsoft.com/en-us/windows/microsoft-edge\" class=\"browser-title\" target=\"_blank\">Microsoft Edge</a>\n                            </div>\n                            <div class=\"browser browser-safari\">\n                                <a class=\"image\" href=\"https://support.apple.com/downloads/#safari\" target=\"_blank\">\n                                    <span class=\"icon-safari\"></span>\n                                </a>\n                                <a href=\"https://support.apple.com/downloads/#safari\" class=\"browser-title\" target=\"_blank\">Safari (MacOS 10.8+ Only)</a>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</body>\n\n</html>\n",
+					"code": 200,
+					"headers": {
+						"Cache-Control": "no-cache",
+						"Content-Security-Policy": "default-src 'self'; report-uri https://dyn.web.whatsapp.com/cspv; script-src 'self' 'unsafe-eval' https://ajax.googleapis.com; connect-src 'self' wss://*.web.whatsapp.com https://*.whatsapp.net https://dyn.web.whatsapp.com https://*.giphy.com https://*.tenor.co blob:; img-src * data: blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.googleapis.com https://fonts.gstatic.com; media-src 'self' https://*.whatsapp.net https://*.giphy.com https://*.tenor.co blob: mediastream:; child-src 'self' blob:",
+						"Content-Type": "text/html; charset=UTF-8",
+						"Date": "Fri, 25 Nov 2016 12:33:30 GMT",
+						"Last-Modified": "Wed, 23 Nov 2016 22:52:39 GMT",
+						"Pragma": "no-cache",
+						"Server": "Yaws 2.0",
+						"Strict-Transport-Security": "max-age=15552000; includeSubDomains; preload",
+						"Vary": "Accept-Encoding, User-Agent, Accept-Language",
+						"Via": "HTTP/1.1 169.55.74.40:443 (fwdproxy2/152 66.220.156.103)",
+						"X-Connected-To": "169.55.74.40",
+						"X-Content-Type-Options": "nosniff",
+						"X-FB-IP-Type": "allowed",
+						"X-Frame-Options": "DENY"
+					}
+				}
+			},
+			{
+				"failure": null,
+				"request": {
+					"body": null,
+					"headers": {},
+					"method": "GET",
+					"tor": {
+						"exit_ip": null,
+						"exit_name": null,
+						"is_tor": false
+					},
+					"url": "https://v.whatsapp.net/v2/register"
+				},
+				"response": {
+					"body": "{\"status\":\"fail\",\"reason\":\"missing_param\",\"param\":\"code\"}\n",
+					"code": 200,
+					"headers": {
+						"Content-Type": "text/json ; charset=utf-8",
+						"Date": "Fri, 25 Nov 2016 12:33:31 GMT",
+						"Server": "Yaws 2.0"
+					}
+				}
+			},
+			{
+				"failure": null,
+				"request": {
+					"body": null,
+					"headers": {},
+					"method": "GET",
+					"tor": {
+						"exit_ip": null,
+						"exit_name": null,
+						"is_tor": false
+					},
+					"url": "https://web.whatsapp.com/"
+				},
+				"response": {
+					"body": "<!DOCTYPE html>\n<!--[if lt IE 7]>      <html class=\"no-js lt-ie9 lt-ie8 lt-ie7\"> <![endif]-->\n<!--[if IE 7]>         <html class=\"no-js lt-ie9 lt-ie8\"> <![endif]-->\n<!--[if IE 8]>         <html class=\"no-js lt-ie9\"> <![endif]-->\n<!--[if gt IE 8]><!-->\n<html class=\"no-js\" dir=\"ltr\">\n<!--<![endif]-->\n\n<head>\n    <meta charset=\"utf-8\">\n    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge,chrome=1\">\n    <title>WhatsApp Web</title>\n    <meta name=\"viewport\" content=\"width=device-width\">\n    <meta name=\"google\" content=\"notranslate\">\n\n    <meta name=\"description\" content=\"Quickly send and receive WhatsApp messages right from your computer.\"/>\n    <meta name=\"og:description\" content=\"Quickly send and receive WhatsApp messages right from your computer.\"/>\n    <meta name=\"og:url\" content=\"https://web.whatsapp.com/\"/>\n    <meta name=\"og:title\" content=\"WhatsApp Web\"/>\n    <meta name=\"og:image\" content=\"https://www.whatsapp.com/img/fb-post.jpg\"/>\n\n    <link id=\"favicon\" rel=\"icon\" href=\"/favicon.ico\" type=\"image/x-icon\" />\n    <link rel=\"stylesheet\" href=\"/browsers_15ddf4e13bd4ffb48b8b78ddbc6c0c27.css\">\n    <link href='//fonts.googleapis.com/css?family=Roboto:300,400' rel='stylesheet' type='text/css'>\n\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com\" hreflang=\"x-default\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/aa\" hreflang=\"aa\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/ar\" hreflang=\"ar\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/az\" hreflang=\"az\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/bg\" hreflang=\"bg\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/bn\" hreflang=\"bn\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/ca\" hreflang=\"ca\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/cs\" hreflang=\"cs\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/da\" hreflang=\"da\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/de\" hreflang=\"de\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/el\" hreflang=\"el\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/en\" hreflang=\"en\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/es\" hreflang=\"es\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/fa\" hreflang=\"fa\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/fi\" hreflang=\"fi\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/fil\" hreflang=\"fil\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/fr\" hreflang=\"fr\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/he\" hreflang=\"he\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/hi\" hreflang=\"hi\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/hr\" hreflang=\"hr\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/hu\" hreflang=\"hu\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/id\" hreflang=\"id\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/it\" hreflang=\"it\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/kk\" hreflang=\"kk\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/kn\" hreflang=\"kn\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/lt\" hreflang=\"lt\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/lv\" hreflang=\"lv\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/mk\" hreflang=\"mk\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/ml\" hreflang=\"ml\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/mr\" hreflang=\"mr\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/ms\" hreflang=\"ms\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/nb\" hreflang=\"nb\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/nl\" hreflang=\"nl\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/pl\" hreflang=\"pl\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/pt\" hreflang=\"pt\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/pt-br\" hreflang=\"pt-BR\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/ro\" hreflang=\"ro\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/ru\" hreflang=\"ru\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/sk\" hreflang=\"sk\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/sl\" hreflang=\"sl\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/sn\" hreflang=\"sn\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/sq\" hreflang=\"sq\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/sr\" hreflang=\"sr\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/sv\" hreflang=\"sv\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/sw\" hreflang=\"sw\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/ta\" hreflang=\"ta\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/th\" hreflang=\"th\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/tr\" hreflang=\"tr\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/uk\" hreflang=\"uk\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/ur\" hreflang=\"ur\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/uz\" hreflang=\"uz\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/vi\" hreflang=\"vi\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/zh-cn\" hreflang=\"zh-CN\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/zh-tw\" hreflang=\"zh-TW\">\n</head>\n\n<body>\n    <div class=\"app-wrapper\">\n        <div id=\"wrapper\">\n            <div id=\"window\">\n                <div class=\"window-body\">\n                    <div class=\"window-text\">\n                        <h1 class=\"window-title\">WhatsApp Web</h1>\n                        <div class=\"window-subtitle\">Send and receive WhatsApp messages right from your computer.</div>\n                        <div class=\"text-tip\">We recommend using WhatsApp with one of the following browsers:</div>\n                        <div class=\"browsers\">\n                            <div class=\"browser\">\n                                <a class=\"image\" href=\"http://www.google.com/chrome/\" target=\"_blank\">\n                                    <span class=\"icon-chrome\"></span>\n                                </a>\n                                <a href=\"http://www.google.com/chrome/\" class=\"browser-title\" target=\"_blank\">Google Chrome</a>\n                            </div>\n                            <div class=\"browser\">\n                                <a class=\"image\" href=\"http://www.firefox.com\" target=\"_blank\">\n                                    <span class=\"icon-firefox\"></span>\n                                </a>\n                                <a href=\"http://www.firefox.com\" class=\"browser-title\" target=\"_blank\">Mozilla Firefox</a>\n                            </div>\n                            <div class=\"browser\">\n                                <a class=\"image\" href=\"http://www.opera.com\" target=\"_blank\">\n                                    <span class=\"icon-opera\"></span>\n                                </a>\n                                <a href=\"http://www.opera.com\" class=\"browser-title\" target=\"_blank\">Opera</a>\n                            </div>\n                        </div>\n                        <div class=\"text-tip\">WhatsApp also supports:</div>\n                        <div class=\"browsers\">\n                            <div class=\"browser\">\n                                <a class=\"image\" href=\"https://www.microsoft.com/en-us/windows/microsoft-edge\" target=\"_blank\">\n                                    <span class=\"icon-edge\"></span>\n                                </a>\n                                <a href=\"https://www.microsoft.com/en-us/windows/microsoft-edge\" class=\"browser-title\" target=\"_blank\">Microsoft Edge</a>\n                            </div>\n                            <div class=\"browser browser-safari\">\n                                <a class=\"image\" href=\"https://support.apple.com/downloads/#safari\" target=\"_blank\">\n                                    <span class=\"icon-safari\"></span>\n                                </a>\n                                <a href=\"https://support.apple.com/downloads/#safari\" class=\"browser-title\" target=\"_blank\">Safari (MacOS 10.8+ Only)</a>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</body>\n\n</html>\n",
+					"code": 200,
+					"headers": {
+						"Cache-Control": "no-cache",
+						"Content-Security-Policy": "default-src 'self'; report-uri https://dyn.web.whatsapp.com/cspv; script-src 'self' 'unsafe-eval' https://ajax.googleapis.com; connect-src 'self' wss://*.web.whatsapp.com https://*.whatsapp.net https://dyn.web.whatsapp.com https://*.giphy.com https://*.tenor.co blob:; img-src * data: blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.googleapis.com https://fonts.gstatic.com; media-src 'self' https://*.whatsapp.net https://*.giphy.com https://*.tenor.co blob: mediastream:; child-src 'self' blob:",
+						"Content-Type": "text/html; charset=UTF-8",
+						"Date": "Fri, 25 Nov 2016 12:33:31 GMT",
+						"Last-Modified": "Wed, 23 Nov 2016 22:52:39 GMT",
+						"Pragma": "no-cache",
+						"Server": "Yaws 2.0",
+						"Strict-Transport-Security": "max-age=15552000; includeSubDomains; preload",
+						"Vary": "Accept-Encoding, User-Agent, Accept-Language",
+						"Via": "HTTP/1.1 169.55.74.40:443 (fwdproxy2/152 66.220.156.113)",
+						"X-Connected-To": "169.55.74.40",
+						"X-Content-Type-Options": "nosniff",
+						"X-FB-IP-Type": "allowed",
+						"X-Frame-Options": "DENY"
+					}
+				}
+			},
+			{
+				"failure": null,
+				"request": {
+					"body": null,
+					"headers": {},
+					"method": "GET",
+					"tor": {
+						"exit_ip": null,
+						"exit_name": null,
+						"is_tor": false
+					},
+					"url": "http://web.whatsapp.com/"
+				},
+				"response": {
+					"body": null,
+					"code": 302,
+					"headers": {
+						"Content-Type": "text/plain",
+						"Date": "Fri, 25 Nov 2016 12:33:30 GMT",
+						"Location": "https://web.whatsapp.com/",
+						"Server": "proxygen"
+					}
+				}
+			}
+		],
+		"socksproxy": null,
+		"tcp_connect": [
+			{
+				"ip": "173.192.231.41",
+				"port": 443,
+				"status": {
+					"failure": false,
+					"success": true
+				}
+			},
+			{
+				"ip": "169.45.214.245",
+				"port": 443,
+				"status": {
+					"failure": false,
+					"success": true
+				}
+			},
+			{
+				"ip": "169.45.248.107",
+				"port": 443,
+				"status": {
+					"failure": false,
+					"success": true
+				}
+			},
+			{
+				"ip": "169.47.5.199",
+				"port": 443,
+				"status": {
+					"failure": false,
+					"success": true
+				}
+			},
+			{
+				"ip": "174.37.217.84",
+				"port": 443,
+				"status": {
+					"failure": false,
+					"success": true
+				}
+			},
+			{
+				"ip": "174.36.208.132",
+				"port": 443,
+				"status": {
+					"failure": false,
+					"success": true
+				}
+			},
+			{
+				"ip": "169.45.219.230",
+				"port": 443,
+				"status": {
+					"failure": false,
+					"success": true
+				}
+			},
+			{
+				"ip": "169.45.248.175",
+				"port": 443,
+				"status": {
+					"failure": false,
+					"success": true
+				}
+			},
+			{
+				"ip": "169.45.214.245",
+				"port": 5222,
+				"status": {
+					"failure": false,
+					"success": true
+				}
+			},
+			{
+				"ip": "169.45.248.107",
+				"port": 5222,
+				"status": {
+					"failure": false,
+					"success": true
+				}
+			},
+			{
+				"ip": "169.47.5.199",
+				"port": 5222,
+				"status": {
+					"failure": false,
+					"success": true
+				}
+			},
+			{
+				"ip": "169.45.219.230",
+				"port": 5222,
+				"status": {
+					"failure": false,
+					"success": true
+				}
+			},
+			{
+				"ip": "173.192.231.41",
+				"port": 5222,
+				"status": {
+					"failure": false,
+					"success": true
+				}
+			},
+			{
+				"ip": "174.37.217.84",
+				"port": 5222,
+				"status": {
+					"failure": false,
+					"success": true
+				}
+			},
+			{
+				"ip": "169.45.248.175",
+				"port": 5222,
+				"status": {
+					"failure": false,
+					"success": true
+				}
+			},
+			{
+				"ip": "174.36.208.132",
+				"port": 5222,
+				"status": {
+					"failure": false,
+					"success": true
+				}
+			}
+		],
+		"whatsapp_endpoints_blocked": [],
+		"whatsapp_endpoints_dns_inconsistent": [],
+		"whatsapp_endpoints_status": "ok",
+		"whatsapp_web_failure": null,
+		"whatsapp_web_status": "ok"
+	},
+	"test_name": "whatsapp",
+	"test_runtime": 0.7117400169372559,
+	"test_start_time": "2016-11-25 12:33:30",
+	"test_version": "0.5.0"
+}

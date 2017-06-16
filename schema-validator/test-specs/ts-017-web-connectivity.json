@@ -1,0 +1,252 @@
+{
+	"annotations": null,
+	"data_format_version": "0.2.0",
+	"id": "6fee0dc8-2667-4378-bf88-e16bd19076e2",
+	"input": "http://torproject.org/",
+	"input_hashes": [],
+	"measurement_start_time": "2016-05-23 11:10:46",
+	"options": [
+		"--url",
+		""
+	],
+	"probe_asn": "AS3320",
+	"probe_cc": "DE",
+	"probe_city": null,
+	"probe_ip": "127.0.0.1",
+	"report_id": "20160523T110452Z_AS3320_s5kaXylbGbGXUyTAE6WR93zqatpmZD1K8GIwlJvxiq6IygRrrK",
+	"software_name": "ooniprobe",
+	"software_version": "1.4.2",
+	"test_helpers": {
+		"backend": {
+			"address": "httpo://ckjj3ra6456muu7o.onion",
+			"type": "onion"
+		}
+	},
+	"test_keys": {
+		"accessible": true,
+		"agent": "redirect",
+		"blocking": false,
+		"body_length_match": true,
+		"body_proportion": 1,
+		"client_resolver": "74.125.18.24",
+		"control": {
+			"dns": {
+				"failure": null,
+				"ips": [
+					"82.195.75.101",
+					"138.201.14.197",
+					"154.35.132.70",
+					"86.59.30.40",
+					"93.95.227.222"
+				]
+			},
+			"http_request": {
+				"body_length": 14539,
+				"failure": null,
+				"headers": {
+					"Accept-Ranges": "bytes",
+					"Cache-Control": "max-age=43200",
+					"Content-Language": "en",
+					"Content-Location": "index.html.en",
+					"Content-Type": "text/html",
+					"Date": "Mon, 23 May 2016 11:10:49 GMT",
+					"ETag": "\"38cb-5336fc9591c00-gzip\"",
+					"Expires": "Mon, 23 May 2016 23:10:49 GMT",
+					"Last-Modified": "Sun, 22 May 2016 15:14:56 GMT",
+					"Server": "Apache",
+					"Strict-Transport-Security": "max-age=15768000",
+					"Tcn": "choice",
+					"Vary": "negotiate,Accept-Encoding",
+					"X-Content-Type-Options": "nosniff",
+					"X-Frame-Options": "sameorigin",
+					"X-XSS-Protection": "1"
+				},
+				"status_code": 200
+			},
+			"tcp_connect": {
+				"138.201.14.197:80": {
+					"failure": null,
+					"status": true
+				},
+				"154.35.132.70:80": {
+					"failure": null,
+					"status": true
+				},
+				"82.195.75.101:80": {
+					"failure": null,
+					"status": true
+				},
+				"86.59.30.40:80": {
+					"failure": null,
+					"status": true
+				},
+				"93.95.227.222:80": {
+					"failure": null,
+					"status": true
+				}
+			}
+		},
+		"control_failure": null,
+		"dns_consistency": "consistent",
+		"dns_experiment_failure": null,
+		"headers_match": true,
+		"http_experiment_failure": null,
+		"queries": [
+			{
+				"answers": [
+					{
+						"answer_type": "A",
+						"ipv4": "93.95.227.222"
+					},
+					{
+						"answer_type": "A",
+						"ipv4": "82.195.75.101"
+					},
+					{
+						"answer_type": "A",
+						"ipv4": "138.201.14.197"
+					},
+					{
+						"answer_type": "A",
+						"ipv4": "86.59.30.40"
+					},
+					{
+						"answer_type": "A",
+						"ipv4": "154.35.132.70"
+					}
+				],
+				"failure": null,
+				"hostname": "torproject.org",
+				"query_type": "A",
+				"resolver_hostname": null,
+				"resolver_port": null
+			}
+		],
+		"requests": [
+			{
+				"failure": null,
+				"request": {
+					"body": null,
+					"headers": {
+						"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+						"Accept-Language": "en-US;q=0.8,en;q=0.5",
+						"User-Agent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"
+					},
+					"method": "GET",
+					"tor": {
+						"exit_ip": null,
+						"exit_name": null,
+						"is_tor": false
+					},
+					"url": "http://torproject.org/"
+				},
+				"response": {
+					"body": "<!DOCTYPE html>\n <html>\n <head>\n   <meta charset=\"utf-8\">\n   <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n   <meta name=\"viewport\" content=\"width=\"device-width,\" initial-scale=1\">\n   <meta name=\"author\" content=\"The Tor Project, Inc.\">\n   <meta name=\"keywords\" content=\"anonymity online, tor, tor project, censorship circumvention, traffic analysis, anonymous communications research\">\n   <meta property=\"og:image\" content=\"https://www.torproject.org/images/tor-logo.jpg\">\n   <title>Tor Project: Anonymity Online</title>\n   <link rel=\"icon\" href=\"./images/favicon.ico\">\n   <link href=\"./css/master.css\" rel=\"stylesheet\">\n   <!--[if lte IE 8]>\n   <link href=\"./css/ie8-and-down.css\" rel=\"stylesheet\">\n   <![endif]-->\n   <!--[if lte IE 7]>\n   <link href=\"./css/ie7-and-down.css\" rel=\"stylesheet\">\n   <![endif]-->\n   <!--[if IE 6]>\n   <link href=\"./css/ie6.css\" rel=\"stylesheet\">\n   <![endif]-->\n</head>\n<body>\n<div id=\"wrap\">\n  <div id=\"header\">\n    <h1 id=\"logo\"><a href=\"index.html.en\">Tor</a></h1>\n      <div id=\"nav\">\n        <ul>\n        <li><a class=\"active\" href=\"index.html.en\">Home</a></li>\n<li><a href=\"about/overview.html.en\">About Tor</a></li>\n<li><a href=\"docs/documentation.html.en\">Documentation</a></li>\n<li><a href=\"press/press.html.en\">Press</a></li>\n<li><a href=\"https://blog.torproject.org/blog/\">Blog</a></li>\n<li><a href=\"about/contact.html.en\">Contact</a></li>\n        </ul>\n      </div>\n      <!-- END NAV -->\n      <div id=\"calltoaction\">\n        <ul>\n          <li class=\"donate\"><a href=\"download/download-easy.html.en\">Download</a></li>\n<li class=\"donate\"><a href=\"getinvolved/volunteer.html.en\">Volunteer</a></li>\n<li class=\"donate\"><a href=\"donate/donate-button.html.en\">Donate</a></li>\n        </ul>\n      </div>\n      <!-- END CALLTOACTION -->\n  </div>\n  <!-- END HEADER -->\n<div id=\"home\">\n    <div id=\"content\" class=\"clearfix\">\n    \t<div id=\"maincol\">\n      \t<div id=\"banner\">\n        \t<ul>\n          \t<li>Tor prevents people from learning your location or browsing habits.</li>\n            <li>Tor is for web browsers, instant messaging clients, and more.</li>\n            <li>Tor is free and open source for Windows, Mac, Linux/Unix, and Android</li>\n          </ul>\n        \t<h1 class=\"headline\">Anonymity Online</h1>\n          <p class=\"desc\">Protect your privacy. Defend yourself against network surveillance and traffic analysis.</p>\n      <div id=\"download\">\n        <a href=\"download/download-easy.html.en\">\n          <span class=\"download-tor\">Download Tor</span></a>\n      </div>\n      </div>\n        <div class=\"subcol-container clearfix\">\n          <div class=\"subcol first\">\n            <h2>What is Tor?</h2> <p>Tor is free software and an open\n            network that helps you defend against traffic analysis,\n            a form of network surveillance that\n            threatens personal freedom and privacy, confidential business\n            activities and relationships, and state security.<br>\n            <span class=\"continue\"><a href=\"about/overview.html.en\">Learn\n            more about Tor &raquo;</a></span></p>\n          </div>\n          <!-- END SUBCOL -->\n          <div class=\"subcol\">\n          <h2>Why Anonymity Matters</h2>\n          <p>Tor protects you by bouncing your communications around a\n          distributed network of relays run by volunteers all around\n          the world: it prevents somebody watching your Internet\n          connection from learning what sites you visit, and it prevents\n          the sites you visit from learning your physical location.<br>\n          <span class=\"continue\"><a href=\"getinvolved/volunteer.html.en\">Get involved with Tor\n          &raquo;</a></span></p>\n          </div>\n        </div>\n        <!-- END SUBCOL -->\n        <div id=\"home-our-projects\" class=\"clearfix\">\n          <h2>Our Projects</h2>\n          <div class=\"fauxhead\"></div>\n          <table style=\"table-layout: fixed;\" summary=\"\">\n            <tr>\n              <!-- Icon from the Crystal set\n                author: Everaldo Coelho\n                source: http://www.everaldo.com/crystal/\n                license: LGPL v2\n              -->\n              <td>\n                <div class=\"project\">\n                <a href=\"projects/torbrowser.html.en\"><img\n                src=\"./images/icon-TorBrowser.jpg\" alt=\"TorBrowser Icon\" width=\"75\" height=\"75\"></a>\n                <h3><a href=\"projects/torbrowser.html.en\">Tor\n                Browser</a></h3>\n                <p>Tor Browser contains everything you need to safely\n                browse the Internet.</p>\n                </div>\n              </td>\n              <td>\n                <div class=\"project\">\n                <a href=\"https://guardianproject.info/apps/orbot/\"><img\n                src=\"./images/icon-Orbot.jpg\" alt=\"Orbot Icon\" width=\"75\" height=\"75\"></a>\n                <h3><a href=\"https://guardianproject.info/apps/orbot/\">Orbot</a></h3>\n                <p>Tor for Google Android devices.</p>\n                </div>\n              </td>\n            </tr>\n            <tr>\n              <td>\n                <div class=\"project\">\n                <a href=\"https://tails.boum.org/\"><img src=\"./images/tails_logo.png\" alt=\"Tails Logo\" width=\"75\" height=\"75\"></a>\n                <h3><a href=\"https://tails.boum.org/\">Tails</a></h3>\n                <p>Live CD/USB operating system preconfigured to use\n                Tor safely.</p>\n                </div>\n              </td>\n              <!-- Icon from the Crystal set\n              author: Everaldo Coelho\n              source: http://www.everaldo.com/crystal/\n              license: LGPL v2\n              -->\n              <td>\n                <div class=\"project\">\n                <a href=\"https://www.atagar.com/arm/\"><img\n                src=\"./images/icon-Arm.jpg\" alt=\"Arm Icon\" width=\"75\" height=\"75\"></a>\n                <h3><a href=\"https://www.atagar.com/arm/\">Arm</a></h3>\n                <p>Terminal (command line) application for monitoring\n                and configuring Tor.</p>\n                </div>\n              </td>\n            </tr>\n            <tr>\n                <!-- Icon from the NuoveXT 2 set\n                author: Alexandre Moore\n                source: http://nuovext.pwsp.net/\n                license: LGPL v3\n                -->\n\t      <td>\n              <div class=\"project\">\n                <a href=\"https://atlas.torproject.org/\"><img\n                src=\"./images/icon-TorStatus.jpg\" alt=\"Atlas Icon\" width=\"75\" height=\"75\"></a>\n                <h3><a href=\"https://atlas.torproject.org/\">Atlas</a></h3>\n                <p>Site providing an overview of the Tor network.</p>\n                </div>\n              </td>\n                <!-- Obfsproxy Icon\n                author: Constantinos Crystallidis\n                license: Creative Commons Attribution-ShareAlike 2.0 Generic (CC BY-SA 2.0)\n                -->\n              <td>\n                <div class=\"project\">\n                <a href=\"projects/obfsproxy.html.en\"><img\n                src=\"./images/icon-Obfsproxy.jpg\" alt=\"Pluggable Transports Icon\" width=\"75\" height=\"75\"></a>\n                <h3><a href=\"docs/pluggable-transports.html.en\">Pluggable Transports</a></h3>\n                <p>Pluggable transports help you circumvent censorship.</p>\n                </div>\n              </td>\n            </tr>\n            <tr>\n              <td>\n               <div class=\"project\">\n              <a href=\"https://stem.torproject.org/\"><img\n              src=\"./images/icon-stem.jpg\" alt=\"Stem Icon\" width=\"75\" height=\"75\"></a>\n              <h3><a href=\"https://stem.torproject.org/\">Stem</a></h3>\n              <p>Library for writing scripts and applications that interact\n              with Tor.</p>\n                </div>\n              </td>\n              <td>\n               <div class=\"project\">\n              <a href=\"https://ooni.torproject.org/\"><img\n              src=\"./images/icon-OONI.png\" alt=\"OONI\" width=\"75\" height=\"75\"></a>\n               <h3><a href=\"https://ooni.torproject.org/\">OONI</a></h3>\n               <p>Global observatory monitoring for network censorship.</p>\n               </div>\n               </td>\n            </tr>\n          </table>\n\t  <span class=\"continue\"><a href=\"projects/projects.html.en\">Learn more about our projects &raquo;</a></span>\n      \t</div>\n        <!-- END TABLE -->\n      </div>\n      <!-- END MAINCOL -->\n      <div id=\"sidecol\">\n      <!-- BLOG WIDGET -->\n<div class='blogFeed'>\n  <div class='blogFirstRow'>\n  <h2>Recent Blog Posts</h2>\n  </div><div class=\"fauxhead\"></div><a href='https://blog.torproject.org/blog/tor-project-hiring-developer-ooni' title='The Tor Project is Hiring a Developer for OONI! '><div class='blogRow blogRow0'><p class='blogTitle'>The Tor Project is Hiring a Deve...</p>\n      <p class='blogDate'>Tue, 17 May 2016</p>\n      <p class='blogAuthor'>Posted by: <em>art</em></p>\n      </div>\n      </a><a href='https://blog.torproject.org/blog/tracking-impact-whatsapp-blockage-tor' title='Tracking The Impact of the WhatsApp Blockage on Tor'><div class='blogRow blogRow1'><p class='blogTitle'>Tracking The Impact of the Whats...</p>\n      <p class='blogDate'>Mon, 16 May 2016</p>\n      <p class='blogAuthor'>Posted by: <em>isabela</em></p>\n      </div>\n      </a><a href='https://blog.torproject.org/blog/gsoc-2016-projects' title='GSoC 2016 Projects'><div class='blogRow blogRow0'><p class='blogTitle'>GSoC 2016 Projects</p>\n      <p class='blogDate'>Sat, 07 May 2016</p>\n      <p class='blogAuthor'>Posted by: <em>atagar</em></p>\n      </div>\n      </a><a href='https://blog.torproject.org/blog/tor-browser-60a5-hardened-released' title='Tor Browser 6.0a5-hardened is released'><div class='blogRow blogRow1'><p class='blogTitle'>Tor Browser 6.0a5-hardened is re...</p>\n      <p class='blogDate'>Thu, 28 Apr 2016</p>\n      <p class='blogAuthor'>Posted by: <em>boklm</em></p>\n      </div>\n      </a><a href='https://blog.torproject.org/blog/tor-browser-60a5-released' title='Tor Browser 6.0a5 is released'><div class='blogRow blogRow0'><p class='blogTitle'>Tor Browser 6.0a5 is released</p>\n      <p class='blogDate'>Thu, 28 Apr 2016</p>\n      <p class='blogAuthor'>Posted by: <em>boklm</em></p>\n      </div>\n      </a><a href='https://blog.torproject.org' title='Tor Blog Home'>\n<div class='blogRow blogLastRow'>\n<p>View all blog posts &raquo;</p>\n</div>\n</a>\n      <!-- END BLOG WIDGET -->\n      \t<div id=\"home-users\">\n          <h2>Who Uses Tor?</h2>\n\t  <div class=\"fauxhead\"></div>\n          <div class=\"user\">\n            <h3>\n              <a href=\"about/torusers.html.en#normalusers\"><img src=\"./images/family.jpg\" alt=\"Normal People\" width=\"75\" height=\"75\">Family &amp; Friends</a>\n            </h3>\n            <p>People like you and your family use Tor to protect themselves, their children, and their dignity while using the Internet.</p>\n          </div>\n          <div class=\"user\">\n            <h3>\n              <a href=\"about/torusers.html.en#executives\"><img src=\"./images/consumers.jpg\" alt=\"Businesses\" width=\"75\" height=\"75\">Businesses</a>\n            </h3>\n            <p>Businesses use Tor to research competition, keep business strategies confidential, and facilitate internal accountability.</p>\n          </div>\n          <div class=\"user\">\n            <h3>\n              <a href=\"about/torusers.html.en#activists\"><img src=\"./images/activists.jpg\" alt=\"Activists &amp; Whistleblowers\" width=\"75\" height=\"75\">Activists</a>\n            </h3>\n            <p>Activists use Tor to anonymously report abuses from danger zones. Whistleblowers use Tor to safely report on corruption.</p>\n          </div>\n          <div class=\"user\">\n            <h3>\n              <a href=\"about/torusers.html.en#journalist\"><img src=\"./images/media.jpg\" alt=\"Journalists and the Media\" width=\"75\" height=\"75\">Media</a>\n            </h3>\n            <p>Journalists and the media use Tor to protect their research and sources online.</p>\n          </div>\n          <div class=\"user\">\n            <h3>\n              <a href=\"about/torusers.html.en#military\"><img src=\"./images/military.jpg\" alt=\"Military and Law Enforcement\" width=\"75\" height=\"75\">Military &amp; Law Enforcement</a>\n            </h3>\n            <p>Militaries and law enforcement use Tor to protect their communications, investigations, and intelligence gathering online.</p>\n          </div>\n        </div>\n        <!-- END TABLE -->\n      </div>\n      <!-- END SIDECOL -->\n    </div>\n    <!-- END CONTENT -->\n  </div>\n  <!-- END HOME -->\n    <div id=\"footer\">\n    \t<div class=\"onion\"><img src=\"./images/onion.jpg\" alt=\"Tor\" width=\"78\" height=\"118\"></div>\n      <div class=\"about\">\n    <p>Trademark, copyright notices, and rules for use by third parties can be found\n    <a href=\"docs/trademark-faq.html.en\">in our FAQ</a>.</p>\n<!--\n        Last modified: Sat May 21 14:41:08 2016 -0400\n        Last compiled: Sun May 22 2016 15:14:55 +0000\n-->\n      </div>\n      <!-- END ABOUT -->\n      <div class=\"col first\">\n      \t<h4>About Tor</h4>\n        <ul>\n          <li><a href=\"about/overview.html.en\">What Tor Does</a></li>\n          <li><a href=\"about/torusers.html.en\">Users of Tor</a></li>\n          <li><a href=\"about/corepeople.html.en\">Core Tor People</a></li>\n          <li><a href=\"about/sponsors.html.en\">Sponsors</a></li>\n          <li><a href=\"about/contact.html.en\">Contact Us</a></li>\n        </ul>\n      </div>\n      <!-- END COL -->\n      <div class=\"col\">\n      \t<h4>Get Involved</h4>\n        <ul>\n          <li><a href=\"donate/donate.html.en\">Donate</a></li>\n          <li><a href=\"docs/documentation.html.en#MailingLists\">Mailing Lists</a></li>\n          <li><a href=\"docs/hidden-services.html.en\">Hidden Services</a></li>\n          <li><a href=\"getinvolved/translation.html.en\">Translations</a></li>\n        </ul>\n      </div>\n      <!-- END COL -->\n      <div class=\"col\">\n      \t<h4>Documentation</h4>\n        <ul>\n          <li><a href=\"docs/tor-manual.html.en\">Manuals</a></li>\n          <li><a href=\"docs/documentation.html.en\">Installation Guides</a></li>\n          <li><a href=\"https://trac.torproject.org/projects/tor/wiki/\">Tor Wiki</a></li>\n          <li><a href=\"docs/faq.html.en\">General Tor FAQ</a></li>\n        </ul>\n      </div>\n        <div class=\"col\">\n        <a href=\"https://internetdefenseleague.org/\"><img src=\"./images/InternetDefenseLeague-footer-badge.png\" alt=\"Internet Defense League\" width=\"125\" height=\"125\"></a>\n        </div>\n      <!-- END COL -->\n    </div>\n    <!-- END FOOTER -->\n  </div>\n  <!-- END WRAP -->\n</body>\n</html>\n",
+					"code": 200,
+					"headers": {
+						"Accept-Ranges": "bytes",
+						"Cache-Control": "max-age=43200",
+						"Content-Language": "en",
+						"Content-Location": "index.html.en",
+						"Content-Type": "text/html",
+						"Date": "Mon, 23 May 2016 11:10:47 GMT",
+						"ETag": "\"38cb-5336fc9591c00-gzip\"",
+						"Expires": "Mon, 23 May 2016 23:10:47 GMT",
+						"Last-Modified": "Sun, 22 May 2016 15:14:56 GMT",
+						"Server": "Apache",
+						"Strict-Transport-Security": "max-age=15768000",
+						"TCN": "choice",
+						"Vary": "negotiate,Accept-Encoding",
+						"X-Content-Type-Options": "nosniff",
+						"X-Frame-Options": "sameorigin",
+						"X-Xss-Protection": "1"
+					}
+				}
+			},
+			{
+				"failure": null,
+				"request": {
+					"body": null,
+					"headers": {
+						"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+						"Accept-Language": "en-US;q=0.8,en;q=0.5",
+						"User-Agent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"
+					},
+					"method": "GET",
+					"tor": {
+						"exit_ip": null,
+						"exit_name": null,
+						"is_tor": false
+					},
+					"url": "http://torproject.org/"
+				},
+				"response": {
+					"body": null,
+					"code": 302,
+					"headers": {
+						"Content-Type": "text/html; charset=iso-8859-1",
+						"Date": "Mon, 23 May 2016 11:10:47 GMT",
+						"Location": "https://www.torproject.org/",
+						"Server": "Apache",
+						"X-Content-Type-Options": "nosniff",
+						"X-Frame-Options": "sameorigin",
+						"X-Xss-Protection": "1"
+					}
+				}
+			}
+		],
+		"socksproxy": null,
+		"status_code_match": true,
+		"tcp_connect": [
+			{
+				"ip": "82.195.75.101",
+				"port": 80,
+				"status": {
+					"blocked": false,
+					"failure": null,
+					"success": true
+				}
+			},
+			{
+				"ip": "138.201.14.197",
+				"port": 80,
+				"status": {
+					"blocked": false,
+					"failure": null,
+					"success": true
+				}
+			},
+			{
+				"ip": "86.59.30.40",
+				"port": 80,
+				"status": {
+					"blocked": false,
+					"failure": null,
+					"success": true
+				}
+			},
+			{
+				"ip": "93.95.227.222",
+				"port": 80,
+				"status": {
+					"blocked": false,
+					"failure": null,
+					"success": true
+				}
+			},
+			{
+				"ip": "154.35.132.70",
+				"port": 80,
+				"status": {
+					"blocked": false,
+					"failure": null,
+					"success": true
+				}
+			}
+		]
+	},
+	"test_name": "web_connectivity",
+	"test_runtime": 20.532310009002686,
+	"test_start_time": "2016-05-23 11:10:45",
+	"test_version": "0.1.0"
+}
