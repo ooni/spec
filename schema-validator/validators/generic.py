@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 
 import argparse
-import json
 import jsonschema
 import os
 import subprocess
 import sys
+import yaml
 
 def configure_parser():
 	usage = "usage: validators/generic.py [options] file.json"
@@ -31,8 +31,8 @@ def verify_args(args):
 		print("Schema file {} does not exists".format(args.schema))
 		sys.exit(1)
 	else:
-		if not args.schema.endswith('json'):
-			print("{} is not a valid schema file. Only JSON files allowed".format(args.schema))
+		if not args.schema.endswith('yml'):
+			print("{} is not a valid schema file. Only YAML files allowed".format(args.schema))
 			sys.exit(1)
 
 def get_parsed_arguments():
@@ -42,7 +42,7 @@ def get_parsed_arguments():
 	return args
 
 def load_json_schema(schema_file):
-	return json.load(open(schema_file, 'r'))
+	return yaml.load(open(schema_file, 'r'))
 
 def load_json_data(json_file):
 	filename = os.path.abspath(json_file)
