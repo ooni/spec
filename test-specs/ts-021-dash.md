@@ -34,11 +34,11 @@ by ooniprobe.
 
 ## Test rationale
 
-In DASH a video is divided in fixed time segments. Each segment is
+In DASH a video is divided into fixed time segments. Each segment is
 encoded at different bitrates. The client downloads the segments,
-may buffer some of them, and plays them. The client can change the bitrate
-requested to server to increase it (when the network allows so) and to
-reduce it (when the network performance decrease).
+may buffer some of them, and plays them. The client can increase or reduce the
+bitrate of the video stream from the server, when the network is more or less
+performant respectively.
 
 This test emulates a very simple player. It basically starts
 downloading a given segment after the previous segment has been
@@ -62,7 +62,7 @@ and to keep enough segments in the buffer so that streaming continues
 even if there is a transient network issue.
 
 However, precisely because of its simplicity, this test provides
-more hints at the network quality. It basically shows at which video
+more hints about the network quality. It basically shows at which video
 bitrate you can typically stream from your vantage point, relying
 only on the quality of the network to ensure smooth streaming.
 
@@ -290,7 +290,7 @@ statistics to users.
 
 At least the following keys are defined:
 
-- `connect_time`: time required by connect() to complete, which can be
+- `connect_time`: time required by `connect()` to complete, which can be
    an approximation of the minimum RTT. Measured in seconds;
 
 - `constant_bitrate`: whether we are using constant bitrate or we are
