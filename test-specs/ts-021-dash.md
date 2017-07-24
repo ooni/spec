@@ -386,6 +386,12 @@ At least the following keys are defined:
   selected bitrate without stalling (when the playout delay is less than zero)
   or not (when it is greater than zero).
 
+- Video quality (e.g. `420p`, `720p`) roughly corresponding to the median
+  bitrate downloaded during the test. This can be inferred from information
+  published by popular video streaming sites, e.g. [YouTube](
+    https://support.google.com/youtube/answer/1722171?hl=en-GB
+  ).
+
 - Reason why performance were as measured, by inspecting Web100 snaps and
   comparing a Web100 snap with the previous.
   In this respect, are particularly relevant variables counting the number of
