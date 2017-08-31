@@ -22,18 +22,18 @@ def verify_args(args):
 	if not os.path.isfile(args.file):
 		print("File {} does not exists".format(args.file))
 		sys.exit(1)
-	else:
-		if not args.file.endswith('json'):
-			print("{} is not a valid target file. Only JSON files allowed".format(args.file))
-			sys.exit(1)
+
+	if not args.file.endswith('json'):
+		print("{} is not a valid target file. Only JSON files allowed".format(args.file))
+		sys.exit(1)
 
 	if not os.path.isfile(args.schema):
 		print("Schema file {} does not exists".format(args.schema))
 		sys.exit(1)
-	else:
-		if not args.schema.endswith('yml'):
-			print("{} is not a valid schema file. Only YAML files allowed".format(args.schema))
-			sys.exit(1)
+
+	if not args.schema.endswith('yml'):
+		print("{} is not a valid schema file. Only YAML files allowed".format(args.schema))
+		sys.exit(1)
 
 def get_parsed_arguments():
 	parser = configure_parser()
