@@ -5,12 +5,13 @@ This folder contains JSON Schemas for validating OONI Probe reports.
 ## Folder structure
 
 ```
-├── requirements.txt 	required python libraries
-├── schemas 			JSON Schemas
-├── test-specs 			JSON representation of markdown test-specs
-├── validate-all.sh 	utility script for validating all test-specs against
-│ 							header schema and specific test schema
-└── validate.py 		validator script ( run with -h for help )
+├── requirements.txt    required python libraries
+├── schemas             JSON Schemas
+├── test-specs          JSON representation of markdown test-specs
+├── validate-all.sh     utility script for validating all test-specs against
+│                       header schema and specific test schema
+└── validate.py         validator script ( run with -h for help )
+```
 
 ## JSON Schema
 
