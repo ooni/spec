@@ -68,7 +68,6 @@ properties:
   test_version:
     $ref: "#/definitions/test-version"
 required:
-  - bucket_date
   - data_format_version
   - id
   - input
