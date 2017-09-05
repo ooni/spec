@@ -29,6 +29,31 @@ The test is split in four smaller tests:
 
 Most of the vendor tests (from Microsoft, Apple, and Google) do an HTTP request and verify the status code or body content matches some expected value. One of the tests (from Microsoft) only checks that a DNS lookup returns the correct IP address.
 
+### References
+#### MS tests
+https://technet.microsoft.com/en-us/library/cc766017(v=ws.10).aspx
+
+#### Apple:
+https://forums.developer.apple.com/thread/26867
+
+#### Android KitKat
+http://androidxref.com/4.4_r1/xref/frameworks/base/services/java/com/android/server/ConnectivityService.java#4122
+
+#### Android Lollipop
+http://androidxref.com/5.1.1_r6/xref/frameworks/base/services/core/java/com/android/server/connectivity/NetworkMonitor.java#659
+
+#### Android Marshmallow
+http://androidxref.com/6.0.1_r10/xref/frameworks/base/services/core/java/com/android/server/connectivity/NetworkMonitor.java#643
+
+#### Android Nougat 1
+http://androidxref.com/7.1.1_r6/xref/frameworks/base/services/core/java/com/android/server/connectivity/NetworkMonitor.java#88
+
+#### Android Nougat 2
+http://androidxref.com/7.1.1_r6/xref/frameworks/base/services/core/java/com/android/server/connectivity/NetworkMonitor.java#91
+
+#### Android Nougat 3
+https://android.googlesource.com/platform/frameworks/base/+/master/services/core/java/com/android/server/connectivity/NetworkMonitor.java#99
+
 # Expected output
 
 Relevant data to think about the existence of a captive portal grouped between the http and dns tests.
