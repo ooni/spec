@@ -89,7 +89,7 @@ For a given IP address we consider the connection successful if either connectin
 If ALL of the connections succeed then we consider the endpoint to not be
 blocked.
 
-Conversely if all attempts fail then we consider the endpoint to be blocked
+Conversely if any attempts fail then we consider the endpoint to be blocked
 and mark is as such in the report:
 
 ```json
