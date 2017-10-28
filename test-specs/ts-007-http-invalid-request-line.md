@@ -89,6 +89,22 @@ of transparent HTTP proxies.
 If the response is not what we have sent, then tampering is
 occurring.
 
+## test_squid_cache_manager
+
+Performs a request triggering a response from on-path squid
+caching servers, particularly targeting the built-in
+cache management functionality of the proxy.
+
+```
+request_line = 'GET cache_object://localhost/ HTTP/1.0\n\r'
+```
+
+If a squid proxy receives such a request it will generally
+respond that the request has been denied, or depending
+on the configuration may respond with an index of cache
+management options, but without revealing sensitive
+information about the proxy itself.
+
 # Expected output
 
 ## Parent data format
