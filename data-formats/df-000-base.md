@@ -153,6 +153,10 @@ error_string:
 
 * twisted.internet.error.TimeoutError: `generic_timeout_error`
 
+* twisted.internet.error.ConnectError: `connect_error`
+
+* twisted.internet.error.ConnectionLost: `connection_lost_error`
+
 * twisted.internet.defer.TimeoutError: `deferred_timeout_error`
 
 * twisted.names.error.DNSNameError: `dns_name_error`
