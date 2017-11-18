@@ -80,13 +80,13 @@ consider the endpoint to be blocked and write in the report:
 }
 ```
 
-For every IP we have found to be consistent (i.e. within the net blocks
-assigned to WhatsApp) we then try to establish a TCP session to port `443`
+For every IP, both consistent and inconsistent, we then try to establish a TCP session to port `443`
 and `5222`.
 
 For a given IP address we consider the connection successful if either connecting to `IP:443` or `IP:5222` succeeds.
 
-If ALL of the connections succeed then we consider the endpoint to not be
+If ANY of the connections to consistent endpoints (i.e. within the net blocks
+assigned to WhatsApp) succeed then we consider the endpoint to not be
 blocked.
 
 Conversely if all attempts fail then we consider the endpoint to be blocked
