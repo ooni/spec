@@ -89,7 +89,7 @@ If ANY of the connections to consistent endpoints (i.e. within the net blocks
 assigned to WhatsApp) succeed then we consider the endpoint to not be
 blocked.
 
-Conversely if all attempts fail then we consider the endpoint to be blocked
+Conversely if any attempts fail then we consider the endpoint to be blocked
 and mark is as such in the report:
 
 ```json
