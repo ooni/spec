@@ -157,7 +157,7 @@ have failed.
 
 It will be set to "http" when DNS resolutions are consistent and we are able to
 establish a TCP connection to the IP ports of the control, but the HTTP request
-either fails or we get back a HTTP response contains a page we don't expect.
+either fails or we get back a HTTP response that contains a page we don't expect.
 
 # Expected output
 
