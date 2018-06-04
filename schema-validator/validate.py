@@ -5,6 +5,7 @@ import jsonschema
 import os
 import subprocess
 import sys
+import json
 import yaml
 
 
@@ -50,12 +51,12 @@ def load_json_schema(schema_file):
 
 
 def load_json_data(json_file):
-    filename = os.path.abspath(json_file)
-    return open(filename, 'r').read()
+    with open(os.path.abspath(json_file)) as in_file:
+        return json.load(in_file)
 
 
-def validate(json_data, json_schema):
-    jsonschema.validate(str(json_data), json_schema)
+def validate(obj, json_schema):
+    jsonschema.validate(obj, json_schema)
 
 
 if __name__ == "__main__":
@@ -63,6 +64,6 @@ if __name__ == "__main__":
     json_schema = load_json_schema(args.schema)
     print("Using validator: {} - {}".format(args.schema, json_schema['title']))
     print("Verifing {}".format(args.file))
-    json_data = load_json_data(args.file)
-    validate(json_data, json_schema)
+    obj = load_json_data(args.file)
+    validate(obj, json_schema)
     print("JSON validation passed!")
