@@ -8,10 +8,8 @@ definitions:
   semantic_version:
     type: string
     # copy paste from: https://github.com/semver/semver/issues/232#issue-48635632
-    pattern: '^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(-(0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(\.(0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*)?(\+[0-9a-zA-Z-]+(\.[0-9a-zA-Z-]+)*)?$'
-  uuid_v4:
-    type: string
-    pattern: "[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}"
+    # with the only change of adding support for the "." separator for the suffix label `(-|\.)`
+    pattern: '^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)((-|\.)(0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(\.(0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*)?(\+[0-9a-zA-Z-]+(\.[0-9a-zA-Z-]+)*)?$'
   ip_address:
     type: string
     format: ipv4
@@ -27,11 +25,14 @@ properties:
   data_format_version:
     $ref: "#/definitions/semantic_version"
   id:
-    $ref: "#/definitions/uuid_v4"
+    anyOf:
+    - type: string
+    - type: "null"
   input:
     anyOf:
       - type: string
       - type: "null"
+      - type: array
   options:
     type: array
   probe_asn:
@@ -62,7 +63,9 @@ properties:
       - "null"
       - string
   backend_version:
-    $ref: "#/definitions/semantic_version"
+    anyOf:
+    - $ref: "#/definitions/semantic_version"
+    - type: "null"
   test_name:
     type: string
   test_runtime:
