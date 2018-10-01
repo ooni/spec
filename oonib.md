@@ -40,7 +40,7 @@ the test result is published as an ooni test report in the YAML format.
 The oonib collector shall be exposed as a Tor Hidden Service and as a HTTPS
 service. The reason for supporting both Tor HS and HTTPS is [better explained in this document](https://ooni.torproject.org/docs/architecture.html#why-tor-hidden-services)
 
-## 2.2 Theat model
+## 2.2 Threat model
 
 The collector shall provide end-to-end encryption and authentication between the probe and the oonib
 collector.
@@ -59,7 +59,7 @@ using Tor or obfsproxy.
 ## 2.3.1 Test result submission interface
 
 Unless otherwise stated all of the network operations below can be performed
-either via HTTPS or HTTPO (HTTP over Tor Hidden Service).
+either via HTTPS or HTTPO (HTTP over Tor Onion Service).
 
 ### 2.3.1.1 Create a new report
 
@@ -78,7 +78,7 @@ The HTTP request it performs is:
         `string` the version of the software creating the report (ex. "0.0.10-beta")
 
      'probe_asn':
-        `string` the Authonomous System Number of the network the test is
+        `string` the Autonomous System Number of the network the test is
           related to prefixed by "AS" (ex. "AS1234")
 
      'probe_cc':
@@ -92,7 +92,7 @@ The HTTP request it performs is:
           extension.
 
      'test_version':
-        `string` the version of the test peforming the network measurement.
+        `string` the version of the test performing the network measurement.
 
      'data_format_version':
         NEW since oonibackend 1.2.0
@@ -155,7 +155,7 @@ backend software like follows:
 }
 
 The report identifier allows the probe to update the report and it will be
-contructed as follows:
+constructed as follows:
 
   ISO 8601 timestamp + '_' + probe ASN + '_' + 50 mixed lowercase uppercase characters
 
@@ -201,7 +201,7 @@ the report by referencing it by id:
       `string` or `document` content to be added to the report. This can be one or more
         report entries in the format specified in df-000-base.md
         When in format YAML this is the content of the report to be added as a
-        string serialised in YAML, when in JSON it's the actual JSON document of the report entry.
+        string serialized in YAML, when in JSON it's the actual JSON document of the report entry.
 
 
      'format':
@@ -228,7 +228,7 @@ New collectors should use the following format for updating reports:
       `string` or `document` content to be added to the report. This can be one or more
         report entries in the format specified in df-000-base.md
         When in format YAML this is the content of the report to be added as a
-        string serialised in YAML, when in JSON it's the actual JSON document of the report entry.
+        string serialized in YAML, when in JSON it's the actual JSON document of the report entry.
 
      'format':
         `string` that must be either "json" or "yaml" to identify the format
@@ -399,7 +399,7 @@ This specifies which inputs are allowed.
 ]
 ```
 
-## 2.4 Report lifecycle
+## 2.4 Report life-cycle
 
 When a report is created (section 2.3.1) it should be marked as NEW and a
 timestamp should be recorded. If a report was rejected, it is discarded.
@@ -479,7 +479,7 @@ a test helper. This is the case in the two way traceroute test, where the
 report should include a traceroute also from the vantage point of the ooni
 backend.
 
-In these circumstances the report from the vantange point of the backend should
+In these circumstances the report from the vantage point of the backend should
 be inside of a separate file that has the same name of the probe report but
 "-probe" should be replaced with "-backend".
 
@@ -504,12 +504,12 @@ for the test the user is interested in running is not available on the desired
 machine.
 
 This can happen, for example, if the machine does not have two network
-interfaces with two differnet IP addresses. In this case the HTTP Return JSON
+interfaces with two different IP addresses. In this case the HTTP Return JSON
 Headers test helper cannot run at the same time as the TCP echo test helper
 (both bind to port 80).
 
 Some communication with the collector is required. This is the case of the two
-way traceroute test, where a multiport multiprotocol traceroute must also be
+way traceroute test, where a multi-port multi-protocol traceroute must also be
 performed from the backend to the probe.
 
 Test helpers are two kinds:
@@ -518,10 +518,10 @@ Test helpers are two kinds:
     HTTP test helpers are of this kind.
 
   * Active: are test helpers that actively perform requests towards the probe
-    idepedently from probe requests.
+    independently from probe requests.
 
 Implementation notes:
-Although I am talking about the collector as two differnet software components
+Although I am talking about the collector as two different software components
 they both run inside of the same process and are part of the same piece of
 software.
 
