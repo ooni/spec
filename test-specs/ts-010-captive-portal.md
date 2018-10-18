@@ -25,7 +25,7 @@ The test is split in four smaller tests:
     3. DNS test that compares an A request to a static domain against its IP (part of the vendor_dns_tests).
     4. DNS test that check for 0x20 encoding (check0x20 tests).
 
-## Version 0.4.0 (currently only in measurement-kit):
+## Version 0.4.0 (implemented in MK, but not deployed):
 
 Most of the vendor tests (from Microsoft, Apple, and Google) do an HTTP request and verify the status code or body content matches some expected value. One of the tests (from Microsoft) only checks that a DNS lookup returns the correct IP address.
 
