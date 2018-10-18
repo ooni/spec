@@ -1,8 +1,8 @@
 # oonib specification
 
 * version: 1.4.0
-* date: 2016-10-12
-* author: Arturo Filastò, Aaron Gibson
+* date: 2018-10-18
+* author: Arturo Filastò, Aaron Gibson, Simone Basso
 
 This document aims at providing a functional specification of oonib. At the
 time of writing this document not all parts are fully implemented, though the
@@ -302,7 +302,7 @@ Message:
 
 ```JSON
 {
-"report_id": "XXXX"
+"report_id": "XXXX",
 "measurement_id": "YYYY"
 }
 ```
