@@ -3,11 +3,10 @@
 DNS testing is fundamental to network measurement to detect censorship as it’s
 a very commonly used technique to implement censorship.
 
-When implementing blocking on a DNS level, censorship equipment will typically
-implement one of two techniques:
-
-- _DNS Hijacking_, whereby a DNS resolver run by the ISP or government will deliver false responses to queries for the users domain. This is usually trivial to circumvent by changing resolver.
-- _DNS Spoofing_, whereby the DNS queries of the user are intercepted and the false response is sent to the user faster than the legitimate response. This tends to be trickier to circumvent.
+When reasoning about DNS interference, we shall consider the following possibility:
+- _Policy Based DNS interference_ (aka [_DNS hijacking_](https://en.wikipedia.org/wiki/DNS_hijacking#Manipulation_by_ISPs)), whereby a DNS resolver run by the ISP, Family-DNS service or government is configured to return specifically altered responses to specific queries. This is usually trivial to circumvent by changing resolver.
+- _DNS Spoofing_, whereby there is equipment in the network that listens for DNS queries and sends replies back to the user faster than the legitimate DNS server. This tends to be tricker to circumvent.
+- _DNS Transparent Proxy_, whereby all DNS requests sent by a user are routed through a DNS proxy box regardless of the destination DNS server, and the reply is served by the proxy box. This also tends to be trickier to circumvent.
 
 Especially when DNS Spoofing is present, it’s interesting to gain a deeper
 understanding of when the spoofing is happening.

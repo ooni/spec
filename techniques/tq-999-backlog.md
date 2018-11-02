@@ -18,7 +18,8 @@ These tricks are considered too labor-intensive for us to properly implement cur
 - Throttling detection for HTTP and HTTPS: one way to measure it is to find some web asset that has a reasonable size and measure the bandwidth with precise timing information while downloading that web asset, the baseline for bandwidth may be NDT
 - Analysis of collected TCP_INFO samples
 - Analysis of collected NDT and DASH samples
-- Detection of protocol-based blocking and throttling of UDP- and TCP-based VPNs
+- Detection of protocol-based blocking and throttling of UDP- and TCP-based VPNs using userspace TCP/IP stack (instead of tap/tun)
+- Detection of protocol-based blocking and throttling of UDP- and TCP-based VPNs using rootless Android helper application establishing a true VPN tunnel to a specific IPv6 subnet
 - Handling “stateful” filter that “learns” network endpoints (like one of ISPs in China blocking access to all websites after visiting “bad” URL, like one of Russian ISPs banning IP:Port temporary after MTProto-like handshake, like one of ISPs in Turkmenistan blocking residential connection for a while after an attempt to use VPN)
 
 - EICAR request & [`Server: EICAR`](https://twitter.com/__phw/status/1039596771993776128) HTTP header are fun and may trigger antivirus middleboxes, but it’s unclear if those are middleboxes OONI is looking for
