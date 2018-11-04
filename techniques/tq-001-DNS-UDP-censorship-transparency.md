@@ -5,24 +5,41 @@ a very commonly used technique to implement censorship.
 
 When reasoning about DNS interference, we shall consider the following possibility:
 - _Policy Based DNS interference_ (aka [_DNS hijacking_](https://en.wikipedia.org/wiki/DNS_hijacking#Manipulation_by_ISPs)), whereby a DNS resolver run by the ISP, Family-DNS service or government is configured to return specifically altered responses to specific queries. This is usually trivial to circumvent by changing resolver.
-- _DNS Spoofing_, whereby there is equipment in the network that listens for DNS queries and sends replies back to the user faster than the legitimate DNS server. This tends to be tricker to circumvent.
+- [_DNS Spoofing_](https://en.wikipedia.org/wiki/DNS_spoofing), whereby there is equipment in the network that listens for DNS queries and sends replies back to the user faster than the legitimate DNS server. This tends to be tricker to circumvent.
 - _DNS Transparent Proxy_, whereby all DNS requests sent by a user are routed through a DNS proxy box regardless of the destination DNS server, and the reply is served by the proxy box. This also tends to be trickier to circumvent.
 
-Especially when DNS Spoofing is present, it’s interesting to gain a deeper
-understanding of when the spoofing is happening.
+The borderline between _DNS Spoofing_ and _DNS Transparent Proxy_ is if the
+origin server gets the client query or not, in other words &mdash; if
+[end-to-end principle](https://en.wikipedia.org/wiki/End-to-end_principle) is
+preserved or 100%-violated).  If the origin server gets the query from the
+client and the response from origin server is blocked so the client gets only
+single injected response, that's still spoofing.  Following metadata bits are
+useful to classify the case as _spoofing_ or _proxy_:
 
-Traditionally most DNS queries are performed using the UDP protocol, meaning
-that censorship equipment does not need to do DNS Spoofing in-path, but they
-can do it “[on the side](https://en.wikipedia.org/wiki/Man-on-the-side_attack)”.
+- [presence of second DNS reply to single query](./tq-002-second-DNS-reply.md)
+- [IP TTL values of the replies](./tq-007-UDP-information-collection.md) got from _different_ resolvers
+- difference between probe IP addresses collected over HTTPS, DNS/TCP, DNS/UDP and STUN/UDP
+- different handling of hop-by-hop [EDNS(0)](https://tools.ietf.org/html/rfc6891) options
+
+E.g. lack of the second DNS reply combined with the injected DNS response
+suggets<sup>[1](#fn1)</sup> that censorship equipment is doing
+[_in-path_ attack (aka _man-in-the-middle_)](https://en.wikipedia.org/wiki/Man-in-the-middle_attack),
+while presence of the second DNS reply suggests<sup>[2](#fn2)</sup> that
+[_on-path_ attack (aka _man-on-the-side_)](https://en.wikipedia.org/wiki/Man-on-the-side_attack)
+is happening.
+
+<a name="fn1">1</a>: _"suggets in-path"_ (not _"proves"_) as the second DNS reply can also _disappear_ due to natural packet loss
+
+<a name="fn2">2</a>: _"suggets on-path"_ (not _"proves"_) as in-path equipment may do *all* on-path attacks as well
 
 The following techniques may help to distinguish DNS-based censorship from a
 malfunctioning network or DNS service:
 
-- more than one reply is received for a single DNS query
-- the same resolver gives the same answer with DNS/TCP, DoT and DoH
-- DNS Resource Record TTL “ticks” on caching Recursive Resolver
-- another “non-existent” domain in same zone gives same error
-- timeout can be explained by 5-tuple load balancing going bad
-- delegation chain works from root (dig +trace, drill)
-- domain and parent domains have SOAs and NSes matching with control measurement
+- [more than one reply](./tq-002-second-DNS-reply.md) is received for a single DNS query
+- the same resolver gives the same answer with [DNS/TCP, DoT and DoH](./tq-004-DNS-TCP-DoT-DoH-against-same-resolver.md)
+- [DNS Resource Record TTL “ticks”](./tq-005-DNS-Resource-Record-TTL-ticks-in-cache.md) on caching Recursive Resolver
+- [another “non-existent” domain in same zone gives same error](./tq-006-another-NXDOMAIN-domain-in-same-zone.md)
+- timeout can be explained by [5-tuple load balancing going bad](./tq-007-UDP-information-collection.md)
+- delegation [chain works from root](./tq-008-DNS-delegation-chain-from-root.md) (dig +trace, drill)
+- domain and parent domains have [SOAs and NSes matching with control](./tq-010-SOAs-and-NSes-for-possibly-censored-domain.md) measurement
 - TBD :-)
