@@ -11,7 +11,7 @@ When reasoning about DNS interference, we shall consider the following possibili
 The borderline between _DNS Spoofing_ and _DNS Transparent Proxy_ is if the
 origin server gets the client query or not, in other words &mdash; if
 [end-to-end principle](https://en.wikipedia.org/wiki/End-to-end_principle) is
-preserved or 100%-violated).  If the origin server gets the query from the
+preserved or 100%-violated.  If the origin server gets the query from the
 client and the response from origin server is blocked so the client gets only
 single injected response, that's still spoofing.  Following metadata bits are
 useful to classify the case as _spoofing_ or _proxy_:
