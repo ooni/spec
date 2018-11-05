@@ -1,8 +1,8 @@
 # tq-005 DNS Resource Record TTL “ticks” in cache
 
-When probe assumes that specific domain name is censored it’s interesting to
-query the same nameserver for the same name in two seconds and check if TTL
-field changes. If the TTL field does not change, it’s clear indicator that at
+When a Probe assumes that a specific domain name is censored it’s interesting to
+query the same nameserver for the same name in two seconds and check if the TTL
+field changes. If the TTL field does not change, it’s a clear indicator that at
 least one of following is likely true:
 
 - the domain name is served by the caching recursive DNS resolver
@@ -10,7 +10,7 @@ least one of following is likely true:
 - the load balancer in front of the DNS servers cluster is not aware of DNS names, so requests to the cache are not “sticky”
 - the response is injected with static TTL by an entity that is able to observe the traffic
 
-If TTL changes for an “unexpected” value (e.g. diff is not within 1..3 range
+If the TTL changes for an “unexpected” value (e.g. diff is not within 1..3 range
 after 2 seconds delay) it may be also a side-effect of qname-unaware load
 balancing or some other logic. That was observed at least with 8.8.8.8.
 
