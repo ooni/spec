@@ -1,19 +1,19 @@
 # tq-001 DNS/UDP Censorship Transparency
 
 DNS testing is fundamental to network measurement to detect censorship as it’s
-a very commonly used technique to implement censorship.
+a commonly used technique to implement censorship.
 
-When reasoning about DNS interference, we shall consider the following possibility:
-- _Policy Based DNS interference_ (aka [_DNS hijacking_](https://en.wikipedia.org/wiki/DNS_hijacking#Manipulation_by_ISPs)), whereby a DNS resolver run by the ISP, Family-DNS service or government is configured to return specifically altered responses to specific queries. This is usually trivial to circumvent by changing resolver.
+When reasoning about DNS interference, we shall consider the following possibilities:
+- [_DNS hijacking_](https://en.wikipedia.org/wiki/DNS_hijacking#Manipulation_by_ISPs)(or _Policy Based DNS interference_), whereby a DNS resolver run by the ISP, parental control DNS service or government is configured to return specifically altered responses to specific queries. This is usually trivial to circumvent by changing resolver.
 - [_DNS Spoofing_](https://en.wikipedia.org/wiki/DNS_spoofing), whereby there is equipment in the network that listens for DNS queries and sends replies back to the user faster than the legitimate DNS server. This tends to be tricker to circumvent.
 - _DNS Transparent Proxy_, whereby all DNS requests sent by a user are routed through a DNS proxy box regardless of the destination DNS server, and the reply is served by the proxy box. This also tends to be trickier to circumvent.
 
-The borderline between _DNS Spoofing_ and _DNS Transparent Proxy_ is if the
-origin server gets the client query or not, in other words &mdash; if
+The difference between _DNS Spoofing_ and _DNS Transparent Proxy_ is that in one case the
+origin server gets the client query and in the other it doesn't, in other words &mdash; if the
 [end-to-end principle](https://en.wikipedia.org/wiki/End-to-end_principle) is
 preserved or 100%-violated.  If the origin server gets the query from the
-client and the response from origin server is blocked so the client gets only
-single injected response, that's still spoofing.  Following metadata bits are
+client and the response from origin server is blocked so the client only gets a
+single injected response, then it's still spoofing. The following metadata bits are
 useful to classify the case as _spoofing_ or _proxy_:
 
 - [presence of second DNS reply to single query](./tq-002-second-DNS-reply.md)
@@ -22,9 +22,9 @@ useful to classify the case as _spoofing_ or _proxy_:
 - different handling of hop-by-hop [EDNS(0)](https://tools.ietf.org/html/rfc6891) options
 
 E.g. lack of the second DNS reply combined with the injected DNS response
-suggets<sup>[1](#fn1)</sup> that censorship equipment is doing
+suggests<sup>[1](#fn1)</sup> that censorship equipment is doing an
 [_in-path_ attack (aka _man-in-the-middle_)](https://en.wikipedia.org/wiki/Man-in-the-middle_attack),
-while presence of the second DNS reply suggests<sup>[2](#fn2)</sup> that
+while the presence of a second DNS reply suggests<sup>[2](#fn2)</sup> that an
 [_on-path_ attack (aka _man-on-the-side_)](https://en.wikipedia.org/wiki/Man-on-the-side_attack)
 is happening.
 
