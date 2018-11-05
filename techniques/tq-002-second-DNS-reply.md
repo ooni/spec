@@ -1,16 +1,14 @@
 # tq-002 Second DNS reply
 
 The client issuing a DNS/UDP query may receive two<sup>[1](#fn1)</sup> DNS responses, one coming
-from the legitimate DNS resolver and one coming from the censor. It’s suggested
-to capture the responses while waiting for 5 seconds<sup>[2](#fn2)</sup> on the same UDP socket
-till the first reply and 5 seconds more<sup>[3](#fn3)</sup> after the very first reply comes.
+from the legitimate DNS resolver and one coming from the censor. In order to capture both the first reply, but also, possibily, a second one, it's suggested to wait 5 seconds for the first response<sup>[2](#fn2)</sup> and an additional 5 seconds<sup>[3](#fn3)</sup> on the same UDP socket after receving the first reply.
 
 These two responses should have [TTL](./tq-015-packet-headers-exfiltration-with-BPF.md) and
 [latency](./tq-000-timing-information-collection.md) recorded (if platform
 permits). All the captured IPs from several responses should be passed to
 further tests.
 
-<a name="fn1">1</a>: There may be more than one extra responses, but that has never been observed so far.
+<a name="fn1">1</a>: There may be more than one extra response, but that has never been observed so far.
 
 <a name="fn2">2</a>: 5 second timeout is default `RES_TIMEOUT` in GNU C library
 2.23. It’s possible to estimate platform `getaddrinfo()` timeout with an
