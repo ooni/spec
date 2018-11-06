@@ -1,7 +1,7 @@
 # tq-011 Both A and AAAA DNS queries
 
-It is important to do both A and AAAA DNS queries for all the domains OONI
-Probe resolves during tests as sometimes “censor” adds the second stack for a
+It is important to do both A and AAAA DNS queries for all the domains 
+Probes resolve during testing, as sometimes a “censor” will add the second stack (ex. IPv6) for a
 single-stack network endpoint to serve a blockpage.
 
 ## Examples
