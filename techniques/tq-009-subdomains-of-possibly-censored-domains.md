@@ -1,14 +1,14 @@
 # tq-009 Subdomains of possibly-censored domains
 
-When domain is suspected to be censored by resolver (returns unexpected error
+When a domain is suspected to be censored by a resolver (returns unexpected error
 or unexpected RR for a query) it is interesting to check well-known and random
 subdomains of this domain and compare those measurements to control. They may
-present same values / errors as a parent domain due to following reasons:
+present same values / errors as a parent domain due to the following reasons:
 
-- NSes for the domain may be unreachable from recursive resolver, so `SERVFAIL`
-- domain may have delegation or DNSSEC misconfiguration, so `SERVFAIL`
+- NSes for the domain may be unreachable from the recursive resolver, so `SERVFAIL`
+- domain may have a delegation or DNSSEC misconfiguration, so `SERVFAIL`
 - whole domain may be censored via DNS
-- domain may have actual “star” record (or have dynamically generated records)
+- domain may have an actual “star” record (or have dynamically generated records)
 
 ## Examples
 - some israeli authoritative DNS servers were dropping requests from Egypt
