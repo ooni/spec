@@ -13,6 +13,7 @@ behavior:
 - dropping the usual space after the colon in “Host:example.com”
 - adding a long “X-Stuff: AAA...AAA” header to push the “Host” header into another packet
 - “\n” instead of “\r\n”
+- `GET / HTTP/1.1\r\nHost: blocked.com\r\n\r\nHost: allowed.com` from _Yadav-Sinha-Gosain_ paper
 - …
 
 These tricks may reveal the existence of several different DPI boxes inspecting the
@@ -27,3 +28,4 @@ crashes.
 - [Turkmenistan](https://ooni.torproject.org/post/tab-tab-come-in/) did not handle appended \t and prepended \n properly
 - Is there some interesting data from [http_filtering_bypassing.py](https://github.com/ooni/probe-legacy/blob/master/ooni/nettests/experimental/http_filtering_bypassing.py) ?
 - Some of these tricks are claimed to be successful by [GoodbyeDPI](https://github.com/ValdikSS/GoodbyeDPI)
+- Yadav-Sinha-Gosain &mdash; [Where The Light Gets In: Analyzing Web Censorship Mechanisms in India](https://dl.acm.org/citation.cfm?id=3278555)
