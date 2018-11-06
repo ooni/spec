@@ -4,18 +4,18 @@ If a HTTP request triggers an unexpected response it is interesting to try
 several “camouflage stuffing” tricks to check if they trigger different
 behavior:
 
-- append TAB (“\t”) character to Host header before “\r\n”
-- prepend LF (“\n”) to GET
-- append DOT (“.”) to domain in Host header
-- extra SP (“ “) after GET
-- newline-space (“\r\n ”) before domain in Host header
+- append the TAB (“\t”) character to the Host header before “\r\n”
+- prepend a LF (“\n”) to `GET` in the request line
+- append a DOT (“.”) to the domain in the Host header
+- extra an SP (“ “) after `GET` in the request line
+- newline-space (“\r\n ”) before the domain in the Host header
 - “host” or “hoSt” header instead of “Host” header
-- dropping usual space after colon in “Host:example.com”
-- adding long “X-Stuff: AAA...AAA” header to push “Host” header to another packet
+- dropping the usual space after the colon in “Host:example.com”
+- adding a long “X-Stuff: AAA...AAA” header to push the “Host” header into another packet
 - “\n” instead of “\r\n”
 - …
 
-These tricks may reveal existence of several different DPI boxes inspecting the
+These tricks may reveal the existence of several different DPI boxes inspecting the
 traffic one after another having different HTTP parser flaws.
 
 The list of tricks is incomplete and, moreover, may break some HTTP servers.
