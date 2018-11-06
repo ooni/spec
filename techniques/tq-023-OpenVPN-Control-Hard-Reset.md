@@ -2,7 +2,7 @@
 
 It’s possible to use `P_CONTROL_HARD_RESET_CLIENT_V2` packet as “triggering
 request” as there are some DPIs filtering OpenVPN traffic using those packets.
-That was observed both for OpenVPN/TCP and OpenVPN/UDP. That is by no means a
+That is what was observed for both OpenVPN/TCP and OpenVPN/UDP. That is by no means a
 comprehensive OpenVPN test.
 
 TBD: what does Egypt do? They do something.
