@@ -1,8 +1,8 @@
 # tq-027 Stuffed TLS ClientHello
 
 If a TLS request triggers an unexpected response it is interesting to try
-“stuffing” tricks to check if SNI field placed in separate packet triggers
-different behavior. Possible fields for stuffing are:
+“stuffing” tricks to check if the SNI field placed in a separate packet triggers a
+different behavior. Possible fields for "stuffing" are:
 
 - Session ID, 256 bytes
 - Cipher Suites, 65536 bytes
