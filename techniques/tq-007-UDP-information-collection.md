@@ -7,7 +7,7 @@ It should enable `IP_RECVERR` and `IP_RECVTTL` to collect more metadata.
 By using a random UDP source port:
 - allows us to distinguish ICMP errors delivered via `IP_RECVERR` to `MSG_ERRQUEUE` across queries
 - accounts for ECMP-like<sup>[2](#fn2)</sup> broken paths
-- is BCP to prevent blind DNS/UDP spoofing
+- [BCP152](https://tools.ietf.org/html/bcp152#section-6.1) suggests this to prevent blind DNS/UDP spoofing
 
 <a name="fn1">1</a>: unless doing traceroutes or other alike measurements that
 SHOULD preserve path like paris-traceroute does
