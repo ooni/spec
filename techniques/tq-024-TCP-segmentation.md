@@ -4,7 +4,7 @@ If a TCP request triggers an unexpected response it is interesting to see if the
 
 - Split the request in the middle of the “badword” (domain, URL, binary fingerprint)
 - Split the request in the beginning of the request to confuse the DPI protocol detection and prevent a reassembly attempt
-- Send the request byte-by-byte with some packet pacing
+- Send the request byte-by-byte with some [packet pacing](https://en.wikipedia.org/wiki/TCP_pacing), maybe considering [LSO/TSO/GSO](https://en.wikipedia.org/wiki/Large_send_offload) 
 - Send the request byte-by-byte waiting for bytes to be ACKed
 - HTTP-specific: some DPI boxes are erratically triggered as soon as they see “Host: censored.org” without seeing “\r\n” (so the request can become “Host: censored.org.ru”)
 
