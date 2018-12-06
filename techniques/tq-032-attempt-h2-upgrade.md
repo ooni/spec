@@ -1,4 +1,4 @@
-# tq-xxx Attempt upgrade to H2
+# tq-032 Attempt upgrade to H2
 
 When a transparent HTTP proxy is in the path between the probe and the target
 server, an attempt to upgrade to H2 may reveal its presence in one of the
