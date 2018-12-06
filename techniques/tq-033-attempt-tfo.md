@@ -1,4 +1,4 @@
-# tq-xxx Attempt use of TCP Fast Open
+# tq-033 Attempt use of TCP Fast Open
 
 When a transparent HTTP or TLS proxy is in the path between the probe and the
 target server, an attempt to use TCP fast open may reveal its presence in
