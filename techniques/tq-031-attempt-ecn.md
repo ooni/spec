@@ -1,4 +1,4 @@
-# tq-xxx Attempt use of Explicit Congestion Notification
+# tq-031 Attempt use of Explicit Congestion Notification
 
 When a transparent HTTP or TLS proxy is in the path between the probe and the
 target server, an attempt to use explicit congestion notification (ECN) may
