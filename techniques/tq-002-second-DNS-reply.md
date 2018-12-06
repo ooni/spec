@@ -22,5 +22,10 @@ also reasonable to wait for 10 seconds since query if that makes implementation
 easier, but it makes the test a bit more “sleepy” and makes treatment of these
 two responses a bit less “fair”.
 
+If a network operator also firewalls the DNS packets from leaving or entering
+their network, there would not be a second response even though in reality there
+is injection happening as opposed to hijacking. This is a technical detail and
+does not change the fact that there is DNS interception happening.
+
 ## Examples
 - [AS41843, CJSC "ER-Telecom Holding" Omsk branch](https://github.com/ooni/probe/issues/647#issuecomment-275999682)
