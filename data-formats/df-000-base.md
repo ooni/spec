@@ -1,4 +1,4 @@
-# OONI Data formats
+- # OONI Data formats
 
 The output of test is the composition of:
 
