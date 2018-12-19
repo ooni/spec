@@ -125,7 +125,7 @@ If none of the access points are blocked then we write:
 
 ## Semantics
 
-```json
+```
 {
     "telegram_http_blocking": true | false,
     "telegram_tcp_blocking": true | false,
