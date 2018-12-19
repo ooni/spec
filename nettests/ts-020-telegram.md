@@ -47,16 +47,16 @@ we consider Telegram to be blocked:
 
 ```json
 {
-"tcp_connect": [
+  "tcp_connect": [
     {
-        "ip": "149.154.167.50",
-        "port": 443,
-        "status": {
-            "failure": "generic_timeout_error",
-            "success": false
-        }
+      "ip": "149.154.167.50",
+      "port": 443,
+      "status": {
+        "failure": "generic_timeout_error",
+        "success": false
+      }
     }
-]
+  ]
 }
 ```
 
