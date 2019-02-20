@@ -59,11 +59,12 @@ we consider Telegram to be blocked:
   ]
 }
 ```
+The key `telegram_tcp_blocking` is used to indicate if we believe telegram to be blocked at
+the TCP level.
 
 Regardless of the status of the TCP connectivity this test sends HTTP POST
-requests on ports 80 and 443 to all access points. If any HTTP requests do
-not get back a response from an access point IP then it is considered as
-blocked:
+requests on ports 80 and 443 to all access points. If at least an HTTP request
+returns back a response, we consider Telegram to not be blocked:
 
 ```json
 {
@@ -82,6 +83,9 @@ blocked:
     "response": null
 }
 ```
+
+The key `telegram_http_blocking` is used to indicate if we believe telegram to be blocked at
+the HTTP level.
 
 ## Telegram web version test
 
