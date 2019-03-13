@@ -101,7 +101,7 @@ request conforming to the following specification:
 
      'software_name':
         `string` the name of the software that is creating a report (ex. "ooni-probe")
-        that MUST match this regexp: `^[0-9A-Za-z_\\.+-]+$`.
+        that MUST match this regexp: `^[0-9A-Za-z_.+-]+$`.
 
      'software_version':
         `string` the version of the software creating the report (ex. "0.0.10-beta")
