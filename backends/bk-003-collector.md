@@ -281,7 +281,7 @@ Upon receiving this request, the collector:
    measurement, the collector SHOULD NOT transform it to the
    maximum possible extent, unless such transformation is
    known to be harmless. Saving the original bytes sent by
-   the client SHOULD be preferrable to reserializing the
+   the client SHOULD be preferred to reserializing the
    parsed measurement and saving that.
 
 7. MUST reset the report-specific timer used for automatically
