@@ -25,7 +25,7 @@ It is outside of the scope of this section to define:
 archival, processing, and publishing, or whether a scraper component would
 be responsible for gathering measurements from OONI collectors.
 
-The collector MUST be exposed as an HTTP service. It MAY also be exposed as
+The collector MUST be exposed as an HTTPS service. It MAY also be exposed as
 a Tor onion service. A [legacy document](
 https://ooni.torproject.org/docs/architecture.html#why-tor-hidden-services)
 explains why the OONI project originally chose to allow for both HTTPS
