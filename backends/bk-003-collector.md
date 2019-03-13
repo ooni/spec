@@ -44,13 +44,13 @@ for example using Tor or obfsproxy.
 
 # 3.0 API
 
-Unless otherwise stated all of the network operations below can be performed
-either via HTTPS or HTTPO (HTTP over Tor Onion Service).
+Unless otherwise stated all of the network operations below MAY be performed
+either via HTTPS or via a Tor onion service.
 
-There are two kind of reports: those consisting of many measurements and those
-consisting of a single measurement. In the most general case, you create a report
-(see 3.1), update it by adding measurements (see 3.2), then close it
-(see 3.3). When the report consists of a single entry, however, you can use
+In the most general case, you create a report (see 3.1), update it by adding
+measurements (see 3.2), then close it (see 3.3).
+
+When the report consists of a single measurement entry, however, you can use
 a simplified API (see 3.4) to perform all these operations together.
 
 ## 3.1 Create a new report
