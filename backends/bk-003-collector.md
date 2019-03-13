@@ -17,7 +17,7 @@ of their measurements. The client and the server SHOULD NOT assume a keep
 alive semantics for the HTTP connections.
 
 A OONI probe that enables `Content-Encoding: gzip` or similar to compress
-request bodies MUST BE prepared to receive a `415` response and retry without
+request bodies MUST be prepared to receive a `415` response and retry without
 compression. A collector MUST check content-encoding for all requests and,
 if not supported, it MUST send back a `415` response to the client.
 
