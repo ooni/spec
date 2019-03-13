@@ -121,7 +121,7 @@ serialized JSON object.
 
 The `Content-Type` header is not required, but SHOULD be properly set for
 additional clarity. In such case, we recommend setting the `Content-Type` to
-be `application/json`.
+`application/json`.
 
 Upon receiving a request to create a report, the collector:
 
