@@ -137,10 +137,16 @@ Upon receiving a request to create a report, the collector:
 
 2. MUST fail with `4xx` if the request is not compliant with its policies.
 
-3. MUST fail with `5xx` if it cannot generate the report ID (see below) or
+3. SHOULD fail with `5xx` if the `content` field is present, unless the
+   implementor wants to support a really legacy submit protocol.
+
+4. MUST fail with `5xx` if it cannot generate the report ID (see below) or
    in case of other failures.
 
-4. otherwise MUST return a `200` response with the body described below.
+5. SHOULD exercise care to avoid logging the `probe_ip` field, if set.
+
+6. if everything is okay, MUST return a `200` response with the body
+   described below.
 
 In case of error, the collector MAY return a JSON body. In case of
 success, it MUST return a JSON body generated in compliance with
