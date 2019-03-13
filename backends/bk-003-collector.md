@@ -50,7 +50,8 @@ In the most general case, you create a report (see 3.1), update it by adding
 measurements (see 3.2), then close it (see 3.3).
 
 When the report consists of a single measurement entry, however, you can use
-a simplified API (see 3.4) to perform all these operations together.
+a simplified flow to perform all these operations together in a single
+API call (see 3.4).
 
 ## 3.1 Create a new report
 
