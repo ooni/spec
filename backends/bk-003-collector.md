@@ -260,13 +260,13 @@ Upon receiving this request, the collector:
 1. MUST check whether `${report_id}` is a valid report ID and reject
    the request with a `4xx` status otherwise.
 
-2. MUST reject the request with a `4xx` if the JSON does not
-   parse or is not an object.
-
-3. MUST reject the request with a `4xx` status if the `format`
+2. MUST reject the request with a `4xx` status if the `format`
    is "yaml" and it is not handling YAML.
 
-4. MUST parse `content` into a JSON to verify that the top-level
+3. MUST reject the request with a `4xx` if the JSON/YAML does not
+   parse or the JSON is not an object.
+
+4. MUST parse `content` into a JSON/YAML to verify that the top-level
    fields are compliant with [df-000-base.md](
    ../data-formats/df-000-base.md) and otherwise return a `4xx`
    status to the client.
