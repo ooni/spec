@@ -266,13 +266,16 @@ Upon receiving this request, the collector:
    make sure that it successfully saved the measurement (e.g. by
    checking the return value of `fclose`).
 
-8. MAY submit the measurement to some pipeline speed processing
+6. MUST reset the report-specific timer used for automatically
+   closed OPEN reports that have become stale.
+
+7. MAY submit the measurement to some pipeline speed processing
    layer, but this operation MUST NOT have an impact onto the
    HTTP status returned to the client, and SHOULD be performed
    asynchronously such that the response is returned to the
    client as quickly as possible.
 
-7. returns `200` to the client (see below).
+8. returns `200` to the client (see below).
 
 For backwards compatibility with the existing implementation, the
 `200` status SHOULD include this body along with a compliant
