@@ -53,6 +53,13 @@ When the report consists of a single measurement entry, however, you can use
 a simplified flow to perform all these operations together in a single
 API call (see 3.4).
 
+A report that has successfully be open is in the OPEN state. A OONI collector
+should record the last time a report has been updated, and close a report
+that has been inactive for too much time. An implementation is free to choose
+any threashold for closing stale, OPEN reports; however, this threshold
+SHOULD NOT be smaller than two hours for compatibility with existing
+implementations of the OONI collector.
+
 ## 3.1 Create a new report
 
 When a probe starts a test it will *create* a new report by sending a `POST`
@@ -121,7 +128,7 @@ serialized JSON object.
 
 The `Content-Type` header is not required, but SHOULD be properly set for
 additional clarity. In such case, we recommend setting the `Content-Type` to
-`application/json`.
+`application/json` or `application/json; charset=utf-8`.
 
 Upon receiving a request to create a report, the collector:
 
@@ -162,13 +169,16 @@ the following specification:
     }
 
 New collector implementations MUST&mdash;and existing ones
-SHOULD&mdash;set `Content-Type` to `application/json`.
+SHOULD&mdash;set `Content-Type` using a content type value
+indicating JSON (as mentioned above when discussing what
+`Content-Type` value the client should use).
 
 Upon receiving a response, the client:
 
 1. MUST verify that the status is `200` before continuing
 
-2. SHOULD check whether the `Content-Type` is `application/json`
+2. SHOULD check whether the `Content-Type` indicates that
+   the server returned a JSON document.
 
 3. if it is a `yaml` client, it MUST make sure that the backend is
    supporting such format
@@ -213,68 +223,64 @@ messages have been edited for readability):
 
 ## 3.2 Update a report
 
-Once the probe has a report ID they will be able to add test related content to
-the report by referencing it by id:
+Updating a report means appending a measurement to the report. A probe SHOULD do
+that within a reasonable time frame after the measurement has terminated. Also,
+as stated above, a collector SHOULD NOT close an open, stale report before two
+hours of inactivity. For robustness, the probe implementation SHOULD record the
+elapsed time between when it opened a report and when it is updating it, and
+open a new report if the update operation fails and the elapsed time is greater
+than one hour.
 
-`PUT /report`
+To update a report, the probe issues a request compliant with the following:
 
-```
-{
+    POST /report/${report_id}
 
-    'report_id':
-      `string` the report identifier
-
-    'content':
-      `string` or `document` content to be added to the report. This can be one or more
-        report entries in the format specified in df-000-base.md
-        When in format YAML this is the content of the report to be added as a
-        string serialized in YAML, when in JSON it's the actual JSON document of the report entry.
-
-
-     'format':
-        `string` that must be either "json" or "yaml" to identify the format
-        of the content.
-        New since version 0.3 of the data format or 1.2 of the backend.
-
-}
-```
-
-This method is deprecated, because it is not proper usage of HTTP request methods.
-PUT should only be used for operations that are idempotent.
-
-The backend should validate the request to make sure it is a valid YAML Stream.
-
-New collectors should use the following format for updating reports:
-
-`POST /report/$report_id`
-
-```
-{
-
-    content:
-      `string` or `document` content to be added to the report. This can be one or more
-        report entries in the format specified in df-000-base.md
-        When in format YAML this is the content of the report to be added as a
-        string serialized in YAML, when in JSON it's the actual JSON document of the report entry.
+    {
+     content:
+       When the report is in YAML, this is a string. Otherwise, this is
+       a JSON object. In both cases, the content of this field MUST
+       follow the df-000-base.md specification (see below).
 
      'format':
-        `string` that must be either "json" or "yaml" to identify the format
-        of the content.
-        New since version 0.3 of the data format or 1.2 of the backend.
+        `string` either "json" or "yaml".
+    }
 
-}
+Upon receiving this request, the collector:
+
+1. MUST check whether `${report_id}` is a valid report ID and reject
+   the request with a `4xx` status otherwise.
+
+2. MUST reject the request with a `4xx` status if the `format`
+   is "yaml" and it is not handling YAML.
+
+3. MUST parse `content` into a JSON to verify that the top-level
+   fields are compliant with [df-000-base.md](
+   ../data-formats/df-000-base.md) and otherwise return a `4xx`
+   status to the client.
+
+4. MAY parse `test_keys` fields and return a `4xx` status if
+   such it finds some field with an invalid value.
+
+5. SHOULD write the measurement to persistent storage or to some
+   database before returning `200` to the client, and SHOULD
+   make sure that it successfully saved the measurement (e.g. by
+   checking the return value of `fclose`).
+
+8. MAY submit the measurement to some pipeline speed processing
+   layer, but this operation MUST NOT have an impact onto the
+   HTTP status returned to the client, and SHOULD be performed
+   asynchronously such that the response is returned to the
+   client as quickly as possible.
+
+7. returns `200` to the client (see below).
+
+For backwards compatibility with the existing implementation, the
+`200` status SHOULD include this body along with a compliant
+`Content-Type` header value indicating JSON (see above):
+
+```JSON
+{"status": "success"}
 ```
-
-When a request for update is successful the backend will return:
-
-`Status code: 200 (OK)`
-
-Message:
-```
-{'status': 'success'}
-```
-
-If it doesn't find the report it will set the status code to `404`.
 
 ## 3.3 Closing a report
 
