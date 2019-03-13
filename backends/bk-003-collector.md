@@ -1,6 +1,6 @@
 # OONI collector specification
 
-* version: 1.0.0
+* version: 2.0.0
 * date: 2019-03-13
 * author: Arturo Filastò, Aaron Gibson, Simone Basso
 
@@ -137,8 +137,9 @@ Upon receiving a request to create a report, the collector:
 
 2. MUST fail with `4xx` if the request is not compliant with its policies.
 
-3. SHOULD fail with `5xx` if the `content` field is present, unless the
-   implementor wants to support a really legacy submit protocol.
+3. SHOULD fail with `5xx` if the `content` field is present, or if the
+   `test_helper` field is present, unless the implementor really wants to
+   support now-historical OONI probe implementations.
 
 4. MUST fail with `5xx` if it cannot generate the report ID (see below) or
    in case of other failures.
