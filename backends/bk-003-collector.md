@@ -285,7 +285,7 @@ Upon receiving this request, the collector:
    parsed measurement and saving that.
 
 7. MUST reset the report-specific timer used for automatically
-   closed OPEN reports that have become stale.
+   closing OPEN reports that have become stale.
 
 8. MAY submit the measurement to some pipeline speed processing
    layer, but this operation MUST NOT have an impact onto the
