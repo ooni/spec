@@ -275,8 +275,8 @@ Upon receiving this request, the collector:
    such it finds some field with an invalid value.
 
 6. SHOULD write the measurement to persistent storage or to some
-   database before returning `200` to the client, and SHOULD
-   make sure that it successfully saved the measurement (e.g. by
+   database before returning `200` to the client making
+   sure that it successfully saved the measurement (e.g. by
    checking the return value of `fclose`). In writing the
    measurement, the collector SHOULD NOT transform it to the
    maximum possible extent, unless such transformation is
