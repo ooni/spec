@@ -171,9 +171,30 @@ Upon receiving a response, the client:
 2. SHOULD check whether the `Content-Type` is `application/json`
 
 3. if it is a `yaml` client, it MUST make sure that the backend is
-   supporting such format, since it's not required to
+   supporting such format
 
 4. MUST save the report ID for using it later
+
+The following example shows how opening a report looks like from
+the point of view of a modern collector client:
+
+```
+Request body: {"data_format_version":"0.2.0", "format":"json", "input_hashes":[],"probe_asn":"AS30722", "probe_cc":"IT", "software_name":"mkcollector", "software_version":"0.0.1", "test_name":"dummy", "test_start_time":"2018-11-01 15:33:17", "test_version":"0.0.1"}
+> POST /report HTTP/1.1
+> Host: collector-sandbox.ooni.io
+> Accept: */*
+> Content-Type: application/json
+> Content-Length: 243
+> 
+< HTTP/1.1 200 OK
+< Server: nginx
+< Date: Wed, 13 Mar 2019 13:19:42 GMT
+< Content-Type: application/json; charset=utf-8
+< Content-Length: 152
+< Connection: keep-alive
+< 
+Response body: {"backend_version":"2.0.0-alpha", "report_id":"20190313T131942Z_AS30722_dU70oZPs80d5E21z8Ef6GXel6CwsdLoXvDk44Fsajv1LDLOIeI", "supported_formats":["json"]}
+```
 
 ## 3.2 Update a report
 
