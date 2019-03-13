@@ -49,12 +49,13 @@ a collector. Such properties are to be provided by other software, e.g. Tor.
 Unless otherwise stated all of the network operations below MAY be performed
 either via HTTPS or via a Tor onion service.
 
-In the most general case, you create a report (see 3.1), update it by adding
-measurements (see 3.2), then close it (see 3.3).
+The flow for submitting measurements is the following:
 
-When the report consists of a single measurement entry, however, you can use
-a simplified flow to perform all these operations together in a single
-API call (see 3.4).
+- you create a report (see 3.1)
+
+- you update it by adding measurements (see 3.2)
+
+- then, you close it (see 3.3).
 
 A report that has successfully be open is in the OPEN state. A OONI collector
 should record the last time a report has been updated, and close a report
@@ -398,8 +399,8 @@ messages have been edited for readability):
 
 ## 3.4 Submitting single measurements using a single API call
 
-This API is still experimental and, as such, a collector MAY NOT
-implement it and still be compliant with this spec.
+This API is deprecated because it requires the collector to rewrite
+a measurement (see below). A collector MAY NOT implement it.
 
 When you have single-entry reports, you can submit them by `POST`ing onto
 the `/measurement` endpoint:
@@ -409,12 +410,20 @@ the `/measurement` endpoint:
 The request body MUST be a JSON format OONI measurement. The `Content-Type`
 header SHOULD be set accordingly.
 
-Upon receiving this request, the collector MUST behave like it received
-an update request for an existing OONI report. Any `report_id` in the
-measurement SHOULD NOT be considered. The collector MUST generate a new
-`report_id` and add it to the measurement. In this case, the collector
-cannot of course store the original measurement but must instead save on
-disk the serialized measurement with the correct report ID.
+Upon receiving this request, the collector MUST behave like the client
+performed the following operations:
+
+1. opened a report
+
+2. submitted the measurement as part of the report
+
+3. closed the report
+
+Of course, when processing the measurement submitted using this API, the
+collector will ignore any `report_id` field and overwrite it using the
+`report_id` it generated for the measurement. Also, of course, this API
+cannot store the original measurement submitted by the client, since
+it needs to change the measurement to overwrite its `report_id`.
 
 In case of success, the collector MUST return to the client a JSON body
 containing at least the following fields:
@@ -470,62 +479,7 @@ messages have been edited for readability):
 < {"report_id":"20190313T131942Z_AS30722_dU70oZPs80d5E21z8Ef6GXel6CwsdLoXvDk44Fsajv1LDLOIeI"}
 ```
 
-## 2.5 Report publishing and cleaning
+# 4.0 Implementation considerations
 
-Once a report is closed it should be made available to the public for download
-and analysis. This shall happen as soon as a report reaches the CLOSED state
-(either because the user closed it or because it entered a stale state).
-
-Reports should be published to:
-
-`https://ooni.torproject.org/reports/` **reportFormatVersion** `/` **CC** `/`
-
-Requesting such URL may also result in a 302 to the location of reports for
-that specific country.
-
-Where CC is the two letter country code as specified by ISO 31666-2.
-
-For example the reports for Italy (CC is it) of the reportVersion 0.1 may be
-found in:
-
-https://ooni.torproject.org/reports/0.1/IT/
-
-This directory shall contain the various reports for the test using the
-following convention:
-
-test name - timestamp in ISO8601 format - probe AS number - probe|backend.yamloo
-
-The timestamp is expressed using ISO 8601 including seconds and with no : to
-delimit hours, minutes, days.
-
-Such date is the time in which the report was created and must be set by the
-backend.
-
-Like so:
-
-YEAR - MONTH - DAY T HOURS MINUTES SECONDS Z
-
-The time is always expressed in UTC.
-
-If a collision is detected then an int (starting with 1) will get appended to
-the test.
-
-For example if two report that are created on the first of January 2012 at Noon
-(UTC time) sharp from MIT (AS3) will be stored here:
-
-https://ooni.torproject.org/reports/0.1/US/http_test-2012-01-01T120000Z-AS3-probe.yamloo
-https://ooni.torproject.org/reports/0.1/US/http_test-2012-01-01T120000Z-AS3-probe.1.yamloo
-
-Implementation notes:
-The task of publishing a report should be made modular so that we can replace
-the publishing mechanism if we discover the limitations of this system (not
-infinite disk space).
-
-The basic implementation shall just scp the files to a machine that is
-configurable by config file.
-
-?? Question:
-How does this integrate into the m-lab infrastructure?
-
-How will this work when some reports results are stored on m-lab and some are
-not?
+A client side implementation of the collector protocol SHOULD make sure
+that it is emitting timestamps using UTC rather than local time.
