@@ -6,7 +6,8 @@
 
 This document aims at providing a functional specification of the OONI backend. An
 implementation MAY choose to only implement some of the functionality described in this
-specification. In such case, it should refer to the proper subsection.
+specification. In such case, the implementation SHOULD refer directly to the
+specific subsection that it implements.
 
 # 1.0 System overview
 
