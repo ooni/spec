@@ -131,7 +131,7 @@ Upon receiving a request to create a report, the collector:
 2. MUST fail with `4xx` if the request is not compliant with its policies.
 
 3. MUST fail with `5xx` if it cannot generate the report ID (see below) or
-   if any other implementation dependent operation fails.
+   in case of other failures.
 
 4. otherwise MUST return a `200` response with the body described below.
 
