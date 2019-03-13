@@ -60,13 +60,13 @@ either via HTTPS or via a Tor onion service.
 
 The flow for submitting measurements is the following:
 
-- you create a report (see 3.1)
+- you create a report (see 3.1);
 
-- you update it by adding measurements (see 3.2)
+- you update it by adding measurements (see 3.2);
 
 - then, you close it (see 3.3).
 
-A report that has successfully be open is in the OPEN state. A OONI collector
+A report that has successfully be opened is in the OPEN state. A OONI collector
 should record the last time a report has been updated, and close a report
 that has been inactive for too much time. An implementation is free to choose
 any threshold for closing stale, OPEN reports; however, this threshold
