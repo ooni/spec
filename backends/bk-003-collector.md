@@ -25,11 +25,12 @@ Measurement submitted to a OONI collector will be archived, processed, and
 published by OONI. How that will happen is out of the scope of this document.
 
 Modern OONI probes represent a set of logically-related measurements
-(a *report*) as a set of separate JSON documents. Legacy OONI probes represent
-a single report consisting of several measurements as a single YAML
-document. Users still using the old YAML based format are encouraged to
-upgrade to JSON ASAP. A server side implementation of the collector MUST
-support the JSON format. YAML support is deprecated.
+(a *report*) as a set of separate JSON documents each containing a
+JSON object. Legacy OONI probes represent a single report consisting of
+several measurements as a single YAML document containing a header
+and several YAML objects. Users still using the old YAML based format are
+encouraged to upgrade to JSON ASAP. A server side implementation of the
+collector MUST support the JSON format. YAML support is deprecated.
 
 It is also outside of the scope of this section to define the way in which
 a OONI probe discovers the collector API endpoint
