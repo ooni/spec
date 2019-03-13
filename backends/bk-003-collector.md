@@ -272,7 +272,8 @@ Upon receiving this request, the collector:
    status to the client. Specifically, in this step it MUST
    ensure that the `report_id` inside `content` matches
    the `${report_id}` in the request URL and otherwise return
-   a `4xx` error to the client.
+   a `4xx` error to the client. It SHOULD also ensure that
+   measurements coming from the future are rejected with `4xx`.
 
 5. MAY parse `test_keys` fields and return a `4xx` status if
    such it finds some field with an invalid value.
