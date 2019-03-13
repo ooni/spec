@@ -56,7 +56,7 @@ API call (see 3.4).
 A report that has successfully be open is in the OPEN state. A OONI collector
 should record the last time a report has been updated, and close a report
 that has been inactive for too much time. An implementation is free to choose
-any threashold for closing stale, OPEN reports; however, this threshold
+any threshold for closing stale, OPEN reports; however, this threshold
 SHOULD NOT be smaller than two hours for compatibility with existing
 implementations of the OONI collector.
 
