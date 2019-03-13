@@ -1,19 +1,24 @@
-# OONI backend specification
+# oonib specification
 
-* version: 1.5.0
+* version: 1.4.1
 * date: 2019-03-13
 * author: Arturo Filastò, Aaron Gibson, Simone Basso
 
-This document aims at providing a functional specification of the OONI backend. An
-implementation MAY choose to only implement some of the functionality described in this
-specification. In such case, the implementation SHOULD refer directly to the
-specific subsection that it implements.
+This document aims at providing a functional specification of oonib. At the
+time of writing this document not all parts are fully implemented, though the
+application interface to oonib is.
+
+
+# 0.0 Notes
+
+When we use the term **Network measurement** we are usually referring to a **NetTest**,
+that is a test to be run on the network written using the ooniprobe API.
 
 # 1.0 System overview
 
-The OONI backend is responsible for:
+oonib is the backend component of ooni. It is responsible for:
 
-  * Collecting the results of tests from OONI probes (Collector).
+  * Collecting the results of tests from ooni-probes (Collector).
 
   * Exposing a set of services that are needed for allowing ooni-probes to
     perform their tests (Test Helpers).
@@ -29,43 +34,30 @@ The OONI backend is responsible for:
 ⚠⚠⚠ **WARNING** ⚠⚠⚠: This section is _non normative_ and _obsolete_. It is
 currently being kept for historical purposes. The up-to-date document describing
 the OONI collector protocol and implementation requirements has been moved to
-[bk-003-collector.md](bk-003-collector.md] on 2019-03-13 by bassosimone.
+[bk-003-collector.md](bk-003-collector.md) on 2019-03-13 by bassosimone.
 
 ## 2.1 System overview
 
-The collector exposes an HTTP API allowing OONI probes to submit the results
-of their measurements. Measurement submitted to a OONI collector will be
-archived, processed, and published by OONI. Modern OONI probes represent a
-set of logically-related measurements (a *report*) as a set of separate
-JSON documents. Legacy OONI probes represent a single report consisting of
-several measurements as a single YAML document. Users still using the old
-YAML based format are encouraged to upgrade to JSON ASAP. A server side
-implementation of the collector MUST support the JSON format.
+The oonib collector exposes a JSON RPC like HTTP interface and allows probes to
+submit the results of their measurements. Once probe measurement is complete
+the test result is published as an ooni test report in the YAML format.
 
-It is outside of the scope of this section to define:
-
-1. the way in which a OONI probe discovers the collector API endpoint
-
-2. whether the collector should push measurements to some other component for
-archival, processing, and publishing, or whether a scraper component would
-be responsible for gathering measurements from OONI collectors.
-
-The collector MUST be exposed as an HTTP service. It MAY also be exposed as
-a Tor onion service. A [legacy document](
-https://ooni.torproject.org/docs/architecture.html#why-tor-hidden-services)
-explains why the OONI project originally chose to allow for both HTTPS
-and Tor onion service services.
+The oonib collector shall be exposed as a Tor Hidden Service and as a HTTPS
+service. The reason for supporting both Tor HS and HTTPS is [better explained in this document](https://ooni.torproject.org/docs/architecture.html#why-tor-hidden-services)
 
 ## 2.2 Threat model
 
-The collector MUST provide end-to-end encryption and authentication between
-the OONI probe and itself. Therefore, a malicious actor won't be able to update
-test results that they have not created.
+The collector shall provide end-to-end encryption and authentication between the probe and the oonib
+collector.
 
-It is outside of the scope of the collector to provide blocking resistance or
-to conceal to a passive network observer the fact that they are communicating to
-a collector. Such properties are to be provided by other software components,
-for example using Tor or obfsproxy.
+A malicious actor should not be able to update test results that they have not
+created.
+
+It is outside of the scope of the oonib collector to provide blocking
+resistance or to conceal to a passive network observer the fact that they are
+communicating to a collector.
+Such properties are to be provided by other software components, for example
+using Tor or obfsproxy.
 
 ## 2.3 Collector API
 
@@ -74,136 +66,135 @@ for example using Tor or obfsproxy.
 Unless otherwise stated all of the network operations below can be performed
 either via HTTPS or HTTPO (HTTP over Tor Onion Service).
 
-There are two kind of reports: those consisting of many measurements and those
-consisting of a single measurement. In the most general case, you create a report
-(see 2.3.1.1), update it by adding measurements (see 2.3.1.2), then close it
-(see 2.3.1.3). When the report consists of a single entry, however, you can use
-a simplified API (see 2.3.1.4) to perform all these operations together.
+Test results are also called *reports*. There are two kind of reports: those
+consisting of many entries and those consisting of a single entry. In general,
+to submit any report, you need to create it (see 2.3.1.1), update it by adding
+entries (see 2.3.1.2), close it (see 2.3.1.3). When the report consists of a
+single entry, you can use a simplified API (see 2.3.1.4) to perform all these
+operations via a single API call.
 
 ### 2.3.1.1 Create a new report
 
-When a probe starts a test it will *create* a new report by sending a `POST`
-request conforming to the following specification:
+When a probe starts a test they will *create* a new report with the oonib
+collector backend.
+The HTTP request it performs is:
 
-    POST /report
+`POST /report`
 
     {
-     'content':
-        (optional, deprecated) `string` it is optionally possible to create a report with
-        already some data inside of it. MUST be a serialized JSON or YAML depending
-        on the value of the 'format' key.
-
-     'data_format_version':
-        `string` describing the version of the data format. The current value
-        of the data format version is "0.2.0".
-
-     'format':
-        `string` that must be either "json" or "yaml" and is used to identify the
-        format of the report content.
-
-     'input_hashes':
-        (optional, deprecated) `list` of hex encoded sha256sum of the contents
-        of the inputs we are using for this test. This field is required if the
-        collector only accepts certain inputs.
-
-     'probe_asn':
-        `string` the Autonomous System Number of the network the test is
-        related to prefixed by "AS" (ex. "AS1234"). This field MUST
-        match this regex: `^AS[0-9]{1,10}$`.
-
-     'probe_cc':
-        `string` the two-letter country code of the probe as defined in
-        ISO3166-1 alpha-2, or ZZ when undefined (ex. "IT"). This field MUST
-        match this regexp: `^[A-Z]{2}$`.
-
-     'probe_ip':
-        (optional, deprecated) `string` the IP address of the OONI probe client.
 
      'software_name':
         `string` the name of the software that is creating a report (ex. "ooni-probe")
-        that MUST match this regexp: `^[0-9A-Za-z_\\.+-]+$`.
 
      'software_version':
         `string` the version of the software creating the report (ex. "0.0.10-beta")
-        that MUST match this regexp: `^[0-9A-Za-z_.+-]+$`.
+
+     'probe_asn':
+        `string` the Autonomous System Number of the network the test is
+          related to prefixed by "AS" (ex. "AS1234")
+
+     'probe_cc':
+        NEW since oonibackend 1.2.0
+        `string` the two-letter country code of the probe as defined in
+        ISO3166-1 alpha-2 or ZZ when undefined (ex. "IT")
 
      'test_name':
-        `string` the name of the test performing the network measurement that
-        MUST match this regexp: `^[a-zA-Z0-9_\\- ]+$`.
-
-     'test_helper':
-        (optional, deprecated) `string` the name of the required test_helper for this test.
-
-     'test_start_time':
-        (optional) `string` timestamp in UTC of when the test was started using
-        the format "%Y-%m-%d %H:%M:%S"
+        `string` the name of the test performing the network measurement. In
+          the case of ooni-probe this is the test filename without the ".py"
+          extension.
 
      'test_version':
-        `string` the version of the test performing the network measurement that
-        MUST match the same regexp of 'software_version'.
-    }
+        `string` the version of the test performing the network measurement.
 
-Where the above is intended as a specification for generating a compliant
-serialized JSON object. The `Content-Type` header is not required, but
-SHOULD be properly set for additional clarity. In such case, we recommend
-setting the `Content-Type` to be `application/json`.
+     'data_format_version':
+        NEW since oonibackend 1.2.0
+        `string` that must be either "json" or "yaml" to identify the format
+        of the content.
 
-Upon receiving a request to create a report, the collector:
+     'test_start_time':
+        NEW since oonibackend 1.2.0
+        `string` timestamp in UTC of when the test was started using the format "%Y-%m-%d %H:%M:%S"
 
-1. MUST validate that all the required fields are present and that their
-   value is compliant with this specification, otherwise it MUST fail the
-   HTTP transaction by returning a `4xx` response.
+     'input_hashes':
+        (optional) `list` of hex encoded sha256sum of the contents
+          of the inputs we are using for this test. This field is required if the collector backend only
+          accepts certain inputs (that is it has a collector policy).
+          For more information on policies see section 2.3.
 
-3. if a policy is configured, MUST check whether the incoming request
-   matches the policy, and return a `4xx` response otherwise.
+     'test_helper':
+        (optional) `string` the name of the required test_helper for this test.
 
-2. MAY perform implementation specific operations pertaining to open a
-   report and, if these fail, MUST return a `5xx` response.
+     'content':
+        DEPRECATED since oonibackend 1.2.0
+        (optional) `string` it is optionally possible to create a report with
+          already some data inside of it.
 
-3. MUST generate a report ID (see below) and MUST return a `5xx`
-   error if generating the report ID fails.
+     'probe_ip':
+        (optional) `string` the IP Address of the ooniprobe client. When the
+          test requires a test_helper the probe should inform oonib of it's IP
+          address. We need to know this since we are not sure if the probe is
+          accessing the report collector via Tor or not.
 
-3. will return a `200` response with the body described below.
+     'format':
+        `string` that must be either "json" or "yaml" to identify the format
+        of the content.
+        New since version 0.2.0 of the data format or 1.2.0 of the backend.
 
-In case of error, the collector MAY return a JSON body. In case of
-success, it MUST return a JSON body generated in compliance with
-the following specification:
+     }
 
-    {
+When a report is created the backend will respond with a report identifier
+that will then allow the probe to update the report and the version of the
+backend software like follows:
+
+`Status Code: 200 (OK)`
+
+{
+
       'backend_version':
-        `string` containing the version of the backend. This version MUST
-        match the regex provided above for 'software_version'.
+        `string` containing the version of the backend
 
       'report_id':
-        `string` report identifier. The format of this field is not
-        specified, except that is MUST be a valid UTF-8 string, of
-        course. The client MUST NOT make any assumption with respect
-        to the structure of this field. It MUST treat this field as
-        an opaque identifier. The only requirement is that it SHOULD
-        be at least 256 bits and MUST be generated with a CSPRNG.
+        `string` report identifier of the format detailed below.
 
       'test_helper_address':
-        (conditional, deprecated) `string` the address of a test helper that
-        the client requested using the `test_helper_name` field.
+        (conditional) `string` the address of a test helper that the client requested.
 
       'supported_formats':
+        NEW since oonibackend 1.2.0
         `list` of strings detailing what are the supported formats for
-        submitted reports. Allowed values are "json" and "yaml".
+        submitted reports. Can either be "json" or "yaml".
+
+}
+
+The report identifier allows the probe to update the report and it will be
+constructed as follows:
+
+  ISO 8601 timestamp + '_' + probe ASN + '_' + 50 mixed lowercase uppercase characters
+
+A report identifier can be for example:
+
+  19120623T101234Z_AS1234_ihvhaeZDcBpDwYTbmdyqZSLCDNuJSQuoOdJMciiQWwAWUKJwmR
+
+If the report does not match the collector policy it will not create a report 
+or return a valid report_id.
+
+The collector will instead respond like follows:
+
+`Status Code: 406 (Not Acceptable)`
+
+    {
+      'error': 'invalid-input-hash'
     }
 
-New collector implementations MUST and existing collector implementations
-SHOULD set the `Content-Type` to `application/json`.
+Note:
+The report identifier should be at least 256 bits and generated by means of a
+CSPRNG. It is a token that is used to provide read and update authority.
 
-Upon receiving a response, the client:
+Client implementation notes:
+Probes should not expect the report identifier to be in a particular format as
+the report id may be changed in the future.
 
-1. MUST verify that the status is `200` before continuing
-
-2. SHOULD check whether the `Content-Type` is `application/json`
-
-3. if it is a `yaml` client, it MUST make sure that the backend is
-   supporting such format, since it's not required to
-
-4. MUST save the report ID for using it later
+Probes should parse the report_status before proceeding with a report.
 
 ### 2.3.1.2 Update a report
 
