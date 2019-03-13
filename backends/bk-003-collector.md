@@ -236,7 +236,7 @@ messages have been edited for readability):
 Updating a report means appending a measurement to the report. A probe SHOULD do
 that within a reasonable time frame after the measurement has terminated. Also,
 as stated above, a collector SHOULD NOT close an open, stale report before two
-hours of inactivity. For robustness, the probe implementation SHOULD record the
+hours of inactivity. Also, the probe implementation SHOULD record the
 elapsed time between when it opened a report and when it is updating it, and
 open a new report if the update operation fails and the elapsed time is greater
 than one hour.
@@ -277,7 +277,12 @@ Upon receiving this request, the collector:
 6. SHOULD write the measurement to persistent storage or to some
    database before returning `200` to the client, and SHOULD
    make sure that it successfully saved the measurement (e.g. by
-   checking the return value of `fclose`).
+   checking the return value of `fclose`). In writing the
+   measurement, the collector SHOULD NOT transform it to the
+   maximum possible extent, unless such transformation is
+   known to be harmless. Saving the original bytes sent by
+   the client SHOULD be preferrable to reserializing the
+   parsed measurement and saving that.
 
 7. MUST reset the report-specific timer used for automatically
    closed OPEN reports that have become stale.
