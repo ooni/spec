@@ -30,7 +30,7 @@ JSON object. Legacy OONI probes represent a single report consisting of
 several measurements as a single YAML document containing a header
 and several YAML objects. Users still using the old YAML based format are
 encouraged to upgrade to JSON ASAP. A server side implementation of the
-collector MUST support the JSON format. YAML support is deprecated.
+collector MUST support the JSON format.
 
 It is also outside of the scope of this section to define the way in which
 a OONI probe discovers the collector API endpoint
