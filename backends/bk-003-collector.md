@@ -13,21 +13,26 @@ implements all the deprecated behavior will still be compatible with version 1.4
 # 1.0 System overview
 
 The collector exposes an HTTP API allowing OONI probes to submit the results
-of their measurements. Measurement submitted to a OONI collector will be
-archived, processed, and published by OONI. Modern OONI probes represent a
-set of logically-related measurements (a *report*) as a set of separate
-JSON documents. Legacy OONI probes represent a single report consisting of
-several measurements as a single YAML document. Users still using the old
-YAML based format are encouraged to upgrade to JSON ASAP. A server side
-implementation of the collector MUST support the JSON format.
+of their measurements. The client and the server SHOULD NOT assume a keep
+alive semantics for the HTTP connections.
 
-It is outside of the scope of this section to define:
+A OONI probe that enables `Content-Encoding: gzip` or similar MUST BE prepared
+to receive a `415` response and retry without compression. A collector MUST check
+content-encoding for all requests and, if not supported, it MUST send back a
+`415` response to the client, rather than failing in more obscure ways.
 
-1. the way in which a OONI probe discovers the collector API endpoint
+Measurement submitted to a OONI collector will be archived, processed, and
+published by OONI. How that will happen is out of scope here.
 
-2. whether the collector should push measurements to some other component for
-archival, processing, and publishing, or whether a scraper component would
-be responsible for gathering measurements from OONI collectors.
+M odern OONI probes represent a set of logically-related measurements
+(a *report*) as a set of separate JSON documents. Legacy OONI probes represent
+a single report consisting of several measurements as a single YAML
+document. Users still using the old YAML based format are encouraged to
+upgrade to JSON ASAP. A server side implementation of the collector MUST
+support the JSON format. YAML support is deprecated.
+
+It is also outside of the scope of this section to define the way in which
+a OONI probe discovers the collector API endpoint
 
 The collector MUST be exposed as an HTTPS service. It MAY also be exposed as
 a Tor onion service. A [legacy document](
