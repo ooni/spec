@@ -125,20 +125,15 @@ additional clarity. In such case, we recommend setting the `Content-Type` to
 
 Upon receiving a request to create a report, the collector:
 
-1. MUST validate that all the required fields are present and that their
-   value is compliant with this specification, otherwise it MUST fail the
-   HTTP transaction by returning a `4xx` response.
+1. MUST fail with `4xx` if any required field is missing and/or if
+   any present field has an invalid value.
 
-3. if a policy is configured, MUST check whether the incoming request
-   matches the policy, and return a `4xx` response otherwise.
+2. MUST fail with `4xx` if the request is not compliant with its policies.
 
-2. MAY perform implementation specific operations pertaining to open a
-   report and, if these fail, MUST return a `5xx` response.
+3. MUST fail with `5xx` if it cannot generate the report ID (see below) or
+   if any other implementation dependent operation fails.
 
-3. MUST generate a report ID (see below) and MUST return a `5xx`
-   error if generating the report ID fails.
-
-3. will return a `200` response with the body described below.
+4. otherwise MUST return a `200` response with the body described below.
 
 In case of error, the collector MAY return a JSON body. In case of
 success, it MUST return a JSON body generated in compliance with
