@@ -32,14 +32,15 @@ and several YAML objects. Users still using the old YAML based format are
 encouraged to upgrade to JSON ASAP. A server side implementation of the
 collector MUST support the JSON format.
 
-It is also outside of the scope of this section to define the way in which
-a OONI probe discovers the collector API endpoint
-
 The collector MUST be exposed as an HTTPS service. It MAY also be exposed as
 a Tor onion service. A [legacy document](
 https://ooni.torproject.org/docs/architecture.html#why-tor-hidden-services)
 explains why the OONI project originally chose to allow for both HTTPS
 and Tor onion service services.
+
+It is also outside of the scope of this section to define the way in which
+a OONI probe discovers the collector API endpoint, as well as, given
+several endpoints types (HTTPS, Onion) it choses a specific endpoint.
 
 # 2.0 Threat model
 
