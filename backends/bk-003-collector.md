@@ -161,7 +161,7 @@ the following specification:
         submitted reports. Allowed values are "json" and "yaml".
     }
 
-New collector implementations MUST&mdashland existing collector implementations
+New collector implementations MUST&mdash;and existing collector implementations
 SHOULD&mdash;set the `Content-Type` to `application/json`.
 
 Upon receiving a response, the client:
