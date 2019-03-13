@@ -206,7 +206,7 @@ messages have been edited for readability):
 > Content-Type: application/json
 > Content-Length: 243
 > 
->{
+> {
 >  "data_format_version":"0.2.0",
 >  "format":"json",
 >  "input_hashes":[],
@@ -216,7 +216,7 @@ messages have been edited for readability):
 >  "software_version":"0.0.1",
 >  "test_name":"dummy",
 >  "test_version":"0.0.1"
->}
+> }
 < HTTP/1.1 200 OK
 < Server: nginx
 < Date: Wed, 13 Mar 2019 13:19:42 GMT
@@ -224,11 +224,11 @@ messages have been edited for readability):
 < Content-Length: 152
 < Connection: keep-alive
 < 
-<{
+< {
 <  "backend_version":"2.0.0-alpha",
 <  "report_id":"20190313T131942Z_AS30722_dU70oZPs80d5E21z8Ef6GXel6CwsdLoXvDk44Fsajv1LDLOIeI",
 <  "supported_formats":["json"]
-<}
+< }
 ```
 
 ## 3.2 Update a report
@@ -269,7 +269,10 @@ Upon receiving this request, the collector:
 4. MUST parse `content` into a JSON/YAML to verify that the top-level
    fields are compliant with [df-000-base.md](
    ../data-formats/df-000-base.md) and otherwise return a `4xx`
-   status to the client.
+   status to the client. Specifically, in this step it MUST
+   ensure that the `report_id` inside `content` matches
+   the `${report_id}` in the request URL and otherwise return
+   a `4xx` error to the client.
 
 5. MAY parse `test_keys` fields and return a `4xx` status if
    such it finds some field with an invalid value.
@@ -303,12 +306,94 @@ For backwards compatibility with the existing implementation, the
 {"status": "success"}
 ```
 
+An implementation MAY add other fields to the response.
+
+The following example shows how updating a report looks like from
+the point of view of a modern collector client (where the JSON
+messages have been edited for readability):
+
+```
+> POST /report/20190313T131942Z_AS30722_dU70oZPs80d5E21z8Ef6GXel6CwsdLoXvDk44Fsajv1LDLOIeI HTTP/1.1
+> Host: collector-sandbox.ooni.io
+> Accept: */*
+> Content-Type: application/json
+> Content-Length: 612
+> 
+> {
+>  "content": {
+>   "annotations":{},
+>   "data_format_version":"0.2.0",
+>   "id":"bdd20d7a-bba5-40dd-a111-9863d7908572",
+>   "input":null,
+>   "input_hashes":[],
+>   "measurement_start_time":"2018-11-01 15:33:20",
+>   "options":[],
+>   "probe_asn":"AS0",
+>   "probe_cc":"ZZ",
+>   "probe_city":null,
+>   "probe_ip":"127.0.0.1",
+>   "report_id":"20190313T131942Z_AS30722_dU70oZPs80d5E21z8Ef6GXel6CwsdLoXvDk44Fsajv1LDLOIeI",
+>   "software_name":"mkcollector",
+>   "software_version":"0.0.1",
+>   "test_helpers":[],
+>   "test_keys":{"client_resolver":"91.80.37.104"},
+>   "test_name":"dummy",
+>   "test_runtime":5.0565230846405,
+>   "test_start_time":"2018-11-01 15:33:17",
+>   "test_version":"0.0.1"
+>  },
+>  "format":"json"
+> }
+< HTTP/1.1 200 OK
+< Server: nginx
+< Date: Wed, 13 Mar 2019 13:19:43 GMT
+< Content-Type: application/json; charset=utf-8
+< Content-Length: 60
+< Connection: keep-alive
+< 
+< {"measurement_id":"bi4g6rs18fja0l2evtp0","status":"success"}
+```
+
 ## 3.3 Closing a report
 
-This request is done by a probe to tell the backend that they have finished
-running the test and the report can be considered done:
+To close a report, a probe should submit a request like:
 
-`POST /report/$report_id/close`
+    POST /report/${report_id}/close
+
+Upon receiving this request, a collector SHOULD mark a report
+as closed and SHOULD NOT accept further measurements for
+this report. If the report is not existing, a `4xx` error
+is returned to the client. Otherwise, `200` is returned
+and the response SHOULD include this body for backwards
+compatibility with existing implementations:
+
+```JSON
+{"status": "success"}
+```
+
+Of course, if a body is present, also the `Content-Type`
+header SHOULD be set accordingly.
+
+The following example shows how closing a report looks like from
+the point of view of a modern collector client (where the JSON
+messages have been edited for readability):
+
+```
+> POST /report/20190313T131942Z_AS30722_dU70oZPs80d5E21z8Ef6GXel6CwsdLoXvDk44Fsajv1LDLOIeI/close HTTP/1.1
+> Host: collector-sandbox.ooni.io
+> Accept: */*
+> Content-Length: 0
+> Content-Type: application/x-www-form-urlencoded
+> 
+< HTTP/1.1 200 OK
+< Server: nginx
+< Date: Wed, 13 Mar 2019 13:19:43 GMT
+< Content-Type: application/json; charset=utf-8
+< Content-Length: 20
+< Connection: keep-alive
+< 
+< {"status":"success"}
+```
 
 ## 3.4 Submitting single measurements using a single API call
 
