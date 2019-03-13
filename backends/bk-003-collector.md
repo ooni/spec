@@ -39,8 +39,7 @@ test results that they have not created.
 
 It is outside of the scope of the collector to provide blocking resistance or
 to conceal to a passive network observer the fact that they are communicating to
-a collector. Such properties are to be provided by other software components,
-for example using Tor or obfsproxy.
+a collector. Such properties are to be provided by other software, e.g. Tor.
 
 # 3.0 API
 
