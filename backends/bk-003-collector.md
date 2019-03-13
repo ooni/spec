@@ -18,8 +18,7 @@ set of logically-related measurements (a *report*) as a set of separate
 JSON documents. Legacy OONI probes represent a single report consisting of
 several measurements as a single YAML document. Users still using the old
 YAML based format are encouraged to upgrade to JSON ASAP. A server side
-implementation of the collector MUST support the JSON format and SHOULD
-NOT support YAML after 2019-06-06.
+implementation of the collector MUST support the JSON format.
 
 It is outside of the scope of this section to define:
 
@@ -142,8 +141,8 @@ Upon receiving a request to create a report, the collector:
 2. MUST fail with `4xx` if the request is not compliant with its policies.
 
 3. SHOULD fail with `5xx` if the `content` field is present, or if the
-   `test_helper` field is present, unless the implementor really wants to
-   support now-historical OONI probe implementations.
+   `test_helper` field is present, or if the `format` is "yaml", unless the
+   implementor really wants to support now-historical OONI probe implementations.
 
 4. MUST fail with `5xx` if it cannot generate the report ID (see below) or
    in case of other failures.
