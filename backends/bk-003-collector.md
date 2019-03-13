@@ -22,9 +22,9 @@ compression. A collector MUST check content-encoding for all requests and,
 if not supported, it MUST send back a `415` response to the client.
 
 Measurement submitted to a OONI collector will be archived, processed, and
-published by OONI. How that will happen is out of scope here.
+published by OONI. How that will happen is out of the scope of this document.
 
-M odern OONI probes represent a set of logically-related measurements
+Modern OONI probes represent a set of logically-related measurements
 (a *report*) as a set of separate JSON documents. Legacy OONI probes represent
 a single report consisting of several measurements as a single YAML
 document. Users still using the old YAML based format are encouraged to
