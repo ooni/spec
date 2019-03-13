@@ -132,8 +132,8 @@ additional clarity. In such case, we recommend setting the `Content-Type` to
 
 Upon receiving a request to create a report, the collector:
 
-1. MUST fail with `4xx` if any required field is missing and/or if
-   any present field has an invalid value.
+1. MUST fail with `4xx` if the JSON does not parse, it is not an object,
+   any required field is missing and/or if any present field has an invalid value.
 
 2. MUST fail with `4xx` if the request is not compliant with its policies.
 
@@ -256,32 +256,35 @@ Upon receiving this request, the collector:
 1. MUST check whether `${report_id}` is a valid report ID and reject
    the request with a `4xx` status otherwise.
 
-2. MUST reject the request with a `4xx` status if the `format`
+2. MUST reject the request with a `4xx` if the JSON does not
+   parse or is not an object.
+
+3. MUST reject the request with a `4xx` status if the `format`
    is "yaml" and it is not handling YAML.
 
-3. MUST parse `content` into a JSON to verify that the top-level
+4. MUST parse `content` into a JSON to verify that the top-level
    fields are compliant with [df-000-base.md](
    ../data-formats/df-000-base.md) and otherwise return a `4xx`
    status to the client.
 
-4. MAY parse `test_keys` fields and return a `4xx` status if
+5. MAY parse `test_keys` fields and return a `4xx` status if
    such it finds some field with an invalid value.
 
-5. SHOULD write the measurement to persistent storage or to some
+6. SHOULD write the measurement to persistent storage or to some
    database before returning `200` to the client, and SHOULD
    make sure that it successfully saved the measurement (e.g. by
    checking the return value of `fclose`).
 
-6. MUST reset the report-specific timer used for automatically
+7. MUST reset the report-specific timer used for automatically
    closed OPEN reports that have become stale.
 
-7. MAY submit the measurement to some pipeline speed processing
+8. MAY submit the measurement to some pipeline speed processing
    layer, but this operation MUST NOT have an impact onto the
    HTTP status returned to the client, and SHOULD be performed
    asynchronously such that the response is returned to the
    client as quickly as possible.
 
-8. returns `200` to the client (see below).
+9. if everything is okay, returns `200` to the client (see below).
 
 For backwards compatibility with the existing implementation, the
 `200` status SHOULD include this body along with a compliant
