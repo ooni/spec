@@ -195,7 +195,6 @@ messages have been edited for readability):
 >  "software_name":"mkcollector",
 >  "software_version":"0.0.1",
 >  "test_name":"dummy",
->  "test_start_time":"2018-11-01 15:33:17",
 >  "test_version":"0.0.1"
 >}
 < HTTP/1.1 200 OK
