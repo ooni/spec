@@ -91,7 +91,7 @@ request conforming to the following specification:
         of the data format version is "0.2.0".
 
      'format':
-        `string` that must be either "json" or "yaml" and is used to identify the
+        `string` that MUST be either "json" or "yaml" and is used to identify the
         format of the report content.
 
      'input_hashes':
@@ -129,7 +129,7 @@ request conforming to the following specification:
 
      'test_start_time':
         (optional) `string` timestamp in UTC of when the test was started using
-        the format "%Y-%m-%d %H:%M:%S"
+        the format "%Y-%m-%d %H:%M:%S".
 
      'test_version':
         `string` the version of the test performing the network measurement that
