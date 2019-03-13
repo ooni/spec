@@ -39,8 +39,8 @@ explains why the OONI project originally chose to allow for both HTTPS
 and Tor onion service services.
 
 It is also outside of the scope of this section to define the way in which
-a OONI probe discovers the collector API endpoint, as well as, given
-several endpoints types (HTTPS, Onion) it choses a specific endpoint.
+a OONI probe discovers the collector API endpoint, as well as how, given
+several endpoints types (HTTPS, Onion), it choses a specific endpoint.
 
 # 2.0 Threat model
 
