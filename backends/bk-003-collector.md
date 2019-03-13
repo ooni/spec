@@ -18,7 +18,8 @@ set of logically-related measurements (a *report*) as a set of separate
 JSON documents. Legacy OONI probes represent a single report consisting of
 several measurements as a single YAML document. Users still using the old
 YAML based format are encouraged to upgrade to JSON ASAP. A server side
-implementation of the collector MUST support the JSON format.
+implementation of the collector MUST support the JSON format and SHOULD
+NOT support YAML after 2019-06-06.
 
 It is outside of the scope of this section to define:
 
