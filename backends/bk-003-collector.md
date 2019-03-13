@@ -7,7 +7,7 @@
 This document aims at providing a functional specification of the OONI collector. It
 has been forked from version 1.4.0 of [bk-001-ooni-backend.md](bk-001-ooni-backend.md)
 and, as of version 2.0.0, is such that an implementation of this specification that
-implements all the deprecated behavior is compatible with v1.4.0.
+implements all the deprecated behavior will be compatible with version 1.4.0.
 
 # 1.0 System overview
 
