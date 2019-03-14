@@ -27,7 +27,9 @@ implementatons MUST be able to deal with legacy clients that possibly
 do not correctly set the `Content-Type`.
 
 Measurement submitted to a OONI collector will be archived, processed, and
-published by OONI. How that will happen is out of the scope of this document.
+published by OONI. How that will happen is out of the scope of this document
+and is part of the design of the OONI pipeline. You may also want to read
+[about our data policy](https://ooni.io/about/data-policy/).
 
 Modern OONI probes represent a set of logically-related measurements
 (a *report*) as a set of separate JSON documents each containing a
