@@ -303,7 +303,7 @@ Upon receiving this request, the collector:
      MUST reject the request with `4xx`.
 
    - if the measurement is coming from a distant past of future,
-     an implementation MAY chose to return `4xx` as well.
+     an implementation MAY choose to return `4xx` as well.
 
 5. MAY also parse the `test_keys` fields and, for tests for which the
    schema is known, return a `4xx` status if finds invalid values.
