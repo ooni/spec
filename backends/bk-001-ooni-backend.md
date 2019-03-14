@@ -1,7 +1,7 @@
 # oonib specification
 
-* version: 1.4.0
-* date: 2018-10-18
+* version: 1.4.1
+* date: 2019-03-13
 * author: Arturo Filastò, Aaron Gibson, Simone Basso
 
 This document aims at providing a functional specification of oonib. At the
@@ -30,6 +30,11 @@ oonib is the backend component of ooni. It is responsible for:
     is willing to accept.
 
 # 2.0 Collector
+
+⚠⚠⚠ **WARNING** ⚠⚠⚠: This section is _non normative_ and _obsolete_. It is
+currently being kept for historical purposes. The up-to-date document describing
+the OONI collector protocol and implementation requirements has been moved to
+[bk-003-collector.md](bk-003-collector.md) on 2019-03-13 by bassosimone.
 
 ## 2.1 System overview
 
