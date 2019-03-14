@@ -144,8 +144,8 @@ request conforming to the following, informal specification:
         (optional, deprecated) `string` the name of the required test_helper for this test.
 
      "test_start_time":
-        (optional) `string` timestamp *in UTC* of when the test was started using
-        the format "%Y-%m-%d %H:%M:%S".
+        (optional, deprecated) `string` timestamp *in UTC* of when the test was started
+        using the format "%Y-%m-%d %H:%M:%S".
 
      "test_version":
         `string` the version of the test performing the network measurement that
