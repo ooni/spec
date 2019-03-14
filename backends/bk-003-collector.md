@@ -53,7 +53,8 @@ to conceal to a passive network observer the fact that they are communicating to
 a collector. Such properties are to be provided by other software, e.g. Tor.
 
 Therefore a client implementation of the collector protocol SHOULD allow one
-to specify a [SOCKS5](https://tools.ietf.org/html/rfc1928) proxy.
+to specify a [SOCKS5](https://tools.ietf.org/html/rfc1928) proxy where the
+name resolution is performed by the circumvention tool (`socks5h`).
 
 # 3.0 API
 
