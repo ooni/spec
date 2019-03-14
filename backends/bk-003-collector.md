@@ -47,7 +47,8 @@ endpoint.
 The collector transport MUST guarantee some reasonable level of encryption
 and authentication between the OONI probe and itself. Therefore, a malicious
 lazy actor won't be able to easily modify test results that they have not
-created while they are being submitted to the collector.
+created while they are being submitted to the collector. Also, they will not
+be able to easily log the messages exchanged with the collector.
 
 It is outside of the scope of the collector to provide blocking resistance or
 to conceal to a passive network observer the fact that they are communicating to
