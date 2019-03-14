@@ -26,17 +26,16 @@ published by OONI. How that will happen is out of the scope of this document.
 
 Modern OONI probes represent a set of logically-related measurements
 (a *report*) as a set of separate JSON documents each containing a
-JSON object. Legacy OONI probes represent a single report consisting of
-several measurements as a single YAML document containing a header
-and several YAML objects. Users still using the old YAML based format are
-encouraged to upgrade to JSON ASAP. A server side implementation of the
-collector MUST support the JSON format.
+JSON object. Legacy OONI probes represent a report as a single YAML
+document containing a header and several YAML objects. Users still using
+the old YAML based format are encouraged to upgrade to JSON ASAP. A
+server side implementation of the collector MUST support the JSON format.
 
 The collector MUST be exposed as an HTTPS service. It MAY also be exposed as
 a Tor onion service. A [legacy document](
 https://ooni.torproject.org/docs/architecture.html#why-tor-hidden-services)
 explains why the OONI project originally chose to allow for both HTTPS
-and Tor onion service services.
+and Tor onion service services (henceforth, Onion).
 
 It is also outside of the scope of this section to define the way in which
 a OONI probe discovers the collector API endpoint, as well as how, given
@@ -53,12 +52,15 @@ It is outside of the scope of the collector to provide blocking resistance or
 to conceal to a passive network observer the fact that they are communicating to
 a collector. Such properties are to be provided by other software, e.g. Tor.
 
+Therefore a client implementation of the collector protocol SHOULD allow one
+to specify a [SOCKS5](https://tools.ietf.org/html/rfc1928) proxy.
+
 # 3.0 API
 
 Unless otherwise stated all of the network operations below MAY be performed
-either via HTTPS or via a Tor onion service.
+either via HTTPS or via Onion.
 
-The flow for submitting measurements is the following:
+The standard flow for submitting measurements is the following:
 
 - you create a report (see 3.1);
 
@@ -66,78 +68,81 @@ The flow for submitting measurements is the following:
 
 - then, you close it (see 3.3).
 
-A report that has successfully be opened is in the OPEN state. A OONI collector
-should record the last time a report has been updated, and close a report
-that has been inactive for too much time. An implementation is free to choose
-any threshold for closing stale, OPEN reports; however, this threshold
-SHOULD NOT be smaller than two hours for compatibility with existing
-implementations of the OONI collector.
+There is also a flow for submitting a report consisting of a single
+measurement (see 3.4).
+
+A report that has successfully be created is in the OPEN state. A OONI collector
+SHOULD start a timer when a report is created or updated and SHOULD automatically
+closed reports that have been inactive for too much time. For backwards
+compatibility a report SHOULD NOT be considered stale if it had been updated
+within the previous two hours. The implementation of this timer SHOULD use
+a monotonic clock to prevent clock jumps from miscalculating the elapsed time.
 
 ## 3.1 Create a new report
 
 When a probe starts a test it will *create* a new report by sending a `POST`
-request conforming to the following specification:
+request conforming to the following, informal specification:
 
     POST /report
 
     {
-     'content':
+     "content":
         (optional, deprecated) `string` it is optionally possible to create a report with
         already some data inside of it. MUST be a serialized JSON or YAML depending
         on the value of the 'format' key.
 
-     'data_format_version':
+     "data_format_version":
         `string` describing the version of the data format. The current value
         of the data format version is "0.2.0".
 
-     'format':
+     "format":
         `string` that MUST be either "json" or "yaml" and is used to identify the
-        format of the report content.
+        format of the `content` field.
 
-     'input_hashes':
+     "input_hashes":
         (optional, deprecated) `list` of hex encoded sha256sum of the contents
         of the inputs we are using for this test. This field is required if the
         collector only accepts certain inputs.
 
-     'probe_asn':
+     "probe_asn":
         `string` the Autonomous System Number of the network the test is
         related to prefixed by "AS" (ex. "AS1234"). This field MUST
         match this regex: `^AS[0-9]{1,10}$`.
 
-     'probe_cc':
+     "probe_cc":
         `string` the two-letter country code of the probe as defined in
         ISO3166-1 alpha-2, or ZZ when undefined (ex. "IT"). This field MUST
         match this regexp: `^[A-Z]{2}$`.
 
-     'probe_ip':
+     "probe_ip":
         (optional, deprecated) `string` the IP address of the OONI probe client.
 
-     'software_name':
+     "software_name":
         `string` the name of the software that is creating a report (ex. "ooni-probe")
         that MUST match this regexp: `^[0-9A-Za-z_.+-]+$`.
 
-     'software_version':
+     "software_version":
         `string` the version of the software creating the report (ex. "0.0.10-beta")
         that MUST match this regexp: `^[0-9A-Za-z_.+-]+$`.
 
-     'test_name':
+     "test_name":
         `string` the name of the test performing the network measurement that
         MUST match this regexp: `^[a-zA-Z0-9_\\- ]+$`.
 
-     'test_helper':
+     "test_helper":
         (optional, deprecated) `string` the name of the required test_helper for this test.
 
-     'test_start_time':
-        (optional) `string` timestamp in UTC of when the test was started using
+     "test_start_time":
+        (optional) `string` timestamp *in UTC* of when the test was started using
         the format "%Y-%m-%d %H:%M:%S".
 
-     'test_version':
+     "test_version":
         `string` the version of the test performing the network measurement that
         MUST match the same regexp of 'software_version'.
     }
 
-Where the above is intended as a specification for generating a compliant
-serialized JSON object.
+Where the above is intended as an informal specification for generating a
+compliant, serialized JSON object.
 
 The `Content-Type` header is not required, but SHOULD be properly set for
 additional clarity. In such case, we recommend setting the `Content-Type` to
@@ -145,33 +150,40 @@ additional clarity. In such case, we recommend setting the `Content-Type` to
 
 Upon receiving a request to create a report, the collector:
 
-1. MUST fail with `4xx` if the JSON does not parse, it is not an object,
+1. MUST fail with `4xx` if the request body does not parse, it is not a JSON object,
    any required field is missing and/or if any present field has an invalid value.
 
 2. MUST fail with `4xx` if the request is not compliant with its policies.
 
-3. SHOULD fail with `5xx` if the `content` field is present, or if the
-   `test_helper` field is present, or if the `format` is "yaml", unless the
-   implementor really wants to support now-historical OONI probe implementations.
+3. the collector MAY fail with `5xx` in the following cases:
+   
+   - the `content` field is present
+   
+   - the `format` is "yaml"
+   
+   - the `test_helper` field is present
+
+   This allows a new implementation to drop support for legacy clients.
 
 4. MUST fail with `5xx` if it cannot generate the report ID (see below) or
-   in case of other failures.
+   in case of other failures opening the report.
 
-5. SHOULD exercise care to avoid logging the `probe_ip` field, if set.
+5. SHOULD exercise care to avoid logging the `probe_ip` field, if set (e.g.
+   by setting it immediately to `null` if such field is not used).
 
 6. if everything is okay, MUST return a `200` response with the body
    described below.
 
 In case of error, the collector MAY return a JSON body. In case of
 success, it MUST return a JSON body generated in compliance with
-the following specification:
+the following, informal specification:
 
     {
-      'backend_version':
+      "backend_version":
         `string` containing the version of the backend. This version MUST
         match the regex provided above for 'software_version'.
 
-      'report_id':
+      "report_id":
         `string` report identifier. The format of this field is not
         specified, except that is MUST be a valid UTF-8 string, of
         course. The client MUST NOT make any assumption with respect
@@ -179,11 +191,11 @@ the following specification:
         an opaque identifier. The only requirement is that it SHOULD
         be at least 256 bits and MUST be generated with a CSPRNG.
 
-      'test_helper_address':
+      "test_helper_address":
         (conditional, deprecated) `string` the address of a test helper that
         the client requested using the `test_helper_name` field.
 
-      'supported_formats':
+      "supported_formats":
         `list` of strings detailing what are the supported formats for
         submitted reports. Allowed values are "json" and "yaml".
     }
@@ -201,9 +213,9 @@ Upon receiving a response, the client:
    the server returned a JSON document.
 
 3. if it is a `yaml` client, it MUST make sure that the backend is
-   supporting such format
+   supporting such format.
 
-4. MUST save the report ID for using it later
+4. MUST save the report ID for using it later.
 
 The following example shows how opening a report looks like from
 the point of view of a modern collector client (where the JSON
@@ -219,7 +231,6 @@ messages have been edited for readability):
 > {
 >  "data_format_version":"0.2.0",
 >  "format":"json",
->  "input_hashes":[],
 >  "probe_asn":"AS30722",
 >  "probe_cc":"IT",
 >  "software_name":"mkcollector",
@@ -244,59 +255,68 @@ messages have been edited for readability):
 ## 3.2 Update a report
 
 Updating a report means appending a measurement to the report. A probe SHOULD do
-that within a reasonable time frame after the measurement has terminated. Also,
-as stated above, a collector SHOULD NOT close an open, stale report before two
-hours of inactivity. Also, the probe implementation SHOULD record the
-elapsed time between when it opened a report and when it is updating it, and
-open a new report if the update operation fails and the elapsed time is greater
-than one hour.
+that within a reasonable time frame after the measurement has terminated.
 
-To update a report, the probe issues a request compliant with the following:
+A collector SHOULD NOT close an open, stale report before two hours of inactivity.
+
+A probe SHOULD cache measurements that it could not submit because of network
+errors and SHOULD retry at a later time.
+
+In general, but especially when retrying to submit measurements, a probe SHOULD record
+the elapsed time between when it opened a report and when it is updating it. If a
+submission attempt fails with `4xx` _and_ the elapsed time is greater than one hour,
+the probe MUST open a new report and submit the measurement as part of this new
+report. In doing that, the probe MUST edit the saved measurement to replace
+the previous report ID with the newly obtained report ID.
+
+To update a report, the probe issues a request compliant with:
 
     POST /report/${report_id}
 
     {
-     content:
+     "content":
        When the report is in YAML, this is a string. Otherwise, this is
-       a JSON object. In both cases, the content of this field MUST
-       follow the df-000-base.md specification (see below).
+       a JSON object. In both cases, this MUST be an object whose top
+       level keys MUST follow the df-000-base.md specification (see below).
 
-     'format':
+     "format":
         `string` either "json" or "yaml".
     }
 
 Upon receiving this request, the collector:
 
-1. MUST check whether `${report_id}` is a valid report ID and reject
+1. MUST check whether `${report_id}` is a valid, OPEN report ID and reject
    the request with a `4xx` status otherwise.
 
 2. MUST reject the request with a `4xx` status if the `format`
-   is "yaml" and it is not handling YAML.
+   is "yaml" _and_ it is not handling YAML.
 
 3. MUST reject the request with a `4xx` if the JSON/YAML does not
-   parse or the JSON is not an object.
+   parse or the parsed value is not a JSON/YAML object.
 
-4. MUST parse `content` into a JSON/YAML to verify that the top-level
-   fields are compliant with [df-000-base.md](
+4. MUST verify that the top-level keys are compliant with [df-000-base.md](
    ../data-formats/df-000-base.md) and otherwise return a `4xx`
-   status to the client. Specifically, in this step it MUST
-   ensure that the `report_id` inside `content` matches
-   the `${report_id}` in the request URL and otherwise return
-   a `4xx` error to the client. It SHOULD also ensure that
-   measurements coming from the future are rejected with `4xx`.
+   status to the client. Additionally:
 
-5. MAY parse `test_keys` fields and return a `4xx` status if
-   such it finds some field with an invalid value.
+   - if he `report_id` inside `content` does not match the
+     `${report_id}` in the request URL, the collector software
+     MUST reject the request with `4xx`.
+
+   - if the measurement is coming from a distant past of future,
+     an implementation MAY chose to return `4xx` as well.
+
+5. MAY also parse the `test_keys` fields and, for tests for which the
+   schema is known, return a `4xx` status if finds invalid values.
 
 6. SHOULD write the measurement to persistent storage or to some
    database before returning `200` to the client making
    sure that it successfully saved the measurement (e.g. by
-   checking the return value of `fclose`). In writing the
-   measurement, the collector SHOULD NOT transform it to the
-   maximum possible extent, unless such transformation is
-   known to be harmless. Saving the original bytes sent by
-   the client SHOULD be preferred to reserializing the
-   parsed measurement and saving that.
+   checking the return value of `fclose`). There SHOULD be
+   integration tests to check whether the JSON serialized by
+   a specific implementation is compliant with the format
+   expected by the pipeline (e.g. in `go` with `omitempty`
+   `null` values are removed by a marshal-serialize cycle
+   while the Python parser preserves them).
 
 7. MUST reset the report-specific timer used for automatically
    closing OPEN reports that have become stale.
@@ -309,15 +329,18 @@ Upon receiving this request, the collector:
 
 9. if everything is okay, returns `200` to the client (see below).
 
-For backwards compatibility with the existing implementation, the
-`200` status SHOULD include this body along with a compliant
-`Content-Type` header value indicating JSON (see above):
+In case of `200` responses, the collector SHOULD include a
+unique identifier for the measurement that the client MAY later
+use to reference said measurement. For example:
+
 
 ```JSON
-{"status": "success"}
+{"measurement_id":"bi4g6rs18fja0l2evtp0"}
 ```
 
-An implementation MAY add other fields to the response.
+An implementation MAY add other fields to such response. Clients
+SHOULD NOT rely on the content of such response to decide whether
+the request succeded, and MUST check the HTTP status code.
 
 The following example shows how updating a report looks like from
 the point of view of a modern collector client (where the JSON
@@ -362,7 +385,7 @@ messages have been edited for readability):
 < Content-Length: 60
 < Connection: keep-alive
 < 
-< {"measurement_id":"bi4g6rs18fja0l2evtp0","status":"success"}
+< {"measurement_id":"bi4g6rs18fja0l2evtp0"}
 ```
 
 ## 3.3 Closing a report
@@ -394,7 +417,6 @@ messages have been edited for readability):
 > Host: collector-sandbox.ooni.io
 > Accept: */*
 > Content-Length: 0
-> Content-Type: application/x-www-form-urlencoded
 > 
 < HTTP/1.1 200 OK
 < Server: nginx
@@ -408,15 +430,12 @@ messages have been edited for readability):
 
 ## 3.4 Submitting single measurements using a single API call
 
-This API is deprecated because it requires the collector to rewrite
-a measurement (see below). A collector MAY NOT implement it.
-
 When you have single-entry reports, you can submit them by `POST`ing onto
 the `/measurement` endpoint:
 
     POST /measurement
 
-The request body MUST be a JSON format OONI measurement. The `Content-Type`
+The request body MUST be a JSON-format OONI measurement. The `Content-Type`
 header SHOULD be set accordingly.
 
 Upon receiving this request, the collector MUST behave like the client
@@ -424,27 +443,27 @@ performed the following operations:
 
 1. opened a report
 
-2. submitted the measurement as part of the report
+2. submitted the measurement as part of the report with the correct
+   report ID returned in the previous step
 
 3. closed the report
 
 Of course, when processing the measurement submitted using this API, the
 collector will ignore any `report_id` field and overwrite it using the
-`report_id` it generated for the measurement. Also, of course, this API
-cannot store the original measurement submitted by the client, since
-it needs to change the measurement to overwrite its `report_id`.
+`report_id` it generated for the measurement.
 
 In case of success, the collector MUST return to the client a JSON body
-containing at least the following fields:
+containing _at least_ the following fields:
 
 ```JSON
 {
-  "report_id": "XXXX"
+ "measurement_id":"bi4g6rs18fja0l2evtp0",
+ "report_id":"20190313T131942Z_AS30722_dU70oZPs80d5E21z8Ef6GXel6CwsdLoXvDk44Fsajv1LDLOIeI"
 }
 ```
 
-The following example shows how closing a report looks like from
-the point of view of a modern collector client (where the JSON
+The following example shows how submitting a single measurement looks
+like from the point of view of a modern collector client (where the JSON
 messages have been edited for readability):
 
 ```
@@ -485,10 +504,15 @@ messages have been edited for readability):
 < Content-Length: 60
 < Connection: keep-alive
 < 
-< {"report_id":"20190313T131942Z_AS30722_dU70oZPs80d5E21z8Ef6GXel6CwsdLoXvDk44Fsajv1LDLOIeI"}
+< {
+<  "measurement_id":"bi4g6rs18fja0l2evtp0",
+<  "report_id":"20190313T131942Z_AS30722_dU70oZPs80d5E21z8Ef6GXel6CwsdLoXvDk44Fsajv1LDLOIeI"
+< }
 ```
 
 # 4.0 Implementation considerations
 
-A client side implementation of the collector protocol SHOULD make sure
+A client side implementation of the collector protocol MUST make sure
 that it is emitting timestamps using UTC rather than local time.
+
+A server side implementation SHOULD use a monotonic clock for timers.
