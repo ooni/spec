@@ -134,11 +134,11 @@ request conforming to the following, informal specification:
 
      "software_version":
         `string` the version of the software creating the report (ex. "0.0.10-beta")
-        that MUST match this regexp: `^[0-9A-Za-z_.+-]+$`.
+        that MUST match the same regexp of `software_name`.
 
      "test_name":
         `string` the name of the test performing the network measurement that
-        MUST match this regexp: `^[a-zA-Z0-9_\\- ]+$`.
+        MUST match the same regexp of `softwae_name`.
 
      "test_helper":
         (optional, deprecated) `string` the name of the required test_helper for this test.
@@ -509,3 +509,11 @@ messages have been edited for readability):
 
 A client side implementation of the collector protocol MUST make sure
 that it is emitting timestamps using UTC rather than local time.
+
+A server implementation SHOULD publish metrics allowing OONI to gradually
+enforce more JSON schema correctness in the collector, both for the
+open-report request and for submitted data. A possible strategy to make
+this happen consists of parsing without rejecting, counting the number
+of failures, and then iterating until the number of failures starts
+converging to zero. At that point, it is possible to make the checks
+mandatory and reject invalid input.
