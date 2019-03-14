@@ -48,7 +48,7 @@ and Tor onion service services (henceforth, Onion).
 
 It is also outside of the scope of this section to define the way in which
 a OONI probe discovers the collector API endpoint, as well as how, given
-several endpoints and/or endpoint types (HTTPS, Onion), it choses a specific
+several endpoints and/or endpoint types (HTTPS, Onion), it chooses a specific
 endpoint.
 
 # 2.0 Threat model
