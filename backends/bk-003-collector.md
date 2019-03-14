@@ -333,7 +333,7 @@ client may later use to reference said measurement. For example:
 
 
 ```JSON
-{"measurement_id":"362X4YzBos8="}
+{"measurement_id":"e00c584e6e9e5326"}
 ```
 
 As far as the client is concerned, this `measurement_id` is an
@@ -382,7 +382,7 @@ messages have been edited for readability):
 < Content-Length: 60
 < Connection: keep-alive
 < 
-< {"measurement_id":"362X4YzBos8="}
+< {"measurement_id":"e00c584e6e9e5326"}
 ```
 
 ## 3.3 Closing a report
@@ -450,7 +450,7 @@ containing _at least_ the following fields:
 
 ```JSON
 {
- "measurement_id":"362X4YzBos8=",
+ "measurement_id":"e00c584e6e9e5326",
  "report_id":"20190313T131942Z_AS30722_dU70oZPs80d5E21z8Ef6GXel6CwsdLoXvDk44Fsajv1LDLOIeI"
 }
 ```
