@@ -44,9 +44,9 @@ endpoint.
 
 # 2.0 Threat model
 
-The collector MUST use HTTPS to provide some reasonable level of encryption
+The collector transport MUST guarantee some reasonable level of encryption
 and authentication between the OONI probe and itself. Therefore, a malicious
-lazyy actor won't be able to easily modify test results that they have not
+lazy actor won't be able to easily modify test results that they have not
 created while they are being submitted to the collector.
 
 It is outside of the scope of the collector to provide blocking resistance or
