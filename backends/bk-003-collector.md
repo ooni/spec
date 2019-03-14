@@ -298,7 +298,7 @@ Upon receiving this request, the collector:
    ../data-formats/df-000-base.md) and otherwise return a `4xx`
    status to the client. Additionally:
 
-   - if he `report_id` inside `content` does not match the
+   - if the `report_id` inside `content` does not match the
      `${report_id}` in the request URL, the collector software
      MUST reject the request with `4xx`.
 
