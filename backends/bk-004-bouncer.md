@@ -36,7 +36,7 @@ The bouncer transport MUST guarantee some reasonable level of encryption
 and authentication between the OONI probe and itself. Therefore, a malicious
 lazy actor won't be able to easily see and/or modify the exchanged data.
 
-It is outside of the scope of the collector to provide blocking resistance or
+It is outside of the scope of the bouncer to provide blocking resistance or
 to conceal to a passive network observer the fact that they are communicating to
 a bouncer. Such properties are to be provided by other software, e.g. Tor.
 
