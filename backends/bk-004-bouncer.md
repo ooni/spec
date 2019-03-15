@@ -83,8 +83,8 @@ containing a JSON document following this spec:
 
 On failure, the bouncer MUST return `5xx`.
 
-The following example shows how opening a report looks like from
-the point of view of a modern collector client (where the JSON
+The following example shows how getting the collectors looks like from
+the point of view of a modern bouncer client (where the JSON
 messages have been edited for readability):
 
 ```
@@ -145,8 +145,8 @@ containing a JSON document following this spec:
 
 On failure, the bouncer MUST return `5xx`.
 
-The following example shows how opening a report looks like from
-the point of view of a modern collector client (where the JSON
+The following example shows how getting the tst helpers looks like from
+the point of view of a modern bouncer client (where the JSON
 messages have been edited for readability):
 
 ```
