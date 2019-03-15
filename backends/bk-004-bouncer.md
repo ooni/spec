@@ -63,7 +63,7 @@ A probe will send the following request:
 On success, the bouncer will reply with status `200` and a body
 containing a JSON document following this spec:
 
-    {results: [{
+    [{
       "address":
         `string` containing the service URL. The semantics depends
         also on the value of type.
@@ -79,7 +79,7 @@ containing a JSON document following this spec:
       "front":
         (optional) `string` indicating the real host to connect
         to when using a cloudfronting service.
-    }]}
+    }]
 
 On failure, the bouncer MUST return `5xx`.
 
@@ -98,7 +98,7 @@ messages have been edited for readability):
 < Content-Length: 152
 < Connection: keep-alive
 < 
-< {"results": [{
+< [{
 <   "address": "httpo://ihiderha53f36lsd.onion",
 <   "type": "onion",
 < }, {
@@ -108,7 +108,7 @@ messages have been edited for readability):
 <   "address": "https://das0y2z2ribx3.cloudfront.net",
 <   "front": "a0.awsstatic.com",
 <   "type": "cloudfront"
-< }]}
+< }]
 ```
 
 ## 3.3 Discovering test helpers
@@ -120,7 +120,7 @@ A probe will send the following request:
 On success, the bouncer will reply with status `200` and a body
 containing a JSON document following this spec:
 
-    {results: {
+    {
       "<test-helper-name>": [{
         "address":
           `string` containing the service URL or address. The semantics
@@ -128,7 +128,7 @@ containing a JSON document following this spec:
       
         "type":
           `string` indicating the type. One of "legacy", "https", and
-          "cloudfronted". For "https" and "cloudfronted" we use the
+          "cloudfront". For "https" and "cloudfront" we use the
           same semantics of the one described for /collectors.
 
           With "legacy" we indicate whatever was the default returned
@@ -141,7 +141,7 @@ containing a JSON document following this spec:
         "front":
           (optional) `string` indicating the real host to connect
           to when using a cloudfronting service.
-    }]}}
+    }]}
 
 On failure, the bouncer MUST return `5xx`.
 
@@ -160,7 +160,7 @@ messages have been edited for readability):
 < Content-Length: 152
 < Connection: keep-alive
 < 
-< {"results": {
+< {
 <   "dns": [{"type": "legacy", "address": "213.138.109.232:57004"}],
 <   "http-return-json-headers": [{
 <     "type": "legacy",
@@ -188,5 +188,6 @@ messages have been edited for readability):
 <     "address": "https://d2vt18apel48hw.cloudfront.net",
 <     "front": "a0.awsstatic.com",
 <     "type": "cloudfront",
-<   }]}}
+<   }]
+< }
 ```
