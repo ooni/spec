@@ -510,6 +510,15 @@ messages have been edited for readability):
 A client side implementation of the collector protocol MUST make sure
 that it is emitting timestamps using UTC rather than local time.
 
+A client side implementation MUST retry any failing collector operation
+immediately for three times in case there is a DNS or TCP error. This
+is to ensure that transient errors do not prevent us from submitting the
+data immediately. If all these immediate retries fail, then the client
+MUST arrange for resubmitting the measurement at a later time, either
+requiring user input or automatically. In the latter case, the delay
+after which the client will attempt to resubmit MUST be exponentially
+distributed and MUST NOT smaller than 15 minutes.
+
 A server implementation SHOULD publish metrics allowing OONI to gradually
 enforce more JSON schema correctness in the collector, both for the
 open-report request and for submitted data. A possible strategy to make
