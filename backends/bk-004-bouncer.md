@@ -191,3 +191,12 @@ messages have been edited for readability):
 <   }]
 < }
 ```
+
+# 4.0 Implementation considerations
+
+A client side implementation MUST retry any failing bouncer operation
+immediately for three times in case there is a DNS or TCP error. This
+is to ensure that transient errors do not prevent us from contacting the
+bouncer. If all these immediate retries fail, then the client MUST use
+a static configuration. The resulting measurement MUST have an annotation
+named `"static_configuration"` with value `"true"`.
