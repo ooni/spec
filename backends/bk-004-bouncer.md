@@ -58,7 +58,7 @@ this document we only describe the new API.
 
 A probe will send the following request:
 
-    GET /collectors
+    GET /api/v1/collectors
 
 On success, the bouncer will reply with status `200` and a body
 containing a JSON document following this spec:
@@ -72,13 +72,13 @@ containing a JSON document following this spec:
         `string` indicating the type. One of "https", "cloudfront",
         or "onion". When type is "https" or "onion", "address" is
         the HTTPS or Onion URL to use. When it's "cloudfront", the
-        URL hostname is the hostname to pass to the cloudfront
+        URL hostname is the hostname to pass to the domain fronting
         service, while the real hostname to connect to is provided
         in the optional "front" field.
       
       "front":
         (optional) `string` indicating the real host to connect
-        to when using a cloudfronting service.
+        to when using a domain fronting service.
     }]
 
 On failure, the bouncer MUST return `5xx`.
@@ -88,7 +88,7 @@ the point of view of a modern bouncer client (where the JSON
 messages have been edited for readability):
 
 ```
-> GET /collectors HTTP/1.1
+> GET /api/v1/collectors HTTP/1.1
 > Host: bouncer.ooni.io
 >
 < HTTP/1.1 200 OK
@@ -115,7 +115,7 @@ messages have been edited for readability):
 
 A probe will send the following request:
 
-    GET /test-helpers
+    GET /api/v1/test-helpers
 
 On success, the bouncer will reply with status `200` and a body
 containing a JSON document following this spec:
@@ -140,7 +140,7 @@ containing a JSON document following this spec:
       
         "front":
           (optional) `string` indicating the real host to connect
-          to when using a cloudfronting service.
+          to when using a domain fronting service.
     }]}
 
 On failure, the bouncer MUST return `5xx`.
@@ -150,7 +150,7 @@ the point of view of a modern bouncer client (where the JSON
 messages have been edited for readability):
 
 ```
-> GET /test-helpers HTTP/1.1
+> GET /api/v1/test-helpers HTTP/1.1
 > Host: bouncer.ooni.io
 >
 < HTTP/1.1 200 OK
