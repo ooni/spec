@@ -1,2 +1,4 @@
-jsonschema
-pyyaml
+jsonschema==3.0.1
+PyYAML==5.1
+requests==2.21.0
+fastavro==0.21.20
