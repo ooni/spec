@@ -1,0 +1,104 @@
+{
+"namespace": "ooni.io",
+"type": "record",
+"name": "Measurement",
+"fields": [
+  {
+    "name": "input",
+    "type": ["string", "null"]
+  },
+  {
+    "name": "probe_asn",
+    "type": "string"
+  },
+  {
+    "name": "probe_cc",
+    "type": "string"
+  },
+  {
+    "name": "probe_asn",
+    "type": "string"
+  },
+  {
+    "name": "probe_ip",
+    "type": "string"
+  },
+  {
+    "name": "report_id",
+    "type": ["string", "null"]
+  },
+  {
+    "name": "bucket_date",
+    "type": ["string", "null"],
+    "default": null
+  },
+  {
+    "name": "data_format_version",
+    "type": "string"
+  },
+  {
+    "name": "software_name",
+    "type": "string"
+  },
+  {
+    "name": "software_version",
+    "type": "string"
+  },
+  {
+    "name": "test_name",
+    "type": "string"
+  },
+  {
+    "name": "test_version",
+    "type": "string"
+  },
+  {
+    "name": "test_runtime",
+    "type": "double"
+  },
+  {
+    "name": "test_start_time",
+    "type": "string"
+  },
+  {
+    "name": "annotations",
+    "type": [{
+      "name": "Annotation",
+      "type": "record",
+      "fields": [
+          {"name": "platform", "type": ["string", "null"], "default": null},
+          {"name": "engine_name", "type": ["string", "null"], "default": null},
+          {"name": "engine_version", "type": ["string", "null"], "default": null},
+          {"name": "network_type", "type": ["string", "null"], "default": null},
+          {"name": "flavor", "type": ["string", "null"], "default": null},
+          {"name": "failure_network_name_lookup", "type": ["string", "null"], "default": null},
+          {"name": "failure_asn_lookup", "type": ["string", "null"], "default": null},
+          {"name": "failure_cc_lookup", "type": ["string", "null"], "default": null},
+          {"name": "failure_ip_lookup", "type": ["string", "null"], "default": null},
+          {"name": "engine_version_full", "type": ["string", "null"], "default": null}
+      ]
+    }, {"type": "null"}],
+    "default": {}
+  },
+  {
+    "name": "input_hashes",
+    "type": {
+        "name": "InputHash",
+        "type": "array",
+        "items": "string"
+    }
+  },
+  {
+    "name": "test_helpers",
+    "type": {
+        "name": "TestHelper",
+        "type": "map",
+        "values": "string"
+    }
+  },
+  {
+    "name": "probe_city",
+    "type": ["string", "null"]
+  }
+]
+}
