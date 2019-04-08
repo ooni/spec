@@ -1,14 +1,16 @@
 {
+  "name": "DashTestKeys",
   "type": "record",
   "fields": [
     {
       "name": "simple",
       "type": {
+        "name": "SimpleKeys",
         "type": "record",
         "fields": [
           {
             "name": "median_bitrate",
-            "type": "int"
+            "type": "float"
           },
           {
             "name": "connect_latency",
@@ -16,7 +18,7 @@
           },
           {
             "name": "min_playout_delay",
-            "type": "int"
+            "type": "float"
           }
         ]
       }
@@ -30,6 +32,7 @@
       "type": {
         "type": "array",
         "items": {
+          "name": "SenderData",
           "type": "record",
           "fields": [
             {
@@ -47,6 +50,7 @@
             {
               "name": "web100_snap",
               "type": {
+                "name": "Web100Snap",
                 "type": "record",
                 "fields": [
                   {
@@ -477,6 +481,7 @@
       "type": {
         "type": "array",
         "items": {
+          "name": "ReceiverData",
           "type": "record",
           "fields": [
             {
@@ -489,7 +494,7 @@
             },
             {
               "name": "delta_user_time",
-              "type": "int"
+              "type": "float"
             },
             {
               "name": "use_fixed_rates",
@@ -509,7 +514,7 @@
             },
             {
               "name": "delta_sys_time",
-              "type": "int"
+              "type": "float"
             },
             {
               "name": "received",

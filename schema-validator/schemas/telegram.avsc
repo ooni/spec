@@ -1,4 +1,5 @@
 {
+  "name": "TelegramTestKeys",
   "type": "record",
   "fields": [
     {
@@ -6,12 +7,14 @@
       "type": {
         "type": "array",
         "items": {
+          "name": "TCPConnectResult",
           "type": "record",
           "fields": [
             {
               "name": "status",
               "type": {
                 "type": "record",
+                "name": "TCPConnectStatus",
                 "fields": [
                   {
                     "name": "failure",
@@ -69,6 +72,7 @@
       "type": {
         "type": "array",
         "items": {
+          "name": "HTTPRequestResponse",
           "type": "record",
           "fields": [
             {
@@ -78,6 +82,7 @@
             {
               "name": "request",
               "type": {
+                "name": "HTTPRequest",
                 "type": "record",
                 "fields": [
                   {
@@ -94,6 +99,7 @@
                   {
                     "name": "tor",
                     "type": {
+                      "name": "TorRequest",
                       "type": "record",
                       "fields": [
                         {
@@ -125,6 +131,7 @@
             {
               "name": "response",
               "type": {
+                "name": "HTTPResponse",
                 "type": "record",
                 "fields": [
                   {

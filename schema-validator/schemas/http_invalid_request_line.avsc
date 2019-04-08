@@ -1,4 +1,5 @@
 {
+  "name": "HTTPInvalidRequestLineTestKeys",
   "type": "record",
   "fields": [
     {

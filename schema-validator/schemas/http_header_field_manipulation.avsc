@@ -1,4 +1,5 @@
 {
+  "name": "HTTPHeaderFieldManipulationTestKeys",
   "type": "record",
   "fields": [
     {
@@ -8,6 +9,7 @@
     {
       "name": "tampering",
       "type": {
+        "name": "Tampering",
         "type": "record",
         "fields": [
           {
@@ -49,6 +51,7 @@
       "type": {
         "type": "array",
         "items": {
+          "name": "HTTPRequestResponse",
           "type": "record",
           "fields": [
             {
@@ -58,6 +61,7 @@
             {
               "name": "request",
               "type": {
+                "name": "HTTPRequest",
                 "type": "record",
                 "fields": [
                   {
@@ -66,14 +70,18 @@
                   },
                   {
                     "name": "headers",
-                    "type": {
+                    "type": [{
                       "type": "map",
                       "values": "string"
-                    }
+                    },
+                    {"type": "null"}
+                    ],
+                    "default": {}
                   },
                   {
                     "name": "tor",
                     "type": {
+                      "name": "TorRequest",
                       "type": "record",
                       "fields": [
                         {
@@ -105,11 +113,22 @@
             {
               "name": "response",
               "type": {
+                "name": "HTTPResponse",
                 "type": "record",
                 "fields": [
                   {
                     "name": "body",
                     "type": "string"
+                  },
+                  {
+                    "name": "headers",
+                    "type": [{
+                      "type": "map",
+                      "values": "string"
+                    },
+                    {"type": "null"}
+                    ],
+                    "default": {}
                   },
                   {
                     "name": "response_line",

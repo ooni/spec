@@ -1,4 +1,5 @@
 {
+  "name": "FacebookMessengerTestKeys",
   "type": "record",
   "fields": [
     {
@@ -22,11 +23,13 @@
       "type": {
         "type": "array",
         "items": {
+          "name": "TCPConnectResult",
           "type": "record",
           "fields": [
             {
               "name": "status",
               "type": {
+                "name": "TCPConnectStatus",
                 "type": "record",
                 "fields": [
                   {
@@ -105,6 +108,7 @@
       "type": {
         "type": "array",
         "items": {
+          "name": "DNSQuery",
           "type": "record",
           "fields": [
             {
@@ -128,6 +132,7 @@
               "type": {
                 "type": "array",
                 "items": {
+                  "name": "DNSAnswer",
                   "type": "record",
                   "fields": [
                     {
@@ -135,7 +140,8 @@
                       "type": [
                         "null",
                         "string"
-                      ]
+                      ],
+                      "default": null
                     },
                     {
                       "name": "answer_type",
@@ -150,7 +156,8 @@
                       "type": [
                         "null",
                         "string"
-                      ]
+                      ],
+                      "default": null
                     }
                   ]
                 }
