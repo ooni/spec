@@ -1,0 +1,45 @@
+{
+  "test_keys": {
+    "obfsproxy_log": "",
+    "transport_name": "vanilla",
+    "success": false,
+    "tor_log": "",
+    "tor_progress_tag": null,
+    "tor_progress": 0,
+    "bridge_address": "\\cb3",
+    "obfsproxy_version": "None",
+    "timeout": 120,
+    "error": "timeout-reached",
+    "distributor": null,
+    "tor_version": "0.3.3.9",
+    "tor_progress_summary": null,
+    "bridge_hashed_fingerprint": null
+  },
+  "test_start_time": "2018-08-27 14:15:58",
+  "input_hashes": [],
+  "probe_ip": "127.0.0.1",
+  "id": "256c1b37-958e-4c7e-984a-78982f0d74b5",
+  "test_helpers": {},
+  "probe_cc": "IT",
+  "test_runtime": 0.0289988518,
+  "input": "\\cb3 \\expnd0\\expndtw0\\kerning0",
+  "probe_city": null,
+  "probe_asn": "AS12874",
+  "annotations": {
+    "platform": "macos"
+  },
+  "software_name": "ooniprobe",
+  "software_version": "2.3.0",
+  "data_format_version": "0.2.0",
+  "report_filename": "2018-08-28/20180827T141558Z-IT-AS12874-bridge_reachability-20180827T141558Z_AS12874_VtxOtK12XiXF8uNvzVKz7G03jpa2ICBA84bVyRqhF2usGTBLwd-0.2.0-probe.json",
+  "test_version": "0.1.2",
+  "bucket_date": "2018-08-28",
+  "test_name": "bridge_reachability",
+  "report_id": "20180827T141558Z_AS12874_VtxOtK12XiXF8uNvzVKz7G03jpa2ICBA84bVyRqhF2usGTBLwd",
+  "measurement_start_time": "2018-08-27 14:16:00",
+  "backend_version": null,
+  "options": [
+    "-f",
+    "bridges.txt"
+  ]
+}

@@ -1,0 +1,204 @@
+{
+  "test_keys": {
+    "errors": {
+      "195.170.0.2": false,
+      "195.170.0.1": true,
+      "195.170.2.1": false,
+      "195.170.2.2": true,
+      "83.212.2.77": "dns_lookup_error",
+      "8.8.8.8": false
+    },
+    "successful": [
+      "195.170.0.2",
+      "195.170.2.1",
+      "8.8.8.8"
+    ],
+    "inconsistent": [
+      "195.170.0.1",
+      "195.170.2.2"
+    ],
+    "queries": [
+      {
+        "resolver_hostname": "37.218.247.110",
+        "query_type": "A",
+        "hostname": "tainiesonline.tv",
+        "answers": [
+          {
+            "ipv4": "185.82.217.23",
+            "answer_type": "A"
+          }
+        ],
+        "failure": null,
+        "resolver_port": 57004
+      },
+      {
+        "resolver_hostname": "195.170.0.1",
+        "query_type": "A",
+        "hostname": "tainiesonline.tv",
+        "answers": [
+          {
+            "ipv4": "83.235.64.18",
+            "answer_type": "A"
+          }
+        ],
+        "failure": null,
+        "resolver_port": 53
+      },
+      {
+        "resolver_hostname": "195.170.0.1",
+        "query_type": "PTR",
+        "hostname": "18.64.235.83.in-addr.arpa",
+        "answers": [
+          {
+            "hostname": "edppi.otenet.gr",
+            "answer_type": "PTR"
+          }
+        ],
+        "failure": null,
+        "resolver_port": 53
+      },
+      {
+        "resolver_hostname": "37.218.247.110",
+        "query_type": "PTR",
+        "hostname": "23.217.82.185.in-addr.arpa",
+        "answers": [
+          {
+            "hostname": "hey.hey.hey",
+            "answer_type": "PTR"
+          }
+        ],
+        "failure": null,
+        "resolver_port": 57004
+      },
+      {
+        "resolver_hostname": "195.170.0.2",
+        "query_type": "A",
+        "hostname": "tainiesonline.tv",
+        "answers": [
+          {
+            "ipv4": "185.82.217.23",
+            "answer_type": "A"
+          }
+        ],
+        "failure": null,
+        "resolver_port": 53
+      },
+      {
+        "resolver_hostname": "195.170.2.1",
+        "query_type": "A",
+        "hostname": "tainiesonline.tv",
+        "answers": [
+          {
+            "ipv4": "185.82.217.23",
+            "answer_type": "A"
+          }
+        ],
+        "failure": null,
+        "resolver_port": 53
+      },
+      {
+        "resolver_hostname": "195.170.2.2",
+        "query_type": "A",
+        "hostname": "tainiesonline.tv",
+        "answers": [
+          {
+            "ipv4": "83.235.64.18",
+            "answer_type": "A"
+          }
+        ],
+        "failure": null,
+        "resolver_port": 53
+      },
+      {
+        "resolver_hostname": "195.170.2.2",
+        "query_type": "PTR",
+        "hostname": "18.64.235.83.in-addr.arpa",
+        "answers": [
+          {
+            "hostname": "edppi.otenet.gr",
+            "answer_type": "PTR"
+          }
+        ],
+        "failure": null,
+        "resolver_port": 53
+      },
+      {
+        "resolver_hostname": "37.218.247.110",
+        "query_type": "PTR",
+        "hostname": "23.217.82.185.in-addr.arpa",
+        "answers": [
+          {
+            "hostname": "hey.hey.hey",
+            "answer_type": "PTR"
+          }
+        ],
+        "failure": null,
+        "resolver_port": 57004
+      },
+      {
+        "resolver_hostname": "8.8.8.8",
+        "query_type": "A",
+        "hostname": "tainiesonline.tv",
+        "answers": [
+          {
+            "ipv4": "185.82.217.23",
+            "answer_type": "A"
+          }
+        ],
+        "failure": null,
+        "resolver_port": 53
+      },
+      {
+        "resolver_hostname": "83.212.2.77",
+        "query_type": "A",
+        "hostname": "tainiesonline.tv",
+        "answers": [],
+        "failure": "deferred_timeout_error",
+        "resolver_port": 53
+      }
+    ],
+    "failures": [
+      "83.212.2.77"
+    ],
+    "test_resolvers": [
+      "195.170.0.1",
+      "195.170.0.2",
+      "195.170.2.1",
+      "195.170.2.2",
+      "8.8.8.8",
+      "83.212.2.77"
+    ],
+    "control_resolver": "37.218.247.110:57004"
+  },
+  "test_start_time": "2018-12-31 18:32:35",
+  "input_hashes": [],
+  "probe_ip": "127.0.0.1",
+  "id": "095ff194-ee83-4625-94af-5c5c7b3a5b00",
+  "test_helpers": {
+    "backend": "37.218.247.110:57004"
+  },
+  "probe_cc": "ZZ",
+  "test_runtime": 0.0954778194,
+  "input": "tainiesonline.tv",
+  "probe_city": null,
+  "probe_asn": "AS0",
+  "annotations": {
+    "platform": "linux"
+  },
+  "software_name": "ooniprobe",
+  "software_version": "2.2.0",
+  "data_format_version": "0.2.0",
+  "report_filename": "2018-12-31/20181231T183235Z-ZZ-AS0-dns_consistency-20181231T183236Z_AS0_VZnzgdKh47x0Gb9ef6Z1z3sXAUeGSE85TPzRiASxtr9XKz9lTB-0.2.0-probe.json",
+  "test_version": "0.7.0",
+  "bucket_date": "2018-12-31",
+  "test_name": "dns_consistency",
+  "report_id": "20181231T183236Z_AS0_VZnzgdKh47x0Gb9ef6Z1z3sXAUeGSE85TPzRiASxtr9XKz9lTB",
+  "measurement_start_time": "2018-12-31 18:32:46",
+  "backend_version": null,
+  "options": [
+    "--testresolvers",
+    "resolvers",
+    "--file",
+    "edppi_dns_block"
+  ]
+}

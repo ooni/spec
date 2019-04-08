@@ -1,0 +1,64 @@
+{
+  "test_keys": {
+    "requests": [
+      {
+        "failure": null,
+        "request": {
+          "body": null,
+          "headers": {
+            "Host": "meek.azureedge.net"
+          },
+          "tor": {
+            "is_tor": false,
+            "exit_ip": null,
+            "exit_name": null
+          },
+          "url": "https://ajax.aspnetcdn.com",
+          "method": "GET"
+        },
+        "response": {
+          "body": "I\u2019m just a happy little web server.\n",
+          "headers": {
+            "X-Cache": "HIT",
+            "Accept-Ranges": "bytes",
+            "Server": "ECAcc (pox/A523)",
+            "Last-Modified": "Wed, 03 Apr 2019 13:57:50 GMT",
+            "Date": "Sun, 07 Apr 2019 08:06:02 GMT",
+            "Content-Type": "text/plain; charset=utf-8"
+          },
+          "code": 200
+        }
+      }
+    ],
+    "success": true,
+    "agent": "agent",
+    "socksproxy": null
+  },
+  "test_start_time": "2019-04-07 08:06:01",
+  "input_hashes": [],
+  "probe_ip": "127.0.0.1",
+  "id": "6d0eadb4-536d-4454-a18c-4504fc9de33a",
+  "test_helpers": {},
+  "probe_cc": "FR",
+  "test_runtime": 0.8382821083,
+  "input": [
+    "ajax.aspnetcdn.com",
+    "meek.azureedge.net"
+  ],
+  "probe_city": null,
+  "probe_asn": "AS21502",
+  "annotations": {
+    "platform": "macos"
+  },
+  "software_name": "ooniprobe",
+  "software_version": "2.3.0",
+  "data_format_version": "0.2.0",
+  "report_filename": "2019-04-07/20190407T080601Z-FR-AS21502-meek_fronted_requests_test-20190407T080601Z_AS21502_rCR4BkIVgcimApR0is8si49JHingQqvE7xsz1UsVsCNhVEX6ZS-0.2.0-probe.json",
+  "test_version": "0.2.0",
+  "bucket_date": "2019-04-07",
+  "test_name": "meek_fronted_requests_test",
+  "report_id": "20190407T080601Z_AS21502_rCR4BkIVgcimApR0is8si49JHingQqvE7xsz1UsVsCNhVEX6ZS",
+  "measurement_start_time": "2019-04-07 08:06:02",
+  "backend_version": null,
+  "options": []
+}

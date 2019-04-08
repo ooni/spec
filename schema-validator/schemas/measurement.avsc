@@ -5,7 +5,11 @@
 "fields": [
   {
     "name": "input",
-    "type": ["string", "null"]
+    "type": [
+        {"type": "string"},
+        {"type": "null"},
+        {"type": "array", "items": "string"}
+    ]
   },
   {
     "name": "probe_asn",
@@ -90,11 +94,25 @@
   },
   {
     "name": "test_helpers",
-    "type": {
-        "name": "TestHelper",
+    "type": [
+    {
+        "name": "TestHelperMap",
         "type": "map",
         "values": "string"
+    },
+    {
+        "name": "TestHelperRecord",
+        "type": "record",
+        "fields": [
+            {
+              "name": "backend",
+              "type": {
+                "name": "TestHelperBackend", "type": "map", "values": "string"
+              }
+            }
+        ]
     }
+    ]
   },
   {
     "name": "probe_city",

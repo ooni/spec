@@ -1,0 +1,294 @@
+{
+  "test_keys": {
+    "tcp_connect": [
+      {
+        "status": {
+          "failure": false,
+          "success": true
+        },
+        "ip": "158.85.58.110",
+        "port": 443
+      },
+      {
+        "status": {
+          "failure": false,
+          "success": true
+        },
+        "ip": "158.85.58.110",
+        "port": 5222
+      },
+      {
+        "status": {
+          "failure": false,
+          "success": true
+        },
+        "ip": "169.55.75.106",
+        "port": 443
+      },
+      {
+        "status": {
+          "failure": false,
+          "success": true
+        },
+        "ip": "169.55.75.106",
+        "port": 5222
+      },
+      {
+        "status": {
+          "failure": false,
+          "success": true
+        },
+        "ip": "169.47.42.163",
+        "port": 443
+      },
+      {
+        "status": {
+          "failure": false,
+          "success": true
+        },
+        "ip": "169.47.42.163",
+        "port": 5222
+      },
+      {
+        "status": {
+          "failure": false,
+          "success": true
+        },
+        "ip": "50.22.240.181",
+        "port": 443
+      },
+      {
+        "status": {
+          "failure": false,
+          "success": true
+        },
+        "ip": "50.22.240.181",
+        "port": 5222
+      },
+      {
+        "status": {
+          "failure": false,
+          "success": true
+        },
+        "ip": "169.63.73.97",
+        "port": 443
+      },
+      {
+        "status": {
+          "failure": false,
+          "success": true
+        },
+        "ip": "169.63.73.97",
+        "port": 5222
+      },
+      {
+        "status": {
+          "failure": false,
+          "success": true
+        },
+        "ip": "169.47.35.60",
+        "port": 443
+      },
+      {
+        "status": {
+          "failure": false,
+          "success": true
+        },
+        "ip": "169.47.35.60",
+        "port": 5222
+      }
+    ],
+    "registration_server_status": "ok",
+    "socksproxy": null,
+    "whatsapp_web_status": "ok",
+    "queries": [
+      {
+        "engine": "system",
+        "resolver_hostname": null,
+        "query_type": "A",
+        "hostname": "e5.whatsapp.net",
+        "answers": [
+          {
+            "hostname": "e5.whatsapp.net",
+            "answer_type": "CNAME",
+            "ttl": null
+          },
+          {
+            "ipv4": "158.85.58.110",
+            "answer_type": "A",
+            "ttl": null
+          },
+          {
+            "ipv4": "169.55.75.106",
+            "answer_type": "A",
+            "ttl": null
+          },
+          {
+            "ipv4": "169.47.42.163",
+            "answer_type": "A",
+            "ttl": null
+          },
+          {
+            "ipv4": "50.22.240.181",
+            "answer_type": "A",
+            "ttl": null
+          },
+          {
+            "ipv4": "169.63.73.97",
+            "answer_type": "A",
+            "ttl": null
+          },
+          {
+            "ipv4": "169.47.35.60",
+            "answer_type": "A",
+            "ttl": null
+          }
+        ],
+        "failure": null,
+        "resolver_port": null
+      }
+    ],
+    "whatsapp_endpoints_dns_inconsistent": [],
+    "agent": "agent",
+    "client_resolver": "85.38.28.151",
+    "whatsapp_web_failure": null,
+    "whatsapp_endpoints_status": "ok",
+    "requests": [
+      {
+        "failure": null,
+        "request": {
+          "body": "",
+          "headers": {
+            "Accept-Language": "en-US;q=0.8,en;q=0.5",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "User-Agent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"
+          },
+          "tor": {
+            "is_tor": false,
+            "exit_ip": null,
+            "exit_name": null
+          },
+          "url": "https://v.whatsapp.net/v2/register",
+          "method": "GET"
+        },
+        "response": {
+          "body": "{\"status\":\"fail\",\"reason\":\"missing_param\",\"param\":\"in\"}\n",
+          "headers": {
+            "Date": "Sun, 07 Apr 2019 17:43:00 GMT",
+            "Connection": "keep-alive",
+            "Content-Type": "text/json ; charset=utf-8",
+            "Content-Length": "56",
+            "Server": "Yaws 2.0.6"
+          },
+          "response_line": "HTTP/1.1 200 OK",
+          "code": 200
+        }
+      },
+      {
+        "failure": null,
+        "request": {
+          "body": "",
+          "headers": {
+            "Accept-Language": "en-US;q=0.8,en;q=0.5",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "User-Agent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"
+          },
+          "tor": {
+            "is_tor": false,
+            "exit_ip": null,
+            "exit_name": null
+          },
+          "url": "http://web.whatsapp.com/",
+          "method": "GET"
+        },
+        "response": {
+          "body": "",
+          "headers": {
+            "Content-Length": "0",
+            "Server": "proxygen-bolt",
+            "Connection": "keep-alive",
+            "Location": "https://web.whatsapp.com/",
+            "Date": "Sun, 07 Apr 2019 17:43:00 GMT",
+            "Content-Type": "text/plain"
+          },
+          "response_line": "HTTP/1.1 302 Found",
+          "code": 302
+        }
+      },
+      {
+        "failure": null,
+        "request": {
+          "body": "",
+          "headers": {
+            "Accept-Language": "en-US;q=0.8,en;q=0.5",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "User-Agent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"
+          },
+          "tor": {
+            "is_tor": false,
+            "exit_ip": null,
+            "exit_name": null
+          },
+          "url": "https://web.whatsapp.com/",
+          "method": "GET"
+        },
+        "response": {
+          "body": "<!DOCTYPE html>\n<html class=\"no-js\" dir=\"ltr\" loc=\"en\">\n<head>\n<meta charset=\"utf-8\">\n<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge,chrome=1\">\n<title>WhatsApp Web</title>\n<meta name=\"viewport\" content=\"width=device-width\">\n<meta name=\"google\" content=\"notranslate\">\n<meta name=\"format-detection\" content=\"telephone=no\"/>\n\n<meta name=\"description\" content=\"Quickly send and receive WhatsApp messages right from your computer.\">\n<meta name=\"og:description\" content=\"Quickly send and receive WhatsApp messages right from your computer.\"/>\n<meta name=\"og:url\" content=\"https://web.whatsapp.com/\"/>\n<meta name=\"og:title\" content=\"WhatsApp Web\"/>\n<meta name=\"og:image\" content=\"https://www.whatsapp.com/img/whatsapp-promo.png\"/>\n\n<link id=\"favicon\" rel=\"shortcut icon\" href=\"/img/favicon/1x/favicon.png\" type=\"image/png\" />\n<link id=\"favicon\" rel=\"shortcut icon\" href=\"https://whatsapp.net/favicon_web.png\" type=\"image/png\" />\n<link rel=\"apple-touch-icon\" sizes=\"194x194\" href=\"/apple-touch-icon.png\" type=\"image/png\" />\n\n<link rel=\"stylesheet\" href=\"/cssm_e8b5fcec233fc0c0459b7f28143c945f.css\">\n\n<style>\nhtml, body, #app {\nheight: 100%;\nwidth: 100%;\noverflow: hidden;\npadding: 0;\nmargin: 0;\n}\n\n#app {\nposition: absolute;\ntop: 0;\nleft: 0;\n}\n\n#startup, #initial_startup {\nwidth: 100%;\nheight: 100%;\nposition: fixed;\nbackground-color: #f2f2f2;\n\n-moz-user-select: none;\n-webkit-user-select: none;\n\ndisplay: flex;\nalign-items: center;\njustify-content: center;\ndisplay: -webkit-box;\ndisplay: -webkit-flex;\n-webkit-align-items: center;\n-webkit-justify-content: center;\nflex-direction: column;\n-webkit-flex-direction: column;\n}\n\n.spinner-container {\n-webkit-animation: rotate 2s linear infinite;\nanimation: rotate 2s linear infinite;\nz-index: 2;\n}\n\n.spinner-path {\nstroke-dasharray: 1,150; \nstroke-dashoffset: 0;\nstroke: #acb9bf;\nstroke-linecap: round;\n-webkit-animation: dash 1.5s ease-in-out infinite;\nanimation: dash 1.5s ease-in-out infinite;\n}\n\n@keyframes rotate {\n100% { transform: rotate(360deg); }\n}\n@-webkit-keyframes rotate{\n100% { -webkit-transform: rotate(360deg); }\n}\n\n@keyframes dash {\n0% {\nstroke-dasharray: 1,150;  \nstroke-dashoffset: 0;\n}\n50% {\nstroke-dasharray: 90,150; \nstroke-dashoffset: -35;   \n}\n100% {\nstroke-dasharray: 90,150; \nstroke-dashoffset: -124;  \n}\n}\n@-webkit-keyframes dash {\n0% {\nstroke-dasharray: 1,150;  \nstroke-dashoffset: 0;\n}\n50% {\nstroke-dasharray: 90,150; \nstroke-dashoffset: -35;   \n}\n100% {\nstroke-dasharray: 90,150; \nstroke-dashoffset: -124;  \n}\n}\n\n.progress-container {\nwidth: 360px;\nposition: fixed;\npadding-top: 120px;\ntop: 50%;\nleft: 50%;\nmargin-left: -180px;\n}\n\nprogress {\n-webkit-appearance: none;\nappearance: none;\nwidth: 100%;\nheight: 3px;\nborder: none;\nmargin: 0;\ncolor: #02d1a4;\nbackground-color: #e0e4e5;\n}\n\nprogress[value]::-webkit-progress-bar {\nbackground-color: #e0e4e5;\n}\n\nprogress[value]::-webkit-progress-value {\nbackground-color: #02d1a4;\n}\n\nprogress[value]::-moz-progress-bar {\nbackground-color: #02d1a4;\n}\n</style>\n</head>\n<body class=\"web\">\n<div id=\"app\"></div>\n\n<div id=\"initial_startup\">\n<svg class=\"spinner-container\" width=\"50\" height=\"50\" viewBox=\"0 0 44 44\">\n<circle class=\"spinner-path\" cx=\"22\" cy=\"22\" r=\"20\" fill=\"none\" stroke-width=\"4\"></circle>\n</svg>\n<div class=\"progress-container\">\n<progress id=progressbar value=\"304\" max=\"3040\" dir=\"ltr\">  </progress>\n</div>\n</div>\n\n<script src=\"/progress.7b7a42616c87baa9555d7e59221af16c.js\"></script>\n\n<div id=\"hard_expire_time\" data-time=1569712255.81></div>\n\n</body>\n</html>\n",
+          "headers": {
+            "Content-Length": "3488",
+            "Expires": "Sat, 01 Jan 2000 00:00:00 GMT",
+            "content-security-policy": "default-src * data: blob: 'self';script-src *.facebook.com *.fbcdn.net *.facebook.net *.google-analytics.com *.virtualearth.net *.google.com 127.0.0.1:* *.spotilocal.com:* 'unsafe-inline' 'unsafe-eval' blob: data: 'self' https://ajax.googleapis.com https://api.search.live.net https://maps.googleapis.com https://www.youtube.com https://s.ytimg.com;style-src data: blob: 'unsafe-inline' * 'self' https://fonts.googleapis.com;connect-src *.facebook.com facebook.com *.fbcdn.net *.facebook.net *.spotilocal.com:* wss://*.facebook.com:* https://fb.scanandcleanlocal.com:* attachment.fbsbx.com ws://localhost:* blob: *.cdninstagram.com 'self' chrome-extension://boadgeojelhgndaghljhdicfkmllpafd chrome-extension://dliochdbjfkdbacpmhlcpmleaejidimm https://*.whatsapp.net https://www.facebook.com https://*.giphy.com https://*.tenor.co https://crashlogs.whatsapp.net/wa_clb_data https://crashlogs.whatsapp.net/wa_fls_upload_check https://www.bingapis.com/api/v6/images/search wss://*.web.whatsapp.com wss://web.whatsapp.com https://dyn.web.whatsapp.com;font-src data: 'self' https://fonts.googleapis.com https://fonts.gstatic.com;img-src * data: blob:;media-src 'self' https://*.whatsapp.net https://*.giphy.com https://*.tenor.co https://*.cdninstagram.com https://*.streamable.com https://*.xx.fbcdn.net blob: mediastream:;child-src 'self' blob:;frame-src https://www.youtube.com;",
+            "X-Content-Type-Options": "nosniff",
+            "Access-Control-Expose-Headers": "X-FB-Debug, X-Loader-Length",
+            "Strict-Transport-Security": "max-age=63072000; includeSubDomains; preload",
+            "Vary": "Accept-Encoding",
+            "Connection": "keep-alive",
+            "X-XSS-Protection": "0",
+            "Cache-Control": "no-cache",
+            "Pragma": "no-cache",
+            "Access-Control-Allow-Credentials": "true",
+            "Date": "Sun, 07 Apr 2019 17:43:00 GMT",
+            "Access-Control-Allow-Origin": "https://web.whatsapp.com",
+            "Access-Control-Allow-Methods": "OPTIONS",
+            "Content-Type": "text/html;charset=utf-8",
+            "X-FB-Debug": "7g1iSsK8RuFDtpVhYJAlGXfk4X7YwDXDY9nWnmxIhk2cYHVu+UICMXvzqPtdBcfJFBeSphDnrchP6inTic4u/w==",
+            "X-Frame-Options": "DENY"
+          },
+          "response_line": "HTTP/1.1 200 OK",
+          "code": 200
+        }
+      }
+    ],
+    "whatsapp_endpoints_blocked": [],
+    "registration_server_failure": null
+  },
+  "test_start_time": "2019-04-07 17:42:55",
+  "input_hashes": [],
+  "probe_ip": "127.0.0.1",
+  "probe_city": null,
+  "test_helpers": {},
+  "probe_cc": "IT",
+  "id": "cb16a231-836a-49fa-bd64-9491c52acca8",
+  "test_runtime": 1.3424921036,
+  "input": null,
+  "probe_asn": "AS3269",
+  "annotations": {
+    "engine_name": "libmeasurement_kit",
+    "engine_version_full": "v0.9.3",
+    "engine_version": "0.9.3",
+    "platform": "android",
+    "flavor": "full",
+    "network_type": "wifi"
+  },
+  "software_name": "ooniprobe-android",
+  "software_version": "2.0.3",
+  "data_format_version": "0.2.0",
+  "report_filename": "2019-04-07/20190407T174255Z-IT-AS3269-whatsapp-20190407T174259Z_AS3269_C2QISVCxNT95tDCWkbcvp3d4sGugHjm67UTJPPVrnpSbxMfoi9-0.2.0-probe.json",
+  "test_version": "0.6.1",
+  "bucket_date": "2019-04-07",
+  "test_name": "whatsapp",
+  "report_id": "20190407T174259Z_AS3269_C2QISVCxNT95tDCWkbcvp3d4sGugHjm67UTJPPVrnpSbxMfoi9",
+  "measurement_start_time": "2019-04-07 17:42:59",
+  "backend_version": null,
+  "options": []
+}

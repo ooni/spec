@@ -1,0 +1,242 @@
+{
+  "test_keys": {
+    "facebook_scontent_cdn_dns_consistent": true,
+    "facebook_external_cdn_dns_consistent": true,
+    "facebook_stun_reachable": null,
+    "facebook_b_graph_dns_consistent": true,
+    "tcp_connect": [
+      {
+        "status": {
+          "failure": false,
+          "success": true
+        },
+        "ip": "185.60.216.35",
+        "port": 443
+      },
+      {
+        "status": {
+          "failure": false,
+          "success": true
+        },
+        "ip": "185.60.216.35",
+        "port": 443
+      },
+      {
+        "status": {
+          "failure": false,
+          "success": true
+        },
+        "ip": "185.60.216.11",
+        "port": 443
+      },
+      {
+        "status": {
+          "failure": false,
+          "success": true
+        },
+        "ip": "185.60.216.19",
+        "port": 443
+      },
+      {
+        "status": {
+          "failure": false,
+          "success": true
+        },
+        "ip": "185.60.216.19",
+        "port": 443
+      },
+      {
+        "status": {
+          "failure": false,
+          "success": true
+        },
+        "ip": "185.60.216.15",
+        "port": 443
+      }
+    ],
+    "facebook_b_graph_reachable": true,
+    "facebook_star_dns_consistent": true,
+    "facebook_edge_dns_consistent": true,
+    "facebook_star_reachable": true,
+    "client_resolver": "144.76.31.247",
+    "facebook_b_api_reachable": true,
+    "facebook_tcp_blocking": false,
+    "facebook_external_cdn_reachable": true,
+    "facebook_scontent_cdn_reachable": true,
+    "facebook_edge_reachable": true,
+    "facebook_b_api_dns_consistent": true,
+    "facebook_stun_dns_consistent": true,
+    "queries": [
+      {
+        "engine": "system",
+        "resolver_hostname": null,
+        "query_type": "A",
+        "hostname": "b-api.facebook.com",
+        "answers": [
+          {
+            "hostname": "star-mini.c10r.facebook.com",
+            "answer_type": "CNAME",
+            "ttl": null
+          },
+          {
+            "ipv4": "185.60.216.35",
+            "answer_type": "A",
+            "ttl": null
+          }
+        ],
+        "failure": null,
+        "resolver_port": null
+      },
+      {
+        "engine": "system",
+        "resolver_hostname": null,
+        "query_type": "A",
+        "hostname": "edge-mqtt.facebook.com",
+        "answers": [
+          {
+            "hostname": "mqtt.c10r.facebook.com",
+            "answer_type": "CNAME",
+            "ttl": null
+          },
+          {
+            "ipv4": "185.60.216.11",
+            "answer_type": "A",
+            "ttl": null
+          }
+        ],
+        "failure": null,
+        "resolver_port": null
+      },
+      {
+        "engine": "system",
+        "resolver_hostname": null,
+        "query_type": "A",
+        "hostname": "b-graph.facebook.com",
+        "answers": [
+          {
+            "hostname": "star-mini.c10r.facebook.com",
+            "answer_type": "CNAME",
+            "ttl": null
+          },
+          {
+            "ipv4": "185.60.216.35",
+            "answer_type": "A",
+            "ttl": null
+          }
+        ],
+        "failure": null,
+        "resolver_port": null
+      },
+      {
+        "engine": "system",
+        "resolver_hostname": null,
+        "query_type": "A",
+        "hostname": "scontent.xx.fbcdn.net",
+        "answers": [
+          {
+            "hostname": "scontent.xx.fbcdn.net",
+            "answer_type": "CNAME",
+            "ttl": null
+          },
+          {
+            "ipv4": "185.60.216.19",
+            "answer_type": "A",
+            "ttl": null
+          }
+        ],
+        "failure": null,
+        "resolver_port": null
+      },
+      {
+        "engine": "system",
+        "resolver_hostname": null,
+        "query_type": "A",
+        "hostname": "external.xx.fbcdn.net",
+        "answers": [
+          {
+            "hostname": "scontent.xx.fbcdn.net",
+            "answer_type": "CNAME",
+            "ttl": null
+          },
+          {
+            "ipv4": "185.60.216.19",
+            "answer_type": "A",
+            "ttl": null
+          }
+        ],
+        "failure": null,
+        "resolver_port": null
+      },
+      {
+        "engine": "system",
+        "resolver_hostname": null,
+        "query_type": "A",
+        "hostname": "star.c10r.facebook.com",
+        "answers": [
+          {
+            "hostname": "star.c10r.facebook.com",
+            "answer_type": "CNAME",
+            "ttl": null
+          },
+          {
+            "ipv4": "185.60.216.15",
+            "answer_type": "A",
+            "ttl": null
+          }
+        ],
+        "failure": null,
+        "resolver_port": null
+      },
+      {
+        "engine": "system",
+        "resolver_hostname": null,
+        "query_type": "A",
+        "hostname": "stun.fbsbx.com",
+        "answers": [
+          {
+            "hostname": "stun.c10r.facebook.com",
+            "answer_type": "CNAME",
+            "ttl": null
+          },
+          {
+            "ipv4": "185.60.216.7",
+            "answer_type": "A",
+            "ttl": null
+          }
+        ],
+        "failure": null,
+        "resolver_port": null
+      }
+    ],
+    "facebook_dns_blocking": false
+  },
+  "test_start_time": "2019-04-08 00:12:47",
+  "input_hashes": [],
+  "probe_ip": "127.0.0.1",
+  "probe_city": null,
+  "test_helpers": {},
+  "probe_cc": "DE",
+  "id": "629e6038-c9f7-4ce7-9124-81e5a189a288",
+  "test_runtime": 0.351462841,
+  "input": null,
+  "probe_asn": "AS24940",
+  "annotations": {
+    "engine_name": "libmeasurement_kit",
+    "engine_version_full": "v0.9.3",
+    "engine_version": "0.9.3",
+    "platform": "android",
+    "flavor": "fdroid",
+    "network_type": "wifi"
+  },
+  "software_name": "ooniprobe-android",
+  "software_version": "2.0.3",
+  "data_format_version": "0.2.0",
+  "report_filename": "2019-04-07/20190408T001247Z-DE-AS24940-facebook_messenger-20190408T001249Z_AS24940_1ure6ng84YXmzExm3em8B4Mae8xBXwsQdzbu3cymW7hH5ED2gl-0.2.0-probe.json",
+  "test_version": "0.0.2",
+  "bucket_date": "2019-04-07",
+  "test_name": "facebook_messenger",
+  "report_id": "20190408T001249Z_AS24940_1ure6ng84YXmzExm3em8B4Mae8xBXwsQdzbu3cymW7hH5ED2gl",
+  "measurement_start_time": "2019-04-08 00:12:49",
+  "backend_version": null,
+  "options": []
+}

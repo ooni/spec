@@ -1,0 +1,33 @@
+{
+  "test_keys": {
+    "connection": "success"
+  },
+  "test_start_time": "2019-04-08 00:12:10",
+  "input_hashes": [],
+  "probe_ip": "127.0.0.1",
+  "id": "08a64d5a-4694-4a7b-a11c-f680834ad1ff",
+  "test_helpers": {},
+  "probe_cc": "CA",
+  "test_runtime": 0.1527719498,
+  "input": "31.185.104.21:443",
+  "probe_city": null,
+  "probe_asn": "AS5645",
+  "annotations": {
+    "platform": "lepidopter",
+    "test_class": "tor_bridge_reachability"
+  },
+  "software_name": "ooniprobe",
+  "software_version": "2.3.0",
+  "data_format_version": "0.2.0",
+  "report_filename": "2019-04-07/20190408T001210Z-CA-AS5645-tcp_connect-20190408T001211Z_AS5645_XgqEXkHkVofwvhc9D76ZOurN75lphWjan3TMW50IKOXJJDHbK4-0.2.0-probe.json",
+  "test_version": "0.2.0",
+  "bucket_date": "2019-04-07",
+  "test_name": "tcp_connect",
+  "report_id": "20190408T001211Z_AS5645_XgqEXkHkVofwvhc9D76ZOurN75lphWjan3TMW50IKOXJJDHbK4",
+  "measurement_start_time": "2019-04-08 00:25:20",
+  "backend_version": null,
+  "options": [
+    "--file",
+    "$tor_bridge_lines"
+  ]
+}

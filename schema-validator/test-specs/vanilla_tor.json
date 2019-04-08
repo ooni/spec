@@ -1,0 +1,37 @@
+{
+  "test_keys": {
+    "transport_name": "vanilla",
+    "success": null,
+    "tor_log": null,
+    "tor_progress_tag": null,
+    "tor_progress": 0,
+    "timeout": 300,
+    "error": null,
+    "tor_version": "0.3.4.8",
+    "tor_progress_summary": null
+  },
+  "test_start_time": "2019-04-08 00:01:20",
+  "input_hashes": [],
+  "probe_ip": "127.0.0.1",
+  "id": "8ee90c6a-a28e-481b-a93d-874ecfa92c3a",
+  "test_helpers": {},
+  "probe_cc": "MY",
+  "test_runtime": 0.0027937889,
+  "input": null,
+  "probe_city": null,
+  "probe_asn": "AS4788",
+  "annotations": {
+    "platform": "unknown"
+  },
+  "software_name": "ooniprobe",
+  "software_version": "2.3.0",
+  "data_format_version": "0.2.0",
+  "report_filename": "2019-04-07/20190408T000120Z-MY-AS4788-vanilla_tor-20190407T222940Z_AS4788_xmiJ3GDOardZQwzGr0JwbWtEIuGmojxJgvPnh0mpdNJjhGqsZD-0.2.0-probe.json",
+  "test_version": "0.1.0",
+  "bucket_date": "2019-04-07",
+  "test_name": "vanilla_tor",
+  "report_id": "20190407T222940Z_AS4788_xmiJ3GDOardZQwzGr0JwbWtEIuGmojxJgvPnh0mpdNJjhGqsZD",
+  "measurement_start_time": "2019-04-08 00:01:22",
+  "backend_version": null,
+  "options": []
+}

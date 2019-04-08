@@ -1,0 +1,73 @@
+{
+  "test_keys": {
+    "failure": null,
+    "tampering": {
+      "request_line_capitalization": false,
+      "total": false,
+      "header_field_name": false,
+      "header_name_diff": []
+    },
+    "socksproxy": null,
+    "agent": "agent",
+    "client_resolver": "213.87.2.67",
+    "requests": [
+      {
+        "failure": null,
+        "request": {
+          "body": "",
+          "headers": {
+            "accEpT-laNgUage": "en-US,en;q=0.8",
+            "aCCepT-ENcOdiNg": "gzip,deflate,sdch",
+            "accePT": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "USer-agenT": "Mozilla/5.0 (Windows; U; Windows NT 5.1; de; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7 (.NET CLR 3.5.30729))",
+            "aCcept-CHaRSet": "ISO-8859-1,utf-8;q=0.7,*;q=0.3",
+            "hOsT": "BqbzPAf3bX5ymRd.com"
+          },
+          "tor": {
+            "is_tor": false,
+            "exit_ip": null,
+            "exit_name": null
+          },
+          "url": "http://37.218.247.95/",
+          "method": "GET"
+        },
+        "response": {
+          "body": "{\"headers_dict\": {\"accEpT-laNgUage\": [\"en-US,en;q=0.8\"], \"aCCepT-ENcOdiNg\": [\"gzip,deflate,sdch\"], \"accePT\": [\"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\"], \"USer-agenT\": [\"Mozilla/5.0 (Windows; U; Windows NT 5.1; de; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7 (.NET CLR 3.5.30729))\"], \"aCcept-CHaRSet\": [\"ISO-8859-1,utf-8;q=0.7,*;q=0.3\"], \"hOsT\": [\"BqbzPAf3bX5ymRd.com\"]}, \"request_line\": \"GET / HTTP/1.1\", \"request_headers\": [[\"hOsT\", \"BqbzPAf3bX5ymRd.com\"], [\"USer-agenT\", \"Mozilla/5.0 (Windows; U; Windows NT 5.1; de; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7 (.NET CLR 3.5.30729))\"], [\"accePT\", \"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\"], [\"aCCepT-ENcOdiNg\", \"gzip,deflate,sdch\"], [\"accEpT-laNgUage\", \"en-US,en;q=0.8\"], [\"aCcept-CHaRSet\", \"ISO-8859-1,utf-8;q=0.7,*;q=0.3\"]]}",
+          "response_line": "HTTP/1.1 200 OK",
+          "code": 200
+        }
+      }
+    ]
+  },
+  "test_start_time": "2019-04-07 20:07:23",
+  "input_hashes": [],
+  "probe_ip": "127.0.0.1",
+  "probe_city": null,
+  "test_helpers": {
+    "backend": "http://37.218.247.95:80"
+  },
+  "probe_cc": "RU",
+  "id": "4c356380-bfc7-4104-bdd6-901ef04a22fd",
+  "test_runtime": 0.2167639732,
+  "input": null,
+  "probe_asn": "AS8359",
+  "annotations": {
+    "engine_name": "libmeasurement_kit",
+    "engine_version_full": "v0.9.3",
+    "engine_version": "0.9.3",
+    "platform": "android",
+    "flavor": "full",
+    "network_type": "mobile"
+  },
+  "software_name": "ooniprobe-android",
+  "software_version": "2.0.3",
+  "data_format_version": "0.2.0",
+  "report_filename": "2019-04-07/20190407T200723Z-RU-AS8359-http_header_field_manipulation-20190407T200731Z_AS8359_KlXsrMbyeYJpE2zp3AmtB3ZFqYJTMLNUDBGgNqoZoBN55pwRnU-0.2.0-probe.json",
+  "test_version": "0.0.1",
+  "bucket_date": "2019-04-07",
+  "test_name": "http_header_field_manipulation",
+  "report_id": "20190407T200731Z_AS8359_KlXsrMbyeYJpE2zp3AmtB3ZFqYJTMLNUDBGgNqoZoBN55pwRnU",
+  "measurement_start_time": "2019-04-07 20:07:30",
+  "backend_version": null,
+  "options": []
+}

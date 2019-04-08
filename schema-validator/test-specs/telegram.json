@@ -1,0 +1,493 @@
+{
+  "test_keys": {
+    "tcp_connect": [
+      {
+        "status": {
+          "failure": null,
+          "success": true
+        },
+        "ip": "149.154.167.51",
+        "port": 80
+      },
+      {
+        "status": {
+          "failure": null,
+          "success": true
+        },
+        "ip": "149.154.175.50",
+        "port": 80
+      },
+      {
+        "status": {
+          "failure": null,
+          "success": true
+        },
+        "ip": "149.154.175.50",
+        "port": 443
+      },
+      {
+        "status": {
+          "failure": null,
+          "success": true
+        },
+        "ip": "149.154.167.51",
+        "port": 443
+      },
+      {
+        "status": {
+          "failure": null,
+          "success": true
+        },
+        "ip": "149.154.175.100",
+        "port": 443
+      },
+      {
+        "status": {
+          "failure": null,
+          "success": true
+        },
+        "ip": "149.154.167.91",
+        "port": 80
+      },
+      {
+        "status": {
+          "failure": null,
+          "success": true
+        },
+        "ip": "149.154.175.100",
+        "port": 80
+      },
+      {
+        "status": {
+          "failure": null,
+          "success": true
+        },
+        "ip": "149.154.167.91",
+        "port": 443
+      },
+      {
+        "status": {
+          "failure": null,
+          "success": true
+        },
+        "ip": "149.154.171.5",
+        "port": 80
+      },
+      {
+        "status": {
+          "failure": null,
+          "success": true
+        },
+        "ip": "149.154.171.5",
+        "port": 443
+      }
+    ],
+    "socksproxy": null,
+    "telegram_http_blocking": false,
+    "agent": "agent",
+    "client_resolver": "195.29.247.166",
+    "telegram_web_status": "ok",
+    "telegram_web_failure": null,
+    "telegram_tcp_blocking": false,
+    "requests": [
+      {
+        "failure": null,
+        "request": {
+          "body": "",
+          "headers": {
+            "Accept-Language": "en-US;q=0.8,en;q=0.5",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "User-Agent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"
+          },
+          "tor": {
+            "is_tor": false,
+            "exit_ip": null,
+            "exit_name": null
+          },
+          "url": "http://web.telegram.org/",
+          "method": "GET"
+        },
+        "response": {
+          "body": "<!doctype html><html lang=en manifest=webogram.appcache ng-csp xmlns:ng=http://angularjs.org id=ng-app style=\"display: none;\"><head><meta charset=utf-8><meta name=viewport content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no\"><title>Telegram Web</title><link rel=stylesheet href=css/app.css><link rel=manifest href=manifest.webapp.json><link rel=icon href=favicon.ico type=image/x-icon><link rel=apple-touch-icon href=img/iphone_home120.png><link rel=apple-touch-icon sizes=120x120 href=img/iphone_home120.png><link rel=apple-touch-startup-image media=\"(device-width: 320px)\" href=img/iphone_startup.png><meta name=apple-mobile-web-app-title content=\"Telegram Web\"><meta name=mobile-web-app-capable content=yes><meta name=apple-mobile-web-app-capable content=yes><meta name=apple-mobile-web-app-status-bar-style content=black-translucent><meta name=theme-color content=#497495><meta name=google content=notranslate><meta property=og:title content=\"Telegram Web\"><meta property=og:url content=\"https://web.telegram.org/\"><meta property=og:image content=https://web.telegram.org/img/logo_share.png><meta property=og:site_name content=\"Telegram Web\"><meta property=description content=\"Welcome to the Web application of Telegram messenger. See https://github.com/zhukov/webogram for more info.\"><meta property=og:description content=\"Welcome to the Web application of Telegram messenger. See https://github.com/zhukov/webogram for more info.\"></head><body><div class=page_wrap ng-view></div><div id=notify_sound></div><script src=js/app.js></script></body></html>",
+          "headers": {
+            "Content-Length": "1587",
+            "Accept-Ranges": "bytes",
+            "Expires": "Sun, 07 Apr 2019 21:28:39 GMT",
+            "Server": "nginx/1.12.2",
+            "Last-Modified": "Fri, 08 Dec 2017 20:55:09 GMT",
+            "Connection": "keep-alive",
+            "ETag": "\"5a2afc2d-633\"",
+            "Cache-Control": "max-age=3600",
+            "Date": "Sun, 07 Apr 2019 20:28:39 GMT",
+            "Content-Type": "text/html"
+          },
+          "response_line": "HTTP/1.1 200 OK",
+          "code": 200
+        }
+      },
+      {
+        "failure": null,
+        "request": {
+          "body": "",
+          "headers": {
+            "Accept-Language": "en-US;q=0.8,en;q=0.5",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "User-Agent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"
+          },
+          "tor": {
+            "is_tor": false,
+            "exit_ip": null,
+            "exit_name": null
+          },
+          "url": "https://web.telegram.org/",
+          "method": "GET"
+        },
+        "response": {
+          "body": "<!doctype html><html lang=en manifest=webogram.appcache ng-csp xmlns:ng=http://angularjs.org id=ng-app style=\"display: none;\"><head><meta charset=utf-8><meta name=viewport content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no\"><title>Telegram Web</title><link rel=stylesheet href=css/app.css><link rel=manifest href=manifest.webapp.json><link rel=icon href=favicon.ico type=image/x-icon><link rel=apple-touch-icon href=img/iphone_home120.png><link rel=apple-touch-icon sizes=120x120 href=img/iphone_home120.png><link rel=apple-touch-startup-image media=\"(device-width: 320px)\" href=img/iphone_startup.png><meta name=apple-mobile-web-app-title content=\"Telegram Web\"><meta name=mobile-web-app-capable content=yes><meta name=apple-mobile-web-app-capable content=yes><meta name=apple-mobile-web-app-status-bar-style content=black-translucent><meta name=theme-color content=#497495><meta name=google content=notranslate><meta property=og:title content=\"Telegram Web\"><meta property=og:url content=\"https://web.telegram.org/\"><meta property=og:image content=https://web.telegram.org/img/logo_share.png><meta property=og:site_name content=\"Telegram Web\"><meta property=description content=\"Welcome to the Web application of Telegram messenger. See https://github.com/zhukov/webogram for more info.\"><meta property=og:description content=\"Welcome to the Web application of Telegram messenger. See https://github.com/zhukov/webogram for more info.\"></head><body><div class=page_wrap ng-view></div><div id=notify_sound></div><script src=js/app.js></script></body></html>",
+          "headers": {
+            "Content-Length": "1587",
+            "Expires": "Sun, 07 Apr 2019 21:28:39 GMT",
+            "Accept-Ranges": "bytes",
+            "Strict-Transport-Security": "max-age=35768000",
+            "Server": "nginx/1.12.2",
+            "Last-Modified": "Fri, 08 Dec 2017 20:55:09 GMT",
+            "Connection": "keep-alive",
+            "ETag": "\"5a2afc2d-633\"",
+            "Cache-Control": "max-age=3600",
+            "Date": "Sun, 07 Apr 2019 20:28:39 GMT",
+            "Content-Type": "text/html"
+          },
+          "response_line": "HTTP/1.1 200 OK",
+          "code": 200
+        }
+      },
+      {
+        "failure": null,
+        "request": {
+          "body": "",
+          "headers": {
+            "Accept-Language": "en-US;q=0.8,en;q=0.5",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "User-Agent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"
+          },
+          "tor": {
+            "is_tor": false,
+            "exit_ip": null,
+            "exit_name": null
+          },
+          "url": "http://149.154.167.51/",
+          "method": "GET"
+        },
+        "response": {
+          "body": "<html>\r\n<head><title>404 Not Found</title></head>\r\n<body bgcolor=\"white\">\r\n<center><h1>404 Not Found</h1></center>\r\n<hr><center>nginx/0.3.33</center>\r\n</body>\r\n</html>\r\n",
+          "headers": {
+            "Date": "Sun, 07 Apr 2019 20:28:40 GMT",
+            "Connection": "keep-alive",
+            "Content-Type": "text/html",
+            "Content-Length": "169",
+            "Server": "nginx/0.3.33"
+          },
+          "response_line": "HTTP/1.1 404 Not Found",
+          "code": 404
+        }
+      },
+      {
+        "failure": null,
+        "request": {
+          "body": "",
+          "headers": {
+            "Accept-Language": "en-US;q=0.8,en;q=0.5",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "User-Agent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"
+          },
+          "tor": {
+            "is_tor": false,
+            "exit_ip": null,
+            "exit_name": null
+          },
+          "url": "http://149.154.175.50:443/",
+          "method": "GET"
+        },
+        "response": {
+          "body": "<html>\r\n<head><title>404 Not Found</title></head>\r\n<body bgcolor=\"white\">\r\n<center><h1>404 Not Found</h1></center>\r\n<hr><center>nginx/0.3.33</center>\r\n</body>\r\n</html>\r\n",
+          "headers": {
+            "Date": "Sun, 07 Apr 2019 20:28:40 GMT",
+            "Connection": "keep-alive",
+            "Content-Type": "text/html",
+            "Content-Length": "169",
+            "Server": "nginx/0.3.33"
+          },
+          "response_line": "HTTP/1.1 404 Not Found",
+          "code": 404
+        }
+      },
+      {
+        "failure": null,
+        "request": {
+          "body": "",
+          "headers": {
+            "Accept-Language": "en-US;q=0.8,en;q=0.5",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "User-Agent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"
+          },
+          "tor": {
+            "is_tor": false,
+            "exit_ip": null,
+            "exit_name": null
+          },
+          "url": "http://149.154.175.50/",
+          "method": "GET"
+        },
+        "response": {
+          "body": "<html>\r\n<head><title>404 Not Found</title></head>\r\n<body bgcolor=\"white\">\r\n<center><h1>404 Not Found</h1></center>\r\n<hr><center>nginx/0.3.33</center>\r\n</body>\r\n</html>\r\n",
+          "headers": {
+            "Date": "Sun, 07 Apr 2019 20:28:40 GMT",
+            "Connection": "keep-alive",
+            "Content-Type": "text/html",
+            "Content-Length": "169",
+            "Server": "nginx/0.3.33"
+          },
+          "response_line": "HTTP/1.1 404 Not Found",
+          "code": 404
+        }
+      },
+      {
+        "failure": null,
+        "request": {
+          "body": "",
+          "headers": {
+            "Accept-Language": "en-US;q=0.8,en;q=0.5",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "User-Agent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"
+          },
+          "tor": {
+            "is_tor": false,
+            "exit_ip": null,
+            "exit_name": null
+          },
+          "url": "http://149.154.175.100:443/",
+          "method": "GET"
+        },
+        "response": {
+          "body": "<html>\r\n<head><title>404 Not Found</title></head>\r\n<body bgcolor=\"white\">\r\n<center><h1>404 Not Found</h1></center>\r\n<hr><center>nginx/0.3.33</center>\r\n</body>\r\n</html>\r\n",
+          "headers": {
+            "Date": "Sun, 07 Apr 2019 20:28:40 GMT",
+            "Connection": "keep-alive",
+            "Content-Type": "text/html",
+            "Content-Length": "169",
+            "Server": "nginx/0.3.33"
+          },
+          "response_line": "HTTP/1.1 404 Not Found",
+          "code": 404
+        }
+      },
+      {
+        "failure": null,
+        "request": {
+          "body": "",
+          "headers": {
+            "Accept-Language": "en-US;q=0.8,en;q=0.5",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "User-Agent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"
+          },
+          "tor": {
+            "is_tor": false,
+            "exit_ip": null,
+            "exit_name": null
+          },
+          "url": "http://149.154.167.51:443/",
+          "method": "GET"
+        },
+        "response": {
+          "body": "<html>\r\n<head><title>404 Not Found</title></head>\r\n<body bgcolor=\"white\">\r\n<center><h1>404 Not Found</h1></center>\r\n<hr><center>nginx/0.3.33</center>\r\n</body>\r\n</html>\r\n",
+          "headers": {
+            "Date": "Sun, 07 Apr 2019 20:28:40 GMT",
+            "Connection": "keep-alive",
+            "Content-Type": "text/html",
+            "Content-Length": "169",
+            "Server": "nginx/0.3.33"
+          },
+          "response_line": "HTTP/1.1 404 Not Found",
+          "code": 404
+        }
+      },
+      {
+        "failure": null,
+        "request": {
+          "body": "",
+          "headers": {
+            "Accept-Language": "en-US;q=0.8,en;q=0.5",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "User-Agent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"
+          },
+          "tor": {
+            "is_tor": false,
+            "exit_ip": null,
+            "exit_name": null
+          },
+          "url": "http://149.154.167.91/",
+          "method": "GET"
+        },
+        "response": {
+          "body": "<html>\r\n<head><title>404 Not Found</title></head>\r\n<body bgcolor=\"white\">\r\n<center><h1>404 Not Found</h1></center>\r\n<hr><center>nginx/0.3.33</center>\r\n</body>\r\n</html>\r\n",
+          "headers": {
+            "Date": "Sun, 07 Apr 2019 20:28:40 GMT",
+            "Connection": "keep-alive",
+            "Content-Type": "text/html",
+            "Content-Length": "169",
+            "Server": "nginx/0.3.33"
+          },
+          "response_line": "HTTP/1.1 404 Not Found",
+          "code": 404
+        }
+      },
+      {
+        "failure": null,
+        "request": {
+          "body": "",
+          "headers": {
+            "Accept-Language": "en-US;q=0.8,en;q=0.5",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "User-Agent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"
+          },
+          "tor": {
+            "is_tor": false,
+            "exit_ip": null,
+            "exit_name": null
+          },
+          "url": "http://149.154.175.100/",
+          "method": "GET"
+        },
+        "response": {
+          "body": "<html>\r\n<head><title>404 Not Found</title></head>\r\n<body bgcolor=\"white\">\r\n<center><h1>404 Not Found</h1></center>\r\n<hr><center>nginx/0.3.33</center>\r\n</body>\r\n</html>\r\n",
+          "headers": {
+            "Date": "Sun, 07 Apr 2019 20:28:40 GMT",
+            "Connection": "keep-alive",
+            "Content-Type": "text/html",
+            "Content-Length": "169",
+            "Server": "nginx/0.3.33"
+          },
+          "response_line": "HTTP/1.1 404 Not Found",
+          "code": 404
+        }
+      },
+      {
+        "failure": null,
+        "request": {
+          "body": "",
+          "headers": {
+            "Accept-Language": "en-US;q=0.8,en;q=0.5",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "User-Agent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"
+          },
+          "tor": {
+            "is_tor": false,
+            "exit_ip": null,
+            "exit_name": null
+          },
+          "url": "http://149.154.167.91:443/",
+          "method": "GET"
+        },
+        "response": {
+          "body": "<html>\r\n<head><title>404 Not Found</title></head>\r\n<body bgcolor=\"white\">\r\n<center><h1>404 Not Found</h1></center>\r\n<hr><center>nginx/0.3.33</center>\r\n</body>\r\n</html>\r\n",
+          "headers": {
+            "Date": "Sun, 07 Apr 2019 20:28:41 GMT",
+            "Connection": "keep-alive",
+            "Content-Type": "text/html",
+            "Content-Length": "169",
+            "Server": "nginx/0.3.33"
+          },
+          "response_line": "HTTP/1.1 404 Not Found",
+          "code": 404
+        }
+      },
+      {
+        "failure": null,
+        "request": {
+          "body": "",
+          "headers": {
+            "Accept-Language": "en-US;q=0.8,en;q=0.5",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "User-Agent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"
+          },
+          "tor": {
+            "is_tor": false,
+            "exit_ip": null,
+            "exit_name": null
+          },
+          "url": "http://149.154.171.5/",
+          "method": "GET"
+        },
+        "response": {
+          "body": "<html>\r\n<head><title>404 Not Found</title></head>\r\n<body bgcolor=\"white\">\r\n<center><h1>404 Not Found</h1></center>\r\n<hr><center>nginx/0.3.33</center>\r\n</body>\r\n</html>\r\n",
+          "headers": {
+            "Date": "Sun, 07 Apr 2019 20:28:41 GMT",
+            "Connection": "keep-alive",
+            "Content-Type": "text/html",
+            "Content-Length": "169",
+            "Server": "nginx/0.3.33"
+          },
+          "response_line": "HTTP/1.1 404 Not Found",
+          "code": 404
+        }
+      },
+      {
+        "failure": null,
+        "request": {
+          "body": "",
+          "headers": {
+            "Accept-Language": "en-US;q=0.8,en;q=0.5",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "User-Agent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"
+          },
+          "tor": {
+            "is_tor": false,
+            "exit_ip": null,
+            "exit_name": null
+          },
+          "url": "http://149.154.171.5:443/",
+          "method": "GET"
+        },
+        "response": {
+          "body": "<html>\r\n<head><title>404 Not Found</title></head>\r\n<body bgcolor=\"white\">\r\n<center><h1>404 Not Found</h1></center>\r\n<hr><center>nginx/0.3.33</center>\r\n</body>\r\n</html>\r\n",
+          "headers": {
+            "Date": "Sun, 07 Apr 2019 20:28:41 GMT",
+            "Connection": "keep-alive",
+            "Content-Type": "text/html",
+            "Content-Length": "169",
+            "Server": "nginx/0.3.33"
+          },
+          "response_line": "HTTP/1.1 404 Not Found",
+          "code": 404
+        }
+      }
+    ]
+  },
+  "test_start_time": "2019-04-07 20:28:38",
+  "input_hashes": [],
+  "probe_ip": "127.0.0.1",
+  "probe_city": null,
+  "test_helpers": {},
+  "probe_cc": "HR",
+  "id": "c11f6fea-92c3-48ab-aeab-da5597662201",
+  "test_runtime": 1.5052149296,
+  "input": null,
+  "probe_asn": "AS5391",
+  "annotations": {
+    "platform": "android",
+    "engine_version_full": "v0.8.1",
+    "engine_version": "0.8.1",
+    "engine_name": "libmeasurement_kit"
+  },
+  "software_name": "measurement_kit",
+  "software_version": "0.8.1",
+  "data_format_version": "0.2.0",
+  "report_filename": "2019-04-07/20190407T202838Z-HR-AS5391-telegram-20190407T202839Z_AS5391_ClDJABjRwu2fVSetPGzLOOAMrkza3jhMXxHqkcbF9TCu1f02Q8-0.2.0-probe.json",
+  "test_version": "0.0.2",
+  "bucket_date": "2019-04-07",
+  "test_name": "telegram",
+  "report_id": "20190407T202839Z_AS5391_ClDJABjRwu2fVSetPGzLOOAMrkza3jhMXxHqkcbF9TCu1f02Q8",
+  "measurement_start_time": "2019-04-07 20:28:40",
+  "backend_version": null,
+  "options": []
+}
