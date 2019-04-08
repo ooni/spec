@@ -27,7 +27,7 @@ test_names = [
 
 def common_schemas():
     schema_list = []
-    for name in ['DNSQuery']:
+    for name in ['DNSQuery', 'HTTPRequestResponse']:
         with open('schemas/{}.avsc'.format(name)) as in_file:
             schema_list.append(json.load(in_file))
     return schema_list
