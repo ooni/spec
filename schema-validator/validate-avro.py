@@ -6,6 +6,25 @@ from pprint import pprint
 from glob import glob
 from fastavro import validate, parse_schema
 
+test_names = [
+    "web_connectivity",
+    "http_invalid_request_line",
+    "http_header_field_manipulation",
+    "dash",
+    "facebook_messenger",
+    "telegram",
+    "vanilla_tor",
+    "whatsapp",
+    "tcp_connect",
+    "meek_fronted_requests_test",
+
+#    "dns_consistency",
+#    "http_requests",
+#    "http_host",
+#    "multi_protocol_traceroute",
+#    "bridge_reachability"
+]
+
 def test_schema(test_name, base_schema):
     print("validating {}".format(test_name))
     with open('schemas/{}.avsc'.format(test_name)) as in_file:
@@ -27,10 +46,7 @@ class TestAvroSchema(unittest.TestCase):
             self.base_schema = json.load(in_file)
 
     def test_all_schemas(self):
-        with open('test_meta.json') as in_file:
-            test_meta = json.load(in_file)
-
-        for tn in test_meta['test_names']:
+        for tn in test_names:
             test_schema(tn, self.base_schema)
 
 if __name__ == "__main__":
