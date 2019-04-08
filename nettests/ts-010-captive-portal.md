@@ -1,6 +1,6 @@
 # Specification version number
 
-0.2.0
+0.4.0
 
 # Specification name
 
@@ -16,12 +16,43 @@ The ability to detect a captive portal.
 
 # Test description
 
+## Version 0.3.0 and earlier:
+
 The test is split in four smaller tests:
 
     1. Http test that compares a requested document against the control one (vendor_tests).
     2. DNS test that checks a NXDOMAIN response to random hostnames requests (part of the vendor_dns_tests).
     3. DNS test that compares an A request to a static domain against its IP (part of the vendor_dns_tests).
     4. DNS test that check for 0x20 encoding (check0x20 tests).
+
+## Version 0.4.0 (implemented in MK, but not deployed):
+
+Most of the vendor tests (from Microsoft, Apple, and Google) do an HTTP request and verify the status code or body content matches some expected value. One of the tests (from Microsoft) only checks that a DNS lookup returns the correct IP address.
+
+### References
+#### MS tests
+https://technet.microsoft.com/en-us/library/cc766017(v=ws.10).aspx
+
+#### Apple:
+https://forums.developer.apple.com/thread/26867
+
+#### Android KitKat
+http://androidxref.com/4.4_r1/xref/frameworks/base/services/java/com/android/server/ConnectivityService.java#4122
+
+#### Android Lollipop
+http://androidxref.com/5.1.1_r6/xref/frameworks/base/services/core/java/com/android/server/connectivity/NetworkMonitor.java#659
+
+#### Android Marshmallow
+http://androidxref.com/6.0.1_r10/xref/frameworks/base/services/core/java/com/android/server/connectivity/NetworkMonitor.java#643
+
+#### Android Nougat 1
+http://androidxref.com/7.1.1_r6/xref/frameworks/base/services/core/java/com/android/server/connectivity/NetworkMonitor.java#88
+
+#### Android Nougat 2
+http://androidxref.com/7.1.1_r6/xref/frameworks/base/services/core/java/com/android/server/connectivity/NetworkMonitor.java#91
+
+#### Android Nougat 3
+https://android.googlesource.com/platform/frameworks/base/+/master/services/core/java/com/android/server/connectivity/NetworkMonitor.java#99
 
 # Expected output
 
@@ -125,6 +156,33 @@ Version 0.3:
     }
 
 }
+```
+Version 0.4.0:
+```
+    "vendor_dns_tests": [
+      { 
+        "result": true,
+        "hostname": "dns.msftncsi.com",
+        "name": "Microsoft DNS",
+        "expected_ip": "131.107.255.255",
+        "failure": null,
+        "actual_ips": [
+          "131.107.255.255"
+        ]
+      } 
+    ],  
+    "vendor_http_tests": [   
+      {                      
+        "expected_status": null,
+        "url": "http://captive.apple.com/hotspot_detect.html",
+        "name": "Apple HTTP 2",                          
+        "result": true,                 
+        "failure": null,
+        "actual_status": 200,
+        "actual_body": "<HTML><HEAD><TITLE>Success</TITLE></HEAD><BODY>Success</BODY></HTML>\n",
+        "expected_body": "<HTML><HEAD><TITLE>Success</TITLE></HEAD><BODY>Success</BODY></HTML>\n"
+      }, ...
+    ]
 ```
 
 ## Possible conclusions

@@ -79,7 +79,7 @@ Data Format Version: 0.2.0
 
     "backend_version": "The version of the backend that collected this measurement",
 
-    "test_helpers": {"test_helper_name": "The address of the test helper used"},
+    "test_helpers": {"test_specific_test_helper_name": "The address of the test helper used. (Note that the name used for the helper is not necessarily the helper name according to the bouncer, and is typically test specific; e.g. WebConnectivity currently uses 'backend' to refer to the 'web-connectivity' helper."},
 
     "test_name": "The name of the test that generated "
         "this measurement (ex. http_requests)",
