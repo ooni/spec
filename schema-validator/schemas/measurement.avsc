@@ -1,7 +1,7 @@
 {
 "namespace": "ooni.io",
-"type": "record",
 "name": "Measurement",
+"type": "record",
 "fields": [
   {
     "name": "input",

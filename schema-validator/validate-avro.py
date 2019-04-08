@@ -25,6 +25,13 @@ test_names = [
 #    "bridge_reachability"
 ]
 
+def common_schemas():
+    schema_list = []
+    for name in ['DNSQuery']:
+        with open('schemas/{}.avsc'.format(name)) as in_file:
+            schema_list.append(json.load(in_file))
+    return schema_list
+
 def test_schema(test_name, base_schema):
     print("validating {}".format(test_name))
     with open('schemas/{}.avsc'.format(test_name)) as in_file:
@@ -35,7 +42,8 @@ def test_schema(test_name, base_schema):
         'name': 'test_keys',
         'type': test_keys
     })
-    parsed_schema = parse_schema(schema)
+    schema_list = common_schemas() + [schema]
+    parsed_schema = parse_schema(schema_list)
 
     with open('test-specs/{}.json'.format(test_name)) as in_file:
         validate(json.load(in_file), parsed_schema)

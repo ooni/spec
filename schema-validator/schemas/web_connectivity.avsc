@@ -131,72 +131,7 @@
       "name": "queries",
       "type": {
         "type": "array",
-        "items": {
-          "name": "DNSQuery",
-          "type": "record",
-          "fields": [
-            {
-              "name": "engine",
-              "type": "string"
-            },
-            {
-              "name": "resolver_hostname",
-              "type": "null"
-            },
-            {
-              "name": "query_type",
-              "type": "string"
-            },
-            {
-              "name": "hostname",
-              "type": "string"
-            },
-            {
-              "name": "answers",
-              "type": {
-                "type": "array",
-                "items": {
-                  "name": "DNSAnswer",
-                  "type": "record",
-                  "fields": [
-                    {
-                      "name": "hostname",
-                      "type": [
-                        "null",
-                        "string"
-                      ],
-                      "default": null
-                    },
-                    {
-                      "name": "answer_type",
-                      "type": "string"
-                    },
-                    {
-                      "name": "ttl",
-                      "type": "null"
-                    },
-                    {
-                      "name": "ipv4",
-                      "type": [
-                        "null",
-                        "string"
-                      ],
-                      "default": null
-                    }
-                  ]
-                }
-              }
-            },
-            {
-              "name": "failure",
-              "type": "null"
-            },
-            {
-              "name": "resolver_port",
-              "type": "null"
-            }
-          ]
-        }
+        "items": "DNSQuery"
       }
     },
     {
