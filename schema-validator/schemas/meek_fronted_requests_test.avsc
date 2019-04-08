@@ -1,0 +1,107 @@
+{
+  "type": "record",
+  "fields": [
+    {
+      "name": "requests",
+      "type": {
+        "type": "array",
+        "items": {
+          "type": "record",
+          "fields": [
+            {
+              "name": "failure",
+              "type": "null"
+            },
+            {
+              "name": "request",
+              "type": {
+                "type": "record",
+                "fields": [
+                  {
+                    "name": "body",
+                    "type": "null"
+                  },
+                  {
+                    "name": "headers",
+                    "type": {
+                      "type": "record",
+                      "fields": [
+                        {
+                          "name": "Host",
+                          "type": "string"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "name": "tor",
+                    "type": {
+                      "type": "record",
+                      "fields": [
+                        {
+                          "name": "is_tor",
+                          "type": "boolean"
+                        },
+                        {
+                          "name": "exit_ip",
+                          "type": "null"
+                        },
+                        {
+                          "name": "exit_name",
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "name": "url",
+                    "type": "string"
+                  },
+                  {
+                    "name": "method",
+                    "type": "string"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "response",
+              "type": {
+                "type": "record",
+                "fields": [
+                  {
+                    "name": "body",
+                    "type": "string"
+                  },
+                  {
+                    "name": "headers",
+                    "type": {
+                      "type": "map",
+                      "values": "string"
+                    }
+                  },
+                  {
+                    "name": "code",
+                    "type": "int"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "success",
+      "type": "boolean"
+    },
+    {
+      "name": "agent",
+      "type": "string"
+    },
+    {
+      "name": "socksproxy",
+      "type": "null"
+    }
+  ]
+}

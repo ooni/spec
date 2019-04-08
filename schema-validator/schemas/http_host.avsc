@@ -1,0 +1,127 @@
+{
+  "type": "record",
+  "fields": [
+    {
+      "name": "filtering_prepend_newline_to_method",
+      "type": "boolean"
+    },
+    {
+      "name": "socksproxy",
+      "type": "null"
+    },
+    {
+      "name": "send_host_header",
+      "type": "boolean"
+    },
+    {
+      "name": "agent",
+      "type": "string"
+    },
+    {
+      "name": "filtering_add_tab_to_host",
+      "type": "boolean"
+    },
+    {
+      "name": "transparent_http_proxy",
+      "type": "boolean"
+    },
+    {
+      "name": "filtering_of_subdomain",
+      "type": "boolean"
+    },
+    {
+      "name": "filtering_via_fuzzy_matching",
+      "type": "boolean"
+    },
+    {
+      "name": "requests",
+      "type": {
+        "type": "array",
+        "items": {
+          "type": "record",
+          "fields": [
+            {
+              "name": "response_length",
+              "type": "null"
+            },
+            {
+              "name": "request",
+              "type": {
+                "type": "record",
+                "fields": [
+                  {
+                    "name": "body",
+                    "type": "null"
+                  },
+                  {
+                    "name": "headers",
+                    "type": {
+                      "type": "record",
+                      "fields": [
+                        {
+                          "name": "Host",
+                          "type": "string"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "name": "tor",
+                    "type": {
+                      "type": "record",
+                      "fields": [
+                        {
+                          "name": "is_tor",
+                          "type": "boolean"
+                        },
+                        {
+                          "name": "exit_name",
+                          "type": "null"
+                        },
+                        {
+                          "name": "exit_ip",
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "name": "url",
+                    "type": "string"
+                  },
+                  {
+                    "name": "method",
+                    "type": "string"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "response",
+              "type": {
+                "type": "record",
+                "fields": [
+                  {
+                    "name": "body",
+                    "type": "string"
+                  },
+                  {
+                    "name": "headers",
+                    "type": {
+                      "type": "record",
+                      "fields": []
+                    }
+                  },
+                  {
+                    "name": "code",
+                    "type": "int"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,61 @@
+{
+  "type": "record",
+  "fields": [
+    {
+      "name": "obfsproxy_log",
+      "type": "string"
+    },
+    {
+      "name": "transport_name",
+      "type": "string"
+    },
+    {
+      "name": "success",
+      "type": "boolean"
+    },
+    {
+      "name": "tor_log",
+      "type": "string"
+    },
+    {
+      "name": "tor_progress_tag",
+      "type": "null"
+    },
+    {
+      "name": "tor_progress",
+      "type": "int"
+    },
+    {
+      "name": "bridge_address",
+      "type": "string"
+    },
+    {
+      "name": "obfsproxy_version",
+      "type": "string"
+    },
+    {
+      "name": "timeout",
+      "type": "int"
+    },
+    {
+      "name": "error",
+      "type": "string"
+    },
+    {
+      "name": "distributor",
+      "type": "null"
+    },
+    {
+      "name": "tor_version",
+      "type": "string"
+    },
+    {
+      "name": "tor_progress_summary",
+      "type": "null"
+    },
+    {
+      "name": "bridge_hashed_fingerprint",
+      "type": "null"
+    }
+  ]
+}

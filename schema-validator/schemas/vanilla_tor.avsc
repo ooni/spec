@@ -1,0 +1,41 @@
+{
+  "type": "record",
+  "fields": [
+    {
+      "name": "transport_name",
+      "type": "string"
+    },
+    {
+      "name": "success",
+      "type": "null"
+    },
+    {
+      "name": "tor_log",
+      "type": "null"
+    },
+    {
+      "name": "tor_progress_tag",
+      "type": "null"
+    },
+    {
+      "name": "tor_progress",
+      "type": "int"
+    },
+    {
+      "name": "timeout",
+      "type": "int"
+    },
+    {
+      "name": "error",
+      "type": "null"
+    },
+    {
+      "name": "tor_version",
+      "type": "string"
+    },
+    {
+      "name": "tor_progress_summary",
+      "type": "null"
+    }
+  ]
+}

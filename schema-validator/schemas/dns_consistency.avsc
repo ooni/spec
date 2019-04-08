@@ -1,0 +1,113 @@
+{
+  "type": "record",
+  "fields": [
+    {
+      "name": "errors",
+      "type": {
+        "type": "map",
+        "values": [
+          "boolean",
+          "string"
+        ]
+      }
+    },
+    {
+      "name": "successful",
+      "type": {
+        "type": "array",
+        "items": "string"
+      }
+    },
+    {
+      "name": "inconsistent",
+      "type": {
+        "type": "array",
+        "items": "string"
+      }
+    },
+    {
+      "name": "queries",
+      "type": {
+        "type": "array",
+        "items": {
+          "type": "record",
+          "fields": [
+            {
+              "name": "resolver_hostname",
+              "type": "string"
+            },
+            {
+              "name": "query_type",
+              "type": "string"
+            },
+            {
+              "name": "hostname",
+              "type": "string"
+            },
+            {
+              "name": "answers",
+              "type": {
+                "type": "array",
+                "items": [
+                  {
+                    "type": "record",
+                    "fields": [
+                      {
+                        "name": "ipv4",
+                        "type": [
+                          "null",
+                          "string"
+                        ]
+                      },
+                      {
+                        "name": "answer_type",
+                        "type": "string"
+                      },
+                      {
+                        "name": "hostname",
+                        "type": [
+                          "null",
+                          "string"
+                        ]
+                      }
+                    ]
+                  },
+                  "null"
+                ]
+              }
+            },
+            {
+              "name": "failure",
+              "type": [
+                "null",
+                "string"
+              ]
+            },
+            {
+              "name": "resolver_port",
+              "type": "int"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "failures",
+      "type": {
+        "type": "array",
+        "items": "string"
+      }
+    },
+    {
+      "name": "test_resolvers",
+      "type": {
+        "type": "array",
+        "items": "string"
+      }
+    },
+    {
+      "name": "control_resolver",
+      "type": "string"
+    }
+  ]
+}

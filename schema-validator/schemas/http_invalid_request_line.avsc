@@ -1,0 +1,23 @@
+{
+  "type": "record",
+  "fields": [
+    {
+      "name": "tampering",
+      "type": "boolean"
+    },
+    {
+      "name": "received",
+      "type": {
+        "type": "array",
+        "items": "string"
+      }
+    },
+    {
+      "name": "sent",
+      "type": {
+        "type": "array",
+        "items": "string"
+      }
+    }
+  ]
+}

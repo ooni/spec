@@ -1,0 +1,243 @@
+{
+  "type": "record",
+  "fields": [
+    {
+      "name": "tcp_connect",
+      "type": {
+        "type": "array",
+        "items": {
+          "type": "record",
+          "fields": [
+            {
+              "name": "status",
+              "type": {
+                "type": "record",
+                "fields": [
+                  {
+                    "name": "failure",
+                    "type": "boolean"
+                  },
+                  {
+                    "name": "success",
+                    "type": "boolean"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "ip",
+              "type": "string"
+            },
+            {
+              "name": "port",
+              "type": "int"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "registration_server_status",
+      "type": "string"
+    },
+    {
+      "name": "socksproxy",
+      "type": "null"
+    },
+    {
+      "name": "whatsapp_web_status",
+      "type": "string"
+    },
+    {
+      "name": "queries",
+      "type": {
+        "type": "array",
+        "items": {
+          "type": "record",
+          "fields": [
+            {
+              "name": "engine",
+              "type": "string"
+            },
+            {
+              "name": "resolver_hostname",
+              "type": "null"
+            },
+            {
+              "name": "query_type",
+              "type": "string"
+            },
+            {
+              "name": "hostname",
+              "type": "string"
+            },
+            {
+              "name": "answers",
+              "type": {
+                "type": "array",
+                "items": {
+                  "type": "record",
+                  "fields": [
+                    {
+                      "name": "hostname",
+                      "type": [
+                        "null",
+                        "string"
+                      ]
+                    },
+                    {
+                      "name": "answer_type",
+                      "type": "string"
+                    },
+                    {
+                      "name": "ttl",
+                      "type": "null"
+                    },
+                    {
+                      "name": "ipv4",
+                      "type": [
+                        "null",
+                        "string"
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "failure",
+              "type": "null"
+            },
+            {
+              "name": "resolver_port",
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "whatsapp_endpoints_dns_inconsistent",
+      "type": {
+        "type": "array",
+        "items": "null"
+      }
+    },
+    {
+      "name": "agent",
+      "type": "string"
+    },
+    {
+      "name": "client_resolver",
+      "type": "string"
+    },
+    {
+      "name": "whatsapp_web_failure",
+      "type": "null"
+    },
+    {
+      "name": "whatsapp_endpoints_status",
+      "type": "string"
+    },
+    {
+      "name": "requests",
+      "type": {
+        "type": "array",
+        "items": {
+          "type": "record",
+          "fields": [
+            {
+              "name": "failure",
+              "type": "null"
+            },
+            {
+              "name": "request",
+              "type": {
+                "type": "record",
+                "fields": [
+                  {
+                    "name": "body",
+                    "type": "string"
+                  },
+                  {
+                    "name": "headers",
+                    "type": {
+                      "type": "map",
+                      "values": "string"
+                    }
+                  },
+                  {
+                    "name": "tor",
+                    "type": {
+                      "type": "record",
+                      "fields": [
+                        {
+                          "name": "is_tor",
+                          "type": "boolean"
+                        },
+                        {
+                          "name": "exit_ip",
+                          "type": "null"
+                        },
+                        {
+                          "name": "exit_name",
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "name": "url",
+                    "type": "string"
+                  },
+                  {
+                    "name": "method",
+                    "type": "string"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "response",
+              "type": {
+                "type": "record",
+                "fields": [
+                  {
+                    "name": "body",
+                    "type": "string"
+                  },
+                  {
+                    "name": "headers",
+                    "type": {
+                      "type": "map",
+                      "values": "string"
+                    }
+                  },
+                  {
+                    "name": "response_line",
+                    "type": "string"
+                  },
+                  {
+                    "name": "code",
+                    "type": "int"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "whatsapp_endpoints_blocked",
+      "type": {
+        "type": "array",
+        "items": "null"
+      }
+    },
+    {
+      "name": "registration_server_failure",
+      "type": "null"
+    }
+  ]
+}

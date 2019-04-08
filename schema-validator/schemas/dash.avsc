@@ -1,0 +1,571 @@
+{
+  "type": "record",
+  "fields": [
+    {
+      "name": "simple",
+      "type": {
+        "type": "record",
+        "fields": [
+          {
+            "name": "median_bitrate",
+            "type": "int"
+          },
+          {
+            "name": "connect_latency",
+            "type": "float"
+          },
+          {
+            "name": "min_playout_delay",
+            "type": "int"
+          }
+        ]
+      }
+    },
+    {
+      "name": "client_resolver",
+      "type": "string"
+    },
+    {
+      "name": "sender_data",
+      "type": {
+        "type": "array",
+        "items": {
+          "type": "record",
+          "fields": [
+            {
+              "name": "timestamp",
+              "type": "int"
+            },
+            {
+              "name": "ticks",
+              "type": "float"
+            },
+            {
+              "name": "iteration",
+              "type": "int"
+            },
+            {
+              "name": "web100_snap",
+              "type": {
+                "type": "record",
+                "fields": [
+                  {
+                    "name": "BytesRetrans",
+                    "type": "int"
+                  },
+                  {
+                    "name": "CurRwinRcvd",
+                    "type": "int"
+                  },
+                  {
+                    "name": "QuenchRcvd",
+                    "type": "int"
+                  },
+                  {
+                    "name": "SampleRTT",
+                    "type": "int"
+                  },
+                  {
+                    "name": "PktsRetrans",
+                    "type": "int"
+                  },
+                  {
+                    "name": "MaxRTT",
+                    "type": "int"
+                  },
+                  {
+                    "name": "SndLimBytesSender",
+                    "type": "int"
+                  },
+                  {
+                    "name": "LimCwnd",
+                    "type": "float"
+                  },
+                  {
+                    "name": "AckAfterFR",
+                    "type": "int"
+                  },
+                  {
+                    "name": "MaxRTO",
+                    "type": "int"
+                  },
+                  {
+                    "name": "RetranThresh",
+                    "type": "int"
+                  },
+                  {
+                    "name": "RecvISS",
+                    "type": "float"
+                  },
+                  {
+                    "name": "Timeouts",
+                    "type": "int"
+                  },
+                  {
+                    "name": "SndISS",
+                    "type": "int"
+                  },
+                  {
+                    "name": "LimRwin",
+                    "type": "int"
+                  },
+                  {
+                    "name": "NagleEnabled",
+                    "type": "int"
+                  },
+                  {
+                    "name": "TimestampsEnabled",
+                    "type": "int"
+                  },
+                  {
+                    "name": "WinScaleSent",
+                    "type": "int"
+                  },
+                  {
+                    "name": "DataBytesOut",
+                    "type": "int"
+                  },
+                  {
+                    "name": "MSSRcvd",
+                    "type": "int"
+                  },
+                  {
+                    "name": "AbruptTimeouts",
+                    "type": "int"
+                  },
+                  {
+                    "name": "NonRecovDA",
+                    "type": "int"
+                  },
+                  {
+                    "name": "WinScaleRcvd",
+                    "type": "int"
+                  },
+                  {
+                    "name": "SACKEnabled",
+                    "type": "int"
+                  },
+                  {
+                    "name": "ECERcvd",
+                    "type": "int"
+                  },
+                  {
+                    "name": "State",
+                    "type": "int"
+                  },
+                  {
+                    "name": "MinRwinRcvd",
+                    "type": "int"
+                  },
+                  {
+                    "name": "DataBytesIn",
+                    "type": "int"
+                  },
+                  {
+                    "name": "DupAcksOut",
+                    "type": "int"
+                  },
+                  {
+                    "name": "StartTimeUsec",
+                    "type": "int"
+                  },
+                  {
+                    "name": "SndLimTimeCwnd",
+                    "type": "int"
+                  },
+                  {
+                    "name": "LocalPort",
+                    "type": "int"
+                  },
+                  {
+                    "name": "CurSsthresh",
+                    "type": "float"
+                  },
+                  {
+                    "name": "CurAppRQueue",
+                    "type": "int"
+                  },
+                  {
+                    "name": "DupAcksIn",
+                    "type": "int"
+                  },
+                  {
+                    "name": "SndLimBytesCwnd",
+                    "type": "int"
+                  },
+                  {
+                    "name": "MinSsthresh",
+                    "type": "float"
+                  },
+                  {
+                    "name": "CurAppWQueue",
+                    "type": "int"
+                  },
+                  {
+                    "name": "CongestionOverCount",
+                    "type": "int"
+                  },
+                  {
+                    "name": "SendStall",
+                    "type": "int"
+                  },
+                  {
+                    "name": "MaxMSS",
+                    "type": "int"
+                  },
+                  {
+                    "name": "SndLimTimeRwin",
+                    "type": "int"
+                  },
+                  {
+                    "name": "StartTimeSec",
+                    "type": "int"
+                  },
+                  {
+                    "name": "RTTVar",
+                    "type": "int"
+                  },
+                  {
+                    "name": "SndLimTransCwnd",
+                    "type": "int"
+                  },
+                  {
+                    "name": "PktsOut",
+                    "type": "int"
+                  },
+                  {
+                    "name": "MaxRwinSent",
+                    "type": "int"
+                  },
+                  {
+                    "name": "PktsIn",
+                    "type": "int"
+                  },
+                  {
+                    "name": "PreCongSumCwnd",
+                    "type": "int"
+                  },
+                  {
+                    "name": "SndLimTransRwin",
+                    "type": "int"
+                  },
+                  {
+                    "name": "DataPktsOut",
+                    "type": "int"
+                  },
+                  {
+                    "name": "SubsequentTimeouts",
+                    "type": "int"
+                  },
+                  {
+                    "name": "MaxAppRQueue",
+                    "type": "int"
+                  },
+                  {
+                    "name": "CurReasmQueue",
+                    "type": "int"
+                  },
+                  {
+                    "name": "LocalAddressType",
+                    "type": "int"
+                  },
+                  {
+                    "name": "DSACKDups",
+                    "type": "int"
+                  },
+                  {
+                    "name": "MinRTO",
+                    "type": "int"
+                  },
+                  {
+                    "name": "MinMSS",
+                    "type": "int"
+                  },
+                  {
+                    "name": "SndLimTransSender",
+                    "type": "int"
+                  },
+                  {
+                    "name": "MaxCwnd",
+                    "type": "int"
+                  },
+                  {
+                    "name": "ThruBytesAcked",
+                    "type": "int"
+                  },
+                  {
+                    "name": "MaxSsthresh",
+                    "type": "int"
+                  },
+                  {
+                    "name": "MinRTT",
+                    "type": "int"
+                  },
+                  {
+                    "name": "SumRTT",
+                    "type": "int"
+                  },
+                  {
+                    "name": "PostCongSumRTT",
+                    "type": "int"
+                  },
+                  {
+                    "name": "SACKBlocksRcvd",
+                    "type": "int"
+                  },
+                  {
+                    "name": "LocalAddress",
+                    "type": "string"
+                  },
+                  {
+                    "name": "OtherReductions",
+                    "type": "int"
+                  },
+                  {
+                    "name": "SACKsRcvd",
+                    "type": "int"
+                  },
+                  {
+                    "name": "MaxRwinRcvd",
+                    "type": "int"
+                  },
+                  {
+                    "name": "SlowStart",
+                    "type": "int"
+                  },
+                  {
+                    "name": "ECNEnabled",
+                    "type": "int"
+                  },
+                  {
+                    "name": "CongestionSignals",
+                    "type": "int"
+                  },
+                  {
+                    "name": "CurRTO",
+                    "type": "int"
+                  },
+                  {
+                    "name": "CurRetxQueue",
+                    "type": "int"
+                  },
+                  {
+                    "name": "PreCongSumRTT",
+                    "type": "int"
+                  },
+                  {
+                    "name": "CurCwnd",
+                    "type": "int"
+                  },
+                  {
+                    "name": "MinRwinSent",
+                    "type": "int"
+                  },
+                  {
+                    "name": "CountRTT",
+                    "type": "int"
+                  },
+                  {
+                    "name": "PostCongCountRTT",
+                    "type": "int"
+                  },
+                  {
+                    "name": "SmoothedRTT",
+                    "type": "int"
+                  },
+                  {
+                    "name": "RcvNxt",
+                    "type": "float"
+                  },
+                  {
+                    "name": "SndLimBytesRwin",
+                    "type": "int"
+                  },
+                  {
+                    "name": "RemPort",
+                    "type": "int"
+                  },
+                  {
+                    "name": "CongAvoid",
+                    "type": "int"
+                  },
+                  {
+                    "name": "SndWinScale",
+                    "type": "int"
+                  },
+                  {
+                    "name": "RemAddress",
+                    "type": "string"
+                  },
+                  {
+                    "name": "SndMax",
+                    "type": "int"
+                  },
+                  {
+                    "name": "SndUna",
+                    "type": "int"
+                  },
+                  {
+                    "name": "MaxRetxQueue",
+                    "type": "int"
+                  },
+                  {
+                    "name": "CurRwinSent",
+                    "type": "int"
+                  },
+                  {
+                    "name": "FastRetran",
+                    "type": "int"
+                  },
+                  {
+                    "name": "SndNxt",
+                    "type": "int"
+                  },
+                  {
+                    "name": "ThruBytesReceived",
+                    "type": "int"
+                  },
+                  {
+                    "name": "ActiveOpen",
+                    "type": "int"
+                  },
+                  {
+                    "name": "SndLimTimeSender",
+                    "type": "int"
+                  },
+                  {
+                    "name": "CurTimeoutCount",
+                    "type": "int"
+                  },
+                  {
+                    "name": "MaxAppWQueue",
+                    "type": "int"
+                  },
+                  {
+                    "name": "MaxReasmQueue",
+                    "type": "int"
+                  },
+                  {
+                    "name": "DataPktsIn",
+                    "type": "int"
+                  },
+                  {
+                    "name": "Duration",
+                    "type": "int"
+                  },
+                  {
+                    "name": "RcvWinScale",
+                    "type": "int"
+                  },
+                  {
+                    "name": "CurMSS",
+                    "type": "int"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "failure",
+      "type": "null"
+    },
+    {
+      "name": "receiver_data",
+      "type": {
+        "type": "array",
+        "items": {
+          "type": "record",
+          "fields": [
+            {
+              "name": "real_address",
+              "type": "string"
+            },
+            {
+              "name": "uuid",
+              "type": "string"
+            },
+            {
+              "name": "delta_user_time",
+              "type": "int"
+            },
+            {
+              "name": "use_fixed_rates",
+              "type": "boolean"
+            },
+            {
+              "name": "elapsed_target",
+              "type": "int"
+            },
+            {
+              "name": "engine_name",
+              "type": "string"
+            },
+            {
+              "name": "timestamp",
+              "type": "int"
+            },
+            {
+              "name": "delta_sys_time",
+              "type": "int"
+            },
+            {
+              "name": "received",
+              "type": "int"
+            },
+            {
+              "name": "iteration",
+              "type": "int"
+            },
+            {
+              "name": "remote_address",
+              "type": "string"
+            },
+            {
+              "name": "engine_version",
+              "type": "string"
+            },
+            {
+              "name": "platform",
+              "type": "string"
+            },
+            {
+              "name": "rate",
+              "type": "int"
+            },
+            {
+              "name": "version",
+              "type": "string"
+            },
+            {
+              "name": "internal_address",
+              "type": "string"
+            },
+            {
+              "name": "fast_scale_down",
+              "type": "boolean"
+            },
+            {
+              "name": "constant_bitrate",
+              "type": "boolean"
+            },
+            {
+              "name": "elapsed",
+              "type": "float"
+            },
+            {
+              "name": "request_ticks",
+              "type": "float"
+            },
+            {
+              "name": "connect_time",
+              "type": "float"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

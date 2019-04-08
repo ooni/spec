@@ -1,0 +1,130 @@
+{
+  "type": "record",
+  "fields": [
+    {
+      "name": "failure",
+      "type": "null"
+    },
+    {
+      "name": "tampering",
+      "type": {
+        "type": "record",
+        "fields": [
+          {
+            "name": "request_line_capitalization",
+            "type": "boolean"
+          },
+          {
+            "name": "total",
+            "type": "boolean"
+          },
+          {
+            "name": "header_field_name",
+            "type": "boolean"
+          },
+          {
+            "name": "header_name_diff",
+            "type": {
+              "type": "array",
+              "items": "null"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "socksproxy",
+      "type": "null"
+    },
+    {
+      "name": "agent",
+      "type": "string"
+    },
+    {
+      "name": "client_resolver",
+      "type": "string"
+    },
+    {
+      "name": "requests",
+      "type": {
+        "type": "array",
+        "items": {
+          "type": "record",
+          "fields": [
+            {
+              "name": "failure",
+              "type": "null"
+            },
+            {
+              "name": "request",
+              "type": {
+                "type": "record",
+                "fields": [
+                  {
+                    "name": "body",
+                    "type": "string"
+                  },
+                  {
+                    "name": "headers",
+                    "type": {
+                      "type": "map",
+                      "values": "string"
+                    }
+                  },
+                  {
+                    "name": "tor",
+                    "type": {
+                      "type": "record",
+                      "fields": [
+                        {
+                          "name": "is_tor",
+                          "type": "boolean"
+                        },
+                        {
+                          "name": "exit_ip",
+                          "type": "null"
+                        },
+                        {
+                          "name": "exit_name",
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "name": "url",
+                    "type": "string"
+                  },
+                  {
+                    "name": "method",
+                    "type": "string"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "response",
+              "type": {
+                "type": "record",
+                "fields": [
+                  {
+                    "name": "body",
+                    "type": "string"
+                  },
+                  {
+                    "name": "response_line",
+                    "type": "string"
+                  },
+                  {
+                    "name": "code",
+                    "type": "int"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

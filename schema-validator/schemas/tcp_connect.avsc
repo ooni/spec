@@ -1,0 +1,9 @@
+{
+  "type": "record",
+  "fields": [
+    {
+      "name": "connection",
+      "type": "string"
+    }
+  ]
+}

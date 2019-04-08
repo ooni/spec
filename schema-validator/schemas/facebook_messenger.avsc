@@ -1,0 +1,176 @@
+{
+  "type": "record",
+  "fields": [
+    {
+      "name": "facebook_scontent_cdn_dns_consistent",
+      "type": "boolean"
+    },
+    {
+      "name": "facebook_external_cdn_dns_consistent",
+      "type": "boolean"
+    },
+    {
+      "name": "facebook_stun_reachable",
+      "type": "null"
+    },
+    {
+      "name": "facebook_b_graph_dns_consistent",
+      "type": "boolean"
+    },
+    {
+      "name": "tcp_connect",
+      "type": {
+        "type": "array",
+        "items": {
+          "type": "record",
+          "fields": [
+            {
+              "name": "status",
+              "type": {
+                "type": "record",
+                "fields": [
+                  {
+                    "name": "failure",
+                    "type": "boolean"
+                  },
+                  {
+                    "name": "success",
+                    "type": "boolean"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "ip",
+              "type": "string"
+            },
+            {
+              "name": "port",
+              "type": "int"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "facebook_b_graph_reachable",
+      "type": "boolean"
+    },
+    {
+      "name": "facebook_star_dns_consistent",
+      "type": "boolean"
+    },
+    {
+      "name": "facebook_edge_dns_consistent",
+      "type": "boolean"
+    },
+    {
+      "name": "facebook_star_reachable",
+      "type": "boolean"
+    },
+    {
+      "name": "client_resolver",
+      "type": "string"
+    },
+    {
+      "name": "facebook_b_api_reachable",
+      "type": "boolean"
+    },
+    {
+      "name": "facebook_tcp_blocking",
+      "type": "boolean"
+    },
+    {
+      "name": "facebook_external_cdn_reachable",
+      "type": "boolean"
+    },
+    {
+      "name": "facebook_scontent_cdn_reachable",
+      "type": "boolean"
+    },
+    {
+      "name": "facebook_edge_reachable",
+      "type": "boolean"
+    },
+    {
+      "name": "facebook_b_api_dns_consistent",
+      "type": "boolean"
+    },
+    {
+      "name": "facebook_stun_dns_consistent",
+      "type": "boolean"
+    },
+    {
+      "name": "queries",
+      "type": {
+        "type": "array",
+        "items": {
+          "type": "record",
+          "fields": [
+            {
+              "name": "engine",
+              "type": "string"
+            },
+            {
+              "name": "resolver_hostname",
+              "type": "null"
+            },
+            {
+              "name": "query_type",
+              "type": "string"
+            },
+            {
+              "name": "hostname",
+              "type": "string"
+            },
+            {
+              "name": "answers",
+              "type": {
+                "type": "array",
+                "items": {
+                  "type": "record",
+                  "fields": [
+                    {
+                      "name": "hostname",
+                      "type": [
+                        "null",
+                        "string"
+                      ]
+                    },
+                    {
+                      "name": "answer_type",
+                      "type": "string"
+                    },
+                    {
+                      "name": "ttl",
+                      "type": "null"
+                    },
+                    {
+                      "name": "ipv4",
+                      "type": [
+                        "null",
+                        "string"
+                      ]
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "name": "failure",
+              "type": "null"
+            },
+            {
+              "name": "resolver_port",
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "facebook_dns_blocking",
+      "type": "boolean"
+    }
+  ]
+}

@@ -1,0 +1,129 @@
+{
+  "type": "record",
+  "fields": [
+    {
+      "name": "control_failure",
+      "type": "null"
+    },
+    {
+      "name": "socksproxy",
+      "type": "null"
+    },
+    {
+      "name": "headers_diff",
+      "type": {
+        "type": "array",
+        "items": "string"
+      }
+    },
+    {
+      "name": "agent",
+      "type": "string"
+    },
+    {
+      "name": "experiment_failure",
+      "type": "null"
+    },
+    {
+      "name": "body_proportion",
+      "type": "float"
+    },
+    {
+      "name": "factor",
+      "type": "float"
+    },
+    {
+      "name": "body_length_match",
+      "type": "boolean"
+    },
+    {
+      "name": "requests",
+      "type": {
+        "type": "array",
+        "items": {
+          "type": "record",
+          "fields": [
+            {
+              "name": "response_length",
+              "type": "null"
+            },
+            {
+              "name": "request",
+              "type": {
+                "type": "record",
+                "fields": [
+                  {
+                    "name": "body",
+                    "type": "null"
+                  },
+                  {
+                    "name": "headers",
+                    "type": {
+                      "type": "map",
+                      "values": "string"
+                    }
+                  },
+                  {
+                    "name": "tor",
+                    "type": {
+                      "type": "record",
+                      "fields": [
+                        {
+                          "name": "is_tor",
+                          "type": "boolean"
+                        },
+                        {
+                          "name": "exit_name",
+                          "type": "null"
+                        },
+                        {
+                          "name": "exit_ip",
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "name": "url",
+                    "type": "string"
+                  },
+                  {
+                    "name": "method",
+                    "type": "string"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "response",
+              "type": {
+                "type": "record",
+                "fields": [
+                  {
+                    "name": "body",
+                    "type": "string"
+                  },
+                  {
+                    "name": "headers",
+                    "type": {
+                      "type": "map",
+                      "values": "string"
+                    }
+                  },
+                  {
+                    "name": "code",
+                    "type": "int"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "headers_match",
+      "type": "boolean"
+    }
+  ]
+}

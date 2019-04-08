@@ -1,0 +1,207 @@
+{
+  "type": "record",
+  "fields": [
+    {
+      "name": "sent_packets",
+      "type": {
+        "type": "array",
+        "items": {
+          "type": "record",
+          "fields": [
+            {
+              "name": "summary",
+              "type": "string"
+            },
+            {
+              "name": "raw_packet",
+              "type": {
+                "type": "record",
+                "fields": [
+                  {
+                    "name": "data",
+                    "type": "string"
+                  },
+                  {
+                    "name": "format",
+                    "type": "string"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "answered_packets",
+      "type": {
+        "type": "array",
+        "items": "null"
+      }
+    },
+    {
+      "name": "test_tcp_traceroute",
+      "type": {
+        "type": "record",
+        "fields": [
+          {
+            "name": "hops_0",
+            "type": {
+              "type": "array",
+              "items": "null"
+            }
+          },
+          {
+            "name": "hops_443",
+            "type": {
+              "type": "array",
+              "items": "null"
+            }
+          },
+          {
+            "name": "hops_80",
+            "type": {
+              "type": "array",
+              "items": "null"
+            }
+          },
+          {
+            "name": "hops_123",
+            "type": {
+              "type": "array",
+              "items": "null"
+            }
+          },
+          {
+            "name": "hops_8080",
+            "type": {
+              "type": "array",
+              "items": "null"
+            }
+          },
+          {
+            "name": "hops_53",
+            "type": {
+              "type": "array",
+              "items": "null"
+            }
+          },
+          {
+            "name": "hops_65535",
+            "type": {
+              "type": "array",
+              "items": "null"
+            }
+          },
+          {
+            "name": "hops_22",
+            "type": {
+              "type": "array",
+              "items": "null"
+            }
+          },
+          {
+            "name": "hops_23",
+            "type": {
+              "type": "array",
+              "items": "null"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "test_icmp_traceroute",
+      "type": {
+        "type": "record",
+        "fields": [
+          {
+            "name": "hops",
+            "type": {
+              "type": "array",
+              "items": "null"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "test_udp_traceroute",
+      "type": {
+        "type": "record",
+        "fields": [
+          {
+            "name": "hops_0",
+            "type": {
+              "type": "array",
+              "items": "null"
+            }
+          },
+          {
+            "name": "hops_443",
+            "type": {
+              "type": "array",
+              "items": "null"
+            }
+          },
+          {
+            "name": "hops_80",
+            "type": {
+              "type": "array",
+              "items": "null"
+            }
+          },
+          {
+            "name": "hops_123",
+            "type": {
+              "type": "array",
+              "items": "null"
+            }
+          },
+          {
+            "name": "hops_8080",
+            "type": {
+              "type": "array",
+              "items": "null"
+            }
+          },
+          {
+            "name": "hops_53",
+            "type": {
+              "type": "array",
+              "items": "null"
+            }
+          },
+          {
+            "name": "hops_65535",
+            "type": {
+              "type": "array",
+              "items": "null"
+            }
+          },
+          {
+            "name": "hops_22",
+            "type": {
+              "type": "array",
+              "items": "null"
+            }
+          },
+          {
+            "name": "hops_23",
+            "type": {
+              "type": "array",
+              "items": "null"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "answer_flags",
+      "type": {
+        "type": "array",
+        "items": "string"
+      }
+    }
+  ]
+}
