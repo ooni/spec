@@ -23,4 +23,6 @@ splitting redirect into different TCP segments or IP fragments. We
 hope that filters are not going to play _that_ sort of cat-and-mouse game
 against an attempt to increase transparency of network filters.
 
+See the PoC implementation at [github.com/darkk/rstlss](https://github.com/darkk/rstlss).
+
 <a name="fn1">1</a>: `SO_ATTACH_BPF` is available to non-privileged users at least on Linux and Android
