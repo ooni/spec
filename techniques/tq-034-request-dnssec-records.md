@@ -1,4 +1,4 @@
-tq-xxx Request DNSSEC-related records from resolver
+tq-034 Request DNSSEC-related records from resolver
 ===================================================
 
 When a network operator provides a DNS resolver for clients either explicitly
