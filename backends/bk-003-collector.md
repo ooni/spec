@@ -1,7 +1,7 @@
 # OONI collector specification
 
-* version: 2.0.0
-* date: 2019-03-13
+* version: 2.0.1
+* date: 2019-04-30
 * author: Simone Basso (v2.0.0); Arturo Filastò, Aaron Gibson (v1.4.0)
 
 This document aims at providing a functional specification of the OONI collector. It
@@ -129,11 +129,11 @@ request conforming to the following, informal specification:
         (optional, deprecated) `string` the IP address of the OONI probe client.
 
      "software_name":
-        `string` the name of the software that is creating a report (ex. "ooni-probe")
+        `string` the name of the software that is submitting the report (ex. "ooni-probe")
         that MUST match this regexp: `^[0-9A-Za-z_.+-]+$`.
 
      "software_version":
-        `string` the version of the software creating the report (ex. "0.0.10-beta")
+        `string` the version of the software submitting the report (ex. "0.0.10-beta")
         that MUST match the same regexp of `software_name`.
 
      "test_name":
