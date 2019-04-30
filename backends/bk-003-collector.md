@@ -1,6 +1,6 @@
 # OONI collector specification
 
-* version: 2.0.2
+* version: 2.0.3
 * date: 2019-04-30
 * author: Simone Basso (v2.0.0); Arturo Filastò, Aaron Gibson (v1.4.0)
 
@@ -262,7 +262,10 @@ the elapsed time between when it opened a report and when it is updating it. If 
 submission attempt fails with `4xx` _and_ the elapsed time is greater than one hour,
 the probe MUST open a new report and submit the measurement as part of this new
 report. In doing that, the probe MUST edit the saved measurement to replace
-the previous report ID with the newly obtained report ID.
+the previous report ID with the newly obtained report ID. (When opening a new
+report for attempting to resubmit a measurement, the client MUST, of course, use
+its own `software_name` and `software_version` and MUST NOT use the values of
+these variable that are written into the report being resubmitted.)
 
 To update a report, the probe issues a request compliant with:
 
