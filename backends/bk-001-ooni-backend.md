@@ -1,7 +1,7 @@
 # oonib specification
 
-* version: 1.4.1
-* date: 2019-03-13
+* version: 1.4.2
+* date: 2019-04-30
 * author: Arturo Filastò, Aaron Gibson, Simone Basso
 
 This document aims at providing a functional specification of oonib. At the
@@ -84,10 +84,10 @@ The HTTP request it performs is:
     {
 
      'software_name':
-        `string` the name of the software that is creating a report (ex. "ooni-probe")
+        `string` the name of the software that is submitting the report (ex. "ooni-probe")
 
      'software_version':
-        `string` the version of the software creating the report (ex. "0.0.10-beta")
+        `string` the version of the software submitting the report (ex. "0.0.10-beta")
 
      'probe_asn':
         `string` the Autonomous System Number of the network the test is
