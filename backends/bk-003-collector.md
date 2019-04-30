@@ -1,6 +1,6 @@
 # OONI collector specification
 
-* version: 2.0.1
+* version: 2.0.2
 * date: 2019-04-30
 * author: Simone Basso (v2.0.0); Arturo Filastò, Aaron Gibson (v1.4.0)
 
@@ -207,8 +207,8 @@ compliance with the following, informal specification:
     }
 
 Upon receiving a response, new written clients MUST check that the
-status is `200` before continuing, MUST ensure that the server suports
-its preferred data submission format, and MUST save the report ID.
+status is `200` before continuing, MUST ensure that the server supports
+their preferred data submission format, and MUST save the report ID.
 
 The following example shows how opening a report looks like from
 the point of view of a modern collector client (where the JSON
