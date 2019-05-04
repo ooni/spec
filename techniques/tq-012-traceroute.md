@@ -4,6 +4,7 @@ When the IP or IP:Port tuple is suspected to be blocked it is interesting to col
 - vary the host within the same /24 subnet keeping port and protocol the same
 - vary the host within a different /24 of the same AS keeping port and protocol the same
 - vary the port amongst the set of well-known<sup>[1](#fn1)</sup> ports keeping the protocol and IP the same
+- vary the port amongst the set of possibly-blacklisted ports (25, 135-139, 445, etc.) keeping the protocol and IP the same
 - vary the protocol comparing TCP to UDP and ICMP
 - vary the network path for UDP<sup>[2](#fn2)</sup> to account for possible ECMP routes
 - test a control vantage point<sup>[3](#fn3)</sup> to ensure that the network does not block all the traceroutes
@@ -30,6 +31,6 @@ sense for them and can’t be resolved on ingestion or later).
 
 ## Examples
 - AS8997, Russia blocks www.imperialviolet.org having address 159.203.111.115 due to partial Amazon ban. ICMP traceroute reaches destination, UDP traceroute reaches destination and shows ECMP in action, TCP traceroutes to ports 80 or 443 stop at AS1299 (≈same teleco, different AS), TCP traceroutes to random port and port 22 (ssh) both reach destination
-- see proxy notes in report on [Uganda Social Media Tax](https://ooni.torproject.org/post/uganda-social-media-tax/)
+- see proxy notes in report on [Uganda Social Media Tax](https://ooni.torproject.org/post/uganda-social-media-tax/), see also how 443/https and 25/smtp traceroutes differ
 - [AS8048, CANTV, Venezuela blocked tor](https://ooni.torproject.org/post/venezuela-internet-censorship/#testing) by IP:Port of ORs on reverse path, “forward” traceroute from the client could not capture that
 - see [Leonid’s talk at Chaos Constructions 2017](http://darkk.net.ru/garbage/RIPE-Atlas-OONI-and-CC2017.pdf) for PTR record samples
