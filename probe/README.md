@@ -132,7 +132,9 @@ is mainly meant to explain to new developers how all the pieces fit together.
 
 At this point, the engine will contact the collector, interaction (3), to
 open a report for the specific nettest. This means that the collector will
-be prepared for receiving and storing the results of the nettest.
+be prepared for receiving and storing the results of the nettest. In code
+terms, this means the collector will tell the engine the ID of the report, to
+be used to submit measurements as part of this report.
 
 ### Nettesting
 
