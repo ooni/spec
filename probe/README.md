@@ -18,6 +18,8 @@ parts of this document have become obsolete and we didn't notice.
 
 ![Architecture](ooniprobe.png)
 
+### Probe
+
 The probe is the software running network tests (aka nettests). The probe
 is an app for mobile or a desktop app. Current implementations are:
 
@@ -37,6 +39,8 @@ command line interface for Desktop (new implementation);
 graphical user interface for Desktop (new implementation). This is
 based on probe-cli.
 
+### Engine
+
 The engine is the piece of code running nettests. A specific implementation
 of the probe uses an engine. Current implementations are:
 
@@ -53,26 +57,40 @@ which contains its own engine written in Python.
 
 The operations discussed here are valid for all implementations.
 
+### Orchestra
+
 The [orchestra](../backends/bk-002-orchestra.md) is a
 set of servers used to provide probes with input for
 automatic network tests. This is currently experimental.
+
+### Geolookup
 
 The geolookup is a set of servers and databases used to discover the
 probe's IP, ASN (autonomous system number), CC (country code), and
 network name (name of the entity owning the ASN).
 
+### Bouncer
+
 The [bouncer](../backends/bk-004-bouncer.md)
 is a set of servers used by the probe to discover the
 collector and the test helper.
+
+### Collector
 
 The [collector](../backends/bk-003-collector.md)
 is a set of servers to which the probe submits the
 results of nettests.
 
+### Test helpers
+
 The test helpers are a set of servers useful to perform specific nettests. Their
-specs is available [as part of this repository](../backends).
+specs is available [as part of this repository](../backends). We only consider
+test helpers the servers that are under OONI control. Other servers will be
+used as part of our testing.
 
 ## Nettest flow
+
+### Orchestra
 
 Nettests are either user initiated or automatically initiated when
 using the orchestra. Interaction (0) describes when the probe communicates
@@ -91,8 +109,12 @@ the mobile and Desktop apps.
 
 When the test name and its input are known, the engine is invoked.
 
+### Bouncer
+
 The engine contacts the bouncer, as shown in interaction (1). This will
 tell the engine the available collectors and test helpers.
+
+### Geolookup
 
 Unless configured to skip this step, the engine will perform a geolookup
 as shown in interaction (2). The purpose of geolookup is to know the
@@ -105,9 +127,13 @@ policy](https://ooni.io/about/data-policy/), which you can read separately; when
 in doubt, the data policy will always have precedence over this document, which
 is mainly meant to explain to new developers how all the pieces fit together.
 
+### Opening a report
+
 At this point, the engine will contact the collector, interaction (3), to
 open a report for the specific nettest. This means that the collector will
 be prepared for receiving and storing the results of the nettest.
+
+### Nettesting
 
 When the report is open, the engine will perform the nettest. It may or
 may not use test helpers, depending on the nettest. This is modeled by
@@ -127,6 +153,8 @@ between the engine and a measurement server (which we don't consider a
 test helper because is not directly controlled by OONI). The performance
 measurements will be included into the results.
 
+### Submitting measurements
+
 Nettests that require input produce one measurement for each input. Instead,
 when there is no input, the nettest produces a single measurement. In this
 context, a measurement is a JSON document. The specification of the data
@@ -137,6 +165,8 @@ specific pieces of data on top of the general data format.
 Measurements produced by nettests are submitted to the OONI collector in
 the context of the previously openned report. This is again interaction
 (3), where the ID of the report is used to submit measurements.
+
+### Closing report and beyond
 
 Finally, the engine tells the collector to close the report (again
 interaction 3). This means the report will not accept further measurements
