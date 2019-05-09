@@ -178,4 +178,6 @@ automatic archiving and processing of the measurements. These actions
 are performed by the [OONI pipeline](
 https://github.com/ooni/pipeline). Data are accessible through the [OONI
 API](https://github.com/ooni/api) and browseable using the
-[OONI explorer](https://github.com/ooni/explorer).
+[OONI explorer](https://github.com/ooni/explorer). The [OONI sysadmin](
+https://github.com/ooni/sysadmin) repository contains the rules that
+we use to deploy and provision all the servers we control.
