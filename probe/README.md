@@ -53,7 +53,7 @@ which contains its own engine written in Python.
 
 The operations discussed here are valid for all implementations.
 
-The [orchestra](../../backends/bk-002-orchestra.md) is a
+The [orchestra](../backends/bk-002-orchestra.md) is a
 set of servers used to provide probes with input for
 automatic network tests. This is currently experimental.
 
@@ -61,16 +61,16 @@ The geolookup is a set of servers and databases used to discover the
 probe's IP, ASN (autonomous system number), CC (country code), and
 network name (name of the entity owning the ASN).
 
-The [bouncer](../../backends/bk-004-bouncer.md)
+The [bouncer](../backends/bk-004-bouncer.md)
 is a set of servers used by the probe to discover the
 collector and the test helper.
 
-The [collector](../../backends/bk-003-collector.md)
+The [collector](../backends/bk-003-collector.md)
 is a set of servers to which the probe submits the
 results of nettests.
 
 The test helpers are a set of servers useful to perform specific nettests. Their
-specs is available [as part of this repository](../../backends).
+specs is available [as part of this repository](../backends).
 
 ## Nettest flow
 
@@ -84,7 +84,7 @@ not finished implementing all of orchestra yet).
 Discovering the input for the test is also part of orchestra. For example,
 there is an orchestra endpoint for discovering the list of URLs that
 needs to be tested when performing [Web Connectivity](
-../../nettests/ts-017-web-connectivity.md) tests. As of this
+../nettests/ts-017-web-connectivity.md) tests. As of this
 writing, we're increasingly going towards using this functionality to
 decide what URLs to test rather than using static URLs shipped inside of
 the mobile and Desktop apps.
@@ -115,13 +115,13 @@ interaction (4). Depending on the nettest, there will be or will not be
 inputs, and there will be or not be test helpers. Two examples:
 
 1. if you run a [Web Connectivity](
-../..//nettests/ts-017-web-connectivity.md), this will require one or more URLs
+..//nettests/ts-017-web-connectivity.md), this will require one or more URLs
 as input. The engine will access those URLs and use a specific test helpers
 to also access those URLs and have a comparison. The results of comparing
 the engine and the test helper measurement will become the result of the
 web measurement;
 
-2. if you run a [NDT test](../../nettests/ts-022-ndt.md), there will be no input
+2. if you run a [NDT test](../nettests/ts-022-ndt.md), there will be no input
 and no OONI controlled test helper. However, the test will measure the performance
 between the engine and a measurement server (which we don't consider a
 test helper because is not directly controlled by OONI). The performance
@@ -131,7 +131,7 @@ Nettests that require input produce one measurement for each input. Instead,
 when there is no input, the nettest produces a single measurement. In this
 context, a measurement is a JSON document. The specification of the data
 format used by measurements is described [in this repository](
-../../data-formats) and every [nettest](../../nettests) includes its
+../data-formats) and every [nettest](../nettests) includes its
 specific pieces of data on top of the general data format.
 
 Measurements produced by nettests are submitted to the OONI collector in
