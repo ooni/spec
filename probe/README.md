@@ -85,8 +85,10 @@ results of nettests.
 
 The test helpers are a set of servers useful to perform specific nettests. Their
 specs is available [as part of this repository](../backends). We only consider
-test helpers the servers that are under OONI control. Other servers will be
-used as part of our testing.
+test helpers the servers that are under OONI control. As we will see later, there
+are other servers we don't control that are part of our testing (e.g., when we
+test a specific URL for censorship, the server being tested is obviously part of
+the testing process but is also most likely not under our control).
 
 ## Nettest flow
 
@@ -152,7 +154,8 @@ web measurement;
 2. If you run a [NDT test](../nettests/ts-022-ndt.md), there will be no input
 and no OONI controlled test helper. However, the test will measure the performance
 between the engine and a measurement server (which we don't consider a
-test helper because it is not directly controlled by OONI). The performance
+test helper because it is not directly controlled by OONI, but rather is
+provided by [Measurement Lab](https://www.measurementlab.net/)). The performance
 measurements will be included in the results.
 
 Nettests that require input produce one measurement for each input. Instead,
