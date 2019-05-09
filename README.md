@@ -11,9 +11,20 @@ This makes it possible to have a deep understanding of how OONI tests work,
 explain the assumption we make in them and make it possible to create
 independent implementations.
 
+To get an introduction of how we operate from the point of view of ooniprobe,
+i.e. the software that users can install, please see [the specific
+documentation describing that](probe). New developers would ideally want
+to be familiar with this document to understand the context.
+
+## Terminology
+
 *Nettests*
 
 Are network experiments in a box that deliver some meaningful results to end users.
+
+*Probe*
+
+The software that users runs to perform nettests.
 
 *Techniques*
 
@@ -28,7 +39,9 @@ Define how data is presented to end users or analysts.
 
 Are core OONI infrastructure components that are necessary to carry out experiments.
 
-We aim to have the specifications for backends eventually be part of the code repository of the relevant backend and have only links pointing to them in here.
+Every piece of code developer by OONI should ideally be specified in this
+repository and the specific code documentation should ideally refer to
+the specifications included into this repository.
 
 ## New proposal process
 
