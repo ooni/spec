@@ -107,7 +107,8 @@ writing, we're increasingly going towards using this functionality to
 decide what URLs to test rather than using static URLs shipped inside of
 the mobile and Desktop apps.
 
-When the test name and its input are known, the engine is invoked.
+When the test name and its input are known, we can move forward with
+the following steps.
 
 ### Bouncer
 
