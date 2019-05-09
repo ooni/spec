@@ -1,16 +1,16 @@
-# OONI probe specification
+# OONI Probe specification
 
 * version: 3.0.0
 * date: 2019-05-09
 * authors: Simone Basso
 
-The purpose of this document is to explain how OONI probe works. We're
+The purpose of this document is to explain how OONI Probe works. We're
 using version 3.0.0 because it's intended that version 2.0.0 is described
 by the existing implementations, and this version is meant to be the
 reference for upcoming code changes to match this spec.
 
-This document should serve as an introduction for the interested reader
-to the OONIverse. We will strive to keep it current, but it will inherently
+This document should serve as an introduction for the reader interested in
+the OONI-verse. We will strive to keep it current, but it will inherently
 age quicker than more specific specifications. Please, let us know if some
 parts of this document have become obsolete and we didn't notice.
 
@@ -21,7 +21,7 @@ parts of this document have become obsolete and we didn't notice.
 ### Probe
 
 The probe is the software running network tests (aka nettests). The probe
-is an app for mobile or a desktop app. Current implementations are:
+is an app for mobile or desktop. Current implementations are:
 
 - [github.com/ooni/probe-android](https://github.com/ooni/probe-android)
 for Android devices, written in Java;
@@ -94,18 +94,17 @@ used as part of our testing.
 
 Nettests are either user initiated or automatically initiated when
 using the orchestra. Interaction (0) describes when the probe communicates
-with orchestra to get information such as what test to run and with
-which input. Users can choose whether to enable orchestra. The specific
+with orchestra to get information, such as what test to run and with
+which input. Users can choose whether to enable orchestra or not. The specific
 policy for doing that depends on the app. (As of this writing, we have
 not finished implementing all of orchestra yet).
 
 Discovering the input for the test is also part of orchestra. For example,
 there is an orchestra endpoint for discovering the list of URLs that
 needs to be tested when performing [Web Connectivity](
-../nettests/ts-017-web-connectivity.md) tests. As of this
-writing, we're increasingly going towards using this functionality to
-decide what URLs to test rather than using static URLs shipped inside of
-the mobile and Desktop apps.
+../nettests/ts-017-web-connectivity.md) tests. We aim to use this functionality to
+decide which URLs to test, rather than using static URLs shipped inside of
+the mobile and desktop apps.
 
 When the test name and its input are known, we can move forward with
 the following steps.
@@ -119,13 +118,13 @@ tell the engine the available collectors and test helpers.
 
 Unless configured to skip this step, the engine will perform a geolookup
 as shown in interaction (2). The purpose of geolookup is to know the
-user IP, which is by default not included into the report, and information
+user IP, which by default is not included in the report, and information
 that can be guessed from the IP, like the ASN, the CC, etc. Knowing the
 IP also allows the engine to attempt to scrub the IP from the results, when
-the user has requested the engine not to include their IP (which is the
-default). In this document we don't want to the details of our [data
-policy](https://ooni.io/about/data-policy/), which you can read separately; when
-in doubt, the data policy will always have precedence over this document, which
+the user has requested the engine not to include their IP address (which is the
+default). In this document we don't get into the details of our [Data
+Policy](https://ooni.io/about/data-policy/), which you can read separately; when
+in doubt, the Data Policy will always have precedence over this document, which
 is mainly meant to explain to new developers how all the pieces fit together.
 
 ### Opening a report
@@ -143,18 +142,18 @@ may not use test helpers, depending on the nettest. This is modeled by
 interaction (4). Depending on the nettest, there will be or will not be
 inputs, and there will be or not be test helpers. Two examples:
 
-1. if you run a [Web Connectivity](
+1. If you run [Web Connectivity](
 ..//nettests/ts-017-web-connectivity.md), this will require one or more URLs
-as input. The engine will access those URLs and use a specific test helpers
-to also access those URLs and have a comparison. The results of comparing
+as input. The engine will access those URLs and use a specific test helper
+to also access those URLs and do a comparison. The results of comparing
 the engine and the test helper measurement will become the result of the
 web measurement;
 
-2. if you run a [NDT test](../nettests/ts-022-ndt.md), there will be no input
+2. If you run a [NDT test](../nettests/ts-022-ndt.md), there will be no input
 and no OONI controlled test helper. However, the test will measure the performance
 between the engine and a measurement server (which we don't consider a
-test helper because is not directly controlled by OONI). The performance
-measurements will be included into the results.
+test helper because it is not directly controlled by OONI). The performance
+measurements will be included in the results.
 
 Nettests that require input produce one measurement for each input. Instead,
 when there is no input, the nettest produces a single measurement. In this
@@ -172,12 +171,12 @@ the context of the previously openned report. This is again interaction
 ### Closing report and beyond
 
 Finally, the engine tells the collector to close the report (again
-interaction 3). This means the report will not accept further measurements
+interaction 3). This means that the report will not accept further measurements
 using the previously communicated report ID. This will also trigger the
 automatic archiving and processing of the measurements. These actions
 are performed by the [OONI pipeline](
-https://github.com/ooni/pipeline). Data are accessible through the [OONI
-API](https://github.com/ooni/api) and browseable using the
+https://github.com/ooni/pipeline). Data is accessible through the [OONI
+API](https://github.com/ooni/api) and browseable using
 [OONI explorer](https://github.com/ooni/explorer). The [OONI sysadmin](
 https://github.com/ooni/sysadmin) repository contains the rules that
 we use to deploy and provision all the servers we control.
