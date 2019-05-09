@@ -156,14 +156,14 @@ between the engine and a measurement server (which we don't consider a
 test helper because is not directly controlled by OONI). The performance
 measurements will be included into the results.
 
-### Submitting measurements
-
 Nettests that require input produce one measurement for each input. Instead,
 when there is no input, the nettest produces a single measurement. In this
 context, a measurement is a JSON document. The specification of the data
 format used by measurements is described [in this repository](
 ../data-formats) and every [nettest](../nettests) includes its
 specific pieces of data on top of the general data format.
+
+### Submitting measurements
 
 Measurements produced by nettests are submitted to the OONI collector in
 the context of the previously openned report. This is again interaction
