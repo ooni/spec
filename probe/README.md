@@ -16,7 +16,7 @@ parts of this document have become obsolete and we didn't notice.
 
 ## Architecture
 
-[Architecture](../ooniprobe.png)
+![Architecture](ooniprobe.png)
 
 The probe is the software running network tests (aka nettests). The probe
 is an app for mobile or a desktop app. Current implementations are:
