@@ -1,6 +1,6 @@
 # Specification version number
 
-0.2.0
+0.2.1
 
 # Specification name
 
@@ -172,7 +172,7 @@ ooni-backend.
 }
 ```
 
-# UTF-8 considerations
+## UTF-8 considerations
 
 A middlebox may respond with a purely or partially binary response that would not
 be JSON serializable. If that happens, the related entry in the `sent` key must be
