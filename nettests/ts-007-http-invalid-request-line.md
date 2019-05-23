@@ -171,6 +171,28 @@ ooni-backend.
     "test_version": "0.2"
 }
 ```
+
+# UTF-8 considerations
+
+A middlebox may respond with a purely or partially binary response that would not
+be JSON serializable. If that happens, the related entry in the `sent` key must be
+encoded using the same format used for binary HTTP response bodies, e.g.:
+
+```json
+{
+        "received": [
+            "",
+            "",
+            "",
+            "",
+            {
+                "data": "AQ05bwxG+MIS9g9MCV8tzSk=",
+                "format": "base64"
+            }
+        ],
+}
+```
+
 # Privacy considerations
 
 A middlebox could reveal the ooni-probe IP address by the
