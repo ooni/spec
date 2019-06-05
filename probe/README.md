@@ -1,11 +1,11 @@
 # OONI Probe specification
 
-* version: 3.0.0
-* date: 2019-05-09
+* version: 3.0.1
+* date: 2019-06-05
 * authors: Simone Basso
 
 The purpose of this document is to explain how OONI Probe works. We're
-using version 3.0.0 because it's intended that version 2.0.0 is described
+using version 3.0.0+ because it's intended that version 2.0.0 is described
 by the existing implementations, and this version is meant to be the
 reference for upcoming code changes to match this spec.
 
@@ -48,7 +48,7 @@ of the probe uses an engine. Current implementations are:
 https://github.com/measurement-kit/measurement-kit) C++ engine
 used for probe-android, probe-ios, probe-cli;
 
-- [github.com/measurement-kit/engine](https://github.com/measurement-kit/engine)
+- [github.com/ooni/probe-engine](https://github.com/ooni/probe-engine)
 experimental Go engine containing code that is not practical to write in C++,
 which will be used by probe-android, probe-ios, probe-cli;
 
@@ -145,7 +145,7 @@ interaction (4). Depending on the nettest, there will be or will not be
 inputs, and there will be or not be test helpers. Two examples:
 
 1. If you run [Web Connectivity](
-..//nettests/ts-017-web-connectivity.md), this will require one or more URLs
+../nettests/ts-017-web-connectivity.md), this will require one or more URLs
 as input. The engine will access those URLs and use a specific test helper
 to also access those URLs and do a comparison. The results of comparing
 the engine and the test helper measurement will become the result of the
