@@ -186,7 +186,9 @@ Upon receiving a request to create a report, the collector:
 
 ### Response body
 
-In case of failure, the collector MUST return a JSON object that MAY be empty.
+In case of failure, the collector MUST return a JSON object, whose content
+is implementation dependent and MAY be empty. Some existing implementations
+return a `{"error": "string"}` object to make debugging easier.
 
 In case of success (i.e. `200` response), the collector MUST return a JSON body
 generated in compliance with the following, informal specification:
@@ -349,7 +351,9 @@ Upon receiving this request, the collector:
 
 ### Response body
 
-In case of failure, the collector MUST return a JSON object that MAY be empty.
+In case of failure, the collector MUST return a JSON object, whose content
+is implementation dependent and MAY be empty. Some existing implementations
+return a `{"error": "string"}` object to make debugging easier.
 
 In case of `200` responses, new collector implementations MUST
 at least include a unique identifier for the measurement that the
@@ -419,15 +423,17 @@ To close a report, a probe should submit a request like:
 
 Upon receiving this request, a collector MUST mark a report
 as closed and MUST NOT accept further measurements for
-this report. If the report is not existing, a `4xx` error
-is returned to the client, including a JSON object body that
-MAY be empty. Otherwise, `200` is returned
+this report. If the report exists, `200` is returned
 and the response MUST include this body for backwards
 compatibility with existing implementations:
 
 ```JSON
 {"status": "success"}
 ```
+
+Otherwise, in case of failure, the collector MUST return a JSON object, whose
+content is implementation dependent and MAY be empty. Some existing implementations
+return a `{"error": "string"}` object to make debugging easier.
 
 The following example shows how closing a report looks like from
 the point of view of a modern collector client (where the JSON
@@ -482,7 +488,9 @@ containing _at least_ the following fields:
 }
 ```
 
-In case of failure, it MUST return a JSON object body that MAY be empty.
+Otherwise, in case of failure, the collector MUST return a JSON object, whose
+content is implementation dependent and MAY be empty. Some existing implementations
+return a `{"error": "string"}` object to make debugging easier.
 
 The following example shows how submitting a single measurement looks
 like from the point of view of a modern collector client (where the JSON
