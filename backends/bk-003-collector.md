@@ -1,8 +1,8 @@
 # OONI collector specification
 
-* version: 2.0.3
-* date: 2019-04-30
-* author: Simone Basso (v2.0.0); Arturo Filastò, Aaron Gibson (v1.4.0)
+* version: 2.0.4
+* date: 2019-08-19
+* author: Simone Basso (v2.0.0+); Arturo Filastò, Aaron Gibson (v1.4.0)
 
 This document aims at providing a functional specification of the OONI collector. It
 has been forked from version 1.4.0 of [bk-001-ooni-backend.md](bk-001-ooni-backend.md)
@@ -91,6 +91,8 @@ a monotonic clock to prevent clock jumps from miscalculating the elapsed time.
 
 ## 3.1 Create a new report
 
+### Request
+
 When a probe starts a test it will *create* a new report by sending a `POST`
 request conforming to the following, informal specification:
 
@@ -155,6 +157,8 @@ request conforming to the following, informal specification:
 Where the above is intended as an informal specification for generating a
 compliant, serialized JSON object.
 
+### Response status code
+
 Upon receiving a request to create a report, the collector:
 
 1. MUST fail with `4xx` if the request body does not parse, it is not a JSON object,
@@ -178,11 +182,14 @@ Upon receiving a request to create a report, the collector:
 5. SHOULD exercise care to avoid logging the `probe_ip` field, if set (e.g.
    by setting it immediately to `null` if such field is not used).
 
-6. if everything is okay, MUST return a `200` response with the body
-   described below.
+6. if everything is okay, MUST return a `200` response.
 
-In case of success, the collector MUST return a JSON body generated in
-compliance with the following, informal specification:
+### Response body
+
+In case of failure, the collector MUST return a JSON object that MAY be empty.
+
+In case of success (i.e. `200` response), the collector MUST return a JSON body
+generated in compliance with the following, informal specification:
 
     {
       "backend_version":
@@ -206,9 +213,13 @@ compliance with the following, informal specification:
         submitted reports. Allowed values are "json" and "yaml".
     }
 
+### Response processing requirements
+
 Upon receiving a response, new written clients MUST check that the
 status is `200` before continuing, MUST ensure that the server supports
 their preferred data submission format, and MUST save the report ID.
+
+### Example
 
 The following example shows how opening a report looks like from
 the point of view of a modern collector client (where the JSON
@@ -267,6 +278,8 @@ report for attempting to resubmit a measurement, the client MUST, of course, use
 its own `software_name` and `software_version` and MUST NOT use the values of
 these variable that are written into the report being resubmitted.)
 
+### Request
+
 To update a report, the probe issues a request compliant with:
 
     POST /report/${report_id}
@@ -280,6 +293,8 @@ To update a report, the probe issues a request compliant with:
      "format":
         `string` either "json" or "yaml".
     }
+
+### Response status code
 
 Upon receiving this request, the collector:
 
@@ -332,6 +347,10 @@ Upon receiving this request, the collector:
 
 9. if everything is okay, returns `200` to the client (see below).
 
+### Response body
+
+In case of failure, the collector MUST return a JSON object that MAY be empty.
+
 In case of `200` responses, new collector implementations MUST
 at least include a unique identifier for the measurement that the
 client may later use to reference said measurement. For example:
@@ -343,6 +362,8 @@ client may later use to reference said measurement. For example:
 
 As far as the client is concerned, this `measurement_id` is an
 opaque UTF-8 string that has some meaning to the server.
+
+### Example
 
 The following example shows how updating a report looks like from
 the point of view of a modern collector client (where the JSON
@@ -399,7 +420,8 @@ To close a report, a probe should submit a request like:
 Upon receiving this request, a collector MUST mark a report
 as closed and MUST NOT accept further measurements for
 this report. If the report is not existing, a `4xx` error
-is returned to the client. Otherwise, `200` is returned
+is returned to the client, including a JSON object body that
+MAY be empty. Otherwise, `200` is returned
 and the response MUST include this body for backwards
 compatibility with existing implementations:
 
@@ -459,6 +481,8 @@ containing _at least_ the following fields:
  "report_id":"20190313T131942Z_AS30722_dU70oZPs80d5E21z8Ef6GXel6CwsdLoXvDk44Fsajv1LDLOIeI"
 }
 ```
+
+In case of failure, it MUST return a JSON object body that MAY be empty.
 
 The following example shows how submitting a single measurement looks
 like from the point of view of a modern collector client (where the JSON
