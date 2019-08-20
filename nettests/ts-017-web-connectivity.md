@@ -1,6 +1,6 @@
 # Specification version number
 
-2019-08-14-001
+2019-08-20-001
 
 # Specification name
 
@@ -28,6 +28,8 @@ One URL per line:
 http://example-1.com/
 http://example-2.com/path1/
 http://example-3.com/path2/
+
+URLs may contain IP address rather than domain names.
 
 # Test description
 
@@ -65,8 +67,10 @@ The experiment itself consists of the following steps:
 
 2. **DNS lookup**
    Perform an A query to the default resolver for the hostname of the URL to be
-   tested.
+   tested, if that hostname is a domain name.
    Record the list of A records in a list inside the report under the key "ips".
+   Otherwise, if the hostname is an IP address, the just skip this step and
+   insert such IP address into the "ips" list.
 
 3. **TCP connect**
    Attempt to establish a TCP session on port 80 for the list of IPs identified
@@ -91,7 +95,8 @@ The experiment itself consists of the following steps:
      The value of the report key "dns_consistency" can be the one of the following:
 
         * 'consistent' if the IP addresses of the A lookup from the control
-          match exactly those of the experiment.
+          match exactly those of the experiment, or if the URL contained
+          an IP address rather than a domain name.
 
         * 'reverse_match' if the reverse lookup for any of the IPs in the DNS
           answer match (a match is defined as having any the domain.tld section
