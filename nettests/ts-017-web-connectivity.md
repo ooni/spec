@@ -95,7 +95,7 @@ The experiment itself consists of the following steps:
      The value of the report key "dns_consistency" can be the one of the following:
 
         * 'consistent' if the IP addresses of the A lookup from the control
-          match exactly those of the experiment, or if the URL contained
+          match exactly those of the experiment, or if the URL contains
           an IP address rather than a domain name.
 
         * 'reverse_match' if the reverse lookup for any of the IPs in the DNS
