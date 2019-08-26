@@ -29,7 +29,7 @@ http://example-1.com/
 http://example-2.com/path1/
 http://example-3.com/path2/
 
-URLs may contain IP address rather than domain names.
+URLs may contain IP addresses rather than domain names.
 
 # Test description
 
