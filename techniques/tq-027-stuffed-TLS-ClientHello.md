@@ -5,9 +5,11 @@ If a TLS request triggers an unexpected response it is interesting to try
 different behavior. Possible fields for "stuffing" are:
 
 - Session ID, 256 bytes
-- Cipher Suites, 65536 bytes
+- Cipher Suites, ~16 Kbytes
 - Compression Methods, 256 bytes
-- Extensions, 65536 bytes
+- Extensions (especially Padding), ~16 Kbytes
+
+The whole ClientHello packet is limited to 16 Kbytes.
 
 This technique is different from [tq-024 TCP Segmentation](./tq-024-TCP-segmentation.md)
 as it does not produce undersized packets.
