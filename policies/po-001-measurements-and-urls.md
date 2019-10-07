@@ -31,21 +31,3 @@ and/or any other system run by OONI to gather network measurement data.
 
 8. If anybody suspects that any of these rules have not been followed or there
    is suspicion of abuse, please contact anybody in the Governance roster.
-
-## Governance roster
-
-* Arturo Filastò <arturo@openobservatory.org>
-  PGP: 67EF 3966 5099 86E9 6ACE  E84E 5D67 CD18 7022 87F4
-  Date added: 2017-01-23
-
-* Simone Basso <simone@openobservatory.org>
-  PGP: 7388 77AA 6C82 9F26 A431  C5F4 80B6 9127 7733 D95B
-  Date added: 2017-01-23
-
-* Maria Xynou <maria@openobservatory.org>
-  PGP: 2DC8 AFB6 CA11 B552 1081  FBDE 2131 B3BE 70CA 417E
-  Date added: 2017-11-10
-  
-* Leonid Evdokimov <leonid@openobservatory.org>
-  PGP: 6691 DE6B 4CCD C1C1 76A0  0D4A E1F2 A980 7F50 FAB2
-  Date added: 2017-11-10
