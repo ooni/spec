@@ -97,7 +97,9 @@ Data Format Version: 0.2.0
 
     "test_keys": {
         "The keys that are specific to the test"
-    }
+    },
+
+    "signature": "The signature of the data object, defined below.",
 }
 ```
 
@@ -131,7 +133,8 @@ Data Format Version: 0.2.0
     "test_start_time": "2015-11-22 10:32:02",
     "test_version": "0.2.4",
     "test_keys": {
-    }
+    },
+    "signature": "XXXTODO",
 }
 ```
 
@@ -185,3 +188,72 @@ error_string:
 * This will be the error message if the task has timed out: `task_timed_out`
 
 * Every other failure: 'unknown_failure %s' % str(failure.value)
+
+
+# Signatures
+
+Test data objects are signed by a probe-specific key, so that OONI users setting
+up trustworthy probes (for which they might know additional metadata) can access
+the measurements those specific probes generated, in such a way that the origin
+of the measurement cannot be forged.
+
+The signatures should provide the following properties:
+- measurements produced by the same probe should not be linkable without
+  knowledge of the probe's public key;
+- the signatures should be verifiable independently of content-preserving
+  transformations applied to the object's representation (e.g. reindenting the
+  JSON, converting it to YAML or to a binary format, ...);
+- it should be possible to selectively redact fields from the data object
+  without breaking the signature, so as to be able to redact privacy-critical
+  information *a posteriori* if it ever is necessary.
+
+
+Given those design goals, the signatures are specified as
+`ECVRF(objecthash(data))`; [objecthash] is an encoding-agnostic hash
+construction for JSON-like objects -- which is applicable to JSON, YAML,
+ProtoBuf, ... -- and [ECVRF] is a Verifiable Random Function constructed over
+elliptic curves; ECVRF is instanciated as XXXTODO.
+
+[ECVRF]: https://tools.ietf.org/html/draft-goldbe-vrf-01#section-5
+[objecthash]: https://github.com/benlaurie/objecthash
+
+
+## Privacy considerations
+
+### “Always-on” signatures
+
+To avoid drastically reducing the anonymity set of probes which belong to an
+organisation using the signature feature, all probes should be signing their
+measurement data.  As an extreme example, if only a single probe was signing its
+measurements, they could be trivially linked together.
+
+There are two possible designs here:
+- either all probes generate a persistent probe key if it is absent, and use it
+  to sign measurements,
+- or probes that do not have a persistent probe key generate an ephemeral key
+  each time they sign a measurement.
+
+Systematically generating a persistent key means that it is possible to set up a
+probe (without doing anything special) and later obtain its public key to be
+able to access its measurements; on the other hand, a break in ECVRF (including
+the potential future where the adversary has sufficiently-large quantum
+computers) could result in measurements being linkable for all probes (if they
+all use persistent keys).
+
+XXXTODO: Is there a construction for signatures that is unconditionally hiding?
+         That would let us have our cake and eat it too  :)
+
+
+### Fields redaction
+
+If we ever define fields which we expect to redact at some point, we should
+decorate them with a random string (256b of entropy) to guarantee that the
+redacted data cannot be deduced from its hash.
+
+This is a [known issue](https://github.com/benlaurie/objecthash#redactability),
+and decorating with random strings guarantees that the hash cannot be reverted.
+
+
+XXXTODO: Could we use an ObjectHash variant that uses the VRF in such a way
+         that only the probe can compute the hash of the object (and inner
+         values), preventing redacted fields from being reverted?
