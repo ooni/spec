@@ -30,6 +30,10 @@ data format.
                 "Header-Name": "Header-Value"
             },
 
+            "headers_list": [
+              ["Header-Name", "Header-Value (since v0.2.1)"],
+            ],
+
             "method": "GET|POST|PUT",
             "tor": {
                 "exit_ip": "The address of the Tor exit used for the request or "
@@ -50,8 +54,12 @@ data format.
                 "Currently the only type of format supported is base64.",
 
             "headers": {
-                "Header-Name": "Header-Value"
-            }
+                "Header-Name": "Header-Value",
+            },
+
+            "headers_list": [
+              ["Header-Name", "Header-Value (since v0.2.1)"],
+            ],
         },
         "response_length": null
     }
