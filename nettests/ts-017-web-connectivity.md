@@ -25,9 +25,11 @@ A list of URLs to be tested.
 
 One URL per line:
 
+```
 http://example-1.com/
 http://example-2.com/path1/
 http://example-3.com/path2/
+```
 
 URLs may contain IP addresses rather than domain names.
 
