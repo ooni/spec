@@ -26,6 +26,8 @@ data format.
             "body": "If the request of the client contains some payload it "
                 "will be in here, otherwise it is set to null",
 
+            "body_is_truncated": "(optional; since v0.2.1) True if the body is truncated",
+
             "headers": {
                 "Header-Name": "Header-Value"
             },
@@ -52,6 +54,8 @@ data format.
                 "then this will be a dictionary containing the format in which the binary data is encoded and "
                 "the encoded data (ex. {"format": "base64", "data": "AQI="}). "
                 "Currently the only type of format supported is base64.",
+
+            "body_is_truncated": "(optional; since v0.2.1) True if the body is truncated",
 
             "headers": {
                 "Header-Name": "Header-Value",
