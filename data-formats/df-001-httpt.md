@@ -1,6 +1,6 @@
 # HTTPTest template data format
 
-Data Format Version: 0.2.0
+Data Format Version: 0.2.1
 
 This is the specification of the data format that every test that is
 based on ooni.templates.httpt.HTTPTest shall be using.
