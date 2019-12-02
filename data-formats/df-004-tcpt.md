@@ -1,6 +1,6 @@
 # TCPTest data format
 
-Data Format Version: 0.2.0
+Data Format Version: 0.3.0
 
 This specifies the data format for tests that are based on
 `ooni.templates.tcpt.TCPTest`.
