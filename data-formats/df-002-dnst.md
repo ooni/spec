@@ -1,6 +1,6 @@
 # DNSTest template data format
 
-Data Format Version: 0.2.0
+Data Format Version: 0.3.0
 
 This is the specification of the data format that every test that is
 based on ooni.templates.dnst.DNSTest shall be using.

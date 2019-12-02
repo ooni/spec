@@ -1,6 +1,6 @@
 # HTTPTest template data format
 
-Data Format Version: 0.2.1
+Data Format Version: 0.3.0
 
 This is the specification of the data format that every test that is
 based on ooni.templates.httpt.HTTPTest shall be using.
@@ -26,14 +26,14 @@ data format.
             "body": "If the request of the client contains some payload it "
                 "will be in here, otherwise it is set to null",
 
-            "body_is_truncated": "(optional; since v0.2.1) True if the body is truncated",
+            "body_is_truncated": "(optional; since v0.3.0) True if the body is truncated",
 
             "headers": {
                 "Header-Name": "Header-Value"
             },
 
             "headers_list": [
-              ["Header-Name", "Header-Value (since v0.2.1)"],
+              ["Header-Name", "Header-Value (since v0.3.0)"],
             ],
 
             "method": "GET|POST|PUT",
@@ -55,14 +55,14 @@ data format.
                 "the encoded data (ex. {"format": "base64", "data": "AQI="}). "
                 "Currently the only type of format supported is base64.",
 
-            "body_is_truncated": "(optional; since v0.2.1) True if the body is truncated",
+            "body_is_truncated": "(optional; since v0.3.0) True if the body is truncated",
 
             "headers": {
                 "Header-Name": "Header-Value",
             },
 
             "headers_list": [
-              ["Header-Name", "Header-Value (since v0.2.1)"],
+              ["Header-Name", "Header-Value (since v0.3.0)"],
             ],
         },
         "response_length": null
