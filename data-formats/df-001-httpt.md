@@ -29,11 +29,11 @@ data format.
             "body_is_truncated": "(optional; since v0.3.0) True if the body is truncated",
 
             "headers": {
-                "Header-Name": "Header-Value"
+                "Header-Name": "Header-Value (treated like body if binary)"
             },
 
             "headers_list": [
-              ["Header-Name", "Header-Value (since v0.3.0)"],
+              ["Header-Name", "Header-Value (since v0.3.0; treated like body if binary)"],
             ],
 
             "method": "GET|POST|PUT",
@@ -58,11 +58,11 @@ data format.
             "body_is_truncated": "(optional; since v0.3.0) True if the body is truncated",
 
             "headers": {
-                "Header-Name": "Header-Value",
+                "Header-Name": "Header-Value (treated like body if binary)",
             },
 
             "headers_list": [
-              ["Header-Name", "Header-Value (since v0.3.0)"],
+              ["Header-Name", "Header-Value (since v0.3.0; treated like body if binary)"],
             ],
         },
         "response_length": null
