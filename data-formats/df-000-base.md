@@ -101,8 +101,7 @@ available values are currently the following:
   - `0.2.1`: should have been `0.3.0` because we moved the `resolver_ip`
     field to toplevel. Was used by unstable OONI Probe CLI v3.0.0.
 
-  - `0.3.0`: minor revision of the JSON format. OONI Probe CLI v3.x and
-    OONI Probe Mobile using `github.com/ooni/probe-engine`.
+  - `0.3.0`: minor revision of the JSON format.
 
   - `0.3.1`: added toplevel `resolver_asn` and `resolver_network_name`.
 
