@@ -224,7 +224,7 @@ This test does not capture packets by default.
 The original nettest implemented in ooni/probe-legacy was [v0.1.0](
 https://github.com/ooni/spec/blob/696dcbf76e89ae32f53e7f552a524bed41ee0d05/nettests/ts-015-psiphon.md). The new
 experiment implemented in ooni/probe-engine is v0.3.0. We briefly used
-v0.2.0 while developing v0.3.0. The semantics and caveats of this experiment
+v0.2.0 while developing v0.3.0. The semantics and caveats of this nettest
 have changed significantly with v0.3.0. Please, refer to [the v0.1.0 for
 more specific information about the previous implementation of this nettest](
 https://github.com/ooni/spec/blob/696dcbf76e89ae32f53e7f552a524bed41ee0d05/nettests/ts-015-psiphon.md).
