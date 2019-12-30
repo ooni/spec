@@ -41,13 +41,20 @@ zero if the bootstrap did not succeed;
 - `failure` (`string|null`): string indicating the error that occurred
 or `null` if no error occurred;
 
-- `max_runtime` (`float64`): time after which a running psiphon
-nettest is interrupted.
+- `max_runtime` (`float64`): timeout for the whole nettest.
 
 ## Possible conclusions
 
 We can determine whether or not Psiphon is able to bootstrap. We can
 determine whether or not a specific URL is reachable via Psiphon.
+
+If `bootstrap_time` is zero and `failure` is not `null`, then there was
+an error bootstrapping Psiphon. Otherwise, if `bootstrap_time` is nonzero
+and `failure` is not `null`, there was an error when using Psiphon.
+
+The case where `bootstrap_time` is zero and `failure` is `null` should
+not happen. The case where `failure` is `null` and `bootstrap_time`
+is nonzero is the common case where it did work.
 
 ## Example output sample
 
