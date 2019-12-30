@@ -16,8 +16,8 @@ Ability to measure whether Psiphon is working from the given network vantage poi
 
 # Expected inputs
 
-A valid Psiphon configuration file. OONI Probe will download such
-configuration file automatically using the OONI Orchestra web services.
+None: Psiphon requires a valid configuration file, but OONI Probe will download
+it using the OONI orchestra web services.
 
 # Test description
 
