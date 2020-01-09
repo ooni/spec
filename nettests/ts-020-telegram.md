@@ -1,6 +1,6 @@
 # Specification version number
 
-2016-04-04-001
+2020-01-09-001
 
 # Specification name
 
@@ -126,6 +126,7 @@ If none of the access points are blocked then we write:
 ## Parent data format
 
 * df-001-httpt
+* df-002-dnst
 
 ## Semantics
 
@@ -162,201 +163,1147 @@ The meaning of the various keys is described in the above section.
 
 ```json
 {
-    "annotations": {
-        "platform": "linux"
-    },
-    "data_format_version": "0.2.0",
-    "id": "70b17d09-2d63-4639-a7a1-9101def471af",
-    "input": null,
-    "input_hashes": [],
-    "measurement_start_time": "2017-04-07 01:33:25",
-    "options": [],
-    "probe_asn": "AS3320",
-    "probe_cc": "DE",
-    "probe_city": null,
-    "probe_ip": "127.0.0.1",
-    "report_id": "91Ug70AUS4LTLahA6XVZW2QhcHxgEZS4ydYEjwzEtM3iIgL3MHt29kth3oBO5BES",
-    "software_name": "ooniprobe",
-    "software_version": "2.2.0",
-    "test_helpers": {},
-    "test_keys": {
-        "agent": "redirect",
-        "requests": [
-            {
-                "failure": "connection_refused_error",
-                "request": {
-                    "body": null,
-                    "headers": {},
-                    "method": "GET",
-                    "tor": {
-                        "exit_ip": null,
-                        "exit_name": null,
-                        "is_tor": false
-                    },
-                    "url": "https://web.telegram.org/"
-                },
-                "response": null
-            },
-            {
-                "failure": "connection_refused_error",
-                "request": {
-                    "body": null,
-                    "headers": {},
-                    "method": "GET",
-                    "tor": {
-                        "exit_ip": null,
-                        "exit_name": null,
-                        "is_tor": false
-                    },
-                    "url": "http://web.telegram.org/"
-                },
-                "response": null
-            },
-            {
-                "failure": "generic_timeout_error",
-                "request": {
-                    "body": null,
-                    "headers": {},
-                    "method": "POST",
-                    "tor": {
-                        "exit_ip": null,
-                        "exit_name": null,
-                        "is_tor": false
-                    },
-                    "url": "http://149.154.175.50:80"
-                },
-                "response": null
-            },
-            {
-                "failure": "generic_timeout_error",
-                "request": {
-                    "body": null,
-                    "headers": {},
-                    "method": "POST",
-                    "tor": {
-                        "exit_ip": null,
-                        "exit_name": null,
-                        "is_tor": false
-                    },
-                    "url": "http://149.154.175.50:443"
-                },
-                "response": null
-            },
-            {
-                "failure": null,
-                "request": {
-                    "body": null,
-                    "headers": {},
-                    "method": "POST",
-                    "tor": {
-                        "exit_ip": null,
-                        "exit_name": null,
-                        "is_tor": false
-                    },
-                    "url": "http://149.154.167.51:80"
-                },
-                "response": {
-                    "body": "<html>\r\n<head><title>501 Not Implemented</title></head>\r\n<body bgcolor=\"white\">\r\n<center><h1>501 Not Implemented</h1></center>\r\n<hr><center>nginx/0.3.33</center>\r\n</body>\r\n</html>\r\n",
-                    "code": 501,
-                    "headers": {
-                        "Content-Type": "text/html",
-                        "Date": "Fri, 07 Apr 2017 01:34:26 GMT",
-                        "Server": "nginx/0.3.33"
-                    }
-                }
-            }
+  "data_format_version": "0.3.1",
+  "measurement_start_time": "2020-01-09 10:47:18",
+  "test_runtime": 5.180580507,
+  "probe_asn": "AS30722",
+  "probe_cc": "IT",
+  "probe_ip": "127.0.0.1",
+  "report_id": "20200109T104718Z_AS30722_mziQrgknAZXPk13DgIV3CVNdoVQaxQFqIXiP0scW6r1nTgBfdM",
+  "resolver_asn": "AS15169",
+  "resolver_ip": "172.217.34.3",
+  "resolver_network_name": "Google LLC",
+  "software_name": "miniooni",
+  "software_version": "0.1.0-dev",
+  "test_keys": {
+    "agent": "redirect",
+    "queries": [
+      {
+        "answers": [
+          {
+            "answer_type": "A",
+            "ipv4": "149.154.167.99",
+            "ttl": null
+          }
         ],
-        "socksproxy": null,
-        "tcp_connect": [
-            {
-                "ip": "149.154.167.51",
-                "port": 443,
-                "status": {
-                    "failure": false,
-                    "success": true
-                }
-            },
-            {
-                "ip": "149.154.167.51",
-                "port": 80,
-                "status": {
-                    "failure": false,
-                    "success": true
-                }
-            },
-            {
-                "ip": "149.154.167.91",
-                "port": 443,
-                "status": {
-                    "failure": false,
-                    "success": true
-                }
-            },
-            {
-                "ip": "149.154.167.91",
-                "port": 80,
-                "status": {
-                    "failure": false,
-                    "success": true
-                }
-            },
-            {
-                "ip": "149.154.175.100",
-                "port": 443,
-                "status": {
-                    "failure": false,
-                    "success": true
-                }
-            },
-            {
-                "ip": "149.154.175.100",
-                "port": 80,
-                "status": {
-                    "failure": false,
-                    "success": true
-                }
-            },
-            {
-                "ip": "149.154.171.5",
-                "port": 80,
-                "status": {
-                    "failure": false,
-                    "success": true
-                }
-            },
-            {
-                "ip": "149.154.171.5",
-                "port": 443,
-                "status": {
-                    "failure": false,
-                    "success": true
-                }
-            },
-            {
-                "ip": "149.154.175.50",
-                "port": 443,
-                "status": {
-                    "failure": "generic_timeout_error",
-                    "success": false
-                }
-            },
-            {
-                "ip": "149.154.175.50",
-                "port": 80,
-                "status": {
-                    "failure": "generic_timeout_error",
-                    "success": false
-                }
-            }
+        "engine": "system",
+        "failure": null,
+        "hostname": "web.telegram.org",
+        "query_type": "A",
+        "resolver_hostname": null,
+        "resolver_port": null,
+        "resolver_address": ""
+      },
+      {
+        "answers": [
+          {
+            "answer_type": "AAAA",
+            "ipv6": "2001:67c:4e8:1033:2:100:0:a",
+            "ttl": null
+          },
+          {
+            "answer_type": "AAAA",
+            "ipv6": "2001:67c:4e8:1033:3:100:0:a",
+            "ttl": null
+          },
+          {
+            "answer_type": "AAAA",
+            "ipv6": "2001:67c:4e8:1033:5:100:0:a",
+            "ttl": null
+          },
+          {
+            "answer_type": "AAAA",
+            "ipv6": "2001:67c:4e8:1033:6:100:0:a",
+            "ttl": null
+          }
         ],
-        "telegram_http_blocking": false,
-        "telegram_tcp_blocking": false,
-        "telegram_web_failure": "connection_refused_error",
-        "telegram_web_status": "blocked"
-    },
-    "test_name": "telegram",
-    "test_runtime": 60.416918992996216,
-    "test_start_time": "2017-04-07 01:33:25",
-    "test_version": "0.3.0"
+        "engine": "system",
+        "failure": null,
+        "hostname": "web.telegram.org",
+        "query_type": "AAAA",
+        "resolver_hostname": null,
+        "resolver_port": null,
+        "resolver_address": ""
+      },
+      {
+        "answers": [
+          {
+            "answer_type": "A",
+            "ipv4": "149.154.167.99",
+            "ttl": null
+          }
+        ],
+        "engine": "system",
+        "failure": null,
+        "hostname": "web.telegram.org",
+        "query_type": "A",
+        "resolver_hostname": null,
+        "resolver_port": null,
+        "resolver_address": ""
+      },
+      {
+        "answers": [
+          {
+            "answer_type": "AAAA",
+            "ipv6": "2001:67c:4e8:1033:2:100:0:a",
+            "ttl": null
+          },
+          {
+            "answer_type": "AAAA",
+            "ipv6": "2001:67c:4e8:1033:3:100:0:a",
+            "ttl": null
+          },
+          {
+            "answer_type": "AAAA",
+            "ipv6": "2001:67c:4e8:1033:5:100:0:a",
+            "ttl": null
+          },
+          {
+            "answer_type": "AAAA",
+            "ipv6": "2001:67c:4e8:1033:6:100:0:a",
+            "ttl": null
+          }
+        ],
+        "engine": "system",
+        "failure": null,
+        "hostname": "web.telegram.org",
+        "query_type": "AAAA",
+        "resolver_hostname": null,
+        "resolver_port": null,
+        "resolver_address": ""
+      }
+    ],
+    "requests": [
+      {
+        "failure": null,
+        "request": {
+          "body": "",
+          "body_is_truncated": false,
+          "headers_list": [
+            [
+              "Accept",
+              "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+            ],
+            [
+              "Accept-Language",
+              "en-US;q=0.8,en;q=0.5"
+            ],
+            [
+              "Host",
+              "149.154.167.51"
+            ],
+            [
+              "User-Agent",
+              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
+            ],
+            [
+              "Content-Length",
+              "0"
+            ]
+          ],
+          "headers": {
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Accept-Language": "en-US;q=0.8,en;q=0.5",
+            "Content-Length": "0",
+            "Host": "149.154.167.51",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
+          },
+          "method": "POST",
+          "tor": {
+            "exit_ip": null,
+            "exit_name": null,
+            "is_tor": false
+          },
+          "url": "http://149.154.167.51/"
+        },
+        "response": {
+          "body": "<html>\r\n<head><title>501 Not Implemented</title></head>\r\n<body bgcolor=\"white\">\r\n<center><h1>501 Not Implemented</h1></center>\r\n<hr><center>nginx/0.3.33</center>\r\n</body>\r\n</html>\r\n",
+          "body_is_truncated": false,
+          "code": 501,
+          "headers_list": [
+            [
+              "Date",
+              "Thu, 09 Jan 2020 10:47:21 GMT"
+            ],
+            [
+              "Content-Type",
+              "text/html"
+            ],
+            [
+              "Content-Length",
+              "181"
+            ],
+            [
+              "Server",
+              "nginx/0.3.33"
+            ]
+          ],
+          "headers": {
+            "Content-Length": "181",
+            "Content-Type": "text/html",
+            "Date": "Thu, 09 Jan 2020 10:47:21 GMT",
+            "Server": "nginx/0.3.33"
+          }
+        }
+      },
+      {
+        "failure": null,
+        "request": {
+          "body": "",
+          "body_is_truncated": false,
+          "headers_list": [
+            [
+              "Accept",
+              "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+            ],
+            [
+              "Accept-Language",
+              "en-US;q=0.8,en;q=0.5"
+            ],
+            [
+              "Host",
+              "149.154.167.91"
+            ],
+            [
+              "User-Agent",
+              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
+            ],
+            [
+              "Content-Length",
+              "0"
+            ]
+          ],
+          "headers": {
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Accept-Language": "en-US;q=0.8,en;q=0.5",
+            "Content-Length": "0",
+            "Host": "149.154.167.91",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
+          },
+          "method": "POST",
+          "tor": {
+            "exit_ip": null,
+            "exit_name": null,
+            "is_tor": false
+          },
+          "url": "http://149.154.167.91/"
+        },
+        "response": {
+          "body": "<html>\r\n<head><title>501 Not Implemented</title></head>\r\n<body bgcolor=\"white\">\r\n<center><h1>501 Not Implemented</h1></center>\r\n<hr><center>nginx/0.3.33</center>\r\n</body>\r\n</html>\r\n",
+          "body_is_truncated": false,
+          "code": 501,
+          "headers_list": [
+            [
+              "Content-Length",
+              "181"
+            ],
+            [
+              "Server",
+              "nginx/0.3.33"
+            ],
+            [
+              "Date",
+              "Thu, 09 Jan 2020 10:47:21 GMT"
+            ],
+            [
+              "Content-Type",
+              "text/html"
+            ]
+          ],
+          "headers": {
+            "Content-Length": "181",
+            "Content-Type": "text/html",
+            "Date": "Thu, 09 Jan 2020 10:47:21 GMT",
+            "Server": "nginx/0.3.33"
+          }
+        }
+      },
+      {
+        "failure": null,
+        "request": {
+          "body": "",
+          "body_is_truncated": false,
+          "headers_list": [
+            [
+              "User-Agent",
+              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
+            ],
+            [
+              "Content-Length",
+              "0"
+            ],
+            [
+              "Accept",
+              "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+            ],
+            [
+              "Accept-Language",
+              "en-US;q=0.8,en;q=0.5"
+            ],
+            [
+              "Host",
+              "149.154.171.5"
+            ]
+          ],
+          "headers": {
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Accept-Language": "en-US;q=0.8,en;q=0.5",
+            "Content-Length": "0",
+            "Host": "149.154.171.5",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
+          },
+          "method": "POST",
+          "tor": {
+            "exit_ip": null,
+            "exit_name": null,
+            "is_tor": false
+          },
+          "url": "http://149.154.171.5/"
+        },
+        "response": {
+          "body": "<html>\r\n<head><title>501 Not Implemented</title></head>\r\n<body bgcolor=\"white\">\r\n<center><h1>501 Not Implemented</h1></center>\r\n<hr><center>nginx/0.3.33</center>\r\n</body>\r\n</html>\r\n",
+          "body_is_truncated": false,
+          "code": 501,
+          "headers_list": [
+            [
+              "Date",
+              "Thu, 09 Jan 2020 10:47:23 GMT"
+            ],
+            [
+              "Content-Type",
+              "text/html"
+            ],
+            [
+              "Content-Length",
+              "181"
+            ],
+            [
+              "Server",
+              "nginx/0.3.33"
+            ]
+          ],
+          "headers": {
+            "Content-Length": "181",
+            "Content-Type": "text/html",
+            "Date": "Thu, 09 Jan 2020 10:47:23 GMT",
+            "Server": "nginx/0.3.33"
+          }
+        }
+      },
+      {
+        "failure": null,
+        "request": {
+          "body": "",
+          "body_is_truncated": false,
+          "headers_list": [
+            [
+              "Host",
+              "149.154.175.50:443"
+            ],
+            [
+              "User-Agent",
+              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
+            ],
+            [
+              "Content-Length",
+              "0"
+            ],
+            [
+              "Accept",
+              "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+            ],
+            [
+              "Accept-Language",
+              "en-US;q=0.8,en;q=0.5"
+            ]
+          ],
+          "headers": {
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Accept-Language": "en-US;q=0.8,en;q=0.5",
+            "Content-Length": "0",
+            "Host": "149.154.175.50:443",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
+          },
+          "method": "POST",
+          "tor": {
+            "exit_ip": null,
+            "exit_name": null,
+            "is_tor": false
+          },
+          "url": "http://149.154.175.50:443/"
+        },
+        "response": {
+          "body": "<html>\r\n<head><title>501 Not Implemented</title></head>\r\n<body bgcolor=\"white\">\r\n<center><h1>501 Not Implemented</h1></center>\r\n<hr><center>nginx/0.3.33</center>\r\n</body>\r\n</html>\r\n",
+          "body_is_truncated": false,
+          "code": 501,
+          "headers_list": [
+            [
+              "Date",
+              "Thu, 09 Jan 2020 10:47:23 GMT"
+            ],
+            [
+              "Content-Type",
+              "text/html"
+            ],
+            [
+              "Content-Length",
+              "181"
+            ],
+            [
+              "Server",
+              "nginx/0.3.33"
+            ]
+          ],
+          "headers": {
+            "Content-Length": "181",
+            "Content-Type": "text/html",
+            "Date": "Thu, 09 Jan 2020 10:47:23 GMT",
+            "Server": "nginx/0.3.33"
+          }
+        }
+      },
+      {
+        "failure": null,
+        "request": {
+          "body": "",
+          "body_is_truncated": false,
+          "headers_list": [
+            [
+              "Host",
+              "149.154.167.91:443"
+            ],
+            [
+              "User-Agent",
+              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
+            ],
+            [
+              "Content-Length",
+              "0"
+            ],
+            [
+              "Accept",
+              "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+            ],
+            [
+              "Accept-Language",
+              "en-US;q=0.8,en;q=0.5"
+            ]
+          ],
+          "headers": {
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Accept-Language": "en-US;q=0.8,en;q=0.5",
+            "Content-Length": "0",
+            "Host": "149.154.167.91:443",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
+          },
+          "method": "POST",
+          "tor": {
+            "exit_ip": null,
+            "exit_name": null,
+            "is_tor": false
+          },
+          "url": "http://149.154.167.91:443/"
+        },
+        "response": {
+          "body": "<html>\r\n<head><title>501 Not Implemented</title></head>\r\n<body bgcolor=\"white\">\r\n<center><h1>501 Not Implemented</h1></center>\r\n<hr><center>nginx/0.3.33</center>\r\n</body>\r\n</html>\r\n",
+          "body_is_truncated": false,
+          "code": 501,
+          "headers_list": [
+            [
+              "Content-Type",
+              "text/html"
+            ],
+            [
+              "Content-Length",
+              "181"
+            ],
+            [
+              "Server",
+              "nginx/0.3.33"
+            ],
+            [
+              "Date",
+              "Thu, 09 Jan 2020 10:47:18 GMT"
+            ]
+          ],
+          "headers": {
+            "Content-Length": "181",
+            "Content-Type": "text/html",
+            "Date": "Thu, 09 Jan 2020 10:47:18 GMT",
+            "Server": "nginx/0.3.33"
+          }
+        }
+      },
+      {
+        "failure": null,
+        "request": {
+          "body": "",
+          "body_is_truncated": false,
+          "headers_list": [
+            [
+              "Host",
+              "web.telegram.org"
+            ],
+            [
+              "User-Agent",
+              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
+            ],
+            [
+              "Accept",
+              "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+            ],
+            [
+              "Accept-Language",
+              "en-US;q=0.8,en;q=0.5"
+            ]
+          ],
+          "headers": {
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Accept-Language": "en-US;q=0.8,en;q=0.5",
+            "Host": "web.telegram.org",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
+          },
+          "method": "GET",
+          "tor": {
+            "exit_ip": null,
+            "exit_name": null,
+            "is_tor": false
+          },
+          "url": "https://web.telegram.org/"
+        },
+        "response": {
+          "body": "<!doctype html><html lang=en manifest=webogram.appcache ng-csp xmlns:ng=http://angularjs.org id=ng-app style=\"display: none;\"><head><meta charset=utf-8><meta name=viewport content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no\"><title>Telegram Web</title><link rel=stylesheet href=css/app.css><link rel=manifest href=manifest.webapp.json><link rel=icon href=favicon.ico type=image/x-icon><link rel=apple-touch-icon href=img/iphone_home120.png><link rel=apple-touch-icon sizes=120x120 href=img/iphone_home120.png><link rel=apple-touch-startup-image media=\"(device-width: 320px)\" href=img/iphone_startup.png><meta name=apple-mobile-web-app-title content=\"Telegram Web\"><meta name=mobile-web-app-capable content=yes><meta name=apple-mobile-web-app-capable content=yes><meta name=apple-mobile-web-app-status-bar-style content=black-translucent><meta name=theme-color content=#497495><meta name=google content=notranslate><meta property=og:title content=\"Telegram Web\"><meta property=og:url content=\"https://web.telegram.org/\"><meta property=og:image content=https://web.telegram.org/img/logo_share.png><meta property=og:site_name content=\"Telegram Web\"><meta property=description content=\"Welcome to the Web application of Telegram messenger. See https://github.com/zhukov/webogram for more info.\"><meta property=og:description content=\"Welcome to the Web application of Telegram messenger. See https://github.com/zhukov/webogram for more info.\"></head><body><div class=page_wrap ng-view></div><div id=notify_sound></div><script src=js/app.js></script></body></html>",
+          "body_is_truncated": false,
+          "code": 200,
+          "headers_list": [
+            [
+              "Server",
+              "nginx/1.16.1"
+            ],
+            [
+              "Date",
+              "Thu, 09 Jan 2020 10:47:23 GMT"
+            ],
+            [
+              "Etag",
+              "\"5d83f6a8-633\""
+            ],
+            [
+              "Cache-Control",
+              "max-age=3600"
+            ],
+            [
+              "Accept-Ranges",
+              "bytes"
+            ],
+            [
+              "Content-Type",
+              "text/html"
+            ],
+            [
+              "Content-Length",
+              "1587"
+            ],
+            [
+              "Last-Modified",
+              "Thu, 19 Sep 2019 21:44:08 GMT"
+            ],
+            [
+              "Connection",
+              "keep-alive"
+            ],
+            [
+              "Expires",
+              "Thu, 09 Jan 2020 11:47:23 GMT"
+            ],
+            [
+              "X-Frame-Options",
+              "deny"
+            ]
+          ],
+          "headers": {
+            "Accept-Ranges": "bytes",
+            "Cache-Control": "max-age=3600",
+            "Connection": "keep-alive",
+            "Content-Length": "1587",
+            "Content-Type": "text/html",
+            "Date": "Thu, 09 Jan 2020 10:47:23 GMT",
+            "Etag": "\"5d83f6a8-633\"",
+            "Expires": "Thu, 09 Jan 2020 11:47:23 GMT",
+            "Last-Modified": "Thu, 19 Sep 2019 21:44:08 GMT",
+            "Server": "nginx/1.16.1",
+            "X-Frame-Options": "deny"
+          }
+        }
+      },
+      {
+        "failure": null,
+        "request": {
+          "body": "",
+          "body_is_truncated": false,
+          "headers_list": [
+            [
+              "Host",
+              "149.154.175.50"
+            ],
+            [
+              "User-Agent",
+              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
+            ],
+            [
+              "Content-Length",
+              "0"
+            ],
+            [
+              "Accept",
+              "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+            ],
+            [
+              "Accept-Language",
+              "en-US;q=0.8,en;q=0.5"
+            ]
+          ],
+          "headers": {
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Accept-Language": "en-US;q=0.8,en;q=0.5",
+            "Content-Length": "0",
+            "Host": "149.154.175.50",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
+          },
+          "method": "POST",
+          "tor": {
+            "exit_ip": null,
+            "exit_name": null,
+            "is_tor": false
+          },
+          "url": "http://149.154.175.50/"
+        },
+        "response": {
+          "body": "<html>\r\n<head><title>501 Not Implemented</title></head>\r\n<body bgcolor=\"white\">\r\n<center><h1>501 Not Implemented</h1></center>\r\n<hr><center>nginx/0.3.33</center>\r\n</body>\r\n</html>\r\n",
+          "body_is_truncated": false,
+          "code": 501,
+          "headers_list": [
+            [
+              "Server",
+              "nginx/0.3.33"
+            ],
+            [
+              "Date",
+              "Thu, 09 Jan 2020 10:47:21 GMT"
+            ],
+            [
+              "Content-Type",
+              "text/html"
+            ],
+            [
+              "Content-Length",
+              "181"
+            ]
+          ],
+          "headers": {
+            "Content-Length": "181",
+            "Content-Type": "text/html",
+            "Date": "Thu, 09 Jan 2020 10:47:21 GMT",
+            "Server": "nginx/0.3.33"
+          }
+        }
+      },
+      {
+        "failure": null,
+        "request": {
+          "body": "",
+          "body_is_truncated": false,
+          "headers_list": [
+            [
+              "Host",
+              "149.154.167.51:443"
+            ],
+            [
+              "User-Agent",
+              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
+            ],
+            [
+              "Content-Length",
+              "0"
+            ],
+            [
+              "Accept",
+              "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+            ],
+            [
+              "Accept-Language",
+              "en-US;q=0.8,en;q=0.5"
+            ]
+          ],
+          "headers": {
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Accept-Language": "en-US;q=0.8,en;q=0.5",
+            "Content-Length": "0",
+            "Host": "149.154.167.51:443",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
+          },
+          "method": "POST",
+          "tor": {
+            "exit_ip": null,
+            "exit_name": null,
+            "is_tor": false
+          },
+          "url": "http://149.154.167.51:443/"
+        },
+        "response": {
+          "body": "<html>\r\n<head><title>501 Not Implemented</title></head>\r\n<body bgcolor=\"white\">\r\n<center><h1>501 Not Implemented</h1></center>\r\n<hr><center>nginx/0.3.33</center>\r\n</body>\r\n</html>\r\n",
+          "body_is_truncated": false,
+          "code": 501,
+          "headers_list": [
+            [
+              "Server",
+              "nginx/0.3.33"
+            ],
+            [
+              "Date",
+              "Thu, 09 Jan 2020 10:47:22 GMT"
+            ],
+            [
+              "Content-Type",
+              "text/html"
+            ],
+            [
+              "Content-Length",
+              "181"
+            ]
+          ],
+          "headers": {
+            "Content-Length": "181",
+            "Content-Type": "text/html",
+            "Date": "Thu, 09 Jan 2020 10:47:22 GMT",
+            "Server": "nginx/0.3.33"
+          }
+        }
+      },
+      {
+        "failure": null,
+        "request": {
+          "body": "",
+          "body_is_truncated": false,
+          "headers_list": [
+            [
+              "User-Agent",
+              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
+            ],
+            [
+              "Content-Length",
+              "0"
+            ],
+            [
+              "Accept",
+              "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+            ],
+            [
+              "Accept-Language",
+              "en-US;q=0.8,en;q=0.5"
+            ],
+            [
+              "Host",
+              "149.154.175.100:443"
+            ]
+          ],
+          "headers": {
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Accept-Language": "en-US;q=0.8,en;q=0.5",
+            "Content-Length": "0",
+            "Host": "149.154.175.100:443",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
+          },
+          "method": "POST",
+          "tor": {
+            "exit_ip": null,
+            "exit_name": null,
+            "is_tor": false
+          },
+          "url": "http://149.154.175.100:443/"
+        },
+        "response": {
+          "body": "<html>\r\n<head><title>501 Not Implemented</title></head>\r\n<body bgcolor=\"white\">\r\n<center><h1>501 Not Implemented</h1></center>\r\n<hr><center>nginx/0.3.33</center>\r\n</body>\r\n</html>\r\n",
+          "body_is_truncated": false,
+          "code": 501,
+          "headers_list": [
+            [
+              "Server",
+              "nginx/0.3.33"
+            ],
+            [
+              "Date",
+              "Thu, 09 Jan 2020 10:47:23 GMT"
+            ],
+            [
+              "Content-Type",
+              "text/html"
+            ],
+            [
+              "Content-Length",
+              "181"
+            ]
+          ],
+          "headers": {
+            "Content-Length": "181",
+            "Content-Type": "text/html",
+            "Date": "Thu, 09 Jan 2020 10:47:23 GMT",
+            "Server": "nginx/0.3.33"
+          }
+        }
+      },
+      {
+        "failure": null,
+        "request": {
+          "body": "",
+          "body_is_truncated": false,
+          "headers_list": [
+            [
+              "Host",
+              "149.154.171.5:443"
+            ],
+            [
+              "User-Agent",
+              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
+            ],
+            [
+              "Content-Length",
+              "0"
+            ],
+            [
+              "Accept",
+              "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+            ],
+            [
+              "Accept-Language",
+              "en-US;q=0.8,en;q=0.5"
+            ]
+          ],
+          "headers": {
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Accept-Language": "en-US;q=0.8,en;q=0.5",
+            "Content-Length": "0",
+            "Host": "149.154.171.5:443",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
+          },
+          "method": "POST",
+          "tor": {
+            "exit_ip": null,
+            "exit_name": null,
+            "is_tor": false
+          },
+          "url": "http://149.154.171.5:443/"
+        },
+        "response": {
+          "body": "<html>\r\n<head><title>501 Not Implemented</title></head>\r\n<body bgcolor=\"white\">\r\n<center><h1>501 Not Implemented</h1></center>\r\n<hr><center>nginx/0.3.33</center>\r\n</body>\r\n</html>\r\n",
+          "body_is_truncated": false,
+          "code": 501,
+          "headers_list": [
+            [
+              "Server",
+              "nginx/0.3.33"
+            ],
+            [
+              "Date",
+              "Thu, 09 Jan 2020 10:47:23 GMT"
+            ],
+            [
+              "Content-Type",
+              "text/html"
+            ],
+            [
+              "Content-Length",
+              "181"
+            ]
+          ],
+          "headers": {
+            "Content-Length": "181",
+            "Content-Type": "text/html",
+            "Date": "Thu, 09 Jan 2020 10:47:23 GMT",
+            "Server": "nginx/0.3.33"
+          }
+        }
+      },
+      {
+        "failure": null,
+        "request": {
+          "body": "",
+          "body_is_truncated": false,
+          "headers_list": [
+            [
+              "Host",
+              "web.telegram.org"
+            ],
+            [
+              "User-Agent",
+              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
+            ],
+            [
+              "Accept",
+              "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+            ],
+            [
+              "Accept-Language",
+              "en-US;q=0.8,en;q=0.5"
+            ]
+          ],
+          "headers": {
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Accept-Language": "en-US;q=0.8,en;q=0.5",
+            "Host": "web.telegram.org",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
+          },
+          "method": "GET",
+          "tor": {
+            "exit_ip": null,
+            "exit_name": null,
+            "is_tor": false
+          },
+          "url": "http://web.telegram.org/"
+        },
+        "response": {
+          "body": "<!doctype html><html lang=en manifest=webogram.appcache ng-csp xmlns:ng=http://angularjs.org id=ng-app style=\"display: none;\"><head><meta charset=utf-8><meta name=viewport content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no\"><title>Telegram Web</title><link rel=stylesheet href=css/app.css><link rel=manifest href=manifest.webapp.json><link rel=icon href=favicon.ico type=image/x-icon><link rel=apple-touch-icon href=img/iphone_home120.png><link rel=apple-touch-icon sizes=120x120 href=img/iphone_home120.png><link rel=apple-touch-startup-image media=\"(device-width: 320px)\" href=img/iphone_startup.png><meta name=apple-mobile-web-app-title content=\"Telegram Web\"><meta name=mobile-web-app-capable content=yes><meta name=apple-mobile-web-app-capable content=yes><meta name=apple-mobile-web-app-status-bar-style content=black-translucent><meta name=theme-color content=#497495><meta name=google content=notranslate><meta property=og:title content=\"Telegram Web\"><meta property=og:url content=\"https://web.telegram.org/\"><meta property=og:image content=https://web.telegram.org/img/logo_share.png><meta property=og:site_name content=\"Telegram Web\"><meta property=description content=\"Welcome to the Web application of Telegram messenger. See https://github.com/zhukov/webogram for more info.\"><meta property=og:description content=\"Welcome to the Web application of Telegram messenger. See https://github.com/zhukov/webogram for more info.\"></head><body><div class=page_wrap ng-view></div><div id=notify_sound></div><script src=js/app.js></script></body></html>",
+          "body_is_truncated": false,
+          "code": 200,
+          "headers_list": [
+            [
+              "Accept-Ranges",
+              "bytes"
+            ],
+            [
+              "Content-Length",
+              "1587"
+            ],
+            [
+              "Etag",
+              "\"5d83f6a8-633\""
+            ],
+            [
+              "Expires",
+              "Thu, 09 Jan 2020 11:47:23 GMT"
+            ],
+            [
+              "Last-Modified",
+              "Thu, 19 Sep 2019 21:44:08 GMT"
+            ],
+            [
+              "Connection",
+              "keep-alive"
+            ],
+            [
+              "Cache-Control",
+              "max-age=3600"
+            ],
+            [
+              "X-Frame-Options",
+              "deny"
+            ],
+            [
+              "Server",
+              "nginx/1.16.1"
+            ],
+            [
+              "Date",
+              "Thu, 09 Jan 2020 10:47:23 GMT"
+            ],
+            [
+              "Content-Type",
+              "text/html"
+            ]
+          ],
+          "headers": {
+            "Accept-Ranges": "bytes",
+            "Cache-Control": "max-age=3600",
+            "Connection": "keep-alive",
+            "Content-Length": "1587",
+            "Content-Type": "text/html",
+            "Date": "Thu, 09 Jan 2020 10:47:23 GMT",
+            "Etag": "\"5d83f6a8-633\"",
+            "Expires": "Thu, 09 Jan 2020 11:47:23 GMT",
+            "Last-Modified": "Thu, 19 Sep 2019 21:44:08 GMT",
+            "Server": "nginx/1.16.1",
+            "X-Frame-Options": "deny"
+          }
+        }
+      },
+      {
+        "failure": null,
+        "request": {
+          "body": "",
+          "body_is_truncated": false,
+          "headers_list": [
+            [
+              "Host",
+              "149.154.175.100"
+            ],
+            [
+              "User-Agent",
+              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
+            ],
+            [
+              "Content-Length",
+              "0"
+            ],
+            [
+              "Accept",
+              "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+            ],
+            [
+              "Accept-Language",
+              "en-US;q=0.8,en;q=0.5"
+            ]
+          ],
+          "headers": {
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Accept-Language": "en-US;q=0.8,en;q=0.5",
+            "Content-Length": "0",
+            "Host": "149.154.175.100",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
+          },
+          "method": "POST",
+          "tor": {
+            "exit_ip": null,
+            "exit_name": null,
+            "is_tor": false
+          },
+          "url": "http://149.154.175.100/"
+        },
+        "response": {
+          "body": "<html>\r\n<head><title>501 Not Implemented</title></head>\r\n<body bgcolor=\"white\">\r\n<center><h1>501 Not Implemented</h1></center>\r\n<hr><center>nginx/0.3.33</center>\r\n</body>\r\n</html>\r\n",
+          "body_is_truncated": false,
+          "code": 501,
+          "headers_list": [
+            [
+              "Server",
+              "nginx/0.3.33"
+            ],
+            [
+              "Date",
+              "Thu, 09 Jan 2020 10:47:21 GMT"
+            ],
+            [
+              "Content-Type",
+              "text/html"
+            ],
+            [
+              "Content-Length",
+              "181"
+            ]
+          ],
+          "headers": {
+            "Content-Length": "181",
+            "Content-Type": "text/html",
+            "Date": "Thu, 09 Jan 2020 10:47:21 GMT",
+            "Server": "nginx/0.3.33"
+          }
+        }
+      }
+    ],
+    "tcp_connect": [
+      {
+        "ip": "149.154.167.51",
+        "port": 80,
+        "status": {
+          "failure": null,
+          "success": true
+        }
+      },
+      {
+        "ip": "149.154.167.91",
+        "port": 80,
+        "status": {
+          "failure": null,
+          "success": true
+        }
+      },
+      {
+        "ip": "149.154.171.5",
+        "port": 80,
+        "status": {
+          "failure": null,
+          "success": true
+        }
+      },
+      {
+        "ip": "149.154.175.50",
+        "port": 443,
+        "status": {
+          "failure": null,
+          "success": true
+        }
+      },
+      {
+        "ip": "149.154.167.91",
+        "port": 443,
+        "status": {
+          "failure": null,
+          "success": true
+        }
+      },
+      {
+        "ip": "149.154.167.99",
+        "port": 443,
+        "status": {
+          "failure": null,
+          "success": true
+        }
+      },
+      {
+        "ip": "149.154.175.50",
+        "port": 80,
+        "status": {
+          "failure": null,
+          "success": true
+        }
+      },
+      {
+        "ip": "149.154.167.51",
+        "port": 443,
+        "status": {
+          "failure": null,
+          "success": true
+        }
+      },
+      {
+        "ip": "149.154.175.100",
+        "port": 443,
+        "status": {
+          "failure": null,
+          "success": true
+        }
+      },
+      {
+        "ip": "149.154.171.5",
+        "port": 443,
+        "status": {
+          "failure": null,
+          "success": true
+        }
+      },
+      {
+        "ip": "149.154.167.99",
+        "port": 80,
+        "status": {
+          "failure": null,
+          "success": true
+        }
+      },
+      {
+        "ip": "149.154.175.100",
+        "port": 80,
+        "status": {
+          "failure": null,
+          "success": true
+        }
+      }
+    ],
+    "telegram_http_blocking": false,
+    "telegram_tcp_blocking": false,
+    "telegram_web_failure": null,
+    "telegram_web_status": "ok"
+  },
+  "test_name": "telegram",
+  "test_start_time": "2020-01-09 10:47:18",
+  "test_version": "0.0.4"
 }
 ```
