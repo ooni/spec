@@ -1,10 +1,10 @@
 # Specification version number
 
-0.3.0
+0.3.1
 
 # Specification name
 
-Psiphon Test
+Psiphon
 
 # Test preconditions
 
@@ -32,6 +32,10 @@ The following keys from df-001-httpt.md are used when Psiphon bootstraps:
 - requests;
 - socksproxy;
 - agent.
+
+Additionally, we include `queries` from df-002-dnst.md. Because of the way in
+which Psiphon works, we expect this field to always be `null`. Yet, if it's not
+`null`, this means we are performing DNS resolutions without using Psiphon.
 
 ## Required output data
 
@@ -61,22 +65,23 @@ is nonzero is the common case where it did work.
 ```JSON
 {
   "data_format_version": "0.3.1",
-  "measurement_start_time": "2019-12-30 15:53:36",
-  "test_runtime": 14.005221153,
+  "measurement_start_time": "2020-01-09 11:18:13",
+  "test_runtime": 15.25602748,
   "probe_asn": "AS30722",
   "probe_cc": "IT",
   "probe_ip": "127.0.0.1",
-  "report_id": "20191230T155336Z_AS30722_IvEpZKOw1n8ZUnkwA18wZlFgUhU7Y8VqRviFglg1TLFAzjRsmI",
-  "resolver_asn": "AS30722",
-  "resolver_ip": "91.80.36.88",
-  "resolver_network_name": "Vodafone Italia S.p.A.",
+  "report_id": "20200109T111813Z_AS30722_RZeO9Ix6ET2LJzqGcinrDp1iqrhaGGDCHSwlOoybq2N9kZITQt",
+  "resolver_asn": "AS15169",
+  "resolver_ip": "172.217.33.193",
+  "resolver_network_name": "Google LLC",
   "software_name": "miniooni",
   "software_version": "0.1.0-dev",
   "test_keys": {
     "agent": "redirect",
-    "bootstrap_time": 5.597476747,
+    "bootstrap_time": 5.532639553,
     "failure": null,
     "max_runtime": 60,
+    "queries": null,
     "requests": [
       {
         "failure": null,
@@ -136,12 +141,8 @@ is nonzero is the common case where it did work.
           "code": 200,
           "headers_list": [
             [
-              "Date",
-              "Mon, 30 Dec 2019 15:53:43 GMT"
-            ],
-            [
-              "Expires",
-              "Mon, 30 Dec 2019 15:53:43 GMT"
+              "Last-Modified",
+              "Mon, 01 Jul 2019 19:30:00 GMT"
             ],
             [
               "X-Content-Type-Options",
@@ -150,6 +151,10 @@ is nonzero is the common case where it did work.
             [
               "Server",
               "sffe"
+            ],
+            [
+              "X-Xss-Protection",
+              "0"
             ],
             [
               "Accept-Ranges",
@@ -164,24 +169,24 @@ is nonzero is the common case where it did work.
               "286"
             ],
             [
-              "X-Xss-Protection",
-              "0"
-            ],
-            [
-              "Alt-Svc",
-              "quic=\":443\"; ma=2592000; v=\"46,43\",h3-Q050=\":443\"; ma=2592000,h3-Q049=\":443\"; ma=2592000,h3-Q048=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000"
+              "Expires",
+              "Thu, 09 Jan 2020 11:18:19 GMT"
             ],
             [
               "Content-Type",
               "text/plain"
             ],
             [
+              "Date",
+              "Thu, 09 Jan 2020 11:18:19 GMT"
+            ],
+            [
               "Cache-Control",
               "private, max-age=0"
             ],
             [
-              "Last-Modified",
-              "Mon, 01 Jul 2019 19:30:00 GMT"
+              "Alt-Svc",
+              "quic=\":443\"; ma=2592000; v=\"46,43\",h3-Q050=\":443\"; ma=2592000,h3-Q049=\":443\"; ma=2592000,h3-Q048=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000"
             ]
           ],
           "headers": {
@@ -190,8 +195,8 @@ is nonzero is the common case where it did work.
             "Cache-Control": "private, max-age=0",
             "Content-Length": "286",
             "Content-Type": "text/plain",
-            "Date": "Mon, 30 Dec 2019 15:53:43 GMT",
-            "Expires": "Mon, 30 Dec 2019 15:53:43 GMT",
+            "Date": "Thu, 09 Jan 2020 11:18:19 GMT",
+            "Expires": "Thu, 09 Jan 2020 11:18:19 GMT",
             "Last-Modified": "Mon, 01 Jul 2019 19:30:00 GMT",
             "Server": "sffe",
             "Vary": "Accept-Encoding",
@@ -201,12 +206,13 @@ is nonzero is the common case where it did work.
         }
       }
     ],
-    "socksproxy": "127.0.0.1:62908"
+    "socksproxy": "127.0.0.1:55686"
   },
   "test_name": "psiphon",
-  "test_start_time": "2019-12-30 15:53:36",
-  "test_version": "0.3.0"
+  "test_start_time": "2020-01-09 11:18:13",
+  "test_version": "0.3.1"
 }
+
 ```
 
 # Privacy considerations
