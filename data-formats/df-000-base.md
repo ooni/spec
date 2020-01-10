@@ -136,11 +136,12 @@ is required to finish off the measurement (e.g. the Web Connectivity
 test helper). Note that this field's name is misleading and it should
 have been called `measurement_runtime` instead.
 
-- `test_start_time` (`string`): like `measurement_start_time` except that it
+- `test_start_time` (`string`; deprecated): like `measurement_start_time` except that it
 indicates the moment in which a related set of measurements started rather than
 the moment where the current measurement started. For example, for the Web
 Connectivity experiment, this is the momement where we start processing a
-list of input URLs.
+list of input URLs. Depending on the implementation, this value may not be
+reliable, so consumers are advised to prefer `measurement_start_time`.
 
 ## Annotations
 
