@@ -43,8 +43,8 @@ Keys starting with `x_` are always permitted anywhere. They are
 experimental and should not be relied upon in the long term.
 
 Consumers MUST be prepared for any field being `null` or missing but
-producers SHOULD NOT omit fields (or emit `null`s unless this has been
-explicitly documented in the field description).
+producers SHOULD NOT omit fields (or emit `null`s) unless this has been
+explicitly documented in the field description.
 
 ## Example
 
