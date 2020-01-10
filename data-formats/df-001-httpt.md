@@ -70,16 +70,52 @@ where the value is `string` if it can be represented using UTF-8 and a
 `BinaryData` instance otherwise. In case multiple headers have the same key,
 the map SHOULD only contain the first value.
 
-- `headers_list` (`[]pair<string, MaybeBinaryData>}`; since
-v0.3.0): this is a better representation of headers that allows us to
-represent the case where there are multple values for the same header key. As
-for `headers`, the value is a string or a `BinaryData` instance depending on
-whether it can be represented using UTF-8 or not.
+- `headers_list` (`[]HeaderValue`); since v0.3.0): this is a better representation
+of headers that allows us to represent the case where there are multple values
+for the same header key. See below the definion of `HeaderValue`, which in the common
+case boils down to `[string, string]`.
 
 - `method` (`string`): the request method.
 
 - `tor` (`TorInfo`): this is an object containing information on the
 instance of `tor` that we may be using for measuring.
+
+In case we have the following headers:
+
+```
+> Foo: bar
+> Foo: <binary-data-here>
+```
+
+consistently with `MaybeBinaryData`'s definition,
+the headers representation would be:
+
+```JSON
+{
+  "headers": {
+    "Foo": "bar"
+  },
+  "headers_list": [[
+    "Foo", "bar",
+  ], [
+    "Foo", {"format": "base64", "data": "..."}}
+  ]]
+}
+```
+
+Note how the `headers` map only gets the first value.
+
+## HeaderValue
+
+```JavaScript
+[
+  "key",
+  MaybeBinaryData() // value
+]
+```
+
+The first element is the header key. The second element is the header value. Because the
+value may in principle be binary, we use `MaybeBinaryData` (see below).
 
 ## Response
 
