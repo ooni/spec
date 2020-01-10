@@ -140,8 +140,11 @@ have been called `measurement_runtime` instead.
 indicates the moment in which a related set of measurements started rather than
 the moment where the current measurement started. For example, for the Web
 Connectivity experiment, this is the momement where we start processing a
-list of input URLs. Depending on the implementation, this value may not be
-reliable, so consumers are advised to prefer `measurement_start_time`.
+list of input URLs. Depending on the implementation, and specifically on the
+way in which input is passed to the measurement engine, this value may not be
+reliable, so consumers are advised to prefer `measurement_start_time`. For
+example, as of OONI probe-cli v3.0.0-rc.5, this value is incorrect because we
+measure every URL independently.
 
 ## Annotations
 
