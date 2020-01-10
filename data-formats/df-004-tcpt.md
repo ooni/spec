@@ -14,7 +14,7 @@ using directly the specific template code. See this directory's
 }
 ```
 
-- `received` ([]MaybeBinaryData): list of data received. See the
+- `received` (`[]MaybeBinaryData`): list of data received. See the
 definition of `MaybeBinaryData` in `df-001-httpt.md`.
 
 - `sent`: like `received` but contains sent data.
