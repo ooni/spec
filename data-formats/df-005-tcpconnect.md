@@ -9,7 +9,7 @@ basic concepts.
 
 ```JSON
 {
-  "tcp_connect": [{}],
+  "tcp_connect": [],
 }
 ```
 
