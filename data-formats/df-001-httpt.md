@@ -43,7 +43,7 @@ a string indicating the error, otherwise it MUST be `null`.
 
 - `response_length` (`int`; deprecated): this is a legacy field that
 contains the response length and is typically set to `null` or directly
-omitted by modern clients.
+omitted by modern clients (e.g. from Measurement Kit onwards).
 
 ## Request
 
