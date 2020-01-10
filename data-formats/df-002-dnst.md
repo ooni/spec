@@ -18,7 +18,7 @@ code. See this directory's [README](README.md) for the basic concepts.
 
 ```JSON
 {
-    "answers": [{}],
+    "answers": [],
     "engine": "udp",
     "failure": "dns_nxdomain_error",
     "hostname": "dns.googlex",
