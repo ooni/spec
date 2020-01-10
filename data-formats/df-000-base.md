@@ -40,7 +40,8 @@ directory's [README](README.md) for the basic concepts.
 report that provide metadata to this measurement. See below.
 
 - `backend_version` (`string`; optional): version of the backend that has
-collected this specific measurement.
+collected this specific measurement.  Note that clients of course are not
+supposed to emit this field.
 
 - `bucket_date` (`string`): a date like `"2006-01-02"` that indicates
 when this measurement was processed by the data pipeline. Note that clients
@@ -56,7 +57,7 @@ identifier is only meaningful for measurements that have not been submitted to
 a OONI collector yet. In fact, OONI collectors SHOULD clear this field to avoid
 any potential confusion caused by it.
 
-- `input` (`string`; optional): if this experiment accepts any input, the
+- `input` (`string`; optional; nullable): if this experiment accepts any input, the
 input that was used to produce this measurement. For example, the Web
 Connectivity experiment uses URLs as input.
 
