@@ -70,7 +70,7 @@ where the value is `string` if it can be represented using UTF-8 and a
 `BinaryData` instance otherwise. In case multiple headers have the same key,
 the map SHOULD only contain the first value.
 
-- `headers_list` (`[]struct{key string, value MaybeBinaryData}`; since
+- `headers_list` (`[]pair<string, MaybeBinaryData>}`; since
 v0.3.0): this is a better representation of headers that allows us to
 represent the case where there are multple values for the same header key. As
 for `headers`, the value is a string or a `BinaryData` instance depending on
