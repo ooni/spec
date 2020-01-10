@@ -98,7 +98,7 @@ the headers representation would be:
   "headers_list": [[
     "Foo", "bar",
   ], [
-    "Foo", {"format": "base64", "data": "..."}}
+    "Foo", {"format": "base64", "data": "..."}
   ]]
 }
 ```
