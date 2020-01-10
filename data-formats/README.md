@@ -1,7 +1,6 @@
 # OONI Data Formats
 
 | Authors    | Arturo Filastò et al. |
-|------------|-----------------------|
 | Version    | 3.1                   |
 | Maintainer | Simone Basso          |
 
