@@ -9,7 +9,7 @@ code. See this directory's [README](README.md) for the basic concepts.
 ```JSON
 {
   "agent": "redirect",
-  "requests": [{}],
+  "requests": [],
   "socksproxy": "127.0.0.1:54321"
 }
 ```
@@ -17,7 +17,7 @@ code. See this directory's [README](README.md) for the basic concepts.
 - `agent` (`string`): set to `agent` if the HTTP client code doesn't
 follow redirects, set to `redirect` otherwise.
 
-- `request` (`[]Transaction`): list of request objects. See below.
+- `request` (`[]Transaction`): list of transaction objects. See below.
 
 - `socksproxy` (`string`; optional): address of the SOCKS proxy being
 used. Omit or set to `null` if no SOCKS proxy is being used. The format
