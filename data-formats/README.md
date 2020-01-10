@@ -2,7 +2,7 @@
 
 | Authors    | Arturo Filastò et al. |
 |------------|-----------------------|
-| Version    | 3.1                   |
+| Version    | 0.3.2                 |
 | Maintainer | Simone Basso          |
 
 ## Overview
@@ -211,3 +211,7 @@ Probe CLI v3.0.0.
 
 - `0.3.1` [2019-12-29]: added the `resolver_asn` and
 `resolver_network_name` toplevel keys.
+
+- `0.3.2` [2020-01-10]: explained why `test_start_time` may be problematic
+and suggest using `measurement_start_time` instead. Since now the
+`test_start_time` field is therefore marked as deprecated.
