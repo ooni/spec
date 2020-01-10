@@ -52,13 +52,12 @@ or `null` if no error occurred;
 We can determine whether or not Psiphon is able to bootstrap. We can
 determine whether or not a specific URL is reachable via Psiphon.
 
-If `bootstrap_time` is zero and `failure` is not `null`, then there was
-an error bootstrapping Psiphon. Otherwise, if `bootstrap_time` is nonzero
-and `failure` is not `null`, there was an error when using Psiphon.
-
-The case where `bootstrap_time` is zero and `failure` is `null` should
-not happen. The case where `failure` is `null` and `bootstrap_time`
-is nonzero is the common case where it did work.
+| `bootstrap_time` | `failure`     | Conclusion                     |
+| :--------------: | ------------- | ------------------------------ |
+| 0                | not `null`    | Error in bootstrapping Psiphon |
+| > 0              | not `null`    | Error in using Psiphon         |
+| > 0              | `null`        | Working                        |
+| 0                | `null`        | Invalid (_should not happen_)  |
 
 ## Example output sample
 
