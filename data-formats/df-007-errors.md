@@ -1,7 +1,8 @@
 # Errors
 
 This document describes the possible values of the `failure` key that
-occurs in several data formats to indicate a failure. See this directory's
+occurs in several data formats to indicate a failure. The type of
+this key is `string; nullable`. See also this directory's
 [README](README.md) for the basic concepts.
 
 To indicate that an error is emitted by ooni/probe-legacy we will flag
