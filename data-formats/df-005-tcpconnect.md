@@ -21,7 +21,8 @@ basic concepts.
 {
     "ip": "149.154.171.5",
     "port": 80,
-    "status": {}
+    "status": {},
+    "t": 1.114
 }
 ```
 
@@ -30,6 +31,9 @@ basic concepts.
 - `port` (`int`): port we're connecting to.
 
 - `status` (`Status`): object describing the results.
+
+- `t` (`float`): number of seconds elapsed since `measurement_start_time`
+measured when `connect` is complete.
 
 ## Status
 
@@ -60,7 +64,8 @@ not relevant to the HTTP data format:
         "status": {
           "failure": null,
           "success": true
-        }
+        },
+        "t": 1.114
       }
     ]
   }
