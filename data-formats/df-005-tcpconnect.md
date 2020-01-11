@@ -28,7 +28,7 @@ basic concepts.
 }
 ```
 
-- `conn_id` (`int`; optional; since v0.3.3): identifier of this connection (see below). When
+- `conn_id` (`int`; optional; since v0.3.3): identifier of this connection. When
 zero, it means we don't know the conn ID, and it can be omitted.
 
 - `dial_id` (`int`; optional; since v0.3.3): identifier of a dialing operation (i.e. name
