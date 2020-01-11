@@ -10,6 +10,16 @@ This data format is available since data format version 0.3.3.
 
 ```JSON
 {
+    "tls_handshakes": []
+}
+```
+
+- `tls_handshakes` (`[]TLSHandshake`): list of `TLSHandshake` objects.
+
+## TLSHandshake
+
+```JSON
+{
     "cipher_suite": "",
     "conn_id": 1231,
     "failure": "ssl_invalid_hostname",
