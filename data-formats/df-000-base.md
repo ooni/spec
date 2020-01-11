@@ -64,7 +64,7 @@ Connectivity experiment uses URLs as input.
 - `input_hashes` (`[]string`; optional; deprecated): historical field that
 used to contain the SHA256s of all inputs provided to the experiment. Modern
 implementations, e.g. Measurement Kit, typically emit an empty list. All
-clients using `v0.3.0` of the data format SHOULD NOT emit this field at all.
+clients using `v0.3.0`, or greater, of the data format SHOULD NOT emit this field at all.
 
 - `measurement_start_time` (`string`): time when this measurement was
 started in UTC, using the `"2006-01-02 08:04:05"` format. Note that
@@ -73,7 +73,7 @@ ooniprobe <= 1.4.0 generates skewed time information.
 - `options` (`[]string`; optional; deprecated): list of options passed on the
 command line when running this specific experiment. Modern implementations,
 e.g. Measurement Kit, typically emit an empty list here. All clients using
-`v0.3.0` of the data format SHOULD NOT emit this field at all.
+`v0.3.0` or greater of the data format SHOULD NOT emit this field at all.
 
 - `probe_asn` (`string`): AS Number of the probe (prefixed by AS, e.g.,
 `"AS1234"`), or `"AS0"` if the user does not want to share their ASN.
@@ -84,7 +84,7 @@ e.g. Measurement Kit, typically emit an empty list here. All clients using
 - `probe_city` (`string`; optional; deprecated): name of the city where the
 measurement was run. If the user does not want to share this information,
 this field should be set to `null` by `v0.2.0` clients. Clients using `v0.3.0`
-of this specification SHOULD NOT emit this field.
+or greater SHOULD NOT emit this field.
 
 - `probe_ip` (`string`): IP address of the probe, or `"127.0.0.1"` if
 the user does not want to share their IP.
