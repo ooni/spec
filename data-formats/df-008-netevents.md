@@ -4,6 +4,8 @@ This document describes the keys with `test_keys` that experiments
 MAY use to include network-level events. See this directory's
 [README](README.md) for the basic concepts.
 
+This data format is available since data format version 0.3.3.
+
 ## Specification
 
 ```JSON
