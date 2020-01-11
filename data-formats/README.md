@@ -2,7 +2,7 @@
 
 | Authors    | Arturo Filastò et al. |
 |------------|-----------------------|
-| Version    | 0.3.2                 |
+| Version    | 0.3.3                 |
 | Maintainer | Simone Basso          |
 
 ## Overview
@@ -208,3 +208,8 @@ Probe CLI v3.0.0.
 
 - `0.3.2` [2020-01-10]: initially used to deprecate `test_start_time`, but
 that was a mistake, and it was reverted. Thus this is now an alias for `0.3.1`.
+
+- `0.3.3` [2020-01-11]: document TLSHandshake and NetworkEvents templates,
+add timing support via `t` to DNS and TCPConnect templates, allow cross
+referencing DNS, TCPConnect, NetworkEvents and possibly TLSHandshake using
+the `conn_id` and `dial_id` identifiers.
