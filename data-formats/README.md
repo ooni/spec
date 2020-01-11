@@ -2,7 +2,7 @@
 
 | Authors    | Arturo Filastò et al. |
 |------------|-----------------------|
-| Version    | 0.3.3                 |
+| Version    | 0.3.4                 |
 | Maintainer | Simone Basso          |
 
 ## Overview
@@ -213,3 +213,8 @@ that was a mistake, and it was reverted. Thus this is now an alias for `0.3.1`.
 add timing support via `t` to DNS and TCPConnect templates, allow cross
 referencing DNS, TCPConnect, NetworkEvents and possibly TLSHandshake using
 the `conn_id` and `dial_id` identifiers.
+
+- `0.3.4` [2020-01-11]: add `transaction_id` to link the HTTP template
+with DNS template, TCPConnect template, TLSHandshake template, and
+NetworkEvents template. Make sure we clarify which IDs may be reused
+and which are expected to appear only once per measurement session.

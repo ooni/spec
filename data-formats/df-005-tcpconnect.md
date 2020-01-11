@@ -24,16 +24,17 @@ basic concepts.
     "ip": "149.154.171.5",
     "port": 80,
     "status": {},
-    "t": 1.114
+    "t": 1.114,
+    "transaction_id": 1
 }
 ```
 
-- `conn_id` (`int`; optional; since v0.3.3): identifier of this connection. When
-zero, it means we don't know the conn ID, and it can be omitted.
+- `conn_id` (`int`; optional; since v0.3.3): identifier of the connection. See
+the discussion in `df-008-netevents.md`.
 
-- `dial_id` (`int`; optional; since v0.3.3): identifier of a dialing operation (i.e. name
-resolution followed by connect). The zero dial_id means that we don't know the
-real dial ID and MAY be omitted by applications.
+- `dial_id` (`int`; optional; since v0.3.3): identifier of a dialing
+operation (i.e. name resolution followed by connect). See the
+discussion in `df-002-dnst.md`.
 
 - `ip` (`string`): IP address we're connecting to.
 
@@ -43,6 +44,9 @@ real dial ID and MAY be omitted by applications.
 
 - `t` (`float`): number of seconds elapsed since `measurement_start_time`
 measured when `connect` is complete.
+
+- `transaction_id` (`int`; optional; since v0.3.4): if present, this is the
+ID of the HTTP transaction that caused this TCP connect.
 
 ## Status
 
@@ -76,7 +80,8 @@ not relevant to the HTTP data format:
           "failure": null,
           "success": true
         },
-        "t": 1.114
+        "t": 1.114,
+        "transaction_id": 1
       }
     ]
   }

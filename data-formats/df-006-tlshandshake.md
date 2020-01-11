@@ -17,26 +17,31 @@ This data format is available since data format version 0.3.3.
     "peer_certificates": [],
     "t": 1.11,
     "tls_version": "",
+    "transaction_id": 1
 }
 ```
 
 - `cipher_suite` (`string`): the negotiated cipher suite, if any.
 
-- `conn_id` (`int`; optional; since v0.3.3): identifier of this connection. When
-zero, it means we don't know the conn ID, and it can be omitted.
+- `conn_id` (`int`; optional; since v0.3.3): identifier of the connection. See
+the discussion in `df-008-netevents.md`.
 
 - `failure` (`string`; nullable): if there was an error, this field is
 a string indicating the error, otherwise it MUST be `null`.
 
 - `negotiated_protocol`: (`string`): the protocol negotiated with ALPN, if any.
 
-- `peer_certificates`: (`[]BinaryData`): list of peer certificates in ASN.1 DER format
-represented using the `BinaryData` object described in `df-001-httpt.md`.
+- `peer_certificates`: (`[]BinaryData`): list of peer certificates in ASN.1
+DER format represented using the `BinaryData` object described
+in `df-001-httpt.md`.
 
 - `t` (`float`): number of seconds elapsed since `measurement_start_time`
 measured in the moment in which `failure` is determined.
 
 - `tls_version` (`string`): the negotiated TLS version, if any.
+
+- `transaction_id` (`int`; optional; since v0.3.4): if present, this is the
+ID of the HTTP transaction that caused this TLS handshake.
 
 ## Example
 
@@ -70,7 +75,8 @@ not relevant to the TLS data format:
           }
         ],
         "t": 2.603595,
-        "tls_version": "TLSv1.2"
+        "tls_version": "TLSv1.2",
+        "transaction_id": 1
       }
     ]
   },

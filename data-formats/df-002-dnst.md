@@ -27,15 +27,18 @@ code. See this directory's [README](README.md) for the basic concepts.
     "resolver_address": "8.8.8.8:53",
     "resolver_hostname": "8.8.8.8",
     "resolve_port": "53",
-    "t": 1.114
+    "t": 1.114,
+    "transaction_id": 1
 }
 ```
 
 - `answers` (`[]Answer`): list of answer objects. See below.
 
-- `dial_id` (`int`; optional; since v0.3.3): identifier of a dialing operation (i.e. name
-resolution followed by connect). The zero dial_id means that we don't know the
-real dial ID and MAY be omitted by applications.
+- `dial_id` (`int`; optional; since v0.3.3): identifier of a dialing
+operation (i.e. name resolution followed by connect). The zero dial_id
+means that we don't know the real dial ID. Applications SHOULD NOT
+emit the dial_id when it is zero. Rest assured that the dial_id will
+be unique during a measurement session.
 
 - `engine` (`string`; optional): the specific engine used to perform
 the DNS query. If omitted implies `"system"`, which means that we are
@@ -64,6 +67,8 @@ used by ooni/probe-engine, which sets it to `null`.
 - `t` (`float`): number of seconds elapsed since `measurement_start_time`
 measured in the moment in which `failure` is determined.
 
+- `transaction_id` (`int`; optional; since v0.3.4): if present, this is the
+ID of the HTTP transaction that caused this query.
 
 ## Answer
 
@@ -140,7 +145,8 @@ not relevant to the DNS data format:
         "resolver_hostname": null,
         "resolver_port": null,
         "resolver_address": "",
-        "t": 1.114
+        "t": 1.114,
+        "transaction_id": 1
       }
     ]
   }

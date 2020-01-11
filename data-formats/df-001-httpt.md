@@ -30,7 +30,8 @@ to be used is `1.2.3.4:54321` for IPv4 and `[::1234]:54321` for IPv6.
     "failure": "dns_nxdomain_error",
     "request": {},
     "response": {},
-    "response_lenght": 1234
+    "response_lenght": 1234,
+    "transaction_id": 1
 }
 ```
 
@@ -44,6 +45,12 @@ a string indicating the error, otherwise it MUST be `null`.
 - `response_length` (`int`; deprecated): this is a legacy field that
 contains the response length and is typically set to `null` or directly
 omitted by modern clients (e.g. from Measurement Kit onwards).
+
+- `transaction_id` (`int`; optional; since v0.3.4): unique ID of this
+transaction. A zero transaction ID means "unspecified". The code SHOULD
+NOT include the transaction ID in this case. This ID will be unique
+within a single measurement session; do not assume it will be unique
+for longer than that.
 
 ## Request
 
@@ -60,7 +67,7 @@ omitted by modern clients (e.g. from Measurement Kit onwards).
 
 - `body` (`string` or `BinaryData`): this is the request body. The body is a
 `string` if it can be represented using UTF-8. Otherwise it is a `BinaryData`
-instance, as described below.
+instance, as described below. See also `MaybeBinaryData` below.
 
 - `body_is_truncated` (`bool`; optional; since v0.3.0): `true` if the body
 has been truncated, `false` or omitted otherwise.
@@ -70,10 +77,11 @@ where the value is `string` if it can be represented using UTF-8 and a
 `BinaryData` instance otherwise. In case multiple headers have the same key,
 the map SHOULD only contain the first value.
 
-- `headers_list` (`[]HeaderValue`); since v0.3.0): this is a better representation
-of headers that allows us to represent the case where there are multple values
-for the same header key. See below the definion of `HeaderValue`, which in the common
-case boils down to `[string, string]`.
+- `headers_list` (`[]HeaderValue`); since v0.3.0): this is a better
+representation of headers that allows us to represent the case where there
+are multple values for the same header key. See below the definion of
+`HeaderValue`, which in the value-is-UTF-8 case boils down to the
+`[string, string]` tuple.
 
 - `method` (`string`): the request method.
 
@@ -114,8 +122,9 @@ Note how the `headers` map only gets the first value.
 ]
 ```
 
-The first element is the header key. The second element is the header value. Because the
-value may in principle be binary, we use `MaybeBinaryData` (see below).
+The first element is the header key. The second element is the header
+value. Because the value may in principle be binary, we use
+`MaybeBinaryData` (see below).
 
 ## Response
 
@@ -235,7 +244,8 @@ not relevant to the HTTP data format:
             "Date": "Fri, 10 Jan 2020 17:25:20 GMT",
             "Server": "nginx/0.3.33"
           }
-        }
+        },
+        "transaction_id": 1
       }
     ]
   }
