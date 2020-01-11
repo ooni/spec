@@ -1,7 +1,5 @@
 # NetEvents Data Format
 
-# TCPTest Data Format
-
 This document describes the keys with `test_keys` that experiments
 MAY use to include network-level events. See this directory's
 [README](README.md) for the basic concepts.
