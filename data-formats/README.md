@@ -9,12 +9,9 @@
 
 The output of OONI _experiments_ (also known as _nettests_ or simply _tests_)
 consists of a series of JSON documents separated by newline characters, also known
-as [JSONL](http://jsonlines.org/).
-
-Every JSON document within the JSONL MUST be a JSON object with a specific
-toplevel structure, also referred to as the _base data format_.
-
-A _test template_ is a routine that performs functionality common across
+as [JSONL](http://jsonlines.org/). Every JSON document within the JSONL MUST be
+a JSON object with a specific toplevel structure, also referred to as the _base data
+format_. A _test template_ is a routine that performs functionality common across
 several OONI experiments, e.g., fetching a web page using HTTP. Each test
 template has its own data format.
 
