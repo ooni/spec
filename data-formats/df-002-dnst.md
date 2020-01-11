@@ -133,7 +133,8 @@ not relevant to the DNS data format:
         "query_type": "A",
         "resolver_hostname": null,
         "resolver_port": null,
-        "resolver_address": ""
+        "resolver_address": "",
+        "t": 1.114
       }
     ]
   }
