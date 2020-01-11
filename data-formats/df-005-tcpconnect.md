@@ -19,12 +19,21 @@ basic concepts.
 
 ```JSON
 {
+    "conn_id": 141,
+    "dial_id": 177171,
     "ip": "149.154.171.5",
     "port": 80,
     "status": {},
     "t": 1.114
 }
 ```
+
+- `conn_id` (`int`; optional): identifier of this connection (see below). When
+zero, it means we don't know the conn ID, and it can be omitted.
+
+- `dial_id` (`int`; optional): identifier of a dialing operation (i.e. name
+resolution followed by connect). The zero dial_id means that we don't know the
+real dial ID and MAY be omitted by applications.
 
 - `ip` (`string`): IP address we're connecting to.
 
@@ -59,6 +68,8 @@ not relevant to the HTTP data format:
   "test_keys": {
     "tcp_connect": [
       {
+        "conn_id": 5,
+        "dial_id": 555,
         "ip": "149.154.171.5",
         "port": 80,
         "status": {
