@@ -44,7 +44,8 @@ be reversed for PTR lookups like `1.0.0.127.in-addr.arpa`.
 - `query_type`: (`string`): a valid DNS query type (e.g. `MX`).
 
 - `resolver_address`: (`string`; since v0.3.1): more flexible way of
-specifying the resolver address that also allows for DoH.
+specifying the resolver address that also allows for DoH, because it does
+not assume that the resolver is identified by an address, port tuple.
 
 - `resolver_hostname`: (`string`; optional; deprecated): legacy way to
 specify the resolver hostname when using a custom resolver. This is not
