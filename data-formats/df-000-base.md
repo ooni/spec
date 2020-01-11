@@ -47,8 +47,8 @@ supposed to emit this field.
 when this measurement was processed by the data pipeline. Note that clients
 of course are not supposed to emit this field.
 
-- `data_format_version` (`string`): indicates the data format version as
-documented in [README.md](README.md).
+- `data_format_version` (`string`): indicates the data format version. See
+[README.md](README.md) for the current version and for the versions history.
 
 - `id` (`string`; optional): client-generated UUID4 identifying this measurement
 in the context of a set of measurements (i.e. a report). Consumers of OONI data
