@@ -28,8 +28,8 @@ This test creates a Psiphon tunnel and then uses it to fetch the
 ## Parent data format
 
 - `df-001-httpt.md`
-- `df-002-dnst.md` (since 2020-01-09)
-- `df-006-tlshandshake.md` (since 2020-01-11)
+- `df-002-dnst.md` (since 2020-01-09 in ooni/probe-engine)
+- `df-006-tlshandshake.md` (since 2020-01-11 in ooni/probe-engine)
 
 Because of the way in which Psiphon works, we expect DNS queries
 to always be `null`. If it's not `null`, this means we may be
