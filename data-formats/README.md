@@ -163,10 +163,10 @@ In this example:
 - all toplevel keys belong to the base data format.
 
 - the `agent` and `requests` keys within the `test_keys`
-belong to the HTTP template data format.
+belong to the HTTP data format.
 
 - the `queries` key within the `test_keys` belongs to
-the DNS template data format.
+the DNS data format.
 
 - the `tcp_connect` key within the `test_keys` belongs
 to the TCPConnect data format.
