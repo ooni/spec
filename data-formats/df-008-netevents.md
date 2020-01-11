@@ -20,6 +20,7 @@ MAY use to include network-level events. See this directory's
 {
     "address": "1.1.1.1:443",
     "conn_id": 11,
+    "dial_id": 4,
     "failure": "connection_reset",
     "num_bytes": 4114,
     "operation": "read",
@@ -30,7 +31,12 @@ MAY use to include network-level events. See this directory's
 
 - `address` (`string`; optional): address for `connect`.
 
-- `conn_id` (`int`): identifier of this connection (see below).
+- `conn_id` (`int`; optional): identifier of this connection (see below). When
+zero, it means we don't know the conn ID, and it can be omitted.
+
+- `dial_id` (`int`; optional): identifier of a dialing operation (i.e. name
+resolution followed by connect). The zero dial_id means that we don't know the
+real dial ID and MAY be omitted by applications.
 
 - `failure` (`string`; nullable): if there was an error, this field is
 a string indicating the error, otherwise it MUST be `null`.
@@ -66,6 +72,7 @@ not relevant to the TCP data format:
         "network_events": [{
             "address": "1.1.1.1:444",
             "conn_id": 11,
+            "dial_id": 4,
             "failure": "connection_refused",
             "operation": "connect",
             "proto": "tcp",
@@ -73,6 +80,7 @@ not relevant to the TCP data format:
         }, {
             "address": "1.1.1.1:443",
             "conn_id": 12,
+            "dial_id": 4,
             "failure": null,
             "operation": "connect",
             "proto": "tcp",
