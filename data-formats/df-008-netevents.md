@@ -42,7 +42,8 @@ a string indicating the error, otherwise it MUST be `null`.
 
 - `proto` (`string`; optional): protocol for `connect` (`tcp` or `udp`).
 
-- `t` (`float`): number of seconds elapsed since `measurement_start_time`.
+- `t` (`float`): number of seconds elapsed since `measurement_start_time`
+measured when `operation` is complete.
 
 ## Connection ID and Life Cycle
 
