@@ -19,6 +19,7 @@ code. See this directory's [README](README.md) for the basic concepts.
 ```JSON
 {
     "answers": [],
+    "dial_id": 177171,
     "engine": "udp",
     "failure": "dns_nxdomain_error",
     "hostname": "dns.googlex",
@@ -31,6 +32,10 @@ code. See this directory's [README](README.md) for the basic concepts.
 ```
 
 - `answers` (`[]Answer`): list of answer objects. See below.
+
+- `dial_id` (`int`; optional): identifier of a dialing operation (i.e. name
+resolution followed by connect). The zero dial_id means that we don't know the
+real dial ID and MAY be omitted by applications.
 
 - `engine` (`string`; optional): the specific engine used to perform
 the DNS query. If omitted implies `"system"`, which means that we are
