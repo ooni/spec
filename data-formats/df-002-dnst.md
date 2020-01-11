@@ -8,7 +8,7 @@ code. See this directory's [README](README.md) for the basic concepts.
 
 ```JSON
 {
-    "queries": [{}]
+    "queries": []
 }
 ```
 
