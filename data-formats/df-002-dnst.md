@@ -26,6 +26,7 @@ code. See this directory's [README](README.md) for the basic concepts.
     "resolver_address": "8.8.8.8:53",
     "resolver_hostname": "8.8.8.8",
     "resolve_port": "53",
+    "t": 1.114
 }
 ```
 
@@ -54,6 +55,10 @@ used by ooni/probe-engine, which sets it to `null`.
 - `resolver_port`: (`string`; optional; deprecated): legacy way to
 specify the resolver hostname when using a custom resolver. This is not
 used by ooni/probe-engine, which sets it to `null`.
+
+- `t` (`float`): number of seconds elapsed since `measurement_start_time`
+measured in the moment in which `failure` is determined.
+
 
 ## Answer
 
