@@ -132,6 +132,7 @@ not relevant to the DNS data format:
             "ttl": null
           }
         ],
+        "dial_id": 177171,
         "engine": "system",
         "failure": null,
         "hostname": "web.telegram.org",
