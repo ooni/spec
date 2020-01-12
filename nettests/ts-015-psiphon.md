@@ -1,6 +1,6 @@
 # Specification version number
 
-0.3.2
+0.3.3
 
 # Specification name
 
@@ -16,20 +16,24 @@ Ability to measure whether Psiphon is working from the given network vantage poi
 
 # Expected inputs
 
-None.
+The nettest will fetch a Psiphon configuration file from OONI servers and MAY
+possibly cache this configuration file for future reuse.
 
 # Test description
 
 This test creates a Psiphon tunnel and then uses it to fetch the
 `https://www.google.com/humans.txt` webpage.
 
+It is important to wipe the state directory to ensure that Psiphon
+could bootstrap from scratch every time.
+
 # Expected output
 
 ## Parent data format
 
-- `df-001-httpt.md`
-- `df-002-dnst.md` (since 2020-01-09 in ooni/probe-engine)
-- `df-006-tlshandshake.md` (since 2020-01-11 in ooni/probe-engine)
+- `df-001-httpt`
+- `df-002-dnst` (since 2020-01-09 in ooni/probe-engine)
+- `df-006-tlshandshake` (since 2020-01-11 in ooni/probe-engine)
 
 Because of the way in which Psiphon works, we expect DNS queries
 to always be `null`. If it's not `null`, this means we may be
