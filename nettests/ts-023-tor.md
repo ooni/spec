@@ -1,6 +1,6 @@
 # Specification version number
 
-2020-01-12-001
+2020-01-16-001
 
 # Specification name
 
@@ -18,8 +18,60 @@ specific actions (e.g. perform the obfs4 handshake).
 
 # Expected inputs
 
-The nettest will fetch a list of Tor targets to measure from OONI
+The nettest will fetch the Tor targets to measure from OONI
 servers and MAY cache such information for later reuse.
+
+In JSON format the input targets have this structure:
+
+```JSON
+{
+  "id": {
+    "address": "",
+    "params": {},
+    "protocol": ""
+  }
+}
+
+```
+
+- `id` (`string`): the unique identifier of the target. For
+bridges, this is the `sha256` of the fingerprint. A future
+version of this specification will document how to compute the
+`id` for other kind of input targets.
+
+- `address` (`string`): the address of the target.
+
+- `params` (`map[string][]string`; optional): extra parameters
+to be used with the target (e.g. to configure `obfs4`).
+
+- `protocol` (`string`): the protocol to use with the target. See
+below for a description of how this field is handled.
+
+The following is a valid example:
+
+```JSON
+{
+  "f372c264e9a470335d9ac79fe780847bda052aa3b6a9ee5ff497cb6501634f9f": {
+    "address": "38.229.1.78:80",
+    "params": {
+      "cert": [
+        "Hmyfd2ev46gGY7NoVxA9ngrPF2zCZtzskRTzoWXbxNkzeVnGFPWmrTtILRyqCTjHR+s9dg"
+      ],
+      "iat-mode": [
+        "1"
+     ],
+  }
+}
+```
+
+When fetching the targets from OONI orchestra, the experiment MUST
+ensure that either said targets are not logged, or they are sanitized
+before being logged. This is useful to avoid inadvertently leaking
+bridge addresses when logs are posted on public forums.
+
+This experiment currently does not handle input formatted as a Tor
+bridge line. A future version of this specification will handle this
+specific use case.
 
 # Test description
 
@@ -38,17 +90,21 @@ the address and perform an OBFS4 handshake;
 
 - otherwise, the nettest will TCP connect to the address.
 
+When all measurements are completed, the experiment MUST
+perform the data sanitization steps described below.
+
 # Expected output
 
 ```JSON
 {
     "test_keys": {
-        "targets": []
+        "targets": {}
     }
 }
 ```
 
-- `targets` (`[]Targets`): list of measurements by target
+- `targets` (`map[string]Targets`): measurements by target where
+the key is the `id` of the target, as described above.
 
 A `Target` data structure looks like:
 
@@ -71,11 +127,11 @@ A `Target` data structure looks like:
 - `failure` (`string`; nullable): `null` on success, string on
 error as documented in `df-007-errors.md`;
 
-- `network_events` (`[]NetworkEvent`; nullable): see `df-008-netevents.md`;
+- `network_events` (`[]NetworkEvent`; nullable): see `df-008-netevents`;
 
-- `queries` (`[]Query`; nullable): see `df-002-dnst.md`;
+- `queries` (`[]Query`; nullable): see `df-002-dnst`;
 
-- `requests` (`[]Transaction`; nullable): see `df-001-httpd.md`;
+- `requests` (`[]Transaction`; nullable): see `df-001-httpt`;
 
 - `target_address` (`string`): address of the target, generally expressed
 in the `1.1.1.1:555` or the `[::1]:555` or the `domain:555` forms;
@@ -83,13 +139,13 @@ in the `1.1.1.1:555` or the `[::1]:555` or the `domain:555` forms;
 - `target_protocol` (`string`): protocol to access the target, which
 determines the action performed as described above;
 
-- `tcp_connect` (`[]TCPConnect`; nullable): see `df-005-tcpconnect.md`;
+- `tcp_connect` (`[]TCPConnect`; nullable): see `df-005-tcpconnect`;
 
-- `tls_handshakes` (`[]Handshake`; nullable): see `df-006-tlshandshake.md`.
+- `tls_handshakes` (`[]Handshake`; nullable): see `df-006-tlshandshake`.
 
 ## Parent data format
 
-See above fields description.
+See the above fields description.
 
 ## Required output data
 
@@ -100,6 +156,9 @@ Fields described above (mind that many are nullable).
 For each resource, we determine whether it was working or not by
 checking its `failure` field. The ancillary data included helps to
 better understand the reason for failure.
+
+A future version of this specification will investigate into how
+to more precisely classify possible `obfs4` failures.
 
 ## Example output sample
 
@@ -394,7 +453,9 @@ better understand the reason for failure.
 This nettest does not provide anonymity. An adversary can observe that
 the user is connecting to Tor servers and using obfs4.
 
+A future version of this specification should describe how to handle the
+case where the target bridges are not public.
+
 # Packet capture considerations
 
 This test does not capture packets by default.
-
