@@ -75,7 +75,7 @@ specific use case.
 
 # Test description
 
-The test loops through the list of targets measuring each. The
+The test loops through the list of targets measuring. The
 measurement action depends on the target type:
 
 - for `dir_port` targets, the nettest will `GET` the
@@ -104,7 +104,7 @@ perform the data sanitization steps described below.
 ```
 
 - `targets` (`map[string]Targets`): measurements by target where
-the key is the `id` of the target, as described above.
+the key is the `id` of the target.
 
 A `Target` data structure looks like:
 
@@ -136,8 +136,7 @@ error as documented in `df-007-errors.md`;
 - `target_address` (`string`): address of the target, generally expressed
 in the `1.1.1.1:555` or the `[::1]:555` or the `domain:555` forms;
 
-- `target_protocol` (`string`): protocol to access the target, which
-determines the action performed as described above;
+- `target_protocol` (`string`): protocol to access the target;
 
 - `tcp_connect` (`[]TCPConnect`; nullable): see `df-005-tcpconnect`;
 
