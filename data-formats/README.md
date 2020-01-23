@@ -188,7 +188,7 @@ This directory contains the specification of:
 - [the available failure strings](df-007-errors.md)
 - [the network events data format](df-008-netevents.md)
 
-See the [nettets](../nettests) directory for the experiments' specs.
+See the [nettests](../nettests) directory for the experiments' specs.
 
 ## History
 
