@@ -4,11 +4,11 @@
 
 # Specification name
 
-Tor
+Tor (`tor`)
 
 # Test preconditions
 
-None
+* An internet connection
 
 # Expected impact
 
