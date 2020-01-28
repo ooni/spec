@@ -12,8 +12,8 @@ SNI blocking (`sni_blocking`)
 
 # Expected impact
 
-Understanding whether there is blocking triggered by deep packet
-inspection of the content of the TLS Hello's SNI field.
+Understanding whether there is blocking triggered by
+the content of the TLS Hello's SNI field.
 
 # Expected inputs
 
@@ -58,7 +58,7 @@ For every `target`, this experiment will:
 
 The implementation may (i) randomly delay the moment where steps 3. and 4. start
 such that step 3. does not strictly run before 4.; (ii) cache the result of step 4.
-such that step 4. is not repeated for every input `target`.
+to avoid repeating it for every input `target`.
 
 # Expected output
 
