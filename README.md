@@ -18,7 +18,7 @@ to be familiar with this document to understand the context.
 
 ## Terminology
 
-*Nettests*
+*Nettests (aka experiments)*
 
 Are network experiments in a box that deliver some meaningful results to end users.
 

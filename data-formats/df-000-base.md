@@ -1,187 +1,238 @@
-# OONI Data formats
+# Base Data Format
 
-The output of test is the composition of:
-
-    +---------------------------+
-    |   Base data format        |
-    +---------------------------+
-    | Test template data format |
-    +---------------------------+
-    | Test specific data format |
-    +---------------------------+
-
-In this directory shall go only the data format specifications of Test
-templates. The Test specific data formats should go in the specification of the
-test.
-
-Data produced by the ooniprobe client can be either in YAML or JSON format.
-
-YAML is used when writing reports to the users filesystem, while JSON is used
-as a format for the published processed reports.
-
-# Base test data format
-
-This specification is of the basic data format common to all ooniprobe test
-outputs.
-
-Every entry contains the following common fields. The `test_keys` key will
-contain instead all the keys that are specific to the test in question.
-
-The JSON data format is made up of a series of JSON documents separated by
-newline characters.
-
-Data Format Version: 0.2.0
+This document describes the toplevel keys of the data format. See this
+directory's [README](README.md) for the basic concepts.
 
 ## Specification
 
-```
+```JSON
 {
-    "input": "If the test takes an input this will contain the value of it"
-        " these can be for example URLs, hostnames, IPs, etc.",
-
-    "input_hashes": "A list of the SHA256 hash of encoded "
-        "as hex of the inputs to this test.",
-
-    "id": "This is an identifier of this particular measurement",
-
-    "bucket_date": "A date in the format of %Y-%m-%d that indicates "
-        "when the report was processed by the data pipeline"
-
-    "data_format_version": "0.1.0|0.2.0",
-
-    "annotations": "Optional map of key-value annotations to the report that"
-            "provide metadata to this measurement. Apps SHOULD always add to the map of"
-            "annotations the platform, which could be one of: macos, linux, windows, ios, android, lepidopter. "
-            "Users may want to add more annotations",
-
-    "report_filename": "{bucket_date}/{timestamp as '%Y%m%dT%h%M%sZ'}-{probe_cc}-{probe_asn}-{test_name}-{report_id}-{data_format_version}-{probe|backend}.json",
-
-    "options": ["A list of options passed to the test as command line arguments"],
-
-    "probe_asn": "The AS Number of the probe (prefixed by AS, ex. AS1234) "
-        "or AS0 if includeasn is set to false.",
-
-    "probe_cc": "The two letter country code of the probe or ZZ if "
-        "inlcudecountry is set to false.",
-
-    "probe_ip": "The IPv4 address of the probe or 127.0.0.1 if "
-        "includeip is set to false.",
-
-    "probe_city": "The name of the city of the probe or null if "
-        "includecity is set to false.",
-
-    "report_id": "20140130T111423Z_ELNkuajQzUWfktBupbfZUxseQDczEvEaIhtciykhoLSuiNiCCV",
-
-    "software_name": "The name of the software that has generated "
-        "such report (ex. ooniprobe)",
-
-    "software_version": "The version of the software used to generate this report",
-
-    "backend_version": "The version of the backend that collected this measurement",
-
-    "test_helpers": {"test_specific_test_helper_name": "The address of the test helper used. (Note that the name used for the helper is not necessarily the helper name according to the bouncer, and is typically test specific; e.g. WebConnectivity currently uses 'backend' to refer to the 'web-connectivity' helper."},
-
-    "test_name": "The name of the test that generated "
-        "this measurement (ex. http_requests)",
-
-    "test_version": "",
-
-    "test_runtime": null,
-
-    "measurement_start_time": "Timestamp of when the measurement was performed in "
-        "UTC time coordinates (ex. 2015-08-24 12:02:23) (Note: ooniprobe <= 1.4.0 generates skewed timing information)",
-
-    "test_start_time": "Timestamp of when the test was started in "
-        "UTC time coordinates (ex. 2015-08-24 12:02:23) (Note: ooniprobe <= 1.4.0 generates skewed timing information)",
-
-
-    "test_keys": {
-        "The keys that are specific to the test"
-    }
+    "annotations": {},
+    "backend_version": "",
+    "bucket_date": "2019-10-10",
+    "data_format_version": "0.3.1",
+    "id": "bc1ff44a-04e7-45e0-81a6-46bc95c7c6b0",
+    "input": "http://example.com/",
+    "input_hashes": [],
+    "measurement_start_time": "2019-10-10 23:59:23",
+    "options": [],
+    "probe_asn": "AS13285",
+    "probe_cc": "GB",
+    "probe_city": "",
+    "probe_ip": "127.0.0.1",
+    "report_filename": "2019-10-10/20191010T235813Z-GB-AS13285-web_connectivity-20191010T235815Z_AS13285_SCHbEXPZ59vF8wmd6SHGGCaPxYGiEg8tSPwN85fJIFHrG4ZfVP-0.2.0-probe.json",
+    "report_id": "20191010T235815Z_AS13285_SCHbEXPZ59vF8wmd6SHGGCaPxYGiEg8tSPwN85fJIFHrG4ZfVP",
+    "resolver_asn": "AS15169",
+    "resolver_ip": "8.8.8.8",
+    "resolver_network_name": "Google LLC",
+    "software_name": "ooniprobe-ios",
+    "software_version": "2.1.0",
+    "test_helpers": {},
+    "test_keys": {},	
+    "test_name": "web_connectivity",
+    "test_runtime": 2.2955930233,
+    "test_start_time": "2019-10-10 23:58:13",
+    "test_version": "0.0.1"
 }
 ```
 
-# Example output
+- `annotations` (`map[string]string`; optional): key-value annotations to the
+report that provide metadata to this measurement. See below.
+
+- `backend_version` (`string`; optional): version of the backend that has
+collected this specific measurement.  Note that clients of course are not
+supposed to emit this field.
+
+- `bucket_date` (`string`): a date like `"2006-01-02"` that indicates
+when this measurement was processed by the data pipeline. Note that clients
+of course are not supposed to emit this field.
+
+- `data_format_version` (`string`): indicates the data format version. See
+[README.md](README.md) for the current version and for the versions history.
+
+- `id` (`string`; optional): client-generated UUID4 identifying this measurement
+in the context of a set of measurements (i.e. a report). Consumers of OONI data
+SHOULD NOT trust this identifier to uniquely identify the measurement. This
+identifier is only meaningful for measurements that have not been submitted to
+a OONI collector yet. In fact, OONI collectors SHOULD clear this field to avoid
+any potential confusion caused by it.
+
+- `input` (`string`; optional; nullable): if this experiment accepts any input, the
+input that was used to produce this measurement. For example, the Web
+Connectivity experiment uses URLs as input.
+
+- `input_hashes` (`[]string`; optional; deprecated): historical field that
+used to contain the SHA256s of all inputs provided to the experiment. Modern
+implementations, e.g. Measurement Kit, typically emit an empty list. All
+clients using `v0.3.0`, or greater, of the data format SHOULD NOT emit this field at all.
+
+- `measurement_start_time` (`string`): time when this measurement was
+started in UTC, using the `"2006-01-02 08:04:05"` format. Note that
+ooniprobe <= 1.4.0 generates skewed time information.
+
+- `options` (`[]string`; optional; deprecated): list of options passed on the
+command line when running this specific experiment. Modern implementations,
+e.g. Measurement Kit, typically emit an empty list here. All clients using
+`v0.3.0` or greater of the data format SHOULD NOT emit this field at all.
+
+- `probe_asn` (`string`): AS Number of the probe (prefixed by AS, e.g.,
+`"AS1234"`), or `"AS0"` if the user does not want to share their ASN.
+
+- `probe_cc` (`string`): two letter country code of the probe (e.g.,
+`"IT"`) or `"ZZ"` if the user does not want to share their country code.
+
+- `probe_city` (`string`; optional; deprecated): name of the city where the
+measurement was run. If the user does not want to share this information,
+this field should be set to `null` by `v0.2.0` clients. Clients using `v0.3.0`
+or greater SHOULD NOT emit this field.
+
+- `probe_ip` (`string`): IP address of the probe, or `"127.0.0.1"` if
+the user does not want to share their IP.
+
+- `report_filename` (`string`): name of the file containing the report, i.e.,
+a set of related measurements, in our infrastructure. Note that clients of
+course are not supposed to emit this field.
+
+- `report_id` (`string`): identifier of a set of related measurements
+generated by OONI backends when submitting one or more measurements.
+
+- `resolver_asn` (`string`; since `0.3.1`): like `probe_asn` but for
+`resolver_ip` rather than for `probe_ip`.
+
+- `resolver_ip` (`string`; since `0.3.0`): IP of the DNS resolver used by
+the probe, as determined by the measurement engine.
+
+- `resolver_network_name` (`string`; since `0.3.1`): like `probe_network_name`
+but for `resolver_ip` rather than for `probe_ip`.
+
+- `software_name` (`string`): name of the software that has generated
+this specific measurement (e.g., `"ooniprobe"`).
+
+- `software_version` (`string`): version of the software used to generate
+this specific measurement (e.g., `"3.0.0"`).
+
+- `test_helpers` (`map[string]any`): map containing information regarding
+what test helpers have been used for running this measurement. See
+below for more information regarding this field's format.
+
+- `test_keys` (`object`): object containing specific keys that depend
+upon the specific network experiment that we're running as well as upon
+the specific test helpers that are used.
+
+- `test_name` (`string`): name of the experiment in snake case. For example,
+Web Connectivity SHOULD be indicated as `"web_connectivity"`.
+
+- `test_runtime` (`float`): runtime of this specific measurement in seconds
+with arbitrary sub-seconds precision. All modern implementations, i.e.
+Measurement Kit and `github.com/ooni/probe-engine`, measure this value as
+the time elapsed since when we start measuring a specific input (or when
+we start an experiment without input) until when the measurement is
+complete (i.e. all the fields inside `test_keys` have been computed or there
+has been an error or timeout causing the measurement to be aborted and the
+error to be recorded inside it). This specifically means that this field does
+not include the time spent communicating with OONI backends such as the bouncer
+and the collector, but it includes the communication with any backend that
+is required to finish off the measurement (e.g. the Web Connectivity
+test helper). Note that this field's name is misleading and it should
+have been called `measurement_runtime` instead.
+
+- `test_start_time` (`string`): like `measurement_start_time` except that it
+indicates the moment in which a related set of measurements started rather than
+the moment where the current measurement started. For example, for the Web
+Connectivity experiment, this is the momement where we start processing a
+list of input URLs.
+
+## Annotations
 
 ```JSON
 {
-    "annotations": {"platform": "macos"},
-    "bucket_date": "2015-11-22",
-    "data_format_version": "0.2.0",
-    "id": "07873c37-9441-47e3-93b8-94db10444c64",
-    "input": "http://example.com/",
-    "options": [
-        "-f",
-        "37e60e13536f6afe47a830bfb6b371b5cf65da66d7ad65137344679b24fdccd1"
-    ],
-    "probe_asn": "AS0",
-    "probe_cc": "CH",
-    "probe_ip": "127.0.0.1",
-    "report_filename": "2015-11-22/20151122T103202Z-CH-AS0-http_requests-XsQk40qrhgvJEdbXAUFzYjbbGCBuEsc1UV5RAAFXo4hysiUo3qyTfo4NTr7MjiwN-0.1.0-probe.json",
-    "report_id": "XsQk40qrhgvJEdbXAUFzYjbbGCBuEsc1UV5RAAFXo4hysiUo3qyTfo4NTr7MjiwN",
-    "software_name": "ooniprobe",
-    "software_version": "1.3.1",
-    "backend_version": "1.1.4",
-    "test_helpers": {},
-    "input_hashes": [
-        "37e60e13536f6afe47a830bfb6b371b5cf65da66d7ad65137344679b24fdccd1"
-    ],
-    "test_name": "http_requests",
-    "test_runtime": 0.1842639446,
-    "test_start_time": "2015-11-22 10:32:02",
-    "test_version": "0.2.4",
-    "test_keys": {
-    }
+  "engine_name": "libmeasurement_kit",
+  "engine_version": "0.10.4",
+  "engine_version_full": "v0.10.4",
+  "network_type": "wifi",
+  "platform": "ios"
 }
 ```
 
-# Error strings
+Annotations is defined as `map[string]string` but the consumer of this field
+SHOULD NOT assume that clients using `data_format_version < 0.3.0` have always
+used string values. Since `v0.3.0` clients MUST always use string values. A
+client SHOULD always add to the map of annotations:
 
-Here are the mappings between twisted errors and the corresponding ooniprobe
-error_string:
+  - `engine_name` (`string`): the name of the measurement engine
 
-* twisted.internet.error.ConnectionRefusedError: `connection_refused_error`
+  - `engine_version` (`string`): the version of the measurement engine
 
-* socket.gaierror: `address_family_not_supported_error`
+  - `engine_version_full` (`string`): the version of the measurement
+  engine as generated by `git describe --tags`
 
-* twisted.internet.error.DNSLookupError: `dns_lookup_error`
+  - `network_type` (`string`): one of:
 
-* twisted.internet.error.TCPTimedOutError: `tcp_timed_out_error`
+    - `mobile`: when OONI Probe Mobile is using 2G/3G/4G/5G networks.
 
-* twisted.internet.error.ConnectionDone: `connection_done`
+    - `wifi`: when OONI Probe Mobile is using Wi-Fi networks.
 
-* twisted.web._newclient.ResponseNeverReceived: `response_never_received`
+  - `platform` (`string`): one of:
 
-* twisted.internet.error.TimeoutError: `generic_timeout_error`
+    - `android`
 
-* twisted.internet.error.ConnectError: `connect_error`
+    - `ios`
 
-* twisted.internet.error.ConnectionLost: `connection_lost_error`
+    - `lepidopter`
 
-* twisted.internet.defer.TimeoutError: `deferred_timeout_error`
+    - `linux`
 
-* twisted.names.error.DNSNameError: `dns_name_error`
+    - `macos`
 
-* twisted.names.error.DNSServerError: `dns_name_failure`
+    - `windows`
 
-* txsocksx.errors.ServerFailure: `socks_server_failure`
+## Test Helpers
 
-* txsocksx.errors.ConnectionNotAllowed: `socks_connection_not_allowed`
+Historically we have saved into `test_helpers` two different data structures:
 
-* txsocksx.errors.NetworkUnreachable: `socks_network_unreachable`
+```JSON
+{"backend": "1.1.1.1:853"}
+```
 
-* txsocksx.errors.HostUnreachable: `socks_host_unreachable`
+used, e.g., by HTTP Invalid Request Line, and
 
-* txsocksx.errors.ConnectionRefused: `socks_connection_refused`
+```JSON
+"backend": {
+  "address": "https://mia-wcth.ooni.io",
+  "type": "https"
+}
+```
 
-* txsocksx.errors.TTLExpired: `socks_ttl_expired`
+used, e.g., by Web Connectivity.
 
-* txsocksx.errors.CommandNotSupported: `socks_command_not_supported`
+The former is typically used when there can only be a single type of
+backend. The latter when more types are possible.
 
-* txsocksx.errors.AddressNotSupported: `socks_address_not_supported`
+## Example
 
-* txsocksx.errors.SOCKSError: `socks_error`
+In the following example we omitted the content of `test_keys`
+because it was not relevant for this discussion.
 
-* This will be the error message if the task has timed out: `task_timed_out`
-
-* Every other failure: 'unknown_failure %s' % str(failure.value)
+```JSON
+{
+  "annotations": {
+    "platform": "macos"
+  },
+  "data_format_version": "0.3.1",
+  "measurement_start_time": "2020-01-10 17:25:19",
+  "test_runtime": 4.426603178,
+  "probe_asn": "AS30722",
+  "probe_cc": "IT",
+  "probe_ip": "127.0.0.1",
+  "report_id": "20200110T172519Z_AS30722_5UdG13d6rEfOVCTHEdMjuXGah8vF6dpShA0jditnrHCmH10o1K",
+  "resolver_asn": "AS15169",
+  "resolver_ip": "172.217.34.2",
+  "resolver_network_name": "Google LLC",
+  "software_name": "miniooni",
+  "software_version": "0.1.0-dev",
+  "test_keys": {},
+  "test_name": "telegram",
+  "test_start_time": "2020-01-10 17:25:19",
+  "test_version": "0.0.4"
+}
+```
