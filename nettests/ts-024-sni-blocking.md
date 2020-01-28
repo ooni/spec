@@ -427,4 +427,10 @@ This test does not capture packets by default.
 
 In Autumn 2019, [@fortuna](https://github.com/fortuna) proposed, designed,
 and implemented a comprehensive domain connectivity nettest. The nettest
-presented here is the SNI blocking subtest of @fortuna's nettest.
+presented here is a slightly modified version of the SNI blocking subtest
+of @fortuna's nettest.
+
+# Future work
+
+This nettest is still experimental. We need to define top-level keys,
+run measurements with blocking using Jafar, and further develop it.
