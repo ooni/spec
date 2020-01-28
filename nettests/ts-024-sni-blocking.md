@@ -26,13 +26,11 @@ expressed as `IPv4:port`, `[IPv6]:port`, or `domain:port` (e.g. `1.1.1.1:443`)
 
 If `testhelper` is not specified we use `${control_sni}:443`.
 
-The default implementation will use `ps.ooni.io` as `control_sni` and the
-empty string as testhelper endpoint. This will effectively cause us to
-use `ps.ooni.io:443` as testhelper endpoint.
-
-This is a reasonable choice. Our probes need to access that endpoint
-to work correctly. So, if it is not blocked, we can run this experiment.
-
+The default implementation will use `ps.ooni.io` as `control_sni`
+and the empty string as testhelper endpoint. This will effectively
+cause us to use `ps.ooni.io:443` as testhelper endpoint.  This is
+a reasonable choice. Our probes need to access that endpoint to
+work correctly. So, if it is not blocked, we can run this experiment.
 If instead `ps.ooni.io:443` is blocked, by implementing circumvention
 for it, we fix both ordinary probe operations and this experiment.
 
