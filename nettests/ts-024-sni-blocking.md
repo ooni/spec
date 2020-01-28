@@ -100,13 +100,12 @@ error as documented in `df-007-errors.md`;
 
 - `tcp_connect` (`[]TCPConnect`; nullable): see `df-005-tcpconnect`;
 
-- `th_address` (`string`): address of the test helper, generally expressed
-in the `1.1.1.1:555` or the `[::1]:555` or the `domain:555` forms;
+- `th_address` (`string`): address of the test helper;
 
 - `tls_handshakes` (`[]Handshake`; nullable): see `df-006-tlshandshake`.
 
-We expect `requests` to be `null` unless we're using DoH. We expect
-`queries` to be `null` when `testhelper` is an IP address.
+We expect `requests` to be `null` unless we're using DoH; `queries` to
+be `null` when `testhelper` is an IP.
 
 ## Parent data format
 
@@ -138,14 +137,14 @@ of this experiment should be doing by default.
 {
   "data_format_version": "0.3.4",
   "input": "blocked.com",
-  "measurement_start_time": "2020-01-28 15:05:16",
-  "test_runtime": 0.198302788,
+  "measurement_start_time": "2020-01-28 15:27:18",
+  "test_runtime": 0.335919812,
   "probe_asn": "AS30722",
   "probe_cc": "IT",
   "probe_ip": "127.0.0.1",
-  "report_id": "20200128T150516Z_AS30722_sDaIFwEqL6K5KBsklCzcm1BlScQXEt4cQea8vnVih6c0xoyBWt",
+  "report_id": "20200128T152718Z_AS30722_ppk81LCnhT5Ok1P6909MX9XG8L6jmgSZkJyhx8KTmN4LAVAgGX",
   "resolver_asn": "AS30722",
-  "resolver_ip": "91.80.36.86",
+  "resolver_ip": "91.80.36.88",
   "resolver_network_name": "Vodafone Italia S.p.A.",
   "software_name": "miniooni",
   "software_version": "0.1.0-dev",
@@ -160,7 +159,7 @@ of this experiment should be doing by default.
           "failure": null,
           "operation": "connect",
           "proto": "tcp",
-          "t": 0.113923
+          "t": 0.249971
         },
         {
           "conn_id": 1,
@@ -168,7 +167,7 @@ of this experiment should be doing by default.
           "num_bytes": 262,
           "operation": "write",
           "proto": "tcp",
-          "t": 0.114336
+          "t": 0.250393
         },
         {
           "conn_id": 1,
@@ -176,7 +175,7 @@ of this experiment should be doing by default.
           "num_bytes": 517,
           "operation": "read",
           "proto": "tcp",
-          "t": 0.15726
+          "t": 0.294079
         },
         {
           "conn_id": 1,
@@ -184,7 +183,7 @@ of this experiment should be doing by default.
           "num_bytes": 923,
           "operation": "read",
           "proto": "tcp",
-          "t": 0.157357
+          "t": 0.294199
         },
         {
           "conn_id": 1,
@@ -192,7 +191,7 @@ of this experiment should be doing by default.
           "num_bytes": 1440,
           "operation": "read",
           "proto": "tcp",
-          "t": 0.157472
+          "t": 0.294405
         },
         {
           "conn_id": 1,
@@ -200,7 +199,7 @@ of this experiment should be doing by default.
           "num_bytes": 294,
           "operation": "read",
           "proto": "tcp",
-          "t": 0.158662
+          "t": 0.295752
         },
         {
           "conn_id": 1,
@@ -208,7 +207,7 @@ of this experiment should be doing by default.
           "num_bytes": 85,
           "operation": "write",
           "proto": "tcp",
-          "t": 0.159271
+          "t": 0.296475
         },
         {
           "conn_id": 1,
@@ -216,7 +215,7 @@ of this experiment should be doing by default.
           "num_bytes": 43,
           "operation": "read",
           "proto": "tcp",
-          "t": 0.197734
+          "t": 0.335268
         },
         {
           "conn_id": 1,
@@ -224,7 +223,7 @@ of this experiment should be doing by default.
           "num_bytes": 23,
           "operation": "write",
           "proto": "tcp",
-          "t": 0.198016
+          "t": 0.335577
         }
       ],
       "queries": [
@@ -244,7 +243,7 @@ of this experiment should be doing by default.
           "resolver_hostname": null,
           "resolver_port": null,
           "resolver_address": "",
-          "t": 0.07446
+          "t": 0.211333
         },
         {
           "answers": null,
@@ -256,7 +255,7 @@ of this experiment should be doing by default.
           "resolver_hostname": null,
           "resolver_port": null,
           "resolver_address": "",
-          "t": 0.07446
+          "t": 0.211333
         }
       ],
       "requests": null,
@@ -271,9 +270,10 @@ of this experiment should be doing by default.
             "failure": null,
             "success": true
           },
-          "t": 0.113923
+          "t": 0.249971
         }
       ],
+      "th_address": "ps.ooni.io:443",
       "tls_handshakes": [
         {
           "cipher_suite": "TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305",
@@ -290,7 +290,7 @@ of this experiment should be doing by default.
               "format": "base64"
             }
           ],
-          "t": 0.19791,
+          "t": 0.335446,
           "tls_version": "TLSv1.2"
         }
       ]
@@ -305,7 +305,7 @@ of this experiment should be doing by default.
           "failure": null,
           "operation": "connect",
           "proto": "tcp",
-          "t": 0.151432
+          "t": 0.249802
         },
         {
           "conn_id": 2,
@@ -313,7 +313,7 @@ of this experiment should be doing by default.
           "num_bytes": 263,
           "operation": "write",
           "proto": "tcp",
-          "t": 0.151923
+          "t": 0.250285
         },
         {
           "conn_id": 2,
@@ -321,15 +321,23 @@ of this experiment should be doing by default.
           "num_bytes": 517,
           "operation": "read",
           "proto": "tcp",
-          "t": 0.191518
+          "t": 0.298164
         },
         {
           "conn_id": 2,
           "failure": null,
-          "num_bytes": 2363,
+          "num_bytes": 923,
           "operation": "read",
           "proto": "tcp",
-          "t": 0.191643
+          "t": 0.298283
+        },
+        {
+          "conn_id": 2,
+          "failure": null,
+          "num_bytes": 1440,
+          "operation": "read",
+          "proto": "tcp",
+          "t": 0.298325
         },
         {
           "conn_id": 2,
@@ -337,7 +345,7 @@ of this experiment should be doing by default.
           "num_bytes": 7,
           "operation": "write",
           "proto": "tcp",
-          "t": 0.192455
+          "t": 0.299192
         }
       ],
       "queries": [
@@ -357,7 +365,7 @@ of this experiment should be doing by default.
           "resolver_hostname": null,
           "resolver_port": null,
           "resolver_address": "",
-          "t": 0.114177
+          "t": 0.211333
         },
         {
           "answers": null,
@@ -369,7 +377,7 @@ of this experiment should be doing by default.
           "resolver_hostname": null,
           "resolver_port": null,
           "resolver_address": "",
-          "t": 0.114177
+          "t": 0.211333
         }
       ],
       "requests": null,
@@ -384,9 +392,10 @@ of this experiment should be doing by default.
             "failure": null,
             "success": true
           },
-          "t": 0.151432
+          "t": 0.249802
         }
       ],
+      "th_address": "ps.ooni.io:443",
       "tls_handshakes": [
         {
           "cipher_suite": "",
@@ -394,14 +403,14 @@ of this experiment should be doing by default.
           "failure": "ssl_invalid_hostname",
           "negotiated_protocol": "",
           "peer_certificates": null,
-          "t": 0.192549,
+          "t": 0.299247,
           "tls_version": ""
         }
       ]
     }
   },
   "test_name": "sni_blocking",
-  "test_start_time": "2020-01-28 15:05:16",
+  "test_start_time": "2020-01-28 15:27:18",
   "test_version": "0.0.1"
 }
 ```
