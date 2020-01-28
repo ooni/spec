@@ -37,8 +37,7 @@ for it, we fix both ordinary probe operations and this experiment.
 A valid `Target` is a valid domain name (e.g. `kernel.org`), a valid IP
 address (e.g. `1.1.1.1`), or a valid URL (e.g. `http://x.org`). When the
 input is a URL, the experiment will extract the domain from the URL and
-use that as target SNI. (This means that, if the URL contains a port, or
-a path, or a query string, they will be ignored.)
+use that as target SNI, ignoring any scheme, port, path, etc.
 
 The user should be able to specify the above parameters from the CLI.
 
