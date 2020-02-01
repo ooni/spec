@@ -99,7 +99,7 @@ error as documented in `df-007-errors.md`;
 
 - `tcp_connect` (`[]TCPConnect`; nullable): see `df-005-tcpconnect`;
 
-- `th_address` (`string`): address of the test helper;
+- `th_address` (`string`): address of the test helper (see above);
 
 - `tls_handshakes` (`[]Handshake`; nullable): see `df-006-tlshandshake`.
 
