@@ -2,7 +2,7 @@
 
 | Authors    | Arturo Filastò et al. |
 |------------|-----------------------|
-| Version    | 0.3.4                 |
+| Version    | 0.4.0                 |
 | Maintainer | Simone Basso          |
 
 ## Overview
@@ -40,6 +40,33 @@ relied upon. As a general rule, data consumers MUST be prepared for any
 field being `null` or missing; data producers SHOULD NOT omit fields (or
 emit `null`s) unless this has been explicitly documented in the field description.
 
+## Data format version
+
+For compatibility with the legacy OONI pipeline, since `data_format_version` equal
+to `0.4.0`, a OONI probe SHOULD send `data_format_version` equal to `0.2.0`. In such
+case, the probe MUST use the `real_data_format_version` annotation to declare the
+the real data format version being used:
+
+```JavaScript
+{
+    "annotations": {
+        "real_data_format_version": "0.4.0"
+    },
+    "data_format_version": "0.2.0",
+    // other toplevel keys that are part of the base data format
+    // ...
+    "test_keys": {
+        // keys written by test templates
+        // ...
+        // keys written by each experiment
+        // ...
+    }
+}
+```
+
+The annotation allows to distinguish between probes using data format version
+`0.2.0` and probes using subsequent versions.
+
 ## Example
 
 The following is a valid JSON that was edited for brevity.
@@ -47,9 +74,10 @@ The following is a valid JSON that was edited for brevity.
 ```JSON
 {
   "annotations": {
-    "platform": "macos"
+    "platform": "macos",
+    "real_data_format_version": "0.4.0"
   },
-  "data_format_version": "0.3.1",
+  "data_format_version": "0.2.0",
   "measurement_start_time": "2020-01-10 17:25:19",
   "test_runtime": 4.426603178,
   "probe_asn": "AS30722",
@@ -218,3 +246,8 @@ the `conn_id` and `dial_id` identifiers.
 with DNS template, TCPConnect template, TLSHandshake template, and
 NetworkEvents template. Make sure we clarify which IDs may be reused
 and which are expected to appear only once per measurement session.
+
+- `0.4.0` [2020-02-10]: clients SHOULD set `data_format_version` to
+`0.2.0` to avoid breaking the legacy pipeline. If they do so, they
+MUST set the `real_data_format_version` annotation to the real data
+format version that is being used.
