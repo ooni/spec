@@ -80,6 +80,9 @@ consider the endpoint to be blocked and write in the report:
 }
 ```
 
+Since 2020-02-17, this methodology has started failing consistently as
+documented in the bugs section at the end of this document.
+
 For every IP, both consistent and inconsistent, we then try to establish a TCP session to port `443`
 and `5222`.
 
@@ -555,4 +558,6 @@ WhatsApp as described in version 2016-10-25-001 of this specification is
 fundamentally broken (see [ooni/probe-engine#341](
 https://github.com/ooni/probe-engine/issues/341)). This issue affected
 ooni/probe-legacy <= 2.3.0, ooni/probe-ios <= 2.2.0, ooni/probe-android
-<= 2.2.0. 
+<= 2.2.0. The `test_version` was 0.6.0 for ooni/probe-legacy and 0.6.1
+for the mobile apps. Since Measurement Kit 0.10.10 (`test_version`
+0.7.0) we will completely disable such check.
