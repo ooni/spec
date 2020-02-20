@@ -80,7 +80,7 @@ consider the endpoint to be blocked and write in the report:
 }
 ```
 
-Since 2020-02-17, this methodology has started failing consistently as
+Since 2020-02-17, this consistency check has started failing consistently as
 documented in the bugs section at the end of this document.
 
 For every IP, both consistent and inconsistent, we then try to establish a TCP session to port `443`
