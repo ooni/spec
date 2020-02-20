@@ -547,3 +547,12 @@ The meaning of the various keys is described in the above section.
     "test_version": "0.5.0"
 }
 ```
+
+## Bugs
+
+Since 2020-02-17, the heristics for checking whether a netblock belongs to
+WhatsApp as described in version 2016-10-25-001 of this specification is
+fundamentally broken (see [ooni/probe-engine#341](
+https://github.com/ooni/probe-engine/issues/341)). This issue affected
+ooni/probe-legacy <= 2.3.0, ooni/probe-ios <= 2.2.0, ooni/probe-android
+<= 2.2.0. 
