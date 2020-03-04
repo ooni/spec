@@ -56,7 +56,7 @@ Performs a request with a HTTP method that is a random 4
 character string. e.g.
 
 ```
-request_line = randomSTR(4) + " / HTTP/1.1\n\r"
+request_line = randomSTR(4) + " / HTTP/1.1\r\n"
 ```
 
 ## test_random_invalid_field_count
@@ -64,7 +64,7 @@ request_line = randomSTR(4) + " / HTTP/1.1\n\r"
 Performs a request with an invalid number of random fields, e.g.
 
 ```
-request_line = ' '.join(randomStr(5) for x in range(4)) + '\n\r'
+request_line = ' '.join(randomStr(5) for x in range(4)) + '\r\n'
 ```
 
 ## test_random_big_request_method
@@ -72,7 +72,7 @@ request_line = ' '.join(randomStr(5) for x in range(4)) + '\n\r'
 Send a 1024 byte request method, e.g.
 
 ```
-request-line = randomStr(1024) + ' / HTTP/1.1\n\r'
+request-line = randomStr(1024) + ' / HTTP/1.1\r\n'
 ```
 
 ## test_random_invalid_version_number
@@ -96,7 +96,7 @@ caching servers, particularly targeting the built-in
 cache management functionality of the proxy.
 
 ```
-request_line = 'GET cache_object://localhost/ HTTP/1.0\n\r'
+request_line = 'GET cache_object://localhost/ HTTP/1.0\r\n'
 ```
 
 If a squid proxy receives such a request it will generally
@@ -152,16 +152,16 @@ ooni-backend.
     "probe_city": null,
     "test_keys": {
         "received": [
-            "53LC / HTTP/1.1\n\r",
+            "53LC / HTTP/1.1\r\n",
             "",
-            "dNnLP MHIdC s5vst k7Ir2\n\r",
-            "yWoBwUKUnlMfZQ1BDFIHJsLAU9PNKUVOzOJ1s7BdXKlhAnALegIOkvEsq8QCHNKqFoMk5ndpSa3bE99hIVXZSK7hCGa6wk770C9WJoL7VLYDeGRYWEhoYF2eg8PERFK4CGYXuuCLkr0ScT3esnj66ypgzpuP85PpCSERP5qc0DNYzHF4edM9RcDxttfMU0X5HyQ0EzKCMX4dcKlB6DLianESEKFKE3VwRht2cwUdLs6IXG5fsUBLEiJUQEHzFENpr40dPvcnk1KoTc4UZr5EP9JlNJ9f7fx6Ps6m2QzxyXkVT8UjPYbx2Rk6EO27nfd21iKtzZyZzUhyHxVQtLS58hzeQumCwAMdOi5FmwiDG6vFS1THTODJdwovw7V0CsaXvFwkJmBagWVvRR3zWQ9o509BnK9bxvBIo5cgFdyBlVHSH3Bbq0kXyarVAoQjaOo0C8Tb8lr5Ug7FFelGnBmdKNmNQj1QmmiobrcUMY22JKdxp81Z0R1AoyjLjeJQ7NNlhpbM6REiHladSmVmgBPChjjFQJn2TGOmSAIQJAvnsREpdMyuRemTA5Vb0QMIUmEVvpIKV8HOhBaniz389ftxglIizaOF3pacUIBycUwLermpolNatVn6BbDSCNJGCwil8NVUBtfKQqTlEgQk1zo3LNfryrKEd5M4PBdOzqIFHb0zhsY8NsSy7geXOZfMnNRNfu0dsMDchiLYHzQD0qPg2heEsJ3w8usyH462eqUcNF5qNOt47tC53rnbChT8Tjktr55LrJQhvKg8QRqWg2HuTnM4eMxSjdF8iCUzxEhDHkoxah5v6iQPmRE7qCUxf2Jwyi404MLX0gGvoawukkrEiVlhcHrQo3yrnAqIRx7mYhp9izzmWw62e35xzpFD3rxhAlrLTBr3bJQPBXvMzkAY62UHt1pAQPCaDojEo1WrHKnb8TMsNUS8u5yYumvbuxsLSJFWIjkrqf2G6rm1aVo95jxx9Uvx665eJ9tWRAT6rD4A1QoXVg34m20ywW1n3voP / HTTP/1.1\n\r"
+            "dNnLP MHIdC s5vst k7Ir2\r\n",
+            "yWoBwUKUnlMfZQ1BDFIHJsLAU9PNKUVOzOJ1s7BdXKlhAnALegIOkvEsq8QCHNKqFoMk5ndpSa3bE99hIVXZSK7hCGa6wk770C9WJoL7VLYDeGRYWEhoYF2eg8PERFK4CGYXuuCLkr0ScT3esnj66ypgzpuP85PpCSERP5qc0DNYzHF4edM9RcDxttfMU0X5HyQ0EzKCMX4dcKlB6DLianESEKFKE3VwRht2cwUdLs6IXG5fsUBLEiJUQEHzFENpr40dPvcnk1KoTc4UZr5EP9JlNJ9f7fx6Ps6m2QzxyXkVT8UjPYbx2Rk6EO27nfd21iKtzZyZzUhyHxVQtLS58hzeQumCwAMdOi5FmwiDG6vFS1THTODJdwovw7V0CsaXvFwkJmBagWVvRR3zWQ9o509BnK9bxvBIo5cgFdyBlVHSH3Bbq0kXyarVAoQjaOo0C8Tb8lr5Ug7FFelGnBmdKNmNQj1QmmiobrcUMY22JKdxp81Z0R1AoyjLjeJQ7NNlhpbM6REiHladSmVmgBPChjjFQJn2TGOmSAIQJAvnsREpdMyuRemTA5Vb0QMIUmEVvpIKV8HOhBaniz389ftxglIizaOF3pacUIBycUwLermpolNatVn6BbDSCNJGCwil8NVUBtfKQqTlEgQk1zo3LNfryrKEd5M4PBdOzqIFHb0zhsY8NsSy7geXOZfMnNRNfu0dsMDchiLYHzQD0qPg2heEsJ3w8usyH462eqUcNF5qNOt47tC53rnbChT8Tjktr55LrJQhvKg8QRqWg2HuTnM4eMxSjdF8iCUzxEhDHkoxah5v6iQPmRE7qCUxf2Jwyi404MLX0gGvoawukkrEiVlhcHrQo3yrnAqIRx7mYhp9izzmWw62e35xzpFD3rxhAlrLTBr3bJQPBXvMzkAY62UHt1pAQPCaDojEo1WrHKnb8TMsNUS8u5yYumvbuxsLSJFWIjkrqf2G6rm1aVo95jxx9Uvx665eJ9tWRAT6rD4A1QoXVg34m20ywW1n3voP / HTTP/1.1\r\n"
         ],
         "sent": [
-            "53LC / HTTP/1.1\n\r",
-            "GET / HTTP/g8z\n\r",
-            "dNnLP MHIdC s5vst k7Ir2\n\r",
-            "yWoBwUKUnlMfZQ1BDFIHJsLAU9PNKUVOzOJ1s7BdXKlhAnALegIOkvEsq8QCHNKqFoMk5ndpSa3bE99hIVXZSK7hCGa6wk770C9WJoL7VLYDeGRYWEhoYF2eg8PERFK4CGYXuuCLkr0ScT3esnj66ypgzpuP85PpCSERP5qc0DNYzHF4edM9RcDxttfMU0X5HyQ0EzKCMX4dcKlB6DLianESEKFKE3VwRht2cwUdLs6IXG5fsUBLEiJUQEHzFENpr40dPvcnk1KoTc4UZr5EP9JlNJ9f7fx6Ps6m2QzxyXkVT8UjPYbx2Rk6EO27nfd21iKtzZyZzUhyHxVQtLS58hzeQumCwAMdOi5FmwiDG6vFS1THTODJdwovw7V0CsaXvFwkJmBagWVvRR3zWQ9o509BnK9bxvBIo5cgFdyBlVHSH3Bbq0kXyarVAoQjaOo0C8Tb8lr5Ug7FFelGnBmdKNmNQj1QmmiobrcUMY22JKdxp81Z0R1AoyjLjeJQ7NNlhpbM6REiHladSmVmgBPChjjFQJn2TGOmSAIQJAvnsREpdMyuRemTA5Vb0QMIUmEVvpIKV8HOhBaniz389ftxglIizaOF3pacUIBycUwLermpolNatVn6BbDSCNJGCwil8NVUBtfKQqTlEgQk1zo3LNfryrKEd5M4PBdOzqIFHb0zhsY8NsSy7geXOZfMnNRNfu0dsMDchiLYHzQD0qPg2heEsJ3w8usyH462eqUcNF5qNOt47tC53rnbChT8Tjktr55LrJQhvKg8QRqWg2HuTnM4eMxSjdF8iCUzxEhDHkoxah5v6iQPmRE7qCUxf2Jwyi404MLX0gGvoawukkrEiVlhcHrQo3yrnAqIRx7mYhp9izzmWw62e35xzpFD3rxhAlrLTBr3bJQPBXvMzkAY62UHt1pAQPCaDojEo1WrHKnb8TMsNUS8u5yYumvbuxsLSJFWIjkrqf2G6rm1aVo95jxx9Uvx665eJ9tWRAT6rD4A1QoXVg34m20ywW1n3voP / HTTP/1.1\n\r"
+            "53LC / HTTP/1.1\r\n",
+            "GET / HTTP/g8z\r\n",
+            "dNnLP MHIdC s5vst k7Ir2\r\n",
+            "yWoBwUKUnlMfZQ1BDFIHJsLAU9PNKUVOzOJ1s7BdXKlhAnALegIOkvEsq8QCHNKqFoMk5ndpSa3bE99hIVXZSK7hCGa6wk770C9WJoL7VLYDeGRYWEhoYF2eg8PERFK4CGYXuuCLkr0ScT3esnj66ypgzpuP85PpCSERP5qc0DNYzHF4edM9RcDxttfMU0X5HyQ0EzKCMX4dcKlB6DLianESEKFKE3VwRht2cwUdLs6IXG5fsUBLEiJUQEHzFENpr40dPvcnk1KoTc4UZr5EP9JlNJ9f7fx6Ps6m2QzxyXkVT8UjPYbx2Rk6EO27nfd21iKtzZyZzUhyHxVQtLS58hzeQumCwAMdOi5FmwiDG6vFS1THTODJdwovw7V0CsaXvFwkJmBagWVvRR3zWQ9o509BnK9bxvBIo5cgFdyBlVHSH3Bbq0kXyarVAoQjaOo0C8Tb8lr5Ug7FFelGnBmdKNmNQj1QmmiobrcUMY22JKdxp81Z0R1AoyjLjeJQ7NNlhpbM6REiHladSmVmgBPChjjFQJn2TGOmSAIQJAvnsREpdMyuRemTA5Vb0QMIUmEVvpIKV8HOhBaniz389ftxglIizaOF3pacUIBycUwLermpolNatVn6BbDSCNJGCwil8NVUBtfKQqTlEgQk1zo3LNfryrKEd5M4PBdOzqIFHb0zhsY8NsSy7geXOZfMnNRNfu0dsMDchiLYHzQD0qPg2heEsJ3w8usyH462eqUcNF5qNOt47tC53rnbChT8Tjktr55LrJQhvKg8QRqWg2HuTnM4eMxSjdF8iCUzxEhDHkoxah5v6iQPmRE7qCUxf2Jwyi404MLX0gGvoawukkrEiVlhcHrQo3yrnAqIRx7mYhp9izzmWw62e35xzpFD3rxhAlrLTBr3bJQPBXvMzkAY62UHt1pAQPCaDojEo1WrHKnb8TMsNUS8u5yYumvbuxsLSJFWIjkrqf2G6rm1aVo95jxx9Uvx665eJ9tWRAT6rD4A1QoXVg34m20ywW1n3voP / HTTP/1.1\r\n"
         ],
         "tampering": true
     },
