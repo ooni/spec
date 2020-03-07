@@ -1,6 +1,6 @@
 # Specification version number
 
-2020-03-07-001
+2020-03-07-002
 
 # Specification name
 
@@ -12,8 +12,12 @@ SNI blocking (`sni_blocking`)
 
 # Expected impact
 
-Understanding whether there is blocking triggered by
-the content of the TLS Hello's SNI field.
+Understanding whether there is blocking triggered by the content of
+the TLS Hello's SNI field. For a given SNI/domain, this nettest uses a
+test helper server, rather than talking to the server for the specified
+SNI/domain. This design is especially beneficial when additional blocking
+rules may cause the DNS to return bogus responses, or the IP address
+for the SNI/domain to be unreachable/filtered.
 
 # Expected inputs
 
@@ -454,7 +458,9 @@ of this experiment should be doing by default.
 # Privacy considerations                                     
 
 This nettest may be less intrusive than other nettests that measure
-blocking of a specific host by connecting directly to it.
+blocking of a specific host by connecting directly to it. In particular,
+we are not issuing DNS queries for the sensitive domain and we are not
+connecting to the sensitive IP address.
                                                                 
 # Packet capture considerations                      
 
