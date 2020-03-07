@@ -1,6 +1,6 @@
 # Specification version number
 
-2020-03-06-001
+2020-03-07-001
 
 # Specification name
 
@@ -59,12 +59,15 @@ to avoid repeating it for every input `target`.
 {
     "test_keys": {
         "control": {},
-	"target": {}
+        "result": "",
+        "target": {}
     }
 }
 ```
 
 - `control` (`Subresult`): data collected by step 4 above
+
+- `result` (`string`): classification of the result
 
 - `target` (`Subresult`): data collected by step 3 above
 
@@ -101,6 +104,44 @@ error as documented in `df-007-errors.md`;
 
 We expect `requests` to be `null` unless we're using DoH; `queries` to
 be `null` when `testhelper` is an IP.
+
+The `result` string is one of the following:
+
+- `"accessible_invalid_hostname"`: the TLS handshake with the `testhelper`
+using the `target` SNI failed because the server is not able to provide
+a certificate for the `target` hostname (this is the norm when the helper
+does not serve content for the `target` hostname/SNI);
+
+- `"accessible_valid_hostname"`: the TLS handshake with the `testhelper`
+using the `target` SNI succeded (this is what happens when the helper does
+indeed serve content for the `target` hostname/SNI);
+
+- `"anomaly_ssl_error"`: the TLS handshake with the `testhelper` using
+the `target` SNI failed because the server presented us with a certificate
+that we don't trust, or the certificate is expired, etc (this is anomaly
+because it can be TLS MITM but possibly also just misconfiguration);
+
+- `"anomaly_test_helper_blocked"`: if `testhelper` is a domain we could not
+resolve the domain, or we could not connect to `testhelper`, or we saw
+a timeout when measuring the target and also the control measurement failed
+with any error (this is anomaly because we need to look into the data to
+understand whether the test helper is down, blocked, or what);
+
+- `"anomaly_timeout"`: the control measurement succeded, but we did saw
+an I/O timeout when measuring with the `target` SNI (this is anomaly because
+the timeout may be explained by conditions different from blocking);
+
+- `"anomaly_unexpected_failure"`: when measuring the `target` SNI was saw a
+failure other than the set of failures we expected (this is anomaly and we
+want to look into this measurement and improve our implementation);
+
+- `"blocked_tcpip_error"`: we did see RST or EOF during the TLS handshake
+with the `testhelper` when using the `target` SNI (this is what we see when
+there is a rule blocking the target SNI).
+
+Accessible results generally mean success. Anomalies do not allow us to draw
+conclusions, but `"anomaly_ssl_error"` is certainly more telling than the other
+anomalies. Blocked means we are pretty sure there is blocking.
 
 ## Parent data format
 
