@@ -149,7 +149,7 @@ cases leading to false positives. A future version of this document may
 provide recommendations concerning detecting such false positives.
 
 - `"success.got_server_hello"`: we were able to get a TLS Server Hello
-back from the server, where the certificate was valid. This is what
+back from the server, without any of the above errors. This is what
 we expect to happen when there's no interference.
 
 Any other value should be treated as `"anomaly.unexpected_failure"` by
