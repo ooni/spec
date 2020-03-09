@@ -115,16 +115,16 @@ value is one of the following:
 - `"anomaly.test_helper_unreachable"`: if `testhelper` is a domain we could not
 resolve the domain, or we could not connect to `testhelper`, or we saw
 a timeout when measuring the target and also the control measurement failed
-with any error (this is anomaly because we need to look into the data to
-understand whether the test helper is down, blocked, or what);
+with any error. This is anomaly because we need to look into the data to
+understand whether the test helper is down, blocked, or what.
 
 - `"anomaly.timeout"`: the control measurement succeded, but we did saw
-an I/O timeout when measuring with the `target` SNI (this is anomaly because
-the timeout may be explained by conditions different from blocking);
+an I/O timeout when measuring with the `target` SNI. This is anomaly because
+the timeout may be explained by conditions different from blocking.
 
 - `"anomaly.unexpected_failure"`: when measuring the `target` SNI we did saw a
-failure other than the set of failures we expected (this is anomaly and we
-want to look into this measurement and improve our implementation);
+failure other than the set of failures we expected. This is anomaly and we
+want to look into this measurement and improve our implementation.
 
 - `"interference.closed"`: the connection was closed during the TLS
 handshake. We flag this as interference because we expect the test helper
