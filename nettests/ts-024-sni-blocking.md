@@ -109,43 +109,51 @@ error as documented in `df-007-errors.md`;
 We expect `requests` to be `null` unless we're using DoH; `queries` to
 be `null` when `testhelper` is an IP.
 
-The `result` string is one of the following:
+The `result` string summarizes what happens during the nettest. Its
+value is one of the following:
 
-- `"accessible_invalid_hostname"`: the TLS handshake with the `testhelper`
-using the `target` SNI failed because the server is not able to provide
-a certificate for the `target` hostname (this is the norm when the helper
-does not serve content for the `target` hostname/SNI);
-
-- `"accessible_valid_hostname"`: the TLS handshake with the `testhelper`
-using the `target` SNI succeded (this is what happens when the helper does
-indeed serve content for the `target` hostname/SNI);
-
-- `"anomaly_ssl_error"`: the TLS handshake with the `testhelper` using
-the `target` SNI failed because the server presented us with a certificate
-that we don't trust, or the certificate is expired, etc (this is anomaly
-because it can be TLS MITM but possibly also just misconfiguration);
-
-- `"anomaly_test_helper_blocked"`: if `testhelper` is a domain we could not
+- `"anomaly.test_helper_unreachable"`: if `testhelper` is a domain we could not
 resolve the domain, or we could not connect to `testhelper`, or we saw
 a timeout when measuring the target and also the control measurement failed
-with any error (this is anomaly because we need to look into the data to
-understand whether the test helper is down, blocked, or what);
+with any error. This is anomaly because we need to look into the data to
+understand whether the test helper is down, blocked, or what.
 
-- `"anomaly_timeout"`: the control measurement succeded, but we did saw
-an I/O timeout when measuring with the `target` SNI (this is anomaly because
-the timeout may be explained by conditions different from blocking);
+- `"anomaly.timeout"`: the control measurement succeded, but we did saw
+an I/O timeout when measuring with the `target` SNI. This is anomaly because
+the timeout may be explained by conditions different from blocking.
 
-- `"anomaly_unexpected_failure"`: when measuring the `target` SNI was saw a
-failure other than the set of failures we expected (this is anomaly and we
-want to look into this measurement and improve our implementation);
+- `"anomaly.unexpected_failure"`: when measuring the `target` SNI we did saw a
+failure other than the set of failures we expected. This is anomaly and we
+want to look into this measurement and improve our implementation.
 
-- `"blocked_tcpip_error"`: we did see RST or EOF during the TLS handshake
-with the `testhelper` when using the `target` SNI (this is what we see when
-there is a rule blocking the target SNI).
+- `"interference.closed"`: the connection was closed during the TLS
+handshake. We flag this as interference because we expect the test helper
+to return a TLS Server Hello message to us. It might also be the case that
+the test helper is very busy and closes incoming connections. When there
+is doubt, we can increase our confidence by inspecting the control measurement
+as well as other measurements with the same report ID.
 
-Accessible results generally mean success. Anomalies do not allow us to draw
-conclusions, but `"anomaly_ssl_error"` is certainly more telling than the other
-anomalies. Blocked means we are pretty sure there is blocking.
+- `"interference.reset"`: like `"interference.closed"` except that the
+connection is resetted rather than just being gracefully closed.
+
+- `"interference.invalid_certificate"`: we got a TLS Server Hello message
+back, but the certificate in it is invalid (e.g. expired). This is very
+likely to be a sign of interference, unless the test helper has an expired
+certificate. A future version of this document will explain how the probe
+should handle this specific corner case.
+
+- `"interference.unknown_authority"`: we got a TLS Server Hello message
+back, but we don't know the authority signing the certificate. This is
+a sign of man in the middle in most cases, even though there may be corner
+cases leading to false positives. A future version of this document may
+provide recommendations concerning detecting such false positives.
+
+- `"success.got_server_hello"`: we were able to get a TLS Server Hello
+back from the server, without any of the above errors. This is what
+we expect to happen when there's no interference.
+
+Any other value should be treated as `"anomaly.unexpected_failure"` by
+code that is processing the JSON measurement.
 
 ## Parent data format
 
