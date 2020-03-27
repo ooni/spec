@@ -69,7 +69,7 @@ for longer than that.
 `string` if it can be represented using UTF-8. Otherwise it is a `BinaryData`
 instance, as described below. See also `MaybeBinaryData` below.
 
-- `body_is_truncated` (`bool`; optional; since v0.3.0): `true` if the body
+- `body_is_truncated` (`bool`; optional; since v0.2.1): `true` if the body
 has been truncated, `false` or omitted otherwise.
 
 - `headers` (`map[string]MaybeBinaryData`): legacy map containing HTTP headers
@@ -77,9 +77,9 @@ where the value is `string` if it can be represented using UTF-8 and a
 `BinaryData` instance otherwise. In case multiple headers have the same key,
 the map SHOULD only contain the first value.
 
-- `headers_list` (`[]HeaderValue`); since v0.3.0): this is a better
+- `headers_list` (`[]HeaderValue`); since v0.2.1): this is a better
 representation of headers that allows us to represent the case where there
-are multple values for the same header key. See below the definion of
+are multiple values for the same header key. See below the definition of
 `HeaderValue`, which in the value-is-UTF-8 case boils down to the
 `[string, string]` tuple.
 
