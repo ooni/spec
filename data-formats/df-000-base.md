@@ -162,9 +162,8 @@ list of input URLs.
 ```
 
 Annotations is defined as `map[string]string` but the consumer of this field
-SHOULD NOT assume that clients using `data_format_version < 0.2.1` have always
-used string values. Since `v0.2.1` clients MUST always use string values. A
-client SHOULD always add to the map of annotations:
+SHOULD NOT assume that measurements use string values. A client SHOULD always
+add to the map of annotations:
 
 - `engine_name` (`string`): the name of the measurement engine
 

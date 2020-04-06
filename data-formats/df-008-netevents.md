@@ -39,7 +39,7 @@ MAY use to include network-level events. See this directory's
 - `conn_id` (`int`; optional): identifier of this connection (see below). When
 zero, it means we don't know the conn ID. SHOULD be omitted when zero.
 
-- `dial_id` (`int`; optional; since v0.3.3): identifier of a dialing
+- `dial_id` (`int`; optional; since 2020-01-11): identifier of a dialing
 operation (i.e. name resolution followed by connect). See the
 discussion in `df-002-dnst.md`.
 
@@ -56,7 +56,7 @@ a string indicating the error, otherwise it MUST be `null`.
 - `t` (`float`): number of seconds elapsed since `measurement_start_time`
 measured when `operation` is complete.
 
-- `transaction_id` (`int`; optional; since v0.3.4): if present, this is the
+- `transaction_id` (`int`; optional; since 2020-01-11): if present, this is the
 ID of the HTTP transaction that caused this TCP connect.
 
 ## Connection ID and Life Cycle

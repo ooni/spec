@@ -35,7 +35,7 @@ code. See this directory's [README](README.md) for the basic concepts.
 
 - `cipher_suite` (`string`): the negotiated cipher suite, if any.
 
-- `conn_id` (`int`; optional; since v0.3.3): identifier of the connection. See
+- `conn_id` (`int`; optional; since 2020-01-11): identifier of the connection. See
 the discussion in `df-008-netevents.md`.
 
 - `failure` (`string`; nullable): if there was an error, this field is
@@ -52,7 +52,7 @@ measured in the moment in which `failure` is determined.
 
 - `tls_version` (`string`): the negotiated TLS version, if any.
 
-- `transaction_id` (`int`; optional; since v0.3.4): if present, this is the
+- `transaction_id` (`int`; optional; since 2020-01-11): if present, this is the
 ID of the HTTP transaction that caused this TLS handshake.
 
 ## Example
