@@ -5,6 +5,10 @@ performing TCP connects SHOULD populate, possibly using directly the
 specific template code. See this directory's [README](README.md) for the
 basic concepts.
 
+|------------|--------------|
+| Name       | `tcpconnect` |
+| Version    | 0            |
+
 ## Specification
 
 ```JSON

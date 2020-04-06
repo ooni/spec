@@ -4,6 +4,10 @@ This document describes the keys with `test_keys` that all experiments
 using DNS SHOULD populate, possibly using directly the specific template
 code. See this directory's [README](README.md) for the basic concepts.
 
+|------------|--------|
+| Name       | `dnst` |
+| Version    | 0      |
+
 ## Specification
 
 ```JSON
@@ -115,7 +119,7 @@ mailbox of the person responsible for this zone.
 that should be elapsed before the zone should be retried in case of failure.
 
 - `serial_number` (`int`; only for SOA answers): version number
-of the original copy of the zone. 
+of the original copy of the zone.
 
 - `ttl` (`int`; nullable): the TTL if known, otherwise `null`.
 

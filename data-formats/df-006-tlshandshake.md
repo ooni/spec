@@ -4,7 +4,9 @@ This document describes the keys with `test_keys` that all experiments
 using TLS SHOULD populate, possibly using directly the specific template
 code. See this directory's [README](README.md) for the basic concepts.
 
-This data format is available since data format version 0.3.3.
+|------------|----------------|
+| Name       | `tlshandshake` |
+| Version    | 0              |
 
 ## Specification
 

@@ -4,6 +4,10 @@ This document describes the keys with `test_keys` that all experiments
 using HTTP SHOULD populate, possibly using directly the specific template
 code. See this directory's [README](README.md) for the basic concepts.
 
+|------------|---------|
+| Name       | `httpt` |
+| Version    | 0       |
+
 ## Specification
 
 ```JSON
@@ -90,7 +94,7 @@ instance of `tor` that we may be using for measuring.
 
 In case we have the following headers:
 
-```
+```bash
 > Foo: bar
 > Foo: <binary-data-here>
 ```
