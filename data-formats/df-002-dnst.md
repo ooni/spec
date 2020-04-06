@@ -4,6 +4,10 @@ This document describes the keys with `test_keys` that all experiments
 using DNS SHOULD populate, possibly using directly the specific template
 code. See this directory's [README](README.md) for the basic concepts.
 
+| Name       | `dnst` |
+|------------|--------|
+| Version    | 0      |
+
 ## Specification
 
 ```JSON
@@ -34,7 +38,7 @@ code. See this directory's [README](README.md) for the basic concepts.
 
 - `answers` (`[]Answer`): list of answer objects. See below.
 
-- `dial_id` (`int`; optional; since v0.3.3): identifier of a dialing
+- `dial_id` (`int`; optional; since 2020-01-11): identifier of a dialing
 operation (i.e. name resolution followed by connect). The zero dial_id
 means that we don't know the real dial ID. Applications SHOULD NOT
 emit the dial_id when it is zero. Rest assured that the dial_id will
@@ -52,7 +56,7 @@ be reversed for PTR lookups like `1.0.0.127.in-addr.arpa`.
 
 - `query_type`: (`string`): a valid DNS query type (e.g. `MX`).
 
-- `resolver_address`: (`string`; since v0.3.1): more flexible way of
+- `resolver_address`: (`string`; since 2019-12-29): more flexible way of
 specifying the resolver address that also allows for DoH, because it does
 not assume that the resolver is identified by an address, port tuple.
 
@@ -67,7 +71,7 @@ used by ooni/probe-engine, which sets it to `null`.
 - `t` (`float`): number of seconds elapsed since `measurement_start_time`
 measured in the moment in which `failure` is determined.
 
-- `transaction_id` (`int`; optional; since v0.3.4): if present, this is the
+- `transaction_id` (`int`; optional; since 2020-01-11): if present, this is the
 ID of the HTTP transaction that caused this query.
 
 ## Answer
@@ -115,7 +119,7 @@ mailbox of the person responsible for this zone.
 that should be elapsed before the zone should be retried in case of failure.
 
 - `serial_number` (`int`; only for SOA answers): version number
-of the original copy of the zone. 
+of the original copy of the zone.
 
 - `ttl` (`int`; nullable): the TTL if known, otherwise `null`.
 

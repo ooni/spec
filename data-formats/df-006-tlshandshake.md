@@ -4,7 +4,9 @@ This document describes the keys with `test_keys` that all experiments
 using TLS SHOULD populate, possibly using directly the specific template
 code. See this directory's [README](README.md) for the basic concepts.
 
-This data format is available since data format version 0.3.3.
+| Name       | `tlshandshake` |
+|------------|----------------|
+| Version    | 0              |
 
 ## Specification
 
@@ -33,7 +35,7 @@ This data format is available since data format version 0.3.3.
 
 - `cipher_suite` (`string`): the negotiated cipher suite, if any.
 
-- `conn_id` (`int`; optional; since v0.3.3): identifier of the connection. See
+- `conn_id` (`int`; optional; since 2020-01-11): identifier of the connection. See
 the discussion in `df-008-netevents.md`.
 
 - `failure` (`string`; nullable): if there was an error, this field is
@@ -50,7 +52,7 @@ measured in the moment in which `failure` is determined.
 
 - `tls_version` (`string`): the negotiated TLS version, if any.
 
-- `transaction_id` (`int`; optional; since v0.3.4): if present, this is the
+- `transaction_id` (`int`; optional; since 2020-01-11): if present, this is the
 ID of the HTTP transaction that caused this TLS handshake.
 
 ## Example

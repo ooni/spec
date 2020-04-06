@@ -4,6 +4,10 @@ This document describes the keys with `test_keys` that all experiments
 using HTTP SHOULD populate, possibly using directly the specific template
 code. See this directory's [README](README.md) for the basic concepts.
 
+| Name       | `httpt` |
+|------------|---------|
+| Version    | 0       |
+
 ## Specification
 
 ```JSON
@@ -46,7 +50,7 @@ a string indicating the error, otherwise it MUST be `null`.
 contains the response length and is typically set to `null` or directly
 omitted by modern clients (e.g. from Measurement Kit onwards).
 
-- `transaction_id` (`int`; optional; since v0.3.4): unique ID of this
+- `transaction_id` (`int`; optional; since 2020-01-11): unique ID of this
 transaction. A zero transaction ID means "unspecified". The code SHOULD
 NOT include the transaction ID in this case. This ID will be unique
 within a single measurement session; do not assume it will be unique
@@ -69,7 +73,7 @@ for longer than that.
 `string` if it can be represented using UTF-8. Otherwise it is a `BinaryData`
 instance, as described below. See also `MaybeBinaryData` below.
 
-- `body_is_truncated` (`bool`; optional; since v0.2.1): `true` if the body
+- `body_is_truncated` (`bool`; optional; since 2019-12-02): `true` if the body
 has been truncated, `false` or omitted otherwise.
 
 - `headers` (`map[string]MaybeBinaryData`): legacy map containing HTTP headers
@@ -77,7 +81,7 @@ where the value is `string` if it can be represented using UTF-8 and a
 `BinaryData` instance otherwise. In case multiple headers have the same key,
 the map SHOULD only contain the first value.
 
-- `headers_list` (`[]HeaderValue`); since v0.2.1): this is a better
+- `headers_list` (`[]HeaderValue`); since 2019-12-02): this is a better
 representation of headers that allows us to represent the case where there
 are multiple values for the same header key. See below the definition of
 `HeaderValue`, which in the value-is-UTF-8 case boils down to the
@@ -90,7 +94,7 @@ instance of `tor` that we may be using for measuring.
 
 In case we have the following headers:
 
-```
+```bash
 > Foo: bar
 > Foo: <binary-data-here>
 ```
