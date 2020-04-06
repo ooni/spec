@@ -10,7 +10,7 @@ directory's [README](README.md) for the basic concepts.
     "annotations": {},
     "backend_version": "",
     "bucket_date": "2019-10-10",
-    "data_format_version": "0.3.1",
+    "data_format_version": "0.2.0",
     "extensions": {},
     "id": "bc1ff44a-04e7-45e0-81a6-46bc95c7c6b0",
     "input": "http://example.com/",
