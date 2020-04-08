@@ -179,7 +179,8 @@ indeed used in the past precisely to diagnose this kind of problems.
 
 Notwithstanding your privacy settings, this experiment will collect your
 public IP address. It will not be included in OONI data but it will be
-collected and saved by the Measurement Lab server you are using. We are
+collected and saved by the Measurement Lab server you are using, and it
+will be subsequently published by Measurement Lab. We are
 working with Measurement Lab to understand whether it will be possible
 to avoid collecting the IP address in a future version of NDT. The current
 main obstacle is that the NDT server includes ancillary services, one of
