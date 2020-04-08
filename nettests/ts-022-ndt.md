@@ -316,6 +316,7 @@ removing multiple instances of `Measurement`.
         "Origin": "client",
         "Test": "upload"
       }
+    ]
   },
   "test_name": "ndt",
   "test_runtime": 21.3737419,
