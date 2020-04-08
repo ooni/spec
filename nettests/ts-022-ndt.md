@@ -184,7 +184,7 @@ working with Measurement Lab to understand whether it will be possible
 to avoid collecting the IP address in a future version of NDT. The current
 main obstacle is that the NDT server includes ancillary services, one of
 which performs a reverse traceroute to you when you run NDT. Removing the
-API addresses from such traceroute is currently the main obstacle that
+IP addresses from such traceroute is currently the main obstacle that
 is preventing not collecting your IP address. (At the same time a reverse
 traceroute is very valuable to understand performance, so we are facing
 a tradeoff here, and removing the reverse traceroute for all NDT users
