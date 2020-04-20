@@ -27,7 +27,8 @@ wrote our own, spec compliant implementation of NDT, but we are using
 third party server infrastructure and implementation provided by the
 [Measurement Lab](https://www.measurementlab.net/) consortium. As such,
 the [privacy policy](https://www.measurementlab.net/privacy/) of
-Measurement Lab applies on top of OONI's privacy policy.
+Measurement Lab applies in additon to [OONI's privacy policy](
+https://ooni.org/about/data-policy/).
 
 There are two flavours of the NDT protocol: ndt5 and ndt7. The ndt5
 version of the protocol is now obsolete. This documentation describes
@@ -271,14 +272,18 @@ public IP address. It will not be included in OONI data but it will be
 collected and saved by the Measurement Lab server you are using, and it
 will be subsequently published by Measurement Lab. We are
 working with Measurement Lab to understand whether it will be possible
-to avoid collecting the IP address in a future version of NDT. The current
-main obstacle is that the NDT server includes ancillary services, one of
+to avoid collecting the IP address in a future version of NDT.
+
+The current main obstacle is that the NDT server includes ancillary services, one of
 which performs a reverse traceroute to you when you run NDT. Removing the
 IP addresses from such traceroute is currently the main obstacle that
 is preventing us from not collecting your IP address. (At the same time a
 reverse traceroute is very valuable to understand performance, so we are facing
 a tradeoff here, and removing the reverse traceroute for all NDT users
 does not seem to be the right balance between data and privacy.)
+
+See [github.com/ooni/probe-engine#535](https://github.com/ooni/probe-engine/issues/535)
+for progress updates on this effort.
 
 ## Example output sample
 
