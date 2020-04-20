@@ -1,6 +1,6 @@
 # Specification version number
 
-2020-04-19-001
+2020-04-20-001
 
 # Specification name
 
@@ -259,9 +259,9 @@ base time, and suitable only for computing time differences.
 
 - `timestamp`: number of seconds elapsed since the EPOCH.
 
-- `version`: fixed at "0.008000000" to indicate OONI Probe's Go engine
-and "0.007000000" to indicate Measurement Kit. Lower values indicate
-a specific version of Neubot.
+- `version`: any number greater than "0.007000000" indicates the version
+of the experiment in OONI Probe Engine, "0.007000000" indicates Measurement
+Kit, lower values indicate a specific version of Neubot.
 
 Note that real clients possibly include more fields. We are increasingly
 deprecating legacy fields that do not matter to OONI Probe. As such,
