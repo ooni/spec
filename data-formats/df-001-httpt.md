@@ -34,7 +34,7 @@ to be used is `1.2.3.4:54321` for IPv4 and `[::1234]:54321` for IPv6.
     "failure": "dns_nxdomain_error",
     "request": {},
     "response": {},
-    "response_lenght": 1234,
+    "response_length": 1234,
     "transaction_id": 1
 }
 ```
