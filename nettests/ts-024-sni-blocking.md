@@ -479,7 +479,10 @@ This test does not capture packets by default.
 In Autumn 2019, [@fortuna](https://github.com/fortuna) proposed, designed,
 and implemented a comprehensive domain connectivity nettest. The nettest
 presented here is a slightly modified version of the SNI blocking subtest
-of [@fortuna](https://github.com/fortuna)'s nettest.
+of [@fortuna](https://github.com/fortuna)'s nettest. Researchers at
+[CIS India](https://cis-india.org/) used a similar methodology in November
+2019 to [measure SNI based blocking](
+https://cis-india.org/internet-governance/blog/reliance-jio-is-using-sni-inspection-to-block-websites).
 
 # Future work
 
