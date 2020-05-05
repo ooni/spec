@@ -275,7 +275,7 @@ working with Measurement Lab to understand whether it will be possible
 to avoid collecting the IP address in a future version of NDT.
 
 The two main reasons why removing IP addresses from NDT server data is
-complex are managing abuses and beacon detection. With respect to managing
+complex are managing abuses and beacons detection. With respect to managing
 abuses, the Measurement Lab platform would need an alternative way to
 protect itself from high-speed clients hammering it continuously. From
 the research standpoint, instead, there is lots of value in keeping track
