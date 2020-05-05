@@ -274,13 +274,25 @@ will be subsequently published by Measurement Lab. We are
 working with Measurement Lab to understand whether it will be possible
 to avoid collecting the IP address in a future version of NDT.
 
-The current main obstacle is that the NDT server includes ancillary services, one of
-which performs a reverse traceroute to you when you run NDT. Removing the
-IP addresses from such traceroute is currently the main obstacle that
-is preventing us from not collecting your IP address. (At the same time a
-reverse traceroute is very valuable to understand performance, so we are facing
-a tradeoff here, and removing the reverse traceroute for all NDT users
-does not seem to be the right balance between data and privacy.)
+The two main reasons why removing IP addresses from NDT server data is
+complex are managing abuses and beacons detection. With respect to managing
+abuses, the Measurement Lab platform would need an alternative way to
+protect itself from high-speed clients hammering it continuously. From
+the research standpoint, instead, there is lots of value in keeping track
+of how the performance of long-lived hosts (aka "beacons") across time. Until
+we solve these two problems in a privacy preserving way, NDT will continue
+to collect the full user IP address.
+
+In addition, there is the additional, mainly technical obstacle that traceroute
+data collected by services ancillary to the NDT server needs to be made
+anonymous as well. If we don't make traceroute anonymous, then one can
+join the NDT result with the traceroute result, thus obtaining the user's IP
+address. This is possible because both the NDT server measurement and the
+traceroute measurement include a UUID that uniquely identifies the
+measurements session. Because a reverse traceroute is very valuable to
+understand performance, we are facing another tradeoff here,
+and removing the reverse traceroute for all NDT users does not seem to
+be the right balance between measurements quality and privacy.
 
 See [github.com/ooni/probe-engine#535](https://github.com/ooni/probe-engine/issues/535)
 for progress updates on this effort.
