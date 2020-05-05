@@ -292,7 +292,7 @@ traceroute measurement include a UUID that uniquely identifies the
 measurements session. Because a reverse traceroute is very valuable to
 understand performance, we are facing another tradeoff here,
 and removing the reverse traceroute for all NDT users does not seem to
-be the right balance between measurements quality and privacy.)
+be the right balance between measurements quality and privacy.
 
 See [github.com/ooni/probe-engine#535](https://github.com/ooni/probe-engine/issues/535)
 for progress updates on this effort.
