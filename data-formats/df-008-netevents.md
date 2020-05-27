@@ -75,7 +75,7 @@ MAY reuse the `conn_id` in the same measurement session.
 ## Example
 
 In the following example we've omitted all the keys that are
-not relevant to the TCP data format:
+not relevant to the netevents data format:
 
 ```JSON
 {
