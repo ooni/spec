@@ -196,7 +196,9 @@ the network quality.
 
 ## Parent data format
 
-* none
+* df-000-base
+
+* df-009-tunnel
 
 ## Semantics
 
