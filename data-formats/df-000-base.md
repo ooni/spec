@@ -78,10 +78,12 @@ modern clients SHOULD NOT emit this field at all.
 started in UTC, using the `"2006-01-02 08:04:05"` format. Note that
 ooniprobe <= 1.4.0 generates skewed time information.
 
-- `options` (`[]string`; optional; deprecated): list of options passed on the
+- `options` (`[]string`; optional): list of options passed on the
 command line when running this specific experiment. Modern implementations,
-e.g. Measurement Kit, typically emit an empty list here. All modern clients
-SHOULD NOT emit this field at all.
+e.g. Measurement Kit, typically emit an empty list here. There is a use
+case for using this field when you are allowing users to heavily customise
+the experiment; for this reason we record the option being used by our
+experimental, research-oriented client `miniooni`.
 
 - `probe_asn` (`string`): AS Number of the probe (prefixed by AS, e.g.,
 `"AS1234"`), or `"AS0"` if the user does not want to share their ASN.
