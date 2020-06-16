@@ -1,6 +1,6 @@
 # Specification version number
 
-2020-01-30-001
+2020-06-16-001
 
 # Specification name
 
@@ -30,7 +30,8 @@ In JSON format the input targets have this structure:
     "fingerprint": "",
     "name": "",
     "params": {},
-    "protocol": ""
+    "protocol": "",
+    "source": ""
   }
 }
 ```
@@ -62,6 +63,10 @@ e.g., to configure `obfs4`.
 
 - `protocol` (`string`): the protocol to use with the
 target (e.g. `obfs4`).
+
+- `source` (`string`; optional): string indicating where this bridge
+come from. When not empty, the nettest implementation should see to
+scrub the bridge address from the report.
 
 This specification defines the following protocols:
 
@@ -178,6 +183,7 @@ A `Target` data structure looks like:
     "network_events": [],
     "queries": [],
     "requests": [],
+    "source": "",
     "summary": {},
     "target_address": "",
     "target_name": "",
@@ -211,6 +217,8 @@ in the `1.1.1.1:555` or the `[::1]:555` or the `domain:555` forms;
 - `target_name` (`string`; optional): name of the target;
 
 - `target_protocol` (`string`): protocol to access the target;
+
+- `target_source` (`string`; optional): source of the target;
 
 - `tcp_connect` (`[]TCPConnect`; nullable): see `df-005-tcpconnect`;
 
@@ -3447,9 +3455,8 @@ to more precisely classify possible `obfs4` failures.
 This nettest does not provide anonymity. An adversary can observe that
 the user is connecting to Tor servers and using obfs4.
 
-A future version of this specification should describe how to handle the
-case where the target bridges are not public. Until this functionality
-has been specified, this experiment shall not be provided private targets.
+Whenever the target source is not the empty string, the implementation MUST
+scrub the target address from the measurement and from the logs.
 
 # Packet capture considerations
 
