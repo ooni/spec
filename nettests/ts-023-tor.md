@@ -3457,9 +3457,9 @@ to more precisely classify possible `obfs4` failures.
 This nettest does not provide anonymity. An adversary can observe that
 the user is connecting to Tor servers and using obfs4.
 
-Whenever the target source is present and is not the empty string, the
-implementation MUST scrub the target address (with optional endpoint) from
-the measurement and from the logs. For example, the following:
+Whenever a target refers to a private bridge, the implementation MUST scrub
+the target address (with optional endpoint) from the measurement and from the
+logs. For example, the following:
 
 ```JSON
 {
@@ -3525,7 +3525,7 @@ MUST be scrubbed as:
 
 The scrubbing procedure SHOULD only be applied to the specific
 results referring to private bridges. It SHOULD NOT be applied to
-other results referring to publicly available bridges.
+other results referring to non-private bridges.
 
 # Packet capture considerations
 
