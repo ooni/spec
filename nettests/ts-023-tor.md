@@ -3458,27 +3458,14 @@ This nettest does not provide anonymity. An adversary can observe that
 the user is connecting to Tor servers and using obfs4.
 
 Whenever a target refers to a private bridge, the implementation MUST scrub
-the target address (with optional endpoint) from the measurement and from the
-logs. For example, the following:
+the target address from the measurement and from the logs.
+
+For example, the following:
 
 ```JSON
 {
-	"network_events": [
-	  {
-		"address": "85.31.186.98:443",
-		"conn_id": 19,
-		"dial_id": 21,
-		"failure": null,
-		"operation": "connect",
-		"proto": "tcp",
-		"t": 8.639313
-	  }
-	],
-	"target_address": "85.31.186.98:443",
 	"tcp_connect": [
 	  {
-		"conn_id": 19,
-		"dial_id": 21,
 		"ip": "85.31.186.98",
 		"port": 443,
 		"status": {
@@ -3495,22 +3482,8 @@ MUST be scrubbed as:
 
 ```JSON
 {
-	"network_events": [
-	  {
-		"address": "[scrubbed]",
-		"conn_id": 19,
-		"dial_id": 21,
-		"failure": null,
-		"operation": "connect",
-		"proto": "tcp",
-		"t": 8.639313
-	  }
-	],
-	"target_address": "[scrubbed]",
 	"tcp_connect": [
 	  {
-		"conn_id": 19,
-		"dial_id": 21,
 		"ip": "[scrubbed]",
 		"port": 443,
 		"status": {
@@ -3520,6 +3493,31 @@ MUST be scrubbed as:
 		"t": 8.639313
 	  }
 	]
+}
+```
+
+When the IP address appears along with a port, the implementation MAY choose
+to also scrub the port if this is more convenient. For example, the following:
+
+```JSON
+{
+	"target_address": "85.31.186.98:443",
+}
+```
+
+MUST become either:
+
+```JSON
+{
+	"target_address": "[scrubbed]:443",
+}
+```
+
+or:
+
+```JSON
+{
+	"target_address": "[scrubbed]",
 }
 ```
 
