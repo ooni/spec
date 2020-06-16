@@ -66,7 +66,7 @@ target (e.g. `obfs4`).
 
 - `source` (`string`; optional): string indicating where this bridge
 came from. When present and not empty, the nettest implementation MUST
-follow the scrub procedure described in the privacy consideration section.
+follow the scrubbing procedure described in the privacy consideration section.
 
 This specification defines the following protocols:
 
