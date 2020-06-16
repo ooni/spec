@@ -65,8 +65,8 @@ e.g., to configure `obfs4`.
 target (e.g. `obfs4`).
 
 - `source` (`string`; optional): string indicating where this bridge
-come from. When not empty, the nettest implementation should see to
-scrub the bridge address from the report.
+came from. When not empty, the nettest implementation MUST follow the
+recommendations described in the privacy consideration section.
 
 This specification defines the following protocols:
 
