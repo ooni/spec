@@ -65,7 +65,8 @@ e.g., to configure `obfs4`.
 target (e.g. `obfs4`).
 
 - `source` (`string`; optional): string indicating where this bridge
-came from (e.g. `"bridgedb"`). When present and not empty, the nettest
+came from (e.g. `"bridgedb"`). When present and not empty, we say that
+a specific bridge is _private_. For such bridges, the nettest
 implementation MUST follow the scrubbing procedure described in the
 privacy consideration section.
 
@@ -3456,8 +3457,75 @@ to more precisely classify possible `obfs4` failures.
 This nettest does not provide anonymity. An adversary can observe that
 the user is connecting to Tor servers and using obfs4.
 
-Whenever the target source is not the empty string, the implementation MUST
-scrub the target address from the measurement and from the logs.
+Whenever the target source is present and is not the empty string, the
+implementation MUST scrub the target address (with optional endpoint) from
+the measurement and from the logs. For example, the following:
+
+```JSON
+{
+	"network_events": [
+	  {
+		"address": "85.31.186.98:443",
+		"conn_id": 19,
+		"dial_id": 21,
+		"failure": null,
+		"operation": "connect",
+		"proto": "tcp",
+		"t": 8.639313
+	  }
+	],
+	"target_address": "85.31.186.98:443",
+	"tcp_connect": [
+	  {
+		"conn_id": 19,
+		"dial_id": 21,
+		"ip": "85.31.186.98",
+		"port": 443,
+		"status": {
+		  "failure": null,
+		  "success": true
+		},
+		"t": 8.639313
+	  }
+	]
+}
+```
+
+MUST be scrubbed as:
+
+```JSON
+{
+	"network_events": [
+	  {
+		"address": "[scrubbed]",
+		"conn_id": 19,
+		"dial_id": 21,
+		"failure": null,
+		"operation": "connect",
+		"proto": "tcp",
+		"t": 8.639313
+	  }
+	],
+	"target_address": "[scrubbed]",
+	"tcp_connect": [
+	  {
+		"conn_id": 19,
+		"dial_id": 21,
+		"ip": "[scrubbed]",
+		"port": 443,
+		"status": {
+		  "failure": null,
+		  "success": true
+		},
+		"t": 8.639313
+	  }
+	]
+}
+```
+
+The scrubbing procedure SHOULD only be applied to the specific
+results referring to private bridges. It SHOULD NOT be applied to
+other results referring to publicly available bridges.
 
 # Packet capture considerations
 
