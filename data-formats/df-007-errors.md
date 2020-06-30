@@ -44,6 +44,8 @@ is not flagged, it means that it's used by all the three products.
 
 - `"generic_timeout_error"`: some timer has expired
 
+- `"http_request_failed"` (MK, PE): HTTP request did not return a successful response code
+
 - `"interrupted"` (PE): the user interrupted us by cancelling the context
 
 - `"response_never_received"` (PL): [t.w._newclient.ResponseNeverReceived](https://twistedmatrix.com/documents/15.4.0/api/twisted.web._newclient.ResponseNeverReceived.html)
