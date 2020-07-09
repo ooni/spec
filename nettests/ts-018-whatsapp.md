@@ -13,8 +13,8 @@ WhatsApp
 # Expected impact
 
 Ability to detect whether specific services used by WhatsApp are
-accessible and working as intended. Even if this test detect no
-issues, WhatsApp may still be blocked in more complex ways.
+accessible and working as intended. Even if this test does not detect
+any issue, WhatsApp may still be blocked in more complex ways.
 
 # Expected inputs
 
