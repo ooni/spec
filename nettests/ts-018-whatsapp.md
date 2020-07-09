@@ -1,6 +1,6 @@
 # Specification version number
 
-2020-07-09-001
+2020-07-09-002
 
 # Specification name
 
@@ -77,11 +77,12 @@ If all endpoints fail, we set:
 ```
 
 Therefore, this specific key tells us whether the WhatsApp would work by
-connecting to one of the hardcoded endpoints.
+attempting with each of the hardcoded endpoints on ports 443 and 5222.
 
-As of 2020-07-09, all endpoints work with ports 443 and 5222. If an
-endpoint fails for both ports, then we consider it blocked and we add
-it to the list of blocked endpoints as follows:
+As of 2020-07-09, all endpoints work with ports 443 and 5222 from an
+unfiltered network connection. If an endpoint fails for both ports, then
+we consider it blocked and we add it to the list of blocked endpoints
+as follows:
 
 ```JSON
 {
@@ -91,7 +92,12 @@ it to the list of blocked endpoints as follows:
 }
 ```
 
-If we don't record any failure, such list shall be empty:
+If only a single port of an endpoint fails, we do not include the
+endpoint in the list of blocked endpoints. (This specific choice
+retains backwards compatibility with previous versions of this spec.)
+
+If all endpoints work for at least one port, we simply do not
+insert any endpoint inside the list, as follows:
 
 ```JSON
 {
@@ -213,14 +219,12 @@ The `test_keys` emitted by this nettest include the following keys:
 
 ```JSON
 {
-    // keys from parent data formats
     "network_events": [],
     "queries": [],
     "requests": [],
     "tcp_connect": [],
     "tls_handshakes": [],
 
-    // keys specific of WhatsApp data format
     "registration_server_failure": null,
     "registration_server_status": "ok",
     "whatsapp_endpoints_blocked": [],
