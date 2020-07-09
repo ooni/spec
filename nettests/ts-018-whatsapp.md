@@ -1,6 +1,6 @@
 # Specification version number
 
-2020-02-21-001
+2020-07-09-001
 
 # Specification name
 
@@ -12,10 +12,9 @@ WhatsApp
 
 # Expected impact
 
-Ability to detect if the WhatsApp instant messaging platform is working, by
-checking if the DNS resolutions are consistent and if it's possible to
-establish a TCP connection with the IPs of the endpoints.
-
+Ability to detect whether specific services used by WhatsApp are
+accessible and working as intended. Even if this test detect no
+issues, WhatsApp may still be blocked in more complex ways.
 
 # Expected inputs
 
@@ -25,17 +24,16 @@ None
 
 This test will check if 3 services are working as they should:
 
-1. The whatsapp endpoints (the addresses used by the WhatsApp mobile client to work)
+1. The whatsapp endpoints used by the WhatsApp mobile app;
 
-2. The registration service
+2. The registration service, i.e. the service used to register a new account;
 
-3. The whatsapp web interface
+3. The WhatsApp web interface.
 
 ## WhatsApp endpoints check
 
 The WhatsApp endpoints are those used by the WhatsApp app to send and receive
-messages.
-These endpoints have the following hostnames:
+messages. These endpoints have the following hostnames:
 
 * e1.whatsapp.net
 * e2.whatsapp.net
@@ -54,57 +52,65 @@ These endpoints have the following hostnames:
 * e15.whatsapp.net
 * e16.whatsapp.net
 
-When the `--all-endpoints` option is **not** specified we will be testing one
-of this endpoints picked at random, while when that option is specified we
-will be testing all of the ones listed above.
+The behaviour of the WhatsApp app is to attempt to connect to each of the
+following hostnames on ports 443 and 5222 until one succeeds. A previous
+version of this specification checked only just one of the above endpoints,
+but since 2020-07-09 we check all the endpoints on ports 443 and 5222.
 
-To check if they work properly we will first do a DNS A lookup to the
-endpoint in question. We then check if any of the returned IPs (we ignore
-anything that is not an IPv4 address, like a CNAME) are part of the address
-space used by whatsapp.
+We lookup every domain name and record the ASN of each returned IP, deferring to
+OONI data processing pipeline to determine whether the IP is legitimate.
 
-As a reference point to know if a certain IP is part of the WhatsApp network
-we use the list of IP blocks published by WhatsApp here:
-https://www.whatsapp.com/cidr.txt.
-The test contains a harcoded version of the cirdr list with a timestamp of when
-it was last retrieved from the URL.
+If we can connect to at least one endpoint, we set:
 
-If any of the returned IPs are part of any network block listed in `cidr.txt`
-we consider the DNS response to be consistent. If that is not the case we
-consider the endpoint to be blocked and write in the report:
-
-```json
+```JSON
 {
-    "whatsapp_endpoints_status": "blocked",
-    "whatsapp_endpoints_dns_inconsistent": ["eN.whatsapp.net"]
+    "whatsapp_endpoints_status": "ok",
 }
 ```
 
-Since 2020-02-17, this consistency check has started failing consistently as
-documented in the bugs section at the end of this document.
+If all endpoints fail, we set:
 
-For every IP, both consistent and inconsistent, we then try to establish a TCP session to port `443`
-and `5222`.
-
-For a given IP address we consider the connection successful if either connecting to `IP:443` or `IP:5222` succeeds.
-
-If ANY of the connections to consistent endpoints (i.e. within the net blocks
-assigned to WhatsApp) succeed then we consider the endpoint to not be
-blocked.
-
-Conversely if all attempts fail then we consider the endpoint to be blocked
-and mark is as such in the report:
-
-```json
+```JSON
 {
     "whatsapp_endpoints_status": "blocked",
-    "whatsapp_endpoints_blocked": ["eN.whatsapp.net"]
 }
 ```
 
-Note: Not every WhatsApp endpoint actually listens on both port `5222` and
-`443` and the behavior of the whatsapp client it to attempt to connect to
-both `5222` and `443` on each endpoint until it manages to connect.
+Therefore, this specific key tells us whether the WhatsApp would work by
+connecting to one of the hardcoded endpoints.
+
+As of 2020-07-09, all endpoints work with ports 443 and 5222. If an
+endpoint fails for both ports, then we consider it blocked and we add
+it to the list of blocked endpoints as follows:
+
+```JSON
+{
+    "whatsapp_endpoints_blocked": [
+        "e1.whatsapp.net"
+    ]
+}
+```
+
+If we don't record any failure, such list shall be empty:
+
+```JSON
+{
+    "whatsapp_endpoints_blocked": []
+}
+```
+
+We always additionally write into the report:
+
+```JSON
+{
+    "whatsapp_endpoints_dns_inconsistent": []
+}
+```
+
+The `whatsapp_endpoints_dns_inconsistent` key is a legacy key that we
+used to compute whether an endpoint was part of the WhatsApp address
+space, but this check has been broken since at least 2020-02-17, so we
+first disabled the check and then updated the spec to not mention it.
 
 ## Registration service check
 
@@ -116,8 +122,13 @@ The registration service is a `HTTPS` service at the following URL:
 https://v.whatsapp.net/v2/register.
 
 To check if it is working properly we do a HTTP GET request to
-`https://v.whatsapp.net/v2/register` and if it succeeds we consider the
-endpoint to be working and write in the report:
+`https://v.whatsapp.net/v2/register`. We conside this request to
+be successful if we don't see any DNS, TCP connect, TLS, or I/O
+error. We don't rely on the HTTP status code to determine whether
+this request succeeded, because we assume it is enough to determine
+whether we could have an HTTPS conversation with this service.
+
+If there is no failure, we write in the report:
 
 ```json
 {
@@ -138,25 +149,31 @@ When it fails we write:
 ## WhatApp web check
 
 WhatsApp web is the service by which users are able to use WhatsApp from a
-web browser on their computer.
-When using WhatsApp web users scan a QR code displayed in the browser from
-their phone to authenticate the web app.
+web browser on their computer. When using WhatsApp web users scan a QR code
+displayed in the browser from their phone to authenticate the web app.
 
 For the service to work a user needs to have whatsapp be working properly
 from their phone (it needs to be unblocked there) and if the "Keep me signed
 in" option is unticked their phone needs to be connected to the internet and
 be able to reach the whatsapp endpoints for the duration of the session.
 
-We check to see if WhatsApp web is working properly by doing a HTTPS GET request to the following URLs:
+We check to see if WhatsApp web is working properly by doing a HTTPS GET request
+to the following URLs:
 
 * https://web.whatsapp.com/
+
 * http://web.whatsapp.com/
 
-If the HTTP(s) requests fail or the HTML `<title>` tag text is not "WhatsApp
-Web" we consider the endpoint to be blocked.
+We consider the GET for the HTTPS URL successful if we do not see any
+DNS, TCP connect, TLS, or I/O errors when fetching the URL. WhatsApp may
+return an 400 Bad Request response if the User-Agent header we use does
+not seem to be consistent with our ClientHello.
 
-If either one of the HTTP or HTTPS endpoints are blocked then we write in the
-report:
+The GET for the HTTP URL should not follow redirects. We consider it
+successful if the response redirects us to the HTTPS URL.
+
+If either one of the HTTP or HTTPS endpoints are blocked then we write
+in the report:
 
 ```json
 {
@@ -182,39 +199,68 @@ If none of the endpoints are blocked then we write:
 
 * df-002-dnst
 
+* df-005-tcpconnect
+
+* df-006-tlshandshake
+
+* df-008-netevents
+
+* df-009-tunnel
+
 ## Semantics
 
-```json
+The `test_keys` emitted by this nettest include the following keys:
+
+```JSON
 {
-    "whatsapp_endpoints_status": "blocked" | "ok" | null,
-    "whatsapp_endpoints_dns_inconsistent": ["e[1-16].whatsapp.net"],
-    "whatsapp_endpoints_blocked": ["e[1-16].whatsapp.net"],
+    // keys from parent data formats
+    "network_events": [],
+    "queries": [],
+    "requests": [],
+    "tcp_connect": [],
+    "tls_handshakes": [],
 
-    "whatsapp_web_status": "blocked" | "ok" | null,
-    "whatsapp_web_failure": "FAILURE STRING",
-
-    "registration_server_status": "blocked" | "ok" | null,
-
-    "registration_server_failure": "FAILURE STRING (since 0.5.0)",
-    "registratison_server_failure": "FAILURE STRING (note: up until 0.4.0 name of the key was mispelled)",
-
-    "tcp_connect": [
-        {
-            "ip": "xxx.xxx.xxx.xxx",
-            "port": 5222 | 443,
-            "status": {
-                "success": true | false,
-                "failure": "FAILURE STRING"
-            }
-        }
-    ],
+    // keys specific of WhatsApp data format
+    "registration_server_failure": null,
+    "registration_server_status": "ok",
+    "whatsapp_endpoints_blocked": [],
+    "whatsapp_endpoints_dns_inconsistent": [],
+    "whatsapp_endpoints_status": "ok",
+    "whatsapp_web_failure": null,
+    "whatsapp_web_status": "ok"
 }
 ```
 
-The meaning of the various keys is described in the above section.
+where:
+
+- `network_events` (`[]NetworkEvent`; nullable): see `df-008-netevents`;
+
+- `queries` (`[]Query`; nullable): see `df-002-dnst`;
+
+- `requests` (`[]Transaction`; nullable): see `df-001-httpt`;
+
+- `tcp_connect` (`[]TCPConnect`; nullable): see `df-005-tcpconnect`;
+
+- `tls_handshakes` (`[]Handshake`; nullable): see `df-006-tlshandshake`;
+
+- `registration_server_failure` (`string`; nullable): the failure when
+accessing the registration server (see `df-007-errors.md`);
+
+- `registration_server_status` (`string`): one of `"ok"` and `"blocked"`;
+
+- `whatsapp_endpoints_blocked` (`[]string`): list of blocked endpoints;
+
+- `whatsapp_endpoints_dns_inconsistent` (`[]string`): legacy key
+that is always empty;
+
+- `whatsapp_endpoints_status` (`string`): one of `"ok"` and `"blocked"`;
+
+- `whatsapp_web_failure` (`string`; nullable): the failure when
+accessing the WhatsApp web interface (see `df-007-errors.md`);
+
+- `whatsapp_web_status` (`string`): one of `"ok"` and `"blocked"`.
 
 ## Possible conclusions
-
 
 * If it is possible for users to create new accounts via WhatsApp
 
@@ -226,332 +272,900 @@ The meaning of the various keys is described in the above section.
 
 ```json
 {
-    "annotations": {
-        "platform": "macos"
-    },
-    "data_format_version": "0.2.0",
-    "id": "3efd4e05-be03-46b7-a21d-034cb03bdde9",
-    "input": null,
-    "input_hashes": [],
-    "measurement_start_time": "2016-11-25 12:33:30",
-    "options": [],
-    "probe_asn": "AS30722",
-    "probe_cc": "IT",
-    "probe_city": null,
-    "probe_ip": "127.0.0.1",
-    "report_id": "m2fUNCj20WEaAHZaiNBf1vIUFkytNqCLQboP0XJrSFPpDpy5me7tDfEaAQktPHDe",
-    "software_name": "ooniprobe",
-    "software_version": "2.0.3.dev0",
-    "test_helpers": {},
-    "test_keys": {
-        "agent": "redirect",
-        "queries": [
-            {
-                "answers": [
-                    {
-                        "answer_type": "A",
-                        "ipv4": "169.47.5.199"
-                    },
-                    {
-                        "answer_type": "A",
-                        "ipv4": "174.36.208.132"
-                    },
-                    {
-                        "answer_type": "A",
-                        "ipv4": "173.192.231.41"
-                    },
-                    {
-                        "answer_type": "A",
-                        "ipv4": "174.37.217.84"
-                    },
-                    {
-                        "answer_type": "A",
-                        "ipv4": "169.45.214.245"
-                    },
-                    {
-                        "answer_type": "A",
-                        "ipv4": "169.45.219.230"
-                    },
-                    {
-                        "answer_type": "A",
-                        "ipv4": "169.45.248.175"
-                    },
-                    {
-                        "answer_type": "A",
-                        "ipv4": "169.45.248.107"
-                    }
-                ],
-                "failure": null,
-                "hostname": "e14.whatsapp.net",
-                "query_type": "A",
-                "resolver_hostname": null,
-                "resolver_port": null
-            }
+  "annotations": {
+    "assets_version": "20200619115947",
+    "engine_name": "ooniprobe-engine",
+    "engine_version": "0.14.0",
+    "platform": "macos"
+  },
+  "data_format_version": "0.2.0",
+  "extensions": {
+    "dnst": 0,
+    "httpt": 0,
+    "netevents": 0,
+    "tlshandshake": 0,
+    "tunnel": 0
+  },
+  "input": null,
+  "measurement_start_time": "2020-07-09 11:02:41",
+  "probe_asn": "AS30722",
+  "probe_cc": "IT",
+  "probe_ip": "127.0.0.1",
+  "probe_network_name": "Vodafone Italia S.p.A.",
+  "report_id": "20200709T110241Z_AS30722_CIaQmE3CBdzrf1oIh7F3DwALQtjl4PrTaQxXlsNP7C011453ea",
+  "resolver_asn": "AS30722",
+  "resolver_ip": "91.80.36.84",
+  "resolver_network_name": "Vodafone Italia S.p.A.",
+  "software_name": "miniooni",
+  "software_version": "0.14.0",
+  "test_keys": {
+    "agent": "redirect",
+    "failed_operation": null,
+    "failure": null,
+    "network_events": [
+      {
+        "failure": null,
+        "operation": "http_transaction_start",
+        "t": 0.001153697
+      },
+      {
+        "failure": null,
+        "operation": "http_request_metadata",
+        "t": 0.001157765
+      },
+      {
+        "failure": null,
+        "operation": "resolve_start",
+        "t": 0.001227361
+      },
+      {
+        "failure": null,
+        "operation": "resolve_done",
+        "t": 0.055199778
+      },
+      {
+        "address": "69.171.250.60:443",
+        "failure": null,
+        "operation": "connect",
+        "proto": "tcp",
+        "t": 0.079603245
+      },
+      {
+        "failure": null,
+        "operation": "tls_handshake_start",
+        "t": 0.079654268
+      },
+      {
+        "failure": null,
+        "num_bytes": 286,
+        "operation": "write",
+        "t": 0.079957156
+      },
+      {
+        "failure": null,
+        "num_bytes": 517,
+        "operation": "read",
+        "t": 0.104859831
+      },
+      {
+        "failure": null,
+        "num_bytes": 1800,
+        "operation": "read",
+        "t": 0.105431746
+      },
+      {
+        "failure": null,
+        "num_bytes": 747,
+        "operation": "read",
+        "t": 0.105475141
+      },
+      {
+        "failure": null,
+        "num_bytes": 64,
+        "operation": "write",
+        "t": 0.107882362
+      },
+      {
+        "failure": null,
+        "operation": "tls_handshake_done",
+        "t": 0.107907192
+      },
+      {
+        "failure": null,
+        "num_bytes": 86,
+        "operation": "write",
+        "t": 0.108139396
+      },
+      {
+        "failure": null,
+        "num_bytes": 206,
+        "operation": "write",
+        "t": 0.109137636
+      },
+      {
+        "failure": null,
+        "operation": "http_wrote_headers",
+        "t": 0.109141745
+      },
+      {
+        "failure": null,
+        "operation": "http_wrote_request",
+        "t": 0.109142604
+      },
+      {
+        "failure": null,
+        "num_bytes": 74,
+        "operation": "read",
+        "t": 0.131422583
+      },
+      {
+        "failure": null,
+        "num_bytes": 31,
+        "operation": "write",
+        "t": 0.131530094
+      },
+      {
+        "failure": null,
+        "num_bytes": 31,
+        "operation": "read",
+        "t": 0.132357428
+      },
+      {
+        "failure": null,
+        "num_bytes": 35,
+        "operation": "read",
+        "t": 0.134856016
+      },
+      {
+        "failure": null,
+        "num_bytes": 1388,
+        "operation": "read",
+        "t": 0.178145709
+      },
+      {
+        "failure": null,
+        "num_bytes": 383,
+        "operation": "read",
+        "t": 0.178193064
+      },
+      {
+        "failure": null,
+        "operation": "http_first_response_byte",
+        "t": 0.178348521
+      },
+      {
+        "failure": null,
+        "operation": "http_response_metadata",
+        "t": 0.178471921
+      },
+      {
+        "failure": null,
+        "operation": "http_response_body_snapshot",
+        "t": 0.178485775
+      },
+      {
+        "failure": null,
+        "operation": "http_transaction_done",
+        "t": 0.178486692
+      },
+      {
+        "failure": null,
+        "num_bytes": 24,
+        "operation": "write",
+        "t": 0.178593354
+      },
+      {
+        "failure": null,
+        "operation": "resolve_start",
+        "t": 0.001173242
+      },
+      {
+        "failure": null,
+        "operation": "resolve_done",
+        "t": 0.093193011
+      },
+      {
+        "address": "34.194.71.217:443",
+        "failure": null,
+        "operation": "connect",
+        "proto": "tcp",
+        "t": 0.207018418
+      },
+      {
+        "failure": null,
+        "operation": "http_transaction_start",
+        "t": 0.179558692
+      },
+      {
+        "failure": null,
+        "operation": "http_request_metadata",
+        "t": 0.179570108
+      },
+      {
+        "failure": null,
+        "operation": "resolve_start",
+        "t": 0.180708632
+      },
+      {
+        "failure": null,
+        "operation": "resolve_done",
+        "t": 0.182215501
+      },
+      {
+        "address": "69.171.250.60:80",
+        "failure": null,
+        "operation": "connect",
+        "proto": "tcp",
+        "t": 0.207763367
+      },
+      {
+        "failure": null,
+        "operation": "http_wrote_headers",
+        "t": 0.208031246
+      },
+      {
+        "failure": null,
+        "operation": "http_wrote_request",
+        "t": 0.208033326
+      },
+      {
+        "failure": null,
+        "num_bytes": 282,
+        "operation": "write",
+        "t": 0.208117192
+      },
+      {
+        "failure": null,
+        "num_bytes": 242,
+        "operation": "read",
+        "t": 0.232560865
+      },
+      {
+        "failure": null,
+        "operation": "http_first_response_byte",
+        "t": 0.232572517
+      },
+      {
+        "failure": null,
+        "operation": "http_response_metadata",
+        "t": 0.232644304
+      },
+      {
+        "failure": null,
+        "operation": "http_response_body_snapshot",
+        "t": 0.23266589
+      },
+      {
+        "failure": null,
+        "operation": "http_transaction_done",
+        "t": 0.232666803
+      },
+      {
+        "failure": null,
+        "operation": "http_transaction_start",
+        "t": 0.001150339
+      },
+      {
+        "failure": null,
+        "operation": "http_request_metadata",
+        "t": 0.00115765
+      },
+      {
+        "failure": null,
+        "operation": "resolve_start",
+        "t": 0.001227368
+      },
+      {
+        "failure": null,
+        "operation": "resolve_done",
+        "t": 0.071238074
+      },
+      {
+        "address": "69.171.250.60:443",
+        "failure": null,
+        "operation": "connect",
+        "proto": "tcp",
+        "t": 0.096787583
+      },
+      {
+        "failure": null,
+        "operation": "tls_handshake_start",
+        "t": 0.096826301
+      },
+      {
+        "failure": null,
+        "num_bytes": 284,
+        "operation": "write",
+        "t": 0.097124463
+      },
+      {
+        "failure": null,
+        "num_bytes": 517,
+        "operation": "read",
+        "t": 0.122612789
+      },
+      {
+        "failure": null,
+        "num_bytes": 1800,
+        "operation": "read",
+        "t": 0.122967996
+      },
+      {
+        "failure": null,
+        "num_bytes": 747,
+        "operation": "read",
+        "t": 0.12299006
+      },
+      {
+        "failure": null,
+        "num_bytes": 64,
+        "operation": "write",
+        "t": 0.124585528
+      },
+      {
+        "failure": null,
+        "operation": "tls_handshake_done",
+        "t": 0.124645709
+      },
+      {
+        "failure": null,
+        "num_bytes": 86,
+        "operation": "write",
+        "t": 0.124800198
+      },
+      {
+        "failure": null,
+        "num_bytes": 214,
+        "operation": "write",
+        "t": 0.125082793
+      },
+      {
+        "failure": null,
+        "operation": "http_wrote_headers",
+        "t": 0.125085502
+      },
+      {
+        "failure": null,
+        "operation": "http_wrote_request",
+        "t": 0.125086283
+      },
+      {
+        "failure": null,
+        "num_bytes": 74,
+        "operation": "read",
+        "t": 0.14885878
+      },
+      {
+        "failure": null,
+        "num_bytes": 31,
+        "operation": "write",
+        "t": 0.148993236
+      },
+      {
+        "failure": null,
+        "num_bytes": 44,
+        "operation": "read",
+        "t": 0.1490235
+      },
+      {
+        "failure": null,
+        "num_bytes": 161,
+        "operation": "read",
+        "t": 0.630222125
+      },
+      {
+        "failure": null,
+        "operation": "http_first_response_byte",
+        "t": 0.630348977
+      },
+      {
+        "failure": null,
+        "operation": "http_response_metadata",
+        "t": 0.63050614
+      },
+      {
+        "failure": null,
+        "operation": "http_response_body_snapshot",
+        "t": 0.630518627
+      },
+      {
+        "failure": null,
+        "operation": "http_transaction_done",
+        "t": 0.630519479
+      },
+      {
+        "failure": null,
+        "num_bytes": 24,
+        "operation": "write",
+        "t": 0.630606143
+      }
+    ],
+    "queries": [
+      {
+        "answers": [
+          {
+            "asn": 32934,
+            "as_org_name": "Facebook, Inc.",
+            "answer_type": "A",
+            "ipv4": "69.171.250.60",
+            "ttl": null
+          }
         ],
-        "registration_server_failure": null,
-        "registration_server_status": "ok",
-        "requests": [
-            {
-                "failure": null,
-                "request": {
-                    "body": null,
-                    "headers": {},
-                    "method": "GET",
-                    "tor": {
-                        "exit_ip": null,
-                        "exit_name": null,
-                        "is_tor": false
-                    },
-                    "url": "https://web.whatsapp.com/"
-                },
-                "response": {
-                    "body": "<!DOCTYPE html>\n<!--[if lt IE 7]>      <html class=\"no-js lt-ie9 lt-ie8 lt-ie7\"> <![endif]-->\n<!--[if IE 7]>         <html class=\"no-js lt-ie9 lt-ie8\"> <![endif]-->\n<!--[if IE 8]>         <html class=\"no-js lt-ie9\"> <![endif]-->\n<!--[if gt IE 8]><!-->\n<html class=\"no-js\" dir=\"ltr\">\n<!--<![endif]-->\n\n<head>\n    <meta charset=\"utf-8\">\n    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge,chrome=1\">\n    <title>WhatsApp Web</title>\n    <meta name=\"viewport\" content=\"width=device-width\">\n    <meta name=\"google\" content=\"notranslate\">\n\n    <meta name=\"description\" content=\"Quickly send and receive WhatsApp messages right from your computer.\"/>\n    <meta name=\"og:description\" content=\"Quickly send and receive WhatsApp messages right from your computer.\"/>\n    <meta name=\"og:url\" content=\"https://web.whatsapp.com/\"/>\n    <meta name=\"og:title\" content=\"WhatsApp Web\"/>\n    <meta name=\"og:image\" content=\"https://www.whatsapp.com/img/fb-post.jpg\"/>\n\n    <link id=\"favicon\" rel=\"icon\" href=\"/favicon.ico\" type=\"image/x-icon\" />\n    <link rel=\"stylesheet\" href=\"/browsers_15ddf4e13bd4ffb48b8b78ddbc6c0c27.css\">\n    <link href='//fonts.googleapis.com/css?family=Roboto:300,400' rel='stylesheet' type='text/css'>\n\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com\" hreflang=\"x-default\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/aa\" hreflang=\"aa\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/ar\" hreflang=\"ar\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/az\" hreflang=\"az\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/bg\" hreflang=\"bg\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/bn\" hreflang=\"bn\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/ca\" hreflang=\"ca\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/cs\" hreflang=\"cs\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/da\" hreflang=\"da\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/de\" hreflang=\"de\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/el\" hreflang=\"el\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/en\" hreflang=\"en\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/es\" hreflang=\"es\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/fa\" hreflang=\"fa\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/fi\" hreflang=\"fi\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/fil\" hreflang=\"fil\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/fr\" hreflang=\"fr\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/he\" hreflang=\"he\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/hi\" hreflang=\"hi\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/hr\" hreflang=\"hr\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/hu\" hreflang=\"hu\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/id\" hreflang=\"id\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/it\" hreflang=\"it\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/kk\" hreflang=\"kk\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/kn\" hreflang=\"kn\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/lt\" hreflang=\"lt\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/lv\" hreflang=\"lv\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/mk\" hreflang=\"mk\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/ml\" hreflang=\"ml\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/mr\" hreflang=\"mr\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/ms\" hreflang=\"ms\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/nb\" hreflang=\"nb\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/nl\" hreflang=\"nl\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/pl\" hreflang=\"pl\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/pt\" hreflang=\"pt\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/pt-br\" hreflang=\"pt-BR\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/ro\" hreflang=\"ro\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/ru\" hreflang=\"ru\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/sk\" hreflang=\"sk\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/sl\" hreflang=\"sl\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/sn\" hreflang=\"sn\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/sq\" hreflang=\"sq\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/sr\" hreflang=\"sr\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/sv\" hreflang=\"sv\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/sw\" hreflang=\"sw\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/ta\" hreflang=\"ta\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/th\" hreflang=\"th\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/tr\" hreflang=\"tr\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/uk\" hreflang=\"uk\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/ur\" hreflang=\"ur\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/uz\" hreflang=\"uz\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/vi\" hreflang=\"vi\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/zh-cn\" hreflang=\"zh-CN\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/zh-tw\" hreflang=\"zh-TW\">\n</head>\n\n<body>\n    <div class=\"app-wrapper\">\n        <div id=\"wrapper\">\n            <div id=\"window\">\n                <div class=\"window-body\">\n                    <div class=\"window-text\">\n                        <h1 class=\"window-title\">WhatsApp Web</h1>\n                        <div class=\"window-subtitle\">Send and receive WhatsApp messages right from your computer.</div>\n                        <div class=\"text-tip\">We recommend using WhatsApp with one of the following browsers:</div>\n                        <div class=\"browsers\">\n                            <div class=\"browser\">\n                                <a class=\"image\" href=\"http://www.google.com/chrome/\" target=\"_blank\">\n                                    <span class=\"icon-chrome\"></span>\n                                </a>\n                                <a href=\"http://www.google.com/chrome/\" class=\"browser-title\" target=\"_blank\">Google Chrome</a>\n                            </div>\n                            <div class=\"browser\">\n                                <a class=\"image\" href=\"http://www.firefox.com\" target=\"_blank\">\n                                    <span class=\"icon-firefox\"></span>\n                                </a>\n                                <a href=\"http://www.firefox.com\" class=\"browser-title\" target=\"_blank\">Mozilla Firefox</a>\n                            </div>\n                            <div class=\"browser\">\n                                <a class=\"image\" href=\"http://www.opera.com\" target=\"_blank\">\n                                    <span class=\"icon-opera\"></span>\n                                </a>\n                                <a href=\"http://www.opera.com\" class=\"browser-title\" target=\"_blank\">Opera</a>\n                            </div>\n                        </div>\n                        <div class=\"text-tip\">WhatsApp also supports:</div>\n                        <div class=\"browsers\">\n                            <div class=\"browser\">\n                                <a class=\"image\" href=\"https://www.microsoft.com/en-us/windows/microsoft-edge\" target=\"_blank\">\n                                    <span class=\"icon-edge\"></span>\n                                </a>\n                                <a href=\"https://www.microsoft.com/en-us/windows/microsoft-edge\" class=\"browser-title\" target=\"_blank\">Microsoft Edge</a>\n                            </div>\n                            <div class=\"browser browser-safari\">\n                                <a class=\"image\" href=\"https://support.apple.com/downloads/#safari\" target=\"_blank\">\n                                    <span class=\"icon-safari\"></span>\n                                </a>\n                                <a href=\"https://support.apple.com/downloads/#safari\" class=\"browser-title\" target=\"_blank\">Safari (MacOS 10.8+ Only)</a>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</body>\n\n</html>\n",
-                    "code": 200,
-                    "headers": {
-                        "Cache-Control": "no-cache",
-                        "Content-Security-Policy": "default-src 'self'; report-uri https://dyn.web.whatsapp.com/cspv; script-src 'self' 'unsafe-eval' https://ajax.googleapis.com; connect-src 'self' wss://*.web.whatsapp.com https://*.whatsapp.net https://dyn.web.whatsapp.com https://*.giphy.com https://*.tenor.co blob:; img-src * data: blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.googleapis.com https://fonts.gstatic.com; media-src 'self' https://*.whatsapp.net https://*.giphy.com https://*.tenor.co blob: mediastream:; child-src 'self' blob:",
-                        "Content-Type": "text/html; charset=UTF-8",
-                        "Date": "Fri, 25 Nov 2016 12:33:30 GMT",
-                        "Last-Modified": "Wed, 23 Nov 2016 22:52:39 GMT",
-                        "Pragma": "no-cache",
-                        "Server": "Yaws 2.0",
-                        "Strict-Transport-Security": "max-age=15552000; includeSubDomains; preload",
-                        "Vary": "Accept-Encoding, User-Agent, Accept-Language",
-                        "Via": "HTTP/1.1 169.55.74.40:443 (fwdproxy2/152 66.220.156.103)",
-                        "X-Connected-To": "169.55.74.40",
-                        "X-Content-Type-Options": "nosniff",
-                        "X-FB-IP-Type": "allowed",
-                        "X-Frame-Options": "DENY"
-                    }
-                }
-            },
-            {
-                "failure": null,
-                "request": {
-                    "body": null,
-                    "headers": {},
-                    "method": "GET",
-                    "tor": {
-                        "exit_ip": null,
-                        "exit_name": null,
-                        "is_tor": false
-                    },
-                    "url": "https://v.whatsapp.net/v2/register"
-                },
-                "response": {
-                    "body": "{\"status\":\"fail\",\"reason\":\"missing_param\",\"param\":\"code\"}\n",
-                    "code": 200,
-                    "headers": {
-                        "Content-Type": "text/json ; charset=utf-8",
-                        "Date": "Fri, 25 Nov 2016 12:33:31 GMT",
-                        "Server": "Yaws 2.0"
-                    }
-                }
-            },
-            {
-                "failure": null,
-                "request": {
-                    "body": null,
-                    "headers": {},
-                    "method": "GET",
-                    "tor": {
-                        "exit_ip": null,
-                        "exit_name": null,
-                        "is_tor": false
-                    },
-                    "url": "https://web.whatsapp.com/"
-                },
-                "response": {
-                    "body": "<!DOCTYPE html>\n<!--[if lt IE 7]>      <html class=\"no-js lt-ie9 lt-ie8 lt-ie7\"> <![endif]-->\n<!--[if IE 7]>         <html class=\"no-js lt-ie9 lt-ie8\"> <![endif]-->\n<!--[if IE 8]>         <html class=\"no-js lt-ie9\"> <![endif]-->\n<!--[if gt IE 8]><!-->\n<html class=\"no-js\" dir=\"ltr\">\n<!--<![endif]-->\n\n<head>\n    <meta charset=\"utf-8\">\n    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge,chrome=1\">\n    <title>WhatsApp Web</title>\n    <meta name=\"viewport\" content=\"width=device-width\">\n    <meta name=\"google\" content=\"notranslate\">\n\n    <meta name=\"description\" content=\"Quickly send and receive WhatsApp messages right from your computer.\"/>\n    <meta name=\"og:description\" content=\"Quickly send and receive WhatsApp messages right from your computer.\"/>\n    <meta name=\"og:url\" content=\"https://web.whatsapp.com/\"/>\n    <meta name=\"og:title\" content=\"WhatsApp Web\"/>\n    <meta name=\"og:image\" content=\"https://www.whatsapp.com/img/fb-post.jpg\"/>\n\n    <link id=\"favicon\" rel=\"icon\" href=\"/favicon.ico\" type=\"image/x-icon\" />\n    <link rel=\"stylesheet\" href=\"/browsers_15ddf4e13bd4ffb48b8b78ddbc6c0c27.css\">\n    <link href='//fonts.googleapis.com/css?family=Roboto:300,400' rel='stylesheet' type='text/css'>\n\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com\" hreflang=\"x-default\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/aa\" hreflang=\"aa\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/ar\" hreflang=\"ar\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/az\" hreflang=\"az\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/bg\" hreflang=\"bg\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/bn\" hreflang=\"bn\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/ca\" hreflang=\"ca\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/cs\" hreflang=\"cs\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/da\" hreflang=\"da\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/de\" hreflang=\"de\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/el\" hreflang=\"el\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/en\" hreflang=\"en\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/es\" hreflang=\"es\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/fa\" hreflang=\"fa\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/fi\" hreflang=\"fi\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/fil\" hreflang=\"fil\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/fr\" hreflang=\"fr\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/he\" hreflang=\"he\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/hi\" hreflang=\"hi\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/hr\" hreflang=\"hr\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/hu\" hreflang=\"hu\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/id\" hreflang=\"id\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/it\" hreflang=\"it\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/kk\" hreflang=\"kk\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/kn\" hreflang=\"kn\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/lt\" hreflang=\"lt\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/lv\" hreflang=\"lv\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/mk\" hreflang=\"mk\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/ml\" hreflang=\"ml\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/mr\" hreflang=\"mr\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/ms\" hreflang=\"ms\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/nb\" hreflang=\"nb\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/nl\" hreflang=\"nl\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/pl\" hreflang=\"pl\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/pt\" hreflang=\"pt\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/pt-br\" hreflang=\"pt-BR\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/ro\" hreflang=\"ro\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/ru\" hreflang=\"ru\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/sk\" hreflang=\"sk\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/sl\" hreflang=\"sl\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/sn\" hreflang=\"sn\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/sq\" hreflang=\"sq\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/sr\" hreflang=\"sr\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/sv\" hreflang=\"sv\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/sw\" hreflang=\"sw\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/ta\" hreflang=\"ta\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/th\" hreflang=\"th\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/tr\" hreflang=\"tr\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/uk\" hreflang=\"uk\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/ur\" hreflang=\"ur\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/uz\" hreflang=\"uz\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/vi\" hreflang=\"vi\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/zh-cn\" hreflang=\"zh-CN\">\n    <link rel=\"alternate\" href=\"https://web.whatsapp.com/%F0%9F%8C%90/zh-tw\" hreflang=\"zh-TW\">\n</head>\n\n<body>\n    <div class=\"app-wrapper\">\n        <div id=\"wrapper\">\n            <div id=\"window\">\n                <div class=\"window-body\">\n                    <div class=\"window-text\">\n                        <h1 class=\"window-title\">WhatsApp Web</h1>\n                        <div class=\"window-subtitle\">Send and receive WhatsApp messages right from your computer.</div>\n                        <div class=\"text-tip\">We recommend using WhatsApp with one of the following browsers:</div>\n                        <div class=\"browsers\">\n                            <div class=\"browser\">\n                                <a class=\"image\" href=\"http://www.google.com/chrome/\" target=\"_blank\">\n                                    <span class=\"icon-chrome\"></span>\n                                </a>\n                                <a href=\"http://www.google.com/chrome/\" class=\"browser-title\" target=\"_blank\">Google Chrome</a>\n                            </div>\n                            <div class=\"browser\">\n                                <a class=\"image\" href=\"http://www.firefox.com\" target=\"_blank\">\n                                    <span class=\"icon-firefox\"></span>\n                                </a>\n                                <a href=\"http://www.firefox.com\" class=\"browser-title\" target=\"_blank\">Mozilla Firefox</a>\n                            </div>\n                            <div class=\"browser\">\n                                <a class=\"image\" href=\"http://www.opera.com\" target=\"_blank\">\n                                    <span class=\"icon-opera\"></span>\n                                </a>\n                                <a href=\"http://www.opera.com\" class=\"browser-title\" target=\"_blank\">Opera</a>\n                            </div>\n                        </div>\n                        <div class=\"text-tip\">WhatsApp also supports:</div>\n                        <div class=\"browsers\">\n                            <div class=\"browser\">\n                                <a class=\"image\" href=\"https://www.microsoft.com/en-us/windows/microsoft-edge\" target=\"_blank\">\n                                    <span class=\"icon-edge\"></span>\n                                </a>\n                                <a href=\"https://www.microsoft.com/en-us/windows/microsoft-edge\" class=\"browser-title\" target=\"_blank\">Microsoft Edge</a>\n                            </div>\n                            <div class=\"browser browser-safari\">\n                                <a class=\"image\" href=\"https://support.apple.com/downloads/#safari\" target=\"_blank\">\n                                    <span class=\"icon-safari\"></span>\n                                </a>\n                                <a href=\"https://support.apple.com/downloads/#safari\" class=\"browser-title\" target=\"_blank\">Safari (MacOS 10.8+ Only)</a>\n                            </div>\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n</body>\n\n</html>\n",
-                    "code": 200,
-                    "headers": {
-                        "Cache-Control": "no-cache",
-                        "Content-Security-Policy": "default-src 'self'; report-uri https://dyn.web.whatsapp.com/cspv; script-src 'self' 'unsafe-eval' https://ajax.googleapis.com; connect-src 'self' wss://*.web.whatsapp.com https://*.whatsapp.net https://dyn.web.whatsapp.com https://*.giphy.com https://*.tenor.co blob:; img-src * data: blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.googleapis.com https://fonts.gstatic.com; media-src 'self' https://*.whatsapp.net https://*.giphy.com https://*.tenor.co blob: mediastream:; child-src 'self' blob:",
-                        "Content-Type": "text/html; charset=UTF-8",
-                        "Date": "Fri, 25 Nov 2016 12:33:31 GMT",
-                        "Last-Modified": "Wed, 23 Nov 2016 22:52:39 GMT",
-                        "Pragma": "no-cache",
-                        "Server": "Yaws 2.0",
-                        "Strict-Transport-Security": "max-age=15552000; includeSubDomains; preload",
-                        "Vary": "Accept-Encoding, User-Agent, Accept-Language",
-                        "Via": "HTTP/1.1 169.55.74.40:443 (fwdproxy2/152 66.220.156.113)",
-                        "X-Connected-To": "169.55.74.40",
-                        "X-Content-Type-Options": "nosniff",
-                        "X-FB-IP-Type": "allowed",
-                        "X-Frame-Options": "DENY"
-                    }
-                }
-            },
-            {
-                "failure": null,
-                "request": {
-                    "body": null,
-                    "headers": {},
-                    "method": "GET",
-                    "tor": {
-                        "exit_ip": null,
-                        "exit_name": null,
-                        "is_tor": false
-                    },
-                    "url": "http://web.whatsapp.com/"
-                },
-                "response": {
-                    "body": null,
-                    "code": 302,
-                    "headers": {
-                        "Content-Type": "text/plain",
-                        "Date": "Fri, 25 Nov 2016 12:33:30 GMT",
-                        "Location": "https://web.whatsapp.com/",
-                        "Server": "proxygen"
-                    }
-                }
-            }
+        "engine": "system",
+        "failure": null,
+        "hostname": "web.whatsapp.com",
+        "query_type": "A",
+        "resolver_hostname": null,
+        "resolver_port": null,
+        "resolver_address": "",
+        "t": 0.055199778
+      },
+      {
+        "answers": [
+          {
+            "asn": 32934,
+            "as_org_name": "Facebook, Inc.",
+            "answer_type": "AAAA",
+            "ipv6": "2a03:2880:f2ff:c0:face:b00c:0:167",
+            "ttl": null
+          }
         ],
-        "socksproxy": null,
-        "tcp_connect": [
-            {
-                "ip": "173.192.231.41",
-                "port": 443,
-                "status": {
-                    "failure": false,
-                    "success": true
-                }
-            },
-            {
-                "ip": "169.45.214.245",
-                "port": 443,
-                "status": {
-                    "failure": false,
-                    "success": true
-                }
-            },
-            {
-                "ip": "169.45.248.107",
-                "port": 443,
-                "status": {
-                    "failure": false,
-                    "success": true
-                }
-            },
-            {
-                "ip": "169.47.5.199",
-                "port": 443,
-                "status": {
-                    "failure": false,
-                    "success": true
-                }
-            },
-            {
-                "ip": "174.37.217.84",
-                "port": 443,
-                "status": {
-                    "failure": false,
-                    "success": true
-                }
-            },
-            {
-                "ip": "174.36.208.132",
-                "port": 443,
-                "status": {
-                    "failure": false,
-                    "success": true
-                }
-            },
-            {
-                "ip": "169.45.219.230",
-                "port": 443,
-                "status": {
-                    "failure": false,
-                    "success": true
-                }
-            },
-            {
-                "ip": "169.45.248.175",
-                "port": 443,
-                "status": {
-                    "failure": false,
-                    "success": true
-                }
-            },
-            {
-                "ip": "169.45.214.245",
-                "port": 5222,
-                "status": {
-                    "failure": false,
-                    "success": true
-                }
-            },
-            {
-                "ip": "169.45.248.107",
-                "port": 5222,
-                "status": {
-                    "failure": false,
-                    "success": true
-                }
-            },
-            {
-                "ip": "169.47.5.199",
-                "port": 5222,
-                "status": {
-                    "failure": false,
-                    "success": true
-                }
-            },
-            {
-                "ip": "169.45.219.230",
-                "port": 5222,
-                "status": {
-                    "failure": false,
-                    "success": true
-                }
-            },
-            {
-                "ip": "173.192.231.41",
-                "port": 5222,
-                "status": {
-                    "failure": false,
-                    "success": true
-                }
-            },
-            {
-                "ip": "174.37.217.84",
-                "port": 5222,
-                "status": {
-                    "failure": false,
-                    "success": true
-                }
-            },
-            {
-                "ip": "169.45.248.175",
-                "port": 5222,
-                "status": {
-                    "failure": false,
-                    "success": true
-                }
-            },
-            {
-                "ip": "174.36.208.132",
-                "port": 5222,
-                "status": {
-                    "failure": false,
-                    "success": true
-                }
-            }
+        "engine": "system",
+        "failure": null,
+        "hostname": "web.whatsapp.com",
+        "query_type": "AAAA",
+        "resolver_hostname": null,
+        "resolver_port": null,
+        "resolver_address": "",
+        "t": 0.055199778
+      },
+      {
+        "answers": [
+          {
+            "asn": 14618,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "34.194.71.217",
+            "ttl": null
+          },
+          {
+            "asn": 14618,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "34.192.181.12",
+            "ttl": null
+          },
+          {
+            "asn": 14618,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "34.194.255.230",
+            "ttl": null
+          },
+          {
+            "asn": 14618,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "34.193.38.112",
+            "ttl": null
+          }
         ],
-        "whatsapp_endpoints_blocked": [],
-        "whatsapp_endpoints_dns_inconsistent": [],
-        "whatsapp_endpoints_status": "ok",
-        "whatsapp_web_failure": null,
-        "whatsapp_web_status": "ok"
-    },
-    "test_name": "whatsapp",
-    "test_runtime": 0.7117400169372559,
-    "test_start_time": "2016-11-25 12:33:30",
-    "test_version": "0.5.0"
+        "engine": "system",
+        "failure": null,
+        "hostname": "e3.whatsapp.net",
+        "query_type": "A",
+        "resolver_hostname": null,
+        "resolver_port": null,
+        "resolver_address": "",
+        "t": 0.093193011
+      },
+      {
+        "answers": [
+          {
+            "asn": 32934,
+            "as_org_name": "Facebook, Inc.",
+            "answer_type": "A",
+            "ipv4": "69.171.250.60",
+            "ttl": null
+          }
+        ],
+        "engine": "system",
+        "failure": null,
+        "hostname": "web.whatsapp.com",
+        "query_type": "A",
+        "resolver_hostname": null,
+        "resolver_port": null,
+        "resolver_address": "",
+        "t": 0.182215501
+      },
+      {
+        "answers": [
+          {
+            "asn": 32934,
+            "as_org_name": "Facebook, Inc.",
+            "answer_type": "AAAA",
+            "ipv6": "2a03:2880:f2ff:c0:face:b00c:0:167",
+            "ttl": null
+          }
+        ],
+        "engine": "system",
+        "failure": null,
+        "hostname": "web.whatsapp.com",
+        "query_type": "AAAA",
+        "resolver_hostname": null,
+        "resolver_port": null,
+        "resolver_address": "",
+        "t": 0.182215501
+      },
+      {
+        "answers": [
+          {
+            "asn": 32934,
+            "as_org_name": "Facebook, Inc.",
+            "answer_type": "A",
+            "ipv4": "69.171.250.60",
+            "ttl": null
+          }
+        ],
+        "engine": "system",
+        "failure": null,
+        "hostname": "v.whatsapp.net",
+        "query_type": "A",
+        "resolver_hostname": null,
+        "resolver_port": null,
+        "resolver_address": "",
+        "t": 0.071238074
+      },
+      {
+        "answers": [
+          {
+            "asn": 32934,
+            "as_org_name": "Facebook, Inc.",
+            "answer_type": "AAAA",
+            "ipv6": "2a03:2880:f2ff:c0:face:b00c:0:167",
+            "ttl": null
+          }
+        ],
+        "engine": "system",
+        "failure": null,
+        "hostname": "v.whatsapp.net",
+        "query_type": "AAAA",
+        "resolver_hostname": null,
+        "resolver_port": null,
+        "resolver_address": "",
+        "t": 0.071238074
+      }
+    ],
+    "requests": [
+      {
+        "failure": null,
+        "request": {
+          "body": "",
+          "body_is_truncated": false,
+          "headers_list": [
+            [
+              "Accept",
+              "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+            ],
+            [
+              "Accept-Language",
+              "en-US;q=0.8,en;q=0.5"
+            ],
+            [
+              "User-Agent",
+              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36"
+            ],
+            [
+              "Host",
+              "web.whatsapp.com"
+            ]
+          ],
+          "headers": {
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Accept-Language": "en-US;q=0.8,en;q=0.5",
+            "Host": "web.whatsapp.com",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36"
+          },
+          "method": "GET",
+          "tor": {
+            "exit_ip": null,
+            "exit_name": null,
+            "is_tor": false
+          },
+          "url": "https://web.whatsapp.com/"
+        },
+        "response": {
+          "body": "<!DOCTYPE html><html lang=\"en\" id=\"facebook\"><head><title>Error</title><meta charset=\"utf-8\" /><meta http-equiv=\"Cache-Control\" content=\"no-cache\" /><meta name=\"robots\" content=\"noindex,nofollow\" /><style nonce=\"vfG4CTtZ\">html, body { color: #333; font-family: 'Lucida Grande', 'Tahoma', 'Verdana', 'Arial', sans-serif; margin: 0; padding: 0; text-align: center;}\n#header { height: 30px; padding-bottom: 10px; padding-top: 10px; text-align: center;}\n#icon { width: 30px;}\n.core { margin: auto; padding: 1em 0; text-align: left; width: 904px;}\nh1 { font-size: 18px;}\np { font-size: 13px;}\n.footer { border-top: 1px solid #ddd; color: #777; float: left; font-size: 11px; padding: 5px 8px 6px 0; width: 904px;}</style></head><body><div id=\"header\"><a href=\"//www.facebook.com/\"><img id=\"icon\" src=\"//static.facebook.com/images/logos/facebook_2x.png\" /></a></div><div class=\"core\"><h1>Sorry, something went wrong.</h1><p>We&#039;re working on getting this fixed as soon as we can.</p><p><a id=\"back\" href=\"//www.facebook.com/\">Go Back</a></p><div class=\"footer\"> Facebook &#169; 2020 &#183; <a href=\"//www.facebook.com/help/\">Help</a></div></div><script nonce=\"vfG4CTtZ\">\n              document.getElementById(\"back\").onclick = function() {\n                if (history.length > 1) {\n                  history.back();\n                  return false;\n                }\n              };\n            </script></body></html><!-- @generated SignedSource<<2baec119ad3d09b22a5215de1d307cd9>> -->",
+          "body_is_truncated": false,
+          "code": 400,
+          "headers_list": [
+            [
+              "Vary",
+              "Accept-Encoding"
+            ],
+            [
+              "Strict-Transport-Security",
+              "max-age=31536000; preload; includeSubDomains"
+            ],
+            [
+              "Content-Type",
+              "text/html; charset=\"utf-8\""
+            ],
+            [
+              "X-Fb-Debug",
+              "z3AxVIx+0nZtvAcEP3QZkA1QTPOskCJ1GgdHzsMWzfE6l5KOFww4dfZCcEwn9dWXMjVHu6sTcNZwFI0zBsRt5Q=="
+            ],
+            [
+              "Content-Length",
+              "1483"
+            ],
+            [
+              "Date",
+              "Thu, 09 Jul 2020 11:02:41 GMT"
+            ],
+            [
+              "Alt-Svc",
+              "h3-29=\":443\"; ma=3600,h3-27=\":443\"; ma=3600"
+            ]
+          ],
+          "headers": {
+            "Alt-Svc": "h3-29=\":443\"; ma=3600,h3-27=\":443\"; ma=3600",
+            "Content-Length": "1483",
+            "Content-Type": "text/html; charset=\"utf-8\"",
+            "Date": "Thu, 09 Jul 2020 11:02:41 GMT",
+            "Strict-Transport-Security": "max-age=31536000; preload; includeSubDomains",
+            "Vary": "Accept-Encoding",
+            "X-Fb-Debug": "z3AxVIx+0nZtvAcEP3QZkA1QTPOskCJ1GgdHzsMWzfE6l5KOFww4dfZCcEwn9dWXMjVHu6sTcNZwFI0zBsRt5Q=="
+          }
+        },
+        "t": 0.001153697
+      },
+      {
+        "failure": null,
+        "request": {
+          "body": "",
+          "body_is_truncated": false,
+          "headers_list": [
+            [
+              "Accept",
+              "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+            ],
+            [
+              "Accept-Language",
+              "en-US;q=0.8,en;q=0.5"
+            ],
+            [
+              "User-Agent",
+              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36"
+            ],
+            [
+              "Host",
+              "web.whatsapp.com"
+            ]
+          ],
+          "headers": {
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Accept-Language": "en-US;q=0.8,en;q=0.5",
+            "Host": "web.whatsapp.com",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36"
+          },
+          "method": "GET",
+          "tor": {
+            "exit_ip": null,
+            "exit_name": null,
+            "is_tor": false
+          },
+          "url": "http://web.whatsapp.com/"
+        },
+        "response": {
+          "body": "",
+          "body_is_truncated": false,
+          "code": 302,
+          "headers_list": [
+            [
+              "Location",
+              "https://web.whatsapp.com/"
+            ],
+            [
+              "Content-Type",
+              "text/plain"
+            ],
+            [
+              "Server",
+              "proxygen-bolt"
+            ],
+            [
+              "Date",
+              "Thu, 09 Jul 2020 11:02:41 GMT"
+            ],
+            [
+              "Alt-Svc",
+              "h3-29=\":443\"; ma=3600,h3-27=\":443\"; ma=3600"
+            ],
+            [
+              "Connection",
+              "keep-alive"
+            ],
+            [
+              "Content-Length",
+              "0"
+            ]
+          ],
+          "headers": {
+            "Alt-Svc": "h3-29=\":443\"; ma=3600,h3-27=\":443\"; ma=3600",
+            "Connection": "keep-alive",
+            "Content-Length": "0",
+            "Content-Type": "text/plain",
+            "Date": "Thu, 09 Jul 2020 11:02:41 GMT",
+            "Location": "https://web.whatsapp.com/",
+            "Server": "proxygen-bolt"
+          }
+        },
+        "t": 0.179558692
+      },
+      {
+        "failure": null,
+        "request": {
+          "body": "",
+          "body_is_truncated": false,
+          "headers_list": [
+            [
+              "User-Agent",
+              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36"
+            ],
+            [
+              "Host",
+              "v.whatsapp.net"
+            ],
+            [
+              "Accept",
+              "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+            ],
+            [
+              "Accept-Language",
+              "en-US;q=0.8,en;q=0.5"
+            ]
+          ],
+          "headers": {
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Accept-Language": "en-US;q=0.8,en;q=0.5",
+            "Host": "v.whatsapp.net",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36"
+          },
+          "method": "GET",
+          "tor": {
+            "exit_ip": null,
+            "exit_name": null,
+            "is_tor": false
+          },
+          "url": "https://v.whatsapp.net/v2/register"
+        },
+        "response": {
+          "body": "{\"status\":\"fail\",\"reason\":\"missing_param\",\"param\":\"authkey\"}\n",
+          "body_is_truncated": false,
+          "code": 200,
+          "headers_list": [
+            [
+              "Server",
+              "Yaws 2.0.6"
+            ],
+            [
+              "Date",
+              "Thu, 09 Jul 2020 11:02:41 GMT"
+            ],
+            [
+              "Content-Length",
+              "61"
+            ],
+            [
+              "Content-Type",
+              "text/json ; charset=utf-8"
+            ]
+          ],
+          "headers": {
+            "Content-Length": "61",
+            "Content-Type": "text/json ; charset=utf-8",
+            "Date": "Thu, 09 Jul 2020 11:02:41 GMT",
+            "Server": "Yaws 2.0.6"
+          }
+        },
+        "t": 0.001150339
+      }
+    ],
+    "tcp_connect": [
+      {
+        "ip": "69.171.250.60",
+        "port": 443,
+        "status": {
+          "failure": null,
+          "success": true
+        },
+        "t": 0.079603245
+      },
+      {
+        "ip": "34.194.71.217",
+        "port": 443,
+        "status": {
+          "failure": null,
+          "success": true
+        },
+        "t": 0.207018418
+      },
+      {
+        "ip": "69.171.250.60",
+        "port": 80,
+        "status": {
+          "failure": null,
+          "success": true
+        },
+        "t": 0.207763367
+      },
+      {
+        "ip": "69.171.250.60",
+        "port": 443,
+        "status": {
+          "failure": null,
+          "success": true
+        },
+        "t": 0.096787583
+      }
+    ],
+    "tls_handshakes": [
+      {
+        "cipher_suite": "TLS_AES_128_GCM_SHA256",
+        "failure": null,
+        "negotiated_protocol": "h2",
+        "no_tls_verify": false,
+        "peer_certificates": [
+          {
+            "data": "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",
+            "format": "base64"
+          },
+          {
+            "data": "MIIEsTCCA5mgAwIBAgIQBOHnpNxc8vNtwCtCuF0VnzANBgkqhkiG9w0BAQsFADBsMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3d3cuZGlnaWNlcnQuY29tMSswKQYDVQQDEyJEaWdpQ2VydCBIaWdoIEFzc3VyYW5jZSBFViBSb290IENBMB4XDTEzMTAyMjEyMDAwMFoXDTI4MTAyMjEyMDAwMFowcDELMAkGA1UEBhMCVVMxFTATBgNVBAoTDERpZ2lDZXJ0IEluYzEZMBcGA1UECxMQd3d3LmRpZ2ljZXJ0LmNvbTEvMC0GA1UEAxMmRGlnaUNlcnQgU0hBMiBIaWdoIEFzc3VyYW5jZSBTZXJ2ZXIgQ0EwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC24C/CJAbIbQRf1+8KZAayfSImZRauQkCbztyfn3YHPsMwVYcZuU+UDlqUH1VWtMICKq/QmO4LQNfE0DtyyBSe75CxEamu0si4QzrZCwvV1ZX1QK/IHe1NnF9Xt4ZQaJn1itrSxwUfqJfJ3KSxgoQtxq2lnMcZgqaFD15EWCo3j/018QsIJzJa9buLnqS9UdAn4t07QjOjBSjEuyjMmqwrIw14xnvmXnG3Sj4I+4G3FhahnSMSTeXXkgisdaScus0Xsh5ENWV/UyU50RwKmmMbGZJ0aAo3wsJSSMs5WqK24V3B3aAguCGikyZvFEohQcftbZvySC/zA/WiaJJTL17jAgMBAAGjggFJMIIBRTASBgNVHRMBAf8ECDAGAQH/AgEAMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwNAYIKwYBBQUHAQEEKDAmMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wSwYDVR0fBEQwQjBAoD6gPIY6aHR0cDovL2NybDQuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0SGlnaEFzc3VyYW5jZUVWUm9vdENBLmNybDA9BgNVHSAENjA0MDIGBFUdIAAwKjAoBggrBgEFBQcCARYcaHR0cHM6Ly93d3cuZGlnaWNlcnQuY29tL0NQUzAdBgNVHQ4EFgQUUWj/kK8CB3U8zNllZGKiErhZcjswHwYDVR0jBBgwFoAUsT7DaQP4v0cB1JgmGggC72NkK8MwDQYJKoZIhvcNAQELBQADggEBABiKlYkD5m3fXPwdaOpKj4PWUS+Na0QWnqxj9dJubISZi6qBcYRb7TROsLd5kinMLYBq8I4g4Xmk/gNHE+r1hspZcX30BJZr01lYPf7TMSVcGDiEo+afgv2MW5gxTs14nhr9hctJqvIni5ly/D6q1UEL2tU2ob8cbkdJf17ZSHwD2f2LSaCYJkJA69aSEaRkCldUxPUd1gJea6zuxICaEnL6VpPX/78whQYwvwt/Tv9XBZ0k7YXDK/umdaisLRbvfXknsuvCnQsH6qqF0wGjIChBWUMo0oHjqvbsezt3tkBigAVBRQHvFwY+3sAzm2fTYS5yh+Rp/BIAV0AecPUeybQ=",
+            "format": "base64"
+          }
+        ],
+        "server_name": "web.whatsapp.com",
+        "t": 0.107907192,
+        "tls_version": "TLSv1.3"
+      },
+      {
+        "cipher_suite": "TLS_AES_128_GCM_SHA256",
+        "failure": null,
+        "negotiated_protocol": "h2",
+        "no_tls_verify": false,
+        "peer_certificates": [
+          {
+            "data": "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",
+            "format": "base64"
+          },
+          {
+            "data": "MIIEsTCCA5mgAwIBAgIQBOHnpNxc8vNtwCtCuF0VnzANBgkqhkiG9w0BAQsFADBsMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3d3cuZGlnaWNlcnQuY29tMSswKQYDVQQDEyJEaWdpQ2VydCBIaWdoIEFzc3VyYW5jZSBFViBSb290IENBMB4XDTEzMTAyMjEyMDAwMFoXDTI4MTAyMjEyMDAwMFowcDELMAkGA1UEBhMCVVMxFTATBgNVBAoTDERpZ2lDZXJ0IEluYzEZMBcGA1UECxMQd3d3LmRpZ2ljZXJ0LmNvbTEvMC0GA1UEAxMmRGlnaUNlcnQgU0hBMiBIaWdoIEFzc3VyYW5jZSBTZXJ2ZXIgQ0EwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC24C/CJAbIbQRf1+8KZAayfSImZRauQkCbztyfn3YHPsMwVYcZuU+UDlqUH1VWtMICKq/QmO4LQNfE0DtyyBSe75CxEamu0si4QzrZCwvV1ZX1QK/IHe1NnF9Xt4ZQaJn1itrSxwUfqJfJ3KSxgoQtxq2lnMcZgqaFD15EWCo3j/018QsIJzJa9buLnqS9UdAn4t07QjOjBSjEuyjMmqwrIw14xnvmXnG3Sj4I+4G3FhahnSMSTeXXkgisdaScus0Xsh5ENWV/UyU50RwKmmMbGZJ0aAo3wsJSSMs5WqK24V3B3aAguCGikyZvFEohQcftbZvySC/zA/WiaJJTL17jAgMBAAGjggFJMIIBRTASBgNVHRMBAf8ECDAGAQH/AgEAMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwNAYIKwYBBQUHAQEEKDAmMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wSwYDVR0fBEQwQjBAoD6gPIY6aHR0cDovL2NybDQuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0SGlnaEFzc3VyYW5jZUVWUm9vdENBLmNybDA9BgNVHSAENjA0MDIGBFUdIAAwKjAoBggrBgEFBQcCARYcaHR0cHM6Ly93d3cuZGlnaWNlcnQuY29tL0NQUzAdBgNVHQ4EFgQUUWj/kK8CB3U8zNllZGKiErhZcjswHwYDVR0jBBgwFoAUsT7DaQP4v0cB1JgmGggC72NkK8MwDQYJKoZIhvcNAQELBQADggEBABiKlYkD5m3fXPwdaOpKj4PWUS+Na0QWnqxj9dJubISZi6qBcYRb7TROsLd5kinMLYBq8I4g4Xmk/gNHE+r1hspZcX30BJZr01lYPf7TMSVcGDiEo+afgv2MW5gxTs14nhr9hctJqvIni5ly/D6q1UEL2tU2ob8cbkdJf17ZSHwD2f2LSaCYJkJA69aSEaRkCldUxPUd1gJea6zuxICaEnL6VpPX/78whQYwvwt/Tv9XBZ0k7YXDK/umdaisLRbvfXknsuvCnQsH6qqF0wGjIChBWUMo0oHjqvbsezt3tkBigAVBRQHvFwY+3sAzm2fTYS5yh+Rp/BIAV0AecPUeybQ=",
+            "format": "base64"
+          }
+        ],
+        "server_name": "v.whatsapp.net",
+        "t": 0.124645709,
+        "tls_version": "TLSv1.3"
+      }
+    ],
+    "registration_server_failure": null,
+    "registration_server_status": "ok",
+    "whatsapp_endpoints_blocked": [],
+    "whatsapp_endpoints_dns_inconsistent": [],
+    "whatsapp_endpoints_status": "ok",
+    "whatsapp_web_status": "ok",
+    "whatsapp_web_failure": null
+  },
+  "test_name": "whatsapp",
+  "test_runtime": 0.631774013,
+  "test_start_time": "2020-07-09 11:02:41",
+  "test_version": "0.8.0"
 }
 ```
 
-## Bugs
+## History
 
 Since 2020-02-17, the heristics for checking whether a netblock belongs to
 WhatsApp as described in version 2016-10-25-001 of this specification is
@@ -560,4 +1174,5 @@ https://github.com/ooni/probe-engine/issues/341)). This issue affected
 ooni/probe-legacy <= 2.3.0, ooni/probe-ios <= 2.2.0, ooni/probe-android
 <= 2.2.0. The `test_version` was 0.6.0 for ooni/probe-legacy and 0.6.1
 for the mobile apps. Since Measurement Kit 0.10.10 (`test_version`
-0.7.0) we will completely disable such check.
+0.7.0) we will completely disable such check. Since 2020-07-09 the spec
+does not mention anymore the CIDR check.
