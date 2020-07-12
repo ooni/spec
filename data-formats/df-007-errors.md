@@ -54,6 +54,8 @@ code (e.g. we expected a redirection and saw something else)
 
 - `"interrupted"` (PE): the user interrupted us by cancelling the context
 
+- `"json_parse_error"` (MK, PE): parsing of a JSON failed
+
 - `"response_never_received"` (PL): [t.w._newclient.ResponseNeverReceived](https://twistedmatrix.com/documents/15.4.0/api/twisted.web._newclient.ResponseNeverReceived.html)
 
 - `"socks_address_not_supported"` (PL): [txsocksx.errors.AddressNotSupported](https://github.com/habnabit/txsocksx/blob/59ac4e088ea064ae9ee44ac371df3ed46ca3b92f/txsocksx/errors.py)
