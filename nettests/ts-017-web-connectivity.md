@@ -1,6 +1,6 @@
 # Specification version number
 
-2019-08-20-001
+2020-08-13-001
 
 # Specification name
 
@@ -190,7 +190,7 @@ either fails or we get back a HTTP response that contains a page we don't expect
         }
     ],
     "accessible": true | false | null,
-    "blocking": "tcp_ip" | "dns" | "http-diff" | "http-failure" | null
+    "blocking": "tcp_ip" | "dns" | "http-diff" | "http-failure" | false | null
 }
 ```
 
@@ -201,8 +201,9 @@ The flag "accessible" indicates if the site in question is overall considered to
 accessible (DNS responses are consistent, at least one TCP connection succeeds
 and the expected HTTP response is received).
 
-The flag "blocking" is set to null if "accessible" is true, otherwise it
-indicates the reason for blocking, if that is due to inconsistent DNS
+The flag "blocking" is set to false if "accessible" is true. It is set to
+null in case of measurement failure (i.e. when "accessible" is also null). Otherwise
+it indicates the reason for blocking, if that is due to inconsistent DNS
 responses (dns), TCP/IP based blocking (tcp_ip), if the HTTP page response
 matches with the control (http-diff) or if the HTTP response failed
 (http-failure).
