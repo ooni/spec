@@ -24,12 +24,12 @@ Are network experiments in a box that deliver some meaningful results to end use
 
 *Probe*
 
-The software that users runs to perform nettests.
+The software that users run to perform nettests.
 
 *Techniques*
 
 Are strategies that we follow for implementing nettests, hypothesis we are
-interesting in testing and implementation details for each target platform.
+interested in testing and implementation details for each target platform.
 
 *Data formats*
 
@@ -45,7 +45,7 @@ the specifications included into this repository.
 
 ## New proposal process
 
-If you are interesting in having a new experiment be part of OONI, that's great!
+If you are interested in having a new experiment be part of OONI, that's great!
 
 The process for suggesting a new experiment is as follows:
 
