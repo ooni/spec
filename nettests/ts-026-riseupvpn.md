@@ -28,10 +28,10 @@ This test will check if a LEAP platform based VPN service like RiseupVPN is work
 
 ## RiseupVPN API check
 
-A HTTP GET request to a commercial CA certified API endpoint will hand out the self-signed certificate needed to access the provider API. While RiseupVPN clients will perform a fingerprint verification, this test skips that step in order to reduce the complexity.
+A HTTP GET request to an API endpoint will hand out the self-signed certificate needed to access most other API endpoints. While RiseupVPN clients will perform a fingerprint verification, this test skips that step in order to reduce the complexity.
 
 The RiseupVPN provider serves a JSON describing which endpoints a client could use (https://example.org/provider.json) for bootstrapping. However, for the sake of simplicity we hardcoded all endpoints that will be tested. 
-Using the self signed certificate, we perform HTTP GET requests to test the reachability of the provider api endpoints. The API check implies a working DNS.
+Using the self signed certificate, we perform HTTP GET requests to test the reachability of the provider API endpoints. The API check implies a working DNS.
 
 The locations of RiseupVPNs endpoints are:
 
@@ -64,7 +64,7 @@ If all parts of the API are functional and reachable then we write:
 
 ## RiseupVPN gateways test
 
-If the provider API is reachable, it provides a JSON-file which contains the IP addresses and capabilites of the VPN gateways. The reachability of gateways will be tested depending on their capabilities as described by the provider (ports, OpenVPN, obfs4) by performing TCP handshakes. If a TCP handshake fails we can presume the corresponding port and transport of that gateway to be blocked.
+If the provider API is reachable, it provides a JSON-file which contains the IP addresses and capabilites of the VPN gateways. The reachability of gateways will be tested depending on their capabilities as described by the provider (ports, OpenVPN, obfs4) by performing TCP handshakes. If a TCP handshake fails we can assume the corresponding port and transport of that gateway to be blocked.
 
 Example output for reported blocked gateways:
 
@@ -72,12 +72,12 @@ Example output for reported blocked gateways:
 {
    "riseupvpn_failing_gateways":[
          {
-            "IP":"37.218.241.7",
+            "IP":"192.0.2.1",
             "Port":443,
             "transport_type":"openvpn"
          },
          {
-            "IP":"199.58.81.143",
+            "IP":"192.0.2.1",
             "Port":23042,
             "transport_type":"obfs4"
          }
