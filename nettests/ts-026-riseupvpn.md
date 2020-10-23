@@ -117,7 +117,6 @@ JSON fields described above.
 
 ## Semantics
 
-
 ```
 {
     "riseupvpn_api_failure": "FAILURE STRING" | null,
