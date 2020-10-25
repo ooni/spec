@@ -132,6 +132,8 @@ JSON fields described above.
 }
 ```
 
+`riseupvpn_api_failure` can be any error string flagged with `(PE)` defined in `df-007-errors` or `invalid_ca` in case fetching a valid ca certificate failed.
+
 ## Possible conclusions
 
 * Users will be able to fetch client certificates and use the RiseupVPN services.
