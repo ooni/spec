@@ -52,9 +52,9 @@ Example output if API endpoints couldn't be reached by HTTP GET requests
 
 ```json
 {
-    "riseupvpn_api_failure": "FAILURE STRING",
-    "riseupvpn_api_status": "blocked",
-    "riseupvpn_ca_cert_status": true,
+    "api_failure": "FAILURE STRING",
+    "api_status": "blocked",
+    "ca_cert_status": true,
 }
 ```
 
@@ -62,9 +62,9 @@ If all parts of the API are functional and reachable then we write:
 
 ```json
 {
-    "riseupvpn_api_failure": null,
-    "riseupvpn_api_status": "ok",
-    "riseupvpn_ca_cert_status": true,
+    "api_failure": null,
+    "api_status": "ok",
+    "ca_cert_status": true,
 }
 ```
 
@@ -76,7 +76,7 @@ Example output for reported blocked gateways:
 
 ```json
 {
-   "riseupvpn_failing_gateways":[
+   "failing_gateways":[
          {
             "ip":"192.0.2.1",
             "port":443,
@@ -95,7 +95,7 @@ If none of the gateways are blocked then we write:
 
 ```json
 {
-    "riseupvpn_failing_gateways": null
+    "failing_gateways": null
 }
 ```
 
@@ -119,10 +119,10 @@ JSON fields described above.
 
 ```
 {
-    "riseupvpn_api_failure": "FAILURE STRING" | null,
-    "riseupvpn_api_status": "blocked"| "ok",
-    "riseupvpn_ca_cert_status": true | false,
-    "riseupvpn_failing_gateways": [
+    "api_failure": "FAILURE STRING" | null,
+    "api_status": "blocked"| "ok",
+    "ca_cert_status": true | false,
+    "failing_gateways": [
          {
             "ip":"IP ADDRESS STRING",
             "port": 0-65535,
@@ -132,7 +132,7 @@ JSON fields described above.
 }
 ```
 
-`riseupvpn_api_failure` can be any error string flagged with `(PE)` defined in `df-007-errors` or `invalid_ca` in case fetching a valid ca certificate failed.
+`api_failure` can be any error string flagged with `(PE)` defined in `df-007-errors` or `invalid_ca` in case fetching a valid ca certificate failed.
 
 ## Possible conclusions
 
