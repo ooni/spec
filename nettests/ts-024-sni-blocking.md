@@ -1,6 +1,6 @@
 # Specification version number
 
-2020-03-07-002
+2020-11-12-001
 
 # Specification name
 
@@ -21,7 +21,7 @@ for the SNI/domain to be unreachable/filtered.
 
 # Expected inputs
 
-- `control_sni` (`string`): a SNI to use as control (e.g. `example.com`)
+- `control_sni` (`string`): a SNI to use as control (e.g. `example.org`)
 
 - `testhelper` (`endpoint`; optional): endpoint where TLS is enabled
 expressed as `IPv4:port`, `[IPv6]:port`, or `domain:port` (e.g. `1.1.1.1:443`)
@@ -30,9 +30,10 @@ expressed as `IPv4:port`, `[IPv6]:port`, or `domain:port` (e.g. `1.1.1.1:443`)
 
 If `testhelper` is not specified we use `${control_sni}:443`.
 
-The default implementation will use `example.com` as `control_sni`
-and the empty string as testhelper endpoint. This will effectively
-cause us to use `example.com:443` as testhelper endpoint.
+The default implementation will use a domain such as `example.org` as
+the `control_sni` and the empty string as testhelper endpoint. This will
+effectively cause us to use `example.org:443` (or whatever domain is
+actually used on port `443`) as the testhelper endpoint.
 
 A valid `Target` is a valid domain name (e.g. `kernel.org`), a valid IP
 address (e.g. `1.1.1.1`), or a valid URL (e.g. `http://x.org`). When the
