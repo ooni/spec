@@ -23,8 +23,16 @@ templates are supported:
 
 2. `https://<domain>/<path>`.
 
+3. `udp://<domain>:<port>`.
+
+4. `tcp://<domain>:<port>`.
+
 The first template indicates that dnscheck should use DNS over TLS, the
-second one indicates it should use DNS over HTTPS.
+second one indicates it should use DNS over HTTPS. The third and fourth
+templates allow you to use DNS over UDP and DNS over TCP respectively.
+
+In all cases `<domain>` could also be an IP address. In all cases, you
+can safely omit the `<port>` and we will use the right default.
 
 You can also optionally specify which domain to resolve. The default
 is to resolve `example.org`.
