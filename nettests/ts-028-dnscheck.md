@@ -12,7 +12,7 @@ dnscheck
 
 # Expected impact
 
-The ability to say which DoT/DoH services are working.
+The ability to say which DoT/DoH/Do53 services are working.
 
 # Expected inputs
 
@@ -90,7 +90,7 @@ of the IP addresses discovered during the bootstrap phase.
 
 ## Possible conclusions
 
-Whether specific DoT/DoH servers work.
+Whether specific DoT/DoH/Do53 servers work.
 
 ## Example output sample
 
