@@ -1,6 +1,6 @@
 # Specification version number
 
-2020-12-02-000
+2020-12-14-000
 
 # Specification name
 
@@ -37,20 +37,30 @@ can safely omit the `<port>` and we will use the right default.
 You can also optionally specify which domain to resolve. The default
 is to resolve `example.org`.
 
+You can also optionally specify the Host header to use (if applicable)
+and the SNI to use (if applicable). If not specified, we will of course
+use the value provided inside the input URL.
+
+You can also optionally specify a list of valid IP addresses for
+`<domain>`, whose utility is explained below.
+
 # Test description
 
-For each DNS server URL, the code behaves as follows:
+The purpose of this experiment is to test all the IP addresses of a 
+given resolver for domain name resolution. The scheme of the URL indicates
+the resolver type and implies the default port to use. This phase is the
+experiment proper and is also called the "loopkup" phase.
 
-1. if the URL's hostname is a domain name, we resolve such a domain name
-using the system resolver and attempt to query the selected resolver using
-all the possible IP addresses, so to verify all of them. This is called
-the "bootstrap" phase of the experiment.
+Before the lookup, we need to discover what IP addresses to use. If
+the URL already contains an IP address, we'll use such an address. Otherwise,
+we use the system resolver to discover addresses for the domain in the
+input URL. In any case, we merge this address (or addresses) with the ones
+that the user supplied (if any) to obtain a list of unique IPs. This
+preliminary phase of the experiment is called "bootstrap".
 
-2. otherwise, we directly attempt to use the specified resolver. This is
-the "lookups" phase of the experiment.
-
-The purpose of this algorithm is to make sure we measure whether each
-possible IP address for the domain is working or not.
+By manually supplying valid addresses for the domain, users can ensure
+that we measure whether the specified resolver works also when the system
+resolver fails with NXDOMAIN or return bogons. 
 
 # Expected output
 
