@@ -1,7 +1,7 @@
 # OONI collector specification
 
-* version: 2.0.4
-* date: 2019-08-19
+* version: 3.0.0
+* date: 2020-12-15
 * author: Simone Basso (v2.0.0+); Arturo Filastò, Aaron Gibson (v1.4.0)
 
 This document aims at providing a functional specification of the OONI collector. It
@@ -79,16 +79,6 @@ The standard flow for submitting measurements is the following:
 
 - then, you close it (see 3.3).
 
-There is also a flow for submitting a report consisting of a single
-measurement (see 3.4).
-
-A report that has successfully be created is in the OPEN state. A OONI collector
-MUST start a timer when a report is created or updated and MUST automatically
-close reports that have been inactive for too much time. For backwards
-compatibility a report MUST NOT be considered stale if it had been updated
-within the previous two hours. The implementation of this timer MUST use
-a monotonic clock to prevent clock jumps from miscalculating the elapsed time.
-
 ## 3.1 Create a new report
 
 ### Request
@@ -161,7 +151,7 @@ compliant, serialized JSON object.
 
 Upon receiving a request to create a report, the collector:
 
-1. MUST fail with `4xx` if the request body does not parse, it is not a JSON object,
+1. SHOULD fail with `4xx` if the request body does not parse, it is not a JSON object,
    any required field is missing and/or if any present field has an invalid value.
 
 2. MUST fail with `4xx` if the request is not compliant with its policies.
@@ -265,21 +255,6 @@ its best to submit measurements as soon as possible, compatibly with its
 configuration and other constraints (e.g. it may be configured to defer submitting
 reports until it is connected to a Wi-Fi network).
 
-A collector MUST NOT close an open, stale report before two hours of inactivity.
-
-A probe MUST cache measurements that it could not submit because of network
-errors and MUST retry at a later time.
-
-In general, but especially when retrying to submit measurements, a probe MUST record
-the elapsed time between when it opened a report and when it is updating it. If a
-submission attempt fails with `4xx` _and_ the elapsed time is greater than one hour,
-the probe MUST open a new report and submit the measurement as part of this new
-report. In doing that, the probe MUST edit the saved measurement to replace
-the previous report ID with the newly obtained report ID. (When opening a new
-report for attempting to resubmit a measurement, the client MUST, of course, use
-its own `software_name` and `software_version` and MUST NOT use the values of
-these variable that are written into the report being resubmitted.)
-
 ### Request
 
 To update a report, the probe issues a request compliant with:
@@ -300,16 +275,16 @@ To update a report, the probe issues a request compliant with:
 
 Upon receiving this request, the collector:
 
-1. MUST check whether `${report_id}` is a valid, OPEN report ID and reject
+1. SHOULD check whether `${report_id}` is a valid, OPEN report ID and reject
    the request with a `4xx` status otherwise.
 
-2. MUST reject the request with a `4xx` status if the `format`
+2. MAY reject the request with a `4xx` status if the `format`
    is "yaml" _and_ it is not handling YAML.
 
-3. MUST reject the request with a `4xx` if the JSON/YAML does not
+3. SHOULD reject the request with a `4xx` if the JSON/YAML does not
    parse or the parsed value is not a JSON/YAML object.
 
-4. MUST verify that the top-level keys are compliant with [df-000-base.md](
+4. MAY verify that the top-level keys are compliant with [df-000-base.md](
    ../data-formats/df-000-base.md) and otherwise return a `4xx`
    status to the client. Additionally:
 
@@ -335,11 +310,11 @@ Upon receiving this request, the collector:
    `null` values are removed by a marshal-serialize cycle
    while the Python parser preserves them).
 
-7. MUST reset the report-specific timer used for automatically
-   closing OPEN reports that have become stale.
+7. MAY reset the report-specific timer used for automatically
+   closing OPEN reports that have become stale (if any sucht timer exists).
 
 8. is allowed to perform additional quick operations that may have
-   an impact on the status code, and MUST defer other operations
+   an impact on the status code, and SHOULD defer other operations
    that do not have an impact on the status code to after the status
    code has been sent to the client (the goal being to keep the
    connection open for as little as possible to avoid the risk that
@@ -355,8 +330,8 @@ In case of failure, the collector MUST return a JSON object, whose content
 is implementation dependent and MAY be empty. Some existing implementations
 return a `{"error": "string"}` object to make debugging easier.
 
-In case of `200` responses, new collector implementations MUST
-at least include a unique identifier for the measurement that the
+In case of `200` responses, new collector implementations MAY
+include a unique identifier for the measurement that the
 client may later use to reference said measurement. For example:
 
 
@@ -417,13 +392,14 @@ messages have been edited for readability):
 
 ## 3.3 Closing a report
 
+This operation is now considered legacy and retained only for
+the purpose of suporting legacy clients.
+
 To close a report, a probe should submit a request like:
 
     POST /report/${report_id}/close
 
-Upon receiving this request, a collector MUST mark a report
-as closed and MUST NOT accept further measurements for
-this report. If the report exists, `200` is returned
+If the report exists, `200` is returned
 and the response MUST include this body for backwards
 compatibility with existing implementations:
 
@@ -455,106 +431,21 @@ messages have been edited for readability):
 < {"status":"success"}
 ```
 
-## 3.4 Submitting single measurements using a single API call
-
-When you have single-entry reports, you can submit them by `POST`ing onto
-the `/measurement` endpoint:
-
-    POST /measurement
-
-The request body MUST be a JSON-format OONI measurement.
-
-Upon receiving this request, the collector MUST behave like the client
-performed the following operations:
-
-1. opened a report
-
-2. submitted the measurement as part of the report with the correct
-   report ID returned in the previous step
-
-3. closed the report
-
-Of course, when processing the measurement submitted using this API, the
-collector will ignore any `report_id` field and overwrite it using the
-`report_id` it generated for the measurement.
-
-In case of success, the collector MUST return to the client a JSON body
-containing _at least_ the following fields:
-
-```JSON
-{
- "measurement_id":"e00c584e6e9e5326",
- "report_id":"20190313T131942Z_AS30722_dU70oZPs80d5E21z8Ef6GXel6CwsdLoXvDk44Fsajv1LDLOIeI"
-}
-```
-
-Otherwise, in case of failure, the collector MUST return a JSON object, whose
-content is implementation dependent and MAY be empty. Some existing implementations
-return a `{"error": "string"}` object to make debugging easier.
-
-The following example shows how submitting a single measurement looks
-like from the point of view of a modern collector client (where the JSON
-messages have been edited for readability):
-
-```
-> POST /measurement HTTP/1.1
-> Host: collector-sandbox.ooni.io
-> Accept: */*
-> Content-Type: application/json
-> Content-Length: 612
-> 
-> {
->  "content": {
->   "annotations":{},
->   "data_format_version":"0.2.0",
->   "id":"bdd20d7a-bba5-40dd-a111-9863d7908572",
->   "input":null,
->   "input_hashes":[],
->   "measurement_start_time":"2018-11-01 15:33:20",
->   "options":[],
->   "probe_asn":"AS0",
->   "probe_cc":"ZZ",
->   "probe_city":null,
->   "probe_ip":"127.0.0.1",
->   "software_name":"mkcollector",
->   "software_version":"0.0.1",
->   "test_helpers":[],
->   "test_keys":{"client_resolver":"91.80.37.104"},
->   "test_name":"dummy",
->   "test_runtime":5.0565230846405,
->   "test_start_time":"2018-11-01 15:33:17",
->   "test_version":"0.0.1"
->  },
->  "format":"json"
-> }
-< HTTP/1.1 200 OK
-< Server: nginx
-< Date: Wed, 13 Mar 2019 13:19:43 GMT
-< Content-Type: application/json; charset=utf-8
-< Content-Length: 60
-< Connection: keep-alive
-< 
-< {
-<  "measurement_id":"362X4YzBos8=",
-<  "report_id":"20190313T131942Z_AS30722_dU70oZPs80d5E21z8Ef6GXel6CwsdLoXvDk44Fsajv1LDLOIeI"
-< }
-```
-
 # 4.0 Implementation considerations
 
 A client side implementation of the collector protocol MUST make sure
 that it is emitting timestamps using UTC rather than local time.
 
-A client side implementation MUST retry any failing collector operation
+A client side implementation MAY retry any failing collector operation
 immediately for three times in case there is a DNS or TCP error. This
 is to ensure that transient errors do not prevent us from submitting the
 data immediately. If all these immediate retries fail, then the client
-MUST arrange for resubmitting the measurement at a later time, either
+SHOULD arrange for resubmitting the measurement at a later time, either
 requiring user input or automatically. In the latter case, the delay
-after which the client will attempt to resubmit MUST be exponentially
-distributed and MUST NOT smaller than 15 minutes.
+after which the client will attempt to resubmit SHOULD be exponentially
+distributed and SHOULD NOT be smaller than 15 minutes.
 
-A server implementation SHOULD publish metrics allowing OONI to gradually
+A server implementation MAY publish metrics allowing OONI to gradually
 enforce more JSON schema correctness in the collector, both for the
 open-report request and for submitted data. A possible strategy to make
 this happen consists of parsing without rejecting, counting the number
