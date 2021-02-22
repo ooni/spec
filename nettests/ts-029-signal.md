@@ -33,6 +33,7 @@ The endpoints used for testing are the following:
 * https://api.directory.signal.org/
 * https://cdn.signal.org/
 * https://cdn2.signal.org/
+* https://sfu.voip.signal.org/
 
 The TLS certificate is validated against the custom Signal CA root certificate:
 ```
