@@ -28,7 +28,7 @@ GET request.
 
 The endpoints used for testing are the following:
 
-* https://textsecure-service.whispersystems.org
+* https://textsecure-service.whispersystems.org/
 * https://storage.signal.org/
 * https://api.directory.signal.org/
 * https://cdn.signal.org/
