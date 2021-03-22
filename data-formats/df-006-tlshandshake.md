@@ -28,6 +28,7 @@ code. See this directory's [README](README.md) for the basic concepts.
     "negotiated_protocol": "",
     "peer_certificates": [],
     "t": 1.11,
+    "tags": [],
     "tls_version": "",
     "transaction_id": 1
 }
@@ -49,6 +50,9 @@ in `df-001-httpt.md`.
 
 - `t` (`float`): number of seconds elapsed since `measurement_start_time`
 measured in the moment in which `failure` is determined.
+
+- `tags` (`[]string`): list of tags for this event. This is useful to
+understand what part of a complex measurement generated an event.
 
 - `tls_version` (`string`): the negotiated TLS version, if any.
 

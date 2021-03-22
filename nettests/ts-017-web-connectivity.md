@@ -1,6 +1,6 @@
 # Specification version number
 
-2020-08-13-001
+2021-03-22-001
 
 # Specification name
 
@@ -10,7 +10,7 @@ Web connectivity
 
 * An internet connection
 
-* The ability to reach the web consistency test helper
+* The ability to reach the web connectivity test helper
 
 # Expected impact
 
@@ -38,23 +38,28 @@ URLs may contain IP addresses rather than domain names.
 This test is divided into multiple steps that will each test a different aspect
 related to connectivity of the website in question.
 
-The first step is to inform the web_connectivity test helper of our intention
+We describe the steps below. And orthogonal
+step is to inform the web_connectivity test helper of our intention
 to run the measurement against the URL in question and hence have it perform a
 control measurement from an un-censored vantage point.
 
 The control measurement shall include in the response the following information:
 
-* The list of A records for a DNS query related to the hostname in question
+* The list of A/AAAA records for a DNS query related to the hostname in question
 
-* Wether or not it is able to establish a TCP session to the first A record in
-  the DNS response
+* Wether or not it is able to establish a TCP session to the IP
+  addresses returned by the DNS
 
 * The body length of the result of a HTTP GET request for the path in question
 
-The request for the control measurement and the experiment measurements can run
-in parallel, that is it is not a requirement to running the experiments to
-already have the result of the control measurement since the comparison of the
-control and experiment is done at the end.
+(We provide an example of the request to the control server and of the
+response from the control server below.)
+
+The request for the control measurement may start at any time once we
+performed the DNS lookup step. It cannot start earlier because the control
+vantage point will check the IP addresses returned by the DNS lookup.
+The comparison of the control and experiment is done at the end of the
+experiment.
 
 The experiment itself consists of the following steps:
 
@@ -62,70 +67,89 @@ The experiment itself consists of the following steps:
    Determine what is the default resolver being used by the probe by performing
    an A lookup for a special domain that will contain in the A lookup answer
    section the IP of the resolver of the requester.
-   An example of this is the service whoami.akamai.com, but also a specialised
+   An example of this is the service `whoami.akamai.com`, but also a specialised
    test-helper may be used.
    The result of this will be stored inside of the "client_resolver" key of the
-   report.
+   "test_keys" in the report.
 
 2. **DNS lookup**
-   Perform an A query to the default resolver for the hostname of the URL to be
+   Perform an A/AAAA query to the default resolver for the hostname of the URL to be
    tested, if that hostname is a domain name.
-   Record the list of A records in a list inside the report under the key "ips".
+   Record the list of A/AAAA records in a list inside the report under the
+   "queries" key (see df-002-dnst.md).
    Otherwise, if the hostname is an IP address, the just skip this step and
-   insert such IP address into the "ips" list.
+   insert such IP address into the "queries" key. (This behavior matches
+   the behavior of `getaddrinfo`, which returns an IP address if you pass to it
+   as input an IP address.)
 
 3. **TCP connect**
-   Attempt to establish a TCP session on port 80 for the list of IPs identified
-   at step 2. If the URL begins with HTTPS then also establish a TCP session
+   If the URL begins with HTTP, attempt to establish a TCP session on port
+   80 for the list of IPs identified
+   at step 2. If the URL begins with HTTPS then establish a TCP session
    towards port 443.
+   Optionally, a probe COULD test for HTTPS when the URL is HTTP (this was
+   the behavior of the ooniprobe 2.x).
+   The results of connecting end up into the "tcp_connect" key
+   (see df-005-tcpconnect.md).
+
+   Optionally, if the URL beings with HTTPS then also perform a TLS
+   handshake using the above established connections. The results
+   of the TLS handshake end up in the "tls_handshakes" key
+   (see df-006-tlshandshake.md). This is the behavior of ooniprobe
+   3.x since August 2020.
+
+   Probes SHOULD also record the network events (see df-netevents.md)
+   occurring during the TCP connect / TLS handshakes. This is the
+   behavior of ooniprobe 3.x since April 2021.
 
 4. **HTTP GET request**
    Perform a HTTP GET request for the path specified in the URI and record the
    response.
-   The headers sent in the request shall be:
-    **User-Agent**: `Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36`
-    Corresponding to the most popular version (47.0.2526.106) of the most
-    popular browser (Chrome) on the most popular OS (Windows 7).
+   The headers sent in the request shall be a recent and popular
+   user agent at the time when the measurement is run.
+   If the original URL redirects us, then we will follow the
+   redirect. We will record all the requests and responses
+   in the chain. This data will be stored into the
+   "requests" key (see `df-001-httpt.md`).
 
 5. **Control comparison**
-   We then begin to poll the test-helper to learn if the control measurement
-   has been performed. Once we obtain a result from the test-helper we shall do
+   Once we obtain a result from the test-helper we shall do
    the following comparisons:
 
    * Are the DNS responses from the control consistent with those from the
      probe?
      The value of the report key "dns_consistency" can be the one of the following:
 
-        * 'consistent' if the IP addresses of the A lookup from the control
+        * 'consistent' if the IP addresses of the A/AAA lookup from the control
           match exactly those of the experiment, or if the URL contains
-          an IP address rather than a domain name.
+          an IP address rather than a domain name. We will also mark the
+          result as consistent if the IP addresses in the measurement and
+          the ones in the control belong to the same ASN. We will also
+          mark the result as consistent if the failure reported by the
+          control is compatible with the one observed by the probe.
 
         * 'reverse_match' if the reverse lookup for any of the IPs in the DNS
-          answer match (a match is defined as having any the domain.tld section
+          answer match (a match is defined as having part of the domain.tld section
           in common).
 
         * 'inconsistent' if none of the above conditions are met.
 
     * Did we succeed in establishing a TCP session to the IP:port combinations
-      found by doing A lookups?
+      found by doing A/AAAA lookups? Did we succeded in establishing TLS
+      connections (if applicable)?
+
       The value of the report key "tcp_connect" will be a list with 1 item per
-      IP:port combination with the following values in each entry:
+      IP:port combination. This value will follow df-005-tcpconnect with
+      the addition of the "blocked" flag.
 
-        * 'ip' the IP address a connection was attempted to be established to.
-
-        * 'port' the port number we connected to.
-
-        * 'status': {
-            'success': boolean flag indicating if the connection attempt was successful (true) or failed (false),
-            'failure': an error string indicating the reason for the failure,
-            'blocked': boolean flag to indicate if blocking is happening on a
-            TCP basis, this is determined by comparing the tcp_connect result
-            from the control to that of the experiment. For example if both the
-            control and the experiment produce a failure that host is assumed
-            to be offline and hence no blocking is occurring, while if the
-            experiment demonstrates an offline status, while the control
-            succeeds we assume blocking is occuring.
-        }
+      In particular, "blocked" shall be
+      a boolean flag to indicate if blocking is happening on a
+      TCP basis, this is determined by comparing the tcp_connect result
+      from the control to that of the experiment. For example if both the
+      control and the experiment produce a failure that host is assumed
+      to be offline and hence no blocking is occurring, while if the
+      experiment demonstrates an offline status, while the control
+      succeeds we assume blocking is occuring.
 
     * Does the body length of the experiment match that of the control?
       The value of the report key "body_length_match" is set to true if
@@ -168,7 +192,25 @@ either fails or we get back a HTTP response that contains a page we don't expect
 
 # Expected output
 
+## Parent data format
+
+We will include data following these data formats.
+
+* `df-001-httpt`
+* `df-002-dnst`
+* `df-005-tcpconnect`
+* `df-006-tlshandshake`
+* `df-008-netevents`
+
+We already described below how this data formats will be used. Note in
+particular that the `tcp_connect` key will include the "blocked" key, whose
+specification is not part of `df-005-tcpconnect` and is instead given
+above.
+
 ## Semantics
+
+In addition to the above specified common data formats, we will also
+include into the "test_keys" the following keys:
 
 ```
 {
@@ -178,17 +220,6 @@ either fails or we get back a HTTP response that contains a page we don't expect
     "headers_match": true | false | null,
     "status_code_match": true | false | null,
     "title_match": true | false | null,
-    "tcp_connect": [
-        {
-            "ip": "xxx.xxx.xxx.xxx",
-            "port": 80 | 443,
-            "status": {
-                "success": true | false,
-                "failure": "FAILURE STRING",
-                "blocked": true | false | null
-            }
-        }
-    ],
     "accessible": true | false | null,
     "blocking": "tcp_ip" | "dns" | "http-diff" | "http-failure" | false | null
 }
@@ -216,260 +247,476 @@ matches with the control (http-diff) or if the HTTP response failed
   tampering, TCP connection RST/IP blocking or by having a transparent HTTP
   proxy.
 
-## Example output sample
+## Example control request and response
 
-```
+Request:
+
+```JSON
 {
-    "annotations": null,
-    "data_format_version": "0.2.0",
-    "id": "6fee0dc8-2667-4378-bf88-e16bd19076e2",
-    "input": "http://torproject.org/",
-    "input_hashes": [],
-    "measurement_start_time": "2016-05-23 11:10:46",
-    "options": [
-        "--url",
-        ""
+  "http_request": "https://www.example.com",
+  "http_request_headers": {
+    "Accept": [
+      "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
     ],
-    "probe_asn": "AS3320",
-    "probe_cc": "DE",
-    "probe_city": null,
-    "probe_ip": "127.0.0.1",
-    "report_id": "20160523T110452Z_AS3320_s5kaXylbGbGXUyTAE6WR93zqatpmZD1K8GIwlJvxiq6IygRrrK",
-    "software_name": "ooniprobe",
-    "software_version": "1.4.2",
-    "test_helpers": {
-        "backend": {
-            "address": "httpo://ckjj3ra6456muu7o.onion",
-            "type": "onion"
+    "Accept-Language": [
+      "en-US;q=0.8,en;q=0.5"
+    ],
+    "User-Agent": [
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36"
+    ]
+  },
+  "tcp_connect": [
+    "93.184.216.34:443",
+    "[2606:2800:220:1:248:1893:25c8:1946]:443"
+  ]
+}
+```
+
+Response:
+
+```JSON
+{
+    "tcp_connect": {
+        "93.184.216.34:443": {
+            "status": true,
+            "failure": null
+        },
+        "[2606:2800:220:1:248:1893:25c8:1946]:443": {
+            "status": false,
+            "failure": "invalid_socket"
         }
     },
-    "test_keys": {
-        "accessible": true,
-        "agent": "redirect",
-        "blocking": false,
-        "body_length_match": true,
-        "body_proportion": 1.0,
-        "client_resolver": "74.125.18.24",
-        "control": {
-            "dns": {
-                "failure": null,
-                "ips": [
-                    "82.195.75.101",
-                    "138.201.14.197",
-                    "154.35.132.70",
-                    "86.59.30.40",
-                    "93.95.227.222"
-                ]
-            },
-            "http_request": {
-                "body_length": 14539,
-                "failure": null,
-                "headers": {
-                    "Accept-Ranges": "bytes",
-                    "Cache-Control": "max-age=43200",
-                    "Content-Language": "en",
-                    "Content-Location": "index.html.en",
-                    "Content-Type": "text/html",
-                    "Date": "Mon, 23 May 2016 11:10:49 GMT",
-                    "ETag": "\"38cb-5336fc9591c00-gzip\"",
-                    "Expires": "Mon, 23 May 2016 23:10:49 GMT",
-                    "Last-Modified": "Sun, 22 May 2016 15:14:56 GMT",
-                    "Server": "Apache",
-                    "Strict-Transport-Security": "max-age=15768000",
-                    "Tcn": "choice",
-                    "Vary": "negotiate,Accept-Encoding",
-                    "X-Content-Type-Options": "nosniff",
-                    "X-Frame-Options": "sameorigin",
-                    "X-XSS-Protection": "1"
-                },
-                "status_code": 200
-            },
-            "tcp_connect": {
-                "138.201.14.197:80": {
-                    "failure": null,
-                    "status": true
-                },
-                "154.35.132.70:80": {
-                    "failure": null,
-                    "status": true
-                },
-                "82.195.75.101:80": {
-                    "failure": null,
-                    "status": true
-                },
-                "86.59.30.40:80": {
-                    "failure": null,
-                    "status": true
-                },
-                "93.95.227.222:80": {
-                    "failure": null,
-                    "status": true
-                }
-            }
+    "http_request": {
+        "body_length": 1256,
+        "failure": null,
+        "title": "Example Domain",
+        "headers": {
+            "Accept-Ranges": "bytes",
+            "Age": "603770",
+            "Cache-Control": "max-age=604800",
+            "Content-Type": "text/html; charset=UTF-8",
+            "Date": "Mon, 22 Mar 2021 17:54:20 GMT",
+            "Etag": "\"3147526947\"",
+            "Expires": "Mon, 29 Mar 2021 17:54:20 GMT",
+            "Last-Modified": "Thu, 17 Oct 2019 07:18:26 GMT",
+            "Server": "ECS (dcb/7EC9)",
+            "Vary": "Accept-Encoding",
+            "X-Cache": "HIT"
         },
-        "control_failure": null,
-        "dns_consistency": "consistent",
-        "dns_experiment_failure": null,
-        "headers_match": true,
-        "http_experiment_failure": null,
-        "queries": [
-            {
-                "answers": [
-                    {
-                        "answer_type": "A",
-                        "ipv4": "93.95.227.222"
-                    },
-                    {
-                        "answer_type": "A",
-                        "ipv4": "82.195.75.101"
-                    },
-                    {
-                        "answer_type": "A",
-                        "ipv4": "138.201.14.197"
-                    },
-                    {
-                        "answer_type": "A",
-                        "ipv4": "86.59.30.40"
-                    },
-                    {
-                        "answer_type": "A",
-                        "ipv4": "154.35.132.70"
-                    }
-                ],
-                "failure": null,
-                "hostname": "torproject.org",
-                "query_type": "A",
-                "resolver_hostname": null,
-                "resolver_port": null
-            }
-        ],
-        "requests": [
-            {
-                "failure": null,
-                "request": {
-                    "body": null,
-                    "headers": {
-                        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-                        "Accept-Language": "en-US;q=0.8,en;q=0.5",
-                        "User-Agent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"
-                    },
-                    "method": "GET",
-                    "tor": {
-                        "exit_ip": null,
-                        "exit_name": null,
-                        "is_tor": false
-                    },
-                    "url": "http://torproject.org/"
-                },
-                "response": {
-                    "body": "<!DOCTYPE html>\n <html>\n <head>\n   <meta charset=\"utf-8\">\n   <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n   <meta name=\"viewport\" content=\"width=\"device-width,\" initial-scale=1\">\n   <meta name=\"author\" content=\"The Tor Project, Inc.\">\n   <meta name=\"keywords\" content=\"anonymity online, tor, tor project, censorship circumvention, traffic analysis, anonymous communications research\">\n   <meta property=\"og:image\" content=\"https://www.torproject.org/images/tor-logo.jpg\">\n   <title>Tor Project: Anonymity Online</title>\n   <link rel=\"icon\" href=\"./images/favicon.ico\">\n   <link href=\"./css/master.css\" rel=\"stylesheet\">\n   <!--[if lte IE 8]>\n   <link href=\"./css/ie8-and-down.css\" rel=\"stylesheet\">\n   <![endif]-->\n   <!--[if lte IE 7]>\n   <link href=\"./css/ie7-and-down.css\" rel=\"stylesheet\">\n   <![endif]-->\n   <!--[if IE 6]>\n   <link href=\"./css/ie6.css\" rel=\"stylesheet\">\n   <![endif]-->\n</head>\n<body>\n<div id=\"wrap\">\n  <div id=\"header\">\n    <h1 id=\"logo\"><a href=\"index.html.en\">Tor</a></h1>\n      <div id=\"nav\">\n        <ul>\n        <li><a class=\"active\" href=\"index.html.en\">Home</a></li>\n<li><a href=\"about/overview.html.en\">About Tor</a></li>\n<li><a href=\"docs/documentation.html.en\">Documentation</a></li>\n<li><a href=\"press/press.html.en\">Press</a></li>\n<li><a href=\"https://blog.torproject.org/blog/\">Blog</a></li>\n<li><a href=\"about/contact.html.en\">Contact</a></li>\n        </ul>\n      </div>\n      <!-- END NAV -->\n      <div id=\"calltoaction\">\n        <ul>\n          <li class=\"donate\"><a href=\"download/download-easy.html.en\">Download</a></li>\n<li class=\"donate\"><a href=\"getinvolved/volunteer.html.en\">Volunteer</a></li>\n<li class=\"donate\"><a href=\"donate/donate-button.html.en\">Donate</a></li>\n        </ul>\n      </div>\n      <!-- END CALLTOACTION -->\n  </div>\n  <!-- END HEADER -->\n<div id=\"home\">\n    <div id=\"content\" class=\"clearfix\">\n    \t<div id=\"maincol\">\n      \t<div id=\"banner\">\n        \t<ul>\n          \t<li>Tor prevents people from learning your location or browsing habits.</li>\n            <li>Tor is for web browsers, instant messaging clients, and more.</li>\n            <li>Tor is free and open source for Windows, Mac, Linux/Unix, and Android</li>\n          </ul>\n        \t<h1 class=\"headline\">Anonymity Online</h1>\n          <p class=\"desc\">Protect your privacy. Defend yourself against network surveillance and traffic analysis.</p>\n      <div id=\"download\">\n        <a href=\"download/download-easy.html.en\">\n          <span class=\"download-tor\">Download Tor</span></a>\n      </div>\n      </div>\n        <div class=\"subcol-container clearfix\">\n          <div class=\"subcol first\">\n            <h2>What is Tor?</h2> <p>Tor is free software and an open\n            network that helps you defend against traffic analysis,\n            a form of network surveillance that\n            threatens personal freedom and privacy, confidential business\n            activities and relationships, and state security.<br>\n            <span class=\"continue\"><a href=\"about/overview.html.en\">Learn\n            more about Tor &raquo;</a></span></p>\n          </div>\n          <!-- END SUBCOL -->\n          <div class=\"subcol\">\n          <h2>Why Anonymity Matters</h2>\n          <p>Tor protects you by bouncing your communications around a\n          distributed network of relays run by volunteers all around\n          the world: it prevents somebody watching your Internet\n          connection from learning what sites you visit, and it prevents\n          the sites you visit from learning your physical location.<br>\n          <span class=\"continue\"><a href=\"getinvolved/volunteer.html.en\">Get involved with Tor\n          &raquo;</a></span></p>\n          </div>\n        </div>\n        <!-- END SUBCOL -->\n        <div id=\"home-our-projects\" class=\"clearfix\">\n          <h2>Our Projects</h2>\n          <div class=\"fauxhead\"></div>\n          <table style=\"table-layout: fixed;\" summary=\"\">\n            <tr>\n              <!-- Icon from the Crystal set\n                author: Everaldo Coelho\n                source: http://www.everaldo.com/crystal/\n                license: LGPL v2\n              -->\n              <td>\n                <div class=\"project\">\n                <a href=\"projects/torbrowser.html.en\"><img\n                src=\"./images/icon-TorBrowser.jpg\" alt=\"TorBrowser Icon\" width=\"75\" height=\"75\"></a>\n                <h3><a href=\"projects/torbrowser.html.en\">Tor\n                Browser</a></h3>\n                <p>Tor Browser contains everything you need to safely\n                browse the Internet.</p>\n                </div>\n              </td>\n              <td>\n                <div class=\"project\">\n                <a href=\"https://guardianproject.info/apps/orbot/\"><img\n                src=\"./images/icon-Orbot.jpg\" alt=\"Orbot Icon\" width=\"75\" height=\"75\"></a>\n                <h3><a href=\"https://guardianproject.info/apps/orbot/\">Orbot</a></h3>\n                <p>Tor for Google Android devices.</p>\n                </div>\n              </td>\n            </tr>\n            <tr>\n              <td>\n                <div class=\"project\">\n                <a href=\"https://tails.boum.org/\"><img src=\"./images/tails_logo.png\" alt=\"Tails Logo\" width=\"75\" height=\"75\"></a>\n                <h3><a href=\"https://tails.boum.org/\">Tails</a></h3>\n                <p>Live CD/USB operating system preconfigured to use\n                Tor safely.</p>\n                </div>\n              </td>\n              <!-- Icon from the Crystal set\n              author: Everaldo Coelho\n              source: http://www.everaldo.com/crystal/\n              license: LGPL v2\n              -->\n              <td>\n                <div class=\"project\">\n                <a href=\"https://www.atagar.com/arm/\"><img\n                src=\"./images/icon-Arm.jpg\" alt=\"Arm Icon\" width=\"75\" height=\"75\"></a>\n                <h3><a href=\"https://www.atagar.com/arm/\">Arm</a></h3>\n                <p>Terminal (command line) application for monitoring\n                and configuring Tor.</p>\n                </div>\n              </td>\n            </tr>\n            <tr>\n                <!-- Icon from the NuoveXT 2 set\n                author: Alexandre Moore\n                source: http://nuovext.pwsp.net/\n                license: LGPL v3\n                -->\n\t      <td>\n              <div class=\"project\">\n                <a href=\"https://atlas.torproject.org/\"><img\n                src=\"./images/icon-TorStatus.jpg\" alt=\"Atlas Icon\" width=\"75\" height=\"75\"></a>\n                <h3><a href=\"https://atlas.torproject.org/\">Atlas</a></h3>\n                <p>Site providing an overview of the Tor network.</p>\n                </div>\n              </td>\n                <!-- Obfsproxy Icon\n                author: Constantinos Crystallidis\n                license: Creative Commons Attribution-ShareAlike 2.0 Generic (CC BY-SA 2.0)\n                -->\n              <td>\n                <div class=\"project\">\n                <a href=\"projects/obfsproxy.html.en\"><img\n                src=\"./images/icon-Obfsproxy.jpg\" alt=\"Pluggable Transports Icon\" width=\"75\" height=\"75\"></a>\n                <h3><a href=\"docs/pluggable-transports.html.en\">Pluggable Transports</a></h3>\n                <p>Pluggable transports help you circumvent censorship.</p>\n                </div>\n              </td>\n            </tr>\n            <tr>\n              <td>\n               <div class=\"project\">\n              <a href=\"https://stem.torproject.org/\"><img\n              src=\"./images/icon-stem.jpg\" alt=\"Stem Icon\" width=\"75\" height=\"75\"></a>\n              <h3><a href=\"https://stem.torproject.org/\">Stem</a></h3>\n              <p>Library for writing scripts and applications that interact\n              with Tor.</p>\n                </div>\n              </td>\n              <td>\n               <div class=\"project\">\n              <a href=\"https://ooni.torproject.org/\"><img\n              src=\"./images/icon-OONI.png\" alt=\"OONI\" width=\"75\" height=\"75\"></a>\n               <h3><a href=\"https://ooni.torproject.org/\">OONI</a></h3>\n               <p>Global observatory monitoring for network censorship.</p>\n               </div>\n               </td>\n            </tr>\n          </table>\n\t  <span class=\"continue\"><a href=\"projects/projects.html.en\">Learn more about our projects &raquo;</a></span>\n      \t</div>\n        <!-- END TABLE -->\n      </div>\n      <!-- END MAINCOL -->\n      <div id=\"sidecol\">\n      <!-- BLOG WIDGET -->\n<div class='blogFeed'>\n  <div class='blogFirstRow'>\n  <h2>Recent Blog Posts</h2>\n  </div><div class=\"fauxhead\"></div><a href='https://blog.torproject.org/blog/tor-project-hiring-developer-ooni' title='The Tor Project is Hiring a Developer for OONI! '><div class='blogRow blogRow0'><p class='blogTitle'>The Tor Project is Hiring a Deve...</p>\n      <p class='blogDate'>Tue, 17 May 2016</p>\n      <p class='blogAuthor'>Posted by: <em>art</em></p>\n      </div>\n      </a><a href='https://blog.torproject.org/blog/tracking-impact-whatsapp-blockage-tor' title='Tracking The Impact of the WhatsApp Blockage on Tor'><div class='blogRow blogRow1'><p class='blogTitle'>Tracking The Impact of the Whats...</p>\n      <p class='blogDate'>Mon, 16 May 2016</p>\n      <p class='blogAuthor'>Posted by: <em>isabela</em></p>\n      </div>\n      </a><a href='https://blog.torproject.org/blog/gsoc-2016-projects' title='GSoC 2016 Projects'><div class='blogRow blogRow0'><p class='blogTitle'>GSoC 2016 Projects</p>\n      <p class='blogDate'>Sat, 07 May 2016</p>\n      <p class='blogAuthor'>Posted by: <em>atagar</em></p>\n      </div>\n      </a><a href='https://blog.torproject.org/blog/tor-browser-60a5-hardened-released' title='Tor Browser 6.0a5-hardened is released'><div class='blogRow blogRow1'><p class='blogTitle'>Tor Browser 6.0a5-hardened is re...</p>\n      <p class='blogDate'>Thu, 28 Apr 2016</p>\n      <p class='blogAuthor'>Posted by: <em>boklm</em></p>\n      </div>\n      </a><a href='https://blog.torproject.org/blog/tor-browser-60a5-released' title='Tor Browser 6.0a5 is released'><div class='blogRow blogRow0'><p class='blogTitle'>Tor Browser 6.0a5 is released</p>\n      <p class='blogDate'>Thu, 28 Apr 2016</p>\n      <p class='blogAuthor'>Posted by: <em>boklm</em></p>\n      </div>\n      </a><a href='https://blog.torproject.org' title='Tor Blog Home'>\n<div class='blogRow blogLastRow'>\n<p>View all blog posts &raquo;</p>\n</div>\n</a>\n      <!-- END BLOG WIDGET -->\n      \t<div id=\"home-users\">\n          <h2>Who Uses Tor?</h2>\n\t  <div class=\"fauxhead\"></div>\n          <div class=\"user\">\n            <h3>\n              <a href=\"about/torusers.html.en#normalusers\"><img src=\"./images/family.jpg\" alt=\"Normal People\" width=\"75\" height=\"75\">Family &amp; Friends</a>\n            </h3>\n            <p>People like you and your family use Tor to protect themselves, their children, and their dignity while using the Internet.</p>\n          </div>\n          <div class=\"user\">\n            <h3>\n              <a href=\"about/torusers.html.en#executives\"><img src=\"./images/consumers.jpg\" alt=\"Businesses\" width=\"75\" height=\"75\">Businesses</a>\n            </h3>\n            <p>Businesses use Tor to research competition, keep business strategies confidential, and facilitate internal accountability.</p>\n          </div>\n          <div class=\"user\">\n            <h3>\n              <a href=\"about/torusers.html.en#activists\"><img src=\"./images/activists.jpg\" alt=\"Activists &amp; Whistleblowers\" width=\"75\" height=\"75\">Activists</a>\n            </h3>\n            <p>Activists use Tor to anonymously report abuses from danger zones. Whistleblowers use Tor to safely report on corruption.</p>\n          </div>\n          <div class=\"user\">\n            <h3>\n              <a href=\"about/torusers.html.en#journalist\"><img src=\"./images/media.jpg\" alt=\"Journalists and the Media\" width=\"75\" height=\"75\">Media</a>\n            </h3>\n            <p>Journalists and the media use Tor to protect their research and sources online.</p>\n          </div>\n          <div class=\"user\">\n            <h3>\n              <a href=\"about/torusers.html.en#military\"><img src=\"./images/military.jpg\" alt=\"Military and Law Enforcement\" width=\"75\" height=\"75\">Military &amp; Law Enforcement</a>\n            </h3>\n            <p>Militaries and law enforcement use Tor to protect their communications, investigations, and intelligence gathering online.</p>\n          </div>\n        </div>\n        <!-- END TABLE -->\n      </div>\n      <!-- END SIDECOL -->\n    </div>\n    <!-- END CONTENT -->\n  </div>\n  <!-- END HOME -->\n    <div id=\"footer\">\n    \t<div class=\"onion\"><img src=\"./images/onion.jpg\" alt=\"Tor\" width=\"78\" height=\"118\"></div>\n      <div class=\"about\">\n    <p>Trademark, copyright notices, and rules for use by third parties can be found\n    <a href=\"docs/trademark-faq.html.en\">in our FAQ</a>.</p>\n<!--\n        Last modified: Sat May 21 14:41:08 2016 -0400\n        Last compiled: Sun May 22 2016 15:14:55 +0000\n-->\n      </div>\n      <!-- END ABOUT -->\n      <div class=\"col first\">\n      \t<h4>About Tor</h4>\n        <ul>\n          <li><a href=\"about/overview.html.en\">What Tor Does</a></li>\n          <li><a href=\"about/torusers.html.en\">Users of Tor</a></li>\n          <li><a href=\"about/corepeople.html.en\">Core Tor People</a></li>\n          <li><a href=\"about/sponsors.html.en\">Sponsors</a></li>\n          <li><a href=\"about/contact.html.en\">Contact Us</a></li>\n        </ul>\n      </div>\n      <!-- END COL -->\n      <div class=\"col\">\n      \t<h4>Get Involved</h4>\n        <ul>\n          <li><a href=\"donate/donate.html.en\">Donate</a></li>\n          <li><a href=\"docs/documentation.html.en#MailingLists\">Mailing Lists</a></li>\n          <li><a href=\"docs/hidden-services.html.en\">Hidden Services</a></li>\n          <li><a href=\"getinvolved/translation.html.en\">Translations</a></li>\n        </ul>\n      </div>\n      <!-- END COL -->\n      <div class=\"col\">\n      \t<h4>Documentation</h4>\n        <ul>\n          <li><a href=\"docs/tor-manual.html.en\">Manuals</a></li>\n          <li><a href=\"docs/documentation.html.en\">Installation Guides</a></li>\n          <li><a href=\"https://trac.torproject.org/projects/tor/wiki/\">Tor Wiki</a></li>\n          <li><a href=\"docs/faq.html.en\">General Tor FAQ</a></li>\n        </ul>\n      </div>\n        <div class=\"col\">\n        <a href=\"https://internetdefenseleague.org/\"><img src=\"./images/InternetDefenseLeague-footer-badge.png\" alt=\"Internet Defense League\" width=\"125\" height=\"125\"></a>\n        </div>\n      <!-- END COL -->\n    </div>\n    <!-- END FOOTER -->\n  </div>\n  <!-- END WRAP -->\n</body>\n</html>\n",
-                    "code": 200,
-                    "headers": {
-                        "Accept-Ranges": "bytes",
-                        "Cache-Control": "max-age=43200",
-                        "Content-Language": "en",
-                        "Content-Location": "index.html.en",
-                        "Content-Type": "text/html",
-                        "Date": "Mon, 23 May 2016 11:10:47 GMT",
-                        "ETag": "\"38cb-5336fc9591c00-gzip\"",
-                        "Expires": "Mon, 23 May 2016 23:10:47 GMT",
-                        "Last-Modified": "Sun, 22 May 2016 15:14:56 GMT",
-                        "Server": "Apache",
-                        "Strict-Transport-Security": "max-age=15768000",
-                        "TCN": "choice",
-                        "Vary": "negotiate,Accept-Encoding",
-                        "X-Content-Type-Options": "nosniff",
-                        "X-Frame-Options": "sameorigin",
-                        "X-Xss-Protection": "1"
-                    }
-                }
-            },
-            {
-                "failure": null,
-                "request": {
-                    "body": null,
-                    "headers": {
-                        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-                        "Accept-Language": "en-US;q=0.8,en;q=0.5",
-                        "User-Agent": "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"
-                    },
-                    "method": "GET",
-                    "tor": {
-                        "exit_ip": null,
-                        "exit_name": null,
-                        "is_tor": false
-                    },
-                    "url": "http://torproject.org/"
-                },
-                "response": {
-                    "body": null,
-                    "code": 302,
-                    "headers": {
-                        "Content-Type": "text/html; charset=iso-8859-1",
-                        "Date": "Mon, 23 May 2016 11:10:47 GMT",
-                        "Location": "https://www.torproject.org/",
-                        "Server": "Apache",
-                        "X-Content-Type-Options": "nosniff",
-                        "X-Frame-Options": "sameorigin",
-                        "X-Xss-Protection": "1"
-                    }
-                }
-            }
-        ],
-        "socksproxy": null,
-        "status_code_match": true,
-        "tcp_connect": [
-            {
-                "ip": "82.195.75.101",
-                "port": 80,
-                "status": {
-                    "blocked": false,
-                    "failure": null,
-                    "success": true
-                }
-            },
-            {
-                "ip": "138.201.14.197",
-                "port": 80,
-                "status": {
-                    "blocked": false,
-                    "failure": null,
-                    "success": true
-                }
-            },
-            {
-                "ip": "86.59.30.40",
-                "port": 80,
-                "status": {
-                    "blocked": false,
-                    "failure": null,
-                    "success": true
-                }
-            },
-            {
-                "ip": "93.95.227.222",
-                "port": 80,
-                "status": {
-                    "blocked": false,
-                    "failure": null,
-                    "success": true
-                }
-            },
-            {
-                "ip": "154.35.132.70",
-                "port": 80,
-                "status": {
-                    "blocked": false,
-                    "failure": null,
-                    "success": true
-                }
-            }
-        ]
+        "status_code": 200
     },
-    "test_name": "web_connectivity",
-    "test_runtime": 20.532310009002686,
-    "test_start_time": "2016-05-23 11:10:45",
-    "test_version": "0.1.0"
+    "dns": {
+        "failure": null,
+        "addrs": [
+            "93.184.216.34"
+        ]
+    }
+}
+```
+
+## Example output sample
+
+```JSON
+{
+  "annotations": {
+    "assets_version": "20210303114512",
+    "engine_name": "ooniprobe-engine",
+    "engine_version": "3.9.0-alpha",
+    "platform": "macos"
+  },
+  "data_format_version": "0.2.0",
+  "input": "https://example.com",
+  "measurement_start_time": "2021-03-22 15:01:01",
+  "probe_asn": "AS30722",
+  "probe_cc": "IT",
+  "probe_ip": "127.0.0.1",
+  "probe_network_name": "Vodafone Italia S.p.A.",
+  "report_id": "",
+  "resolver_asn": "AS30722",
+  "resolver_ip": "91.80.36.92",
+  "resolver_network_name": "Vodafone Italia S.p.A.",
+  "software_name": "miniooni",
+  "software_version": "3.9.0-alpha",
+  "test_helpers": {
+    "backend": {
+      "address": "https://wcth.ooni.io",
+      "type": "https"
+    }
+  },
+  "test_keys": {
+    "agent": "redirect",
+    "client_resolver": "91.80.36.92",
+    "retries": null,
+    "socksproxy": null,
+    "network_events": [
+      {
+        "address": "[2606:2800:220:1:248:1893:25c8:1946]:443",
+        "failure": "unknown_failure: dial tcp [scrubbed]: connect: no route to host",
+        "operation": "connect",
+        "proto": "tcp",
+        "t": 0.655015,
+        "tags": [
+          "tcptls_experiment"
+        ]
+      },
+      {
+        "address": "93.184.216.34:443",
+        "failure": null,
+        "operation": "connect",
+        "proto": "tcp",
+        "t": 0.771715,
+        "tags": [
+          "tcptls_experiment"
+        ]
+      },
+      {
+        "failure": null,
+        "operation": "tls_handshake_start",
+        "t": 0.771761,
+        "tags": [
+          "tcptls_experiment"
+        ]
+      },
+      {
+        "failure": null,
+        "num_bytes": 281,
+        "operation": "write",
+        "t": 0.772359,
+        "tags": [
+          "tcptls_experiment"
+        ]
+      },
+      {
+        "failure": null,
+        "num_bytes": 99,
+        "operation": "read",
+        "t": 0.888676,
+        "tags": [
+          "tcptls_experiment"
+        ]
+      },
+      {
+        "failure": null,
+        "num_bytes": 6,
+        "operation": "write",
+        "t": 0.888797,
+        "tags": [
+          "tcptls_experiment"
+        ]
+      },
+      {
+        "failure": null,
+        "num_bytes": 314,
+        "operation": "write",
+        "t": 0.903607,
+        "tags": [
+          "tcptls_experiment"
+        ]
+      },
+      {
+        "failure": null,
+        "num_bytes": 517,
+        "operation": "read",
+        "t": 1.019753,
+        "tags": [
+          "tcptls_experiment"
+        ]
+      },
+      {
+        "failure": null,
+        "num_bytes": 3579,
+        "operation": "read",
+        "t": 1.020405,
+        "tags": [
+          "tcptls_experiment"
+        ]
+      },
+      {
+        "failure": null,
+        "num_bytes": 947,
+        "operation": "read",
+        "t": 1.021515,
+        "tags": [
+          "tcptls_experiment"
+        ]
+      },
+      {
+        "failure": null,
+        "num_bytes": 74,
+        "operation": "write",
+        "t": 1.023521,
+        "tags": [
+          "tcptls_experiment"
+        ]
+      },
+      {
+        "failure": null,
+        "operation": "tls_handshake_done",
+        "t": 1.023591,
+        "tags": [
+          "tcptls_experiment"
+        ]
+      },
+      {
+        "failure": null,
+        "num_bytes": 24,
+        "operation": "write",
+        "t": 1.023725,
+        "tags": [
+          "tcptls_experiment"
+        ]
+      }
+    ],
+    "tls_handshakes": [
+      {
+        "cipher_suite": "TLS_AES_256_GCM_SHA384",
+        "failure": null,
+        "negotiated_protocol": "h2",
+        "no_tls_verify": false,
+        "peer_certificates": [
+          {
+            "data": "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",
+            "format": "base64"
+          },
+          {
+            "data": "MIIE6jCCA9KgAwIBAgIQCjUI1VwpKwF9+K1lwA/35DANBgkqhkiG9w0BAQsFADBhMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3d3cuZGlnaWNlcnQuY29tMSAwHgYDVQQDExdEaWdpQ2VydCBHbG9iYWwgUm9vdCBDQTAeFw0yMDA5MjQwMDAwMDBaFw0zMDA5MjMyMzU5NTlaME8xCzAJBgNVBAYTAlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxKTAnBgNVBAMTIERpZ2lDZXJ0IFRMUyBSU0EgU0hBMjU2IDIwMjAgQ0ExMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwUuzZUdwvN1PWNvsnO3DZuUfMRNUrUpmRh8sCuxkB+Uu3Ny5CiDt3+PE0J6aqXodgojlEVbbHp9YwlHnLDQNLtKS4VbL8Xlfs7uHyiUDe5pSQWYQYE9XE0nw6Ddng9/n00tnTCJRpt8OmRDtV1F0JuJ9x8piLhMbfyOIJVNvwTRYAIuE//i+p1hJInuWraKImxW8oHzf6VGo1bDtN+I2tIJLYrVJmuzHZ9bjPvXj1hJeRPG/cUJ9WIQDgLGBAfr5yjK7tI4nhyfFK3TUqNaX3sNk+crOU6JWvHgXjkkDKa77SU+kFbnO8lwZV21reacroicgE7XQPUDTITAHk+qZ9QIDAQABo4IBrjCCAaowHQYDVR0OBBYEFLdrouqoqoSMeeq02g+YssWVdrn0MB8GA1UdIwQYMBaAFAPeUDVW0Uy7ZvCj4hsbw5eyPdFVMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwEgYDVR0TAQH/BAgwBgEB/wIBADB2BggrBgEFBQcBAQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0R2xvYmFsUm9vdENBLmNydDB7BgNVHR8EdDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vRGlnaUNlcnRHbG9iYWxSb290Q0EuY3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vRGlnaUNlcnRHbG9iYWxSb290Q0EuY3JsMDAGA1UdIAQpMCcwBwYFZ4EMAQEwCAYGZ4EMAQIBMAgGBmeBDAECAjAIBgZngQwBAgMwDQYJKoZIhvcNAQELBQADggEBAHert3onPa679n/gWlbJhKrKW3EX3SJH/E6f7tDBpATho+vFScH90cnfjK+URSxGKqNjOSD5nkoklEHIqdninFQFBstcHL4AGw+oWv8Zu2XHFq8hVt1hBcnpj5h232sb0HIMULkwKXq/YFkQZhM6LawVEWwtIwwCPgU7/uWhnOKK24fXSuhe50gG66sSmvKvhMNbg0qZgYOrAKHKCjxMoiWJKiKnpPMzTFuMLhoClw+dj20tlQj7T9rxkTgl4ZxuYRiHas6xuwAwapu3r9rxxZf+ingkquqTgLozZXq8oXfpf2kUCwA/d5KxTVtzhwoT0JzI8ks5T1KESaZMkE4f97Q=",
+            "format": "base64"
+          },
+          {
+            "data": "MIIDrzCCApegAwIBAgIQCDvgVpBCRrGhdWrJWZHHSjANBgkqhkiG9w0BAQUFADBhMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3d3cuZGlnaWNlcnQuY29tMSAwHgYDVQQDExdEaWdpQ2VydCBHbG9iYWwgUm9vdCBDQTAeFw0wNjExMTAwMDAwMDBaFw0zMTExMTAwMDAwMDBaMGExCzAJBgNVBAYTAlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xIDAeBgNVBAMTF0RpZ2lDZXJ0IEdsb2JhbCBSb290IENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA4jvhEXLeqKTTo1eqUKKPC3eQyaKl7hLOllsBCSDMAZOnTjC3U/dDxGkAV53ijSLdhwZAAIEJzs4bg7/fzTtxRuLWZscFs3YnFo97nh6Vfe63SKMI2tavegw5BmV/Sl0fvBf4q77uKNd0f3p4mVmFaG5cIzJLv07A6Fpt43C/dxC//AH2hdmoRBBYMql1GNXRor5H4idq9Joz+EkIYIvUX7Q6hL+hqkpMfT7PT19sdl6gSzeRntwi5m3OFBqOasv+zbMUZBfHWymeMr/y7vrTC0LUq7dBMtoM1O/4gdW7jVg/tRvoSSiicNoxBN33shbyTApOB6jtSj1etX+jkMOvJwIDAQABo2MwYTAOBgNVHQ8BAf8EBAMCAYYwDwYDVR0TAQH/BAUwAwEB/zAdBgNVHQ4EFgQUA95QNVbRTLtm8KPiGxvDl7I90VUwHwYDVR0jBBgwFoAUA95QNVbRTLtm8KPiGxvDl7I90VUwDQYJKoZIhvcNAQEFBQADggEBAMucN6pIExIK+t1EnE9SsPTfrgT1eXkIoyQY/EsrhMAtudXH/vTBH1jLuG2cenTnmCmrEbXjcKChzUyImZOMkXDiqw8cvpOp/2PV5Adg06O/nVsJ8dWO41P0jmP6P6fbtGbfYmbW0W5BjfIttep3Sp+dWOIrWcBAI+0tKIJFPnlUkiaY4IBIqDfv8NZ5YBberOgOzW6sRBc4L0na4UU+Krk2U886UAb3LujEV0lsYSEY1QSteDwsOoBrp+uvFRTp2InBuThs4pFsiv9kuXclVzDAGySj4dzp30d8tbQkCAUw7C29C79Fv1C5qfPrmAESrciIxpg0X40KPMbp1ZWVbd4=",
+            "format": "base64"
+          }
+        ],
+        "server_name": "example.com",
+        "t": 1.023591,
+        "tags": [
+          "tcptls_experiment"
+        ],
+        "tls_version": "TLSv1.3"
+      }
+    ],
+    "queries": [
+      {
+        "answers": [
+          {
+            "asn": 15133,
+            "as_org_name": "MCI Communications Services, Inc. d/b/a Verizon Business",
+            "answer_type": "A",
+            "ipv4": "93.184.216.34",
+            "ttl": null
+          }
+        ],
+        "engine": "system",
+        "failure": null,
+        "hostname": "example.com",
+        "query_type": "A",
+        "resolver_hostname": null,
+        "resolver_port": null,
+        "resolver_address": "",
+        "t": 0.025775
+      },
+      {
+        "answers": [
+          {
+            "asn": 15133,
+            "as_org_name": "MCI Communications Services, Inc. d/b/a Verizon Business",
+            "answer_type": "AAAA",
+            "ipv6": "2606:2800:220:1:248:1893:25c8:1946",
+            "ttl": null
+          }
+        ],
+        "engine": "system",
+        "failure": null,
+        "hostname": "example.com",
+        "query_type": "AAAA",
+        "resolver_hostname": null,
+        "resolver_port": null,
+        "resolver_address": "",
+        "t": 0.025775
+      }
+    ],
+    "dns_experiment_failure": null,
+    "dns_consistency": "consistent",
+    "control_failure": null,
+    "control": {
+      "tcp_connect": {
+        "93.184.216.34:443": {
+          "status": true,
+          "failure": null
+        },
+        "[2606:2800:220:1:248:1893:25c8:1946]:443": {
+          "status": false,
+          "failure": "invalid_socket"
+        }
+      },
+      "http_request": {
+        "body_length": 1256,
+        "failure": null,
+        "title": "Example Domain",
+        "headers": {
+          "Accept-Ranges": "bytes",
+          "Age": "595446",
+          "Cache-Control": "max-age=604800",
+          "Content-Type": "text/html; charset=UTF-8",
+          "Date": "Mon, 22 Mar 2021 15:01:02 GMT",
+          "Etag": "\"3147526947\"",
+          "Expires": "Mon, 29 Mar 2021 15:01:02 GMT",
+          "Last-Modified": "Thu, 17 Oct 2019 07:18:26 GMT",
+          "Server": "ECS (nyb/1D0D)",
+          "Vary": "Accept-Encoding",
+          "X-Cache": "HIT"
+        },
+        "status_code": 200
+      },
+      "dns": {
+        "failure": null,
+        "addrs": [
+          "93.184.216.34"
+        ]
+      }
+    },
+    "tcp_connect": [
+      {
+        "ip": "2606:2800:220:1:248:1893:25c8:1946",
+        "port": 443,
+        "status": {
+          "blocked": false,
+          "failure": "unknown_failure: dial tcp [scrubbed]: connect: no route to host",
+          "success": false
+        },
+        "t": 0.655015
+      },
+      {
+        "ip": "93.184.216.34",
+        "port": 443,
+        "status": {
+          "blocked": false,
+          "failure": null,
+          "success": true
+        },
+        "t": 0.771715
+      }
+    ],
+    "requests": [
+      {
+        "failure": null,
+        "request": {
+          "body": "",
+          "body_is_truncated": false,
+          "headers_list": [
+            [
+              "Accept",
+              "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+            ],
+            [
+              "Accept-Language",
+              "en-US;q=0.8,en;q=0.5"
+            ],
+            [
+              "Host",
+              "example.com"
+            ],
+            [
+              "User-Agent",
+              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36"
+            ]
+          ],
+          "headers": {
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Accept-Language": "en-US;q=0.8,en;q=0.5",
+            "Host": "example.com",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36"
+          },
+          "method": "GET",
+          "tor": {
+            "exit_ip": null,
+            "exit_name": null,
+            "is_tor": false
+          },
+          "x_transport": "tcp",
+          "url": "https://example.com"
+        },
+        "response": {
+          "body": "<!doctype html>\n<html>\n<head>\n    <title>Example Domain</title>\n\n    <meta charset=\"utf-8\" />\n    <meta http-equiv=\"Content-type\" content=\"text/html; charset=utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <style type=\"text/css\">\n    body {\n        background-color: #f0f0f2;\n        margin: 0;\n        padding: 0;\n        font-family: -apple-system, system-ui, BlinkMacSystemFont, \"Segoe UI\", \"Open Sans\", \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n        \n    }\n    div {\n        width: 600px;\n        margin: 5em auto;\n        padding: 2em;\n        background-color: #fdfdff;\n        border-radius: 0.5em;\n        box-shadow: 2px 3px 7px 2px rgba(0,0,0,0.02);\n    }\n    a:link, a:visited {\n        color: #38488f;\n        text-decoration: none;\n    }\n    @media (max-width: 700px) {\n        div {\n            margin: 0 auto;\n            width: auto;\n        }\n    }\n    </style>    \n</head>\n\n<body>\n<div>\n    <h1>Example Domain</h1>\n    <p>This domain is for use in illustrative examples in documents. You may use this\n    domain in literature without prior coordination or asking for permission.</p>\n    <p><a href=\"https://www.iana.org/domains/example\">More information...</a></p>\n</div>\n</body>\n</html>\n",
+          "body_is_truncated": false,
+          "code": 200,
+          "headers_list": [
+            [
+              "Age",
+              "554458"
+            ],
+            [
+              "Cache-Control",
+              "max-age=604800"
+            ],
+            [
+              "Content-Length",
+              "1256"
+            ],
+            [
+              "Content-Type",
+              "text/html; charset=UTF-8"
+            ],
+            [
+              "Date",
+              "Mon, 22 Mar 2021 15:01:03 GMT"
+            ],
+            [
+              "Etag",
+              "\"3147526947+ident\""
+            ],
+            [
+              "Expires",
+              "Mon, 29 Mar 2021 15:01:03 GMT"
+            ],
+            [
+              "Last-Modified",
+              "Thu, 17 Oct 2019 07:18:26 GMT"
+            ],
+            [
+              "Server",
+              "ECS (dcb/7EEF)"
+            ],
+            [
+              "Vary",
+              "Accept-Encoding"
+            ],
+            [
+              "X-Cache",
+              "HIT"
+            ]
+          ],
+          "headers": {
+            "Age": "554458",
+            "Cache-Control": "max-age=604800",
+            "Content-Length": "1256",
+            "Content-Type": "text/html; charset=UTF-8",
+            "Date": "Mon, 22 Mar 2021 15:01:03 GMT",
+            "Etag": "\"3147526947+ident\"",
+            "Expires": "Mon, 29 Mar 2021 15:01:03 GMT",
+            "Last-Modified": "Thu, 17 Oct 2019 07:18:26 GMT",
+            "Server": "ECS (dcb/7EEF)",
+            "Vary": "Accept-Encoding",
+            "X-Cache": "HIT"
+          }
+        },
+        "t": 1.024248
+      }
+    ],
+    "http_experiment_failure": null,
+    "body_length_match": true,
+    "body_proportion": 1,
+    "status_code_match": true,
+    "headers_match": true,
+    "title_match": true,
+    "accessible": true,
+    "blocking": false,
+    "x_status": 1
+  },
+  "test_name": "web_connectivity",
+  "test_runtime": 1.484141573,
+  "test_start_time": "2021-03-22 15:01:01",
+  "test_version": "0.4.0"
 }
 ```
 
@@ -477,4 +724,7 @@ matches with the control (http-diff) or if the HTTP response failed
 
 If the client has opted out of providing the ASN of their probe the
 client_resolver key may give away extra information pertaining to the network
-they are on if they are using the resolver of their ISP.
+they are on if they are using the resolver of their ISP. (Modern probes do
+not allow users to opt-out of providing their ANSs because that would
+lead to non-actionable measurements. It can still occurr that the ASN is
+set to zero if the ANS resolution mechanism failed.)
