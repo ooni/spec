@@ -95,7 +95,9 @@ The experiment itself consists of the following steps:
    Optionally, if the URL beings with HTTPS then also perform a TLS
    handshake using the above established connections. The results
    of the TLS handshake end up in the "tls_handshakes" key
-   (see df-006-tlshandshake.md). This is the behavior of ooniprobe
+   (see df-006-tlshandshake.md). We will tag network events and
+   TLS handshakes produced by this step of the experiment
+   using the `"tcptls_experiment"` tag. This is the behavior of ooniprobe
    3.x since August 2020.
 
    Probes SHOULD also record the network events (see df-netevents.md)
