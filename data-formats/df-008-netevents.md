@@ -30,6 +30,7 @@ MAY use to include network-level events. See this directory's
     "operation": "read",
     "proto": "tcp",
     "t": 1.174,
+    "tags": [],
     "transaction_id": 1
 }
 ```
@@ -55,6 +56,9 @@ a string indicating the error, otherwise it MUST be `null`.
 
 - `t` (`float`): number of seconds elapsed since `measurement_start_time`
 measured when `operation` is complete.
+
+- `tags` (`[]string`): list of tags for this event. This is useful to
+understand what part of a complex measurement generated an event.
 
 - `transaction_id` (`int`; optional; since 2020-01-11): if present, this is the
 ID of the HTTP transaction that caused this TCP connect.
@@ -88,6 +92,7 @@ not relevant to the netevents data format:
             "operation": "connect",
             "proto": "tcp",
             "t": 0.11,
+            "tags": ["tcptls_experiment"],
             "transaction_id": 1
         }, {
             "address": "1.1.1.1:443",
@@ -97,19 +102,22 @@ not relevant to the netevents data format:
             "operation": "connect",
             "proto": "tcp",
             "t": 0.16,
+            "tags": ["tcptls_experiment"],
             "transaction_id": 1
         }, {
             "conn_id": 12,
             "failure": null,
             "num_bytes": 1024,
             "operation": "write",
-            "t": 0.17
+            "t": 0.17,
+            "tags": ["tcptls_experiment"]
         }, {
             "conn_id": 12,
             "failure": null,
             "num_bytes": 5110,
             "operation": "read",
-            "t": 0.44
+            "t": 0.44,
+            "tags": ["tcptls_experiment"]
         }]
     }
 }
