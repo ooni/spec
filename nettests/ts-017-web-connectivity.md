@@ -38,7 +38,7 @@ URLs may contain IP addresses rather than domain names.
 This test is divided into multiple steps that will each test a different aspect
 related to connectivity of the website in question.
 
-We describe the steps below. And orthogonal
+We describe the steps below. An orthogonal
 step is to inform the web_connectivity test helper of our intention
 to run the measurement against the URL in question and hence have it perform a
 control measurement from an un-censored vantage point.
@@ -141,7 +141,7 @@ The experiment itself consists of the following steps:
       connections (if applicable)?
 
       The value of the report key "tcp_connect" will be a list with 1 item per
-      IP:port combination. This value will follow df-005-tcpconnect with
+      IP:port combination. This value will follow `df-005-tcpconnect` with
       the addition of the "blocked" flag.
 
       In particular, "blocked" shall be
