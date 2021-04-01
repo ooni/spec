@@ -71,7 +71,7 @@ If all parts of the API are functional and reachable then we write:
 ## RiseupVPN gateways test
 
 If the provider API is reachable, it provides a JSON-file which contains the IP addresses and capabilites of the VPN gateways. The reachability of gateways will be tested depending on their capabilities as described by the provider (ports, OpenVPN, obfs4) by performing TCP handshakes. If a TCP handshake fails we assume the corresponding port and transport of that gateway to be blocked and add it to the list of failing gateways. 
-We consider a transport to be blocked if it was impossible to connect to any gateway port providing that transport.
+We consider a transport to be accessible if it was possible to connect at least to one gateway port providing that transport.
 
 Example output for reported blocked gateways:
 
