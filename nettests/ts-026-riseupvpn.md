@@ -1,6 +1,6 @@
 # Specification version number
 
-2020-10-13-000
+2021-02-15-000
 
 # Specification name
 
@@ -70,12 +70,17 @@ If all parts of the API are functional and reachable then we write:
 
 ## RiseupVPN gateways test
 
-If the provider API is reachable, it provides a JSON-file which contains the IP addresses and capabilites of the VPN gateways. The reachability of gateways will be tested depending on their capabilities as described by the provider (ports, OpenVPN, obfs4) by performing TCP handshakes. If a TCP handshake fails we can assume the corresponding port and transport of that gateway to be blocked.
+If the provider API is reachable, it provides a JSON-file which contains the IP addresses and capabilites of the VPN gateways. The reachability of gateways will be tested depending on their capabilities as described by the provider (ports, OpenVPN, obfs4) by performing TCP handshakes. If a TCP handshake fails we assume the corresponding port and transport of that gateway to be blocked and add it to the list of failing gateways. 
+We consider a transport to be accessible if it was possible to connect at least to one gateway port providing that transport.
 
 Example output for reported blocked gateways:
 
 ```json
 {
+    "transport_status":{
+        "obfs4":"blocked",
+        "openvpn":"ok"
+    },
    "failing_gateways":[
          {
             "ip":"192.0.2.1",
@@ -95,11 +100,15 @@ If none of the gateways are blocked then we write:
 
 ```json
 {
+    "transport_status":{
+        "obfs4": "ok",
+        "openvpn":"ok"
+    },
     "failing_gateways": null
 }
 ```
 
-If for whatever reason 1 or more of their gatewayservers is overloaded, suffers a network outage or isn't reachable for other reasons, then the status will still say it's blocked.
+If for whatever reason one or more gateway servers are overloaded, suffer a network outage or aren't reachable for other reasons, then the corresponding gateway statuses will be still shown as blocked. In order to avoid these false positives the **transport_status should be considered as the main indicator for successful censorship attempts of the VPN**.
 
 # Expected output
 
@@ -122,6 +131,10 @@ JSON fields described above.
     "api_failure": "FAILURE STRING" | null,
     "api_status": "blocked"| "ok",
     "ca_cert_status": true | false,
+    "transport_status":{
+        "obfs4": "ok" | "blocked",
+        "openvpn":"ok" | "blocked"
+    },
     "failing_gateways": [
          {
             "ip":"IP ADDRESS STRING",
