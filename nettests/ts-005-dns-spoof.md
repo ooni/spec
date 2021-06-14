@@ -44,7 +44,7 @@ is considered to be occurring.
 
 * Examples with dig utility *
 
-Google NS servers return TXT record only if request is coming from Google Public DNS servers in case if DNS request is spoofed then it returns nothing. 
+Test against Google NS servers return TXT record only if request is coming from target Google Public DNS servers in case if DNS request is spoofed then it returns nothing. 
 If empty answer is returned then it means that request was originated from non Google Public DNS servers.
 
 ```
@@ -52,13 +52,19 @@ dig +short @8.8.8.8 -p 53 -t txt test.dns.google.com
 "Thanks for using Google Public DNS."
 ```
 
-maxmind.test-ipv6.com NS server returns client IP address and GeoIP data, which must match resolver ISP data (Google in case of 8.8.8.8)  
+Test against maxmind.test-ipv6.com NS server returns client IP address and GeoIP data, which must match target resolver ISP data (Google in case of 8.8.8.8)  
 
 ```
 dig +short @8.8.8.8 -t txt maxmind.test-ipv6.com
 "ip='2a00:1450:4001:c11::103' as='15169' isp='GOOGLE' country='US'"
 ```
 
+Test against maxmind.test-ipv6.com NS server returns client IP address and GeoIP data, which must match client IP address (can be NAT box IP address if used in ISP network).
+
+```
+dig +short -t txt maxmind.test-ipv6.com
+"ip='2a02:8100:c1:0::7:0001' as='3209' isp='VODANET International IP-Backbone of Vodafone' country='DE'"
+```
 
 # Expected output
 
