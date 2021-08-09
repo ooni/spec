@@ -84,10 +84,10 @@ the URL to which this `URLMeasurement` refers;
 the result of the DNS lookup of the domain in the `url`'s `authority`;
 
 - `endpoint` contains an `EndpointMeasurement` for each endpoint
-we discovered for the domain inside `url`.
+we discovered for the `url.authority`'s domain.
 
 Note that `url`, and `dns` should always be present. The
-`endpoint` field is empty if, e.g., the domain inside `url` does not exist.
+`endpoint` field is empty if, e.g., there is an `NXDOMAIN` error.
 
 If the `url`'s authority contains an IP address rather than a domain, the test helper
 should include the corresponding address inside `dns`.
