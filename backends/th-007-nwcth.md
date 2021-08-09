@@ -305,41 +305,44 @@ size to `1<<24`, which is larger than all bodies in the test list.)
 
 ### DNSResolver
 
-`DNSResolver` takes in input a string containing the domain to resolve (`domain`)
-and returns a `DNSMeasurement` data structure (`m`).
-
-If `domain` is an IP address, it appends `domain` to `m.addrs` and returns `m`.
-
-Otherwise, it resolves `domain` using `https://dns.google/dns-query`.
-
-If the resolution fails, it fills `m.failure` and returns `m`.
-
-Otherwise, it fills `m.addrs` and returns `m`.
+- input:
+    - `domain`: domain to resolve (or IP address)
+- output:
+    - `m`: a `DNSMeasurement`
+    - `addrs`: resolved IP addresses
+- algorithm:
+    1. perform DNS resolution for `domain` using `https://dns.google/dns-query`
+    2. on failure, fill `m.failure` and return
+    3. save resolved addresses using `addrs`
+    4. return
 
 ### TCPConnector
 
-`TCPConnector` takes in input a string containing the TCP endpoint to
-connect to (`epnt`), and returns a `TCPConnectMeasurement`
-data structure (`m`) and an optional TCP connection.
-
-`TCPConnect` attempts to connect to `epnt`.
-
-On failure, it fills `m.failure` and returns a tuple containing
-`m` and a `nil` TCP connection.
-
-Otherwise, it returns `m` and the established TCP connection.
+- input:
+    - `epnt`: TCP endpoint
+- output:
+    - `m`: a `TCPConnectMeasurement`
+    - `tcpConn`: TCP connection
+- algorithm:
+    1. perform TCP connect using `epnt`
+    2. on failure, fill `m.failure` and return
+    3. save TCP connection using `tcpConn`
+    4. return
 
 ### TLSHandshaker
 
-`TLSHandshaker` takes in input a TCP connection (`conn`), the SNI to use
-(`sni`), and the ALPN to use (`alpn`). It returns to the caller a
-`TLSHandshakeMeasurement` (`m`) and a TLS connection.
-
-`TLSHandshaker` performs a TLS handshake using `conn`, `sni`, and `alpn`.
-
-On failure, it fills `m.failure` and returns `m` and a `nil` TLS connection.
-
-Otherwise, it returns `m` and the TLS connection.
+- input:
+    - `tcpConn`: TCP connection
+    - `sni`: SNI to use
+    - `alpn`: ALPN to use 
+- output:
+    - `m`: a `TLSHandshakeMeasurement`
+    - `tlsConn`: TLS connection
+- algorithm:
+    1. perform TLS handshake using `tcpConn`, `sni`, and `alpn`
+    2. on failure, fill `m.failure` and return
+    3. save TLS connection using `tlsConn`
+    4. return
 
 ### QUICHandshaker
 
