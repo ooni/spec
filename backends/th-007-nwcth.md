@@ -60,6 +60,8 @@ The `URLMeasurement` data structure contains the following fields:
 
 The `URL` string is any string containing a valid URL.
 
+### DNSMeasurement
+
 The `DNSMeasurement` struct is as follows:
 
 ```
@@ -77,6 +79,8 @@ OONIFailure = null | OONIFailureString
 ```
 
 (See `df-007-errors` for more information on failures.)
+
+### EndpointMeasurement
 
 The `EndpointMeasurement` is the [sum](https://en.wikipedia.org/wiki/Algebraic_data_type) of `HTTPMeasurement` and `H3Measurement`:
 
