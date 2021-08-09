@@ -167,7 +167,7 @@ where:
 
 - `http_request` is an `HTTPRequestMeasurement`.
 
-##### TCPConnectMeasurement
+#### TCPConnectMeasurement
 
 `TCPConnectMeasurement` is like:
 
@@ -182,7 +182,7 @@ where:
 - `failure` is `null` on success or a OONI failure otherwise (see the
 `df-007-errors.md` document for more information).
 
-##### TLSHandshakeMeasurement
+#### TLSHandshakeMeasurement
 
 *Note*: this structure will support more field in the future.
 
@@ -199,11 +199,11 @@ where:
 - `failure` is `null` on success or a OONI failure otherwise (see the
 `df-007-errors.md` document for more information).
 
-##### QUICHandshakeMeasurement
+#### QUICHandshakeMeasurement
 
 `QUICHandshakeMeasurement` is an alias for `TLSHandshakeMeasurement`.
 
-##### HTTPRequestMeasurement
+#### HTTPRequestMeasurement
 
 `HTTPRequestMeasurement` is like:
 
