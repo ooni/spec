@@ -47,7 +47,7 @@ where:
 the test helper should include when measuring;
 
 - `endpoints` is an optional list of string-serialized endpoints for the
-domain inside `url` discovered by the client.
+domain inside the `url`'s `authority` discovered by the client.
 
 If the `url`'s authority contains an IP address rather than a domain, the client
 should include the corresponding endpoint inside `endpoints`.
@@ -81,13 +81,16 @@ where:
 the URL to which this `URLMeasurement` refers;
 
 - `dns` is a `DNSMeasurement` structure (see below) and contains
-the result of the DNS lookup of the domain inside `url`;
+the result of the DNS lookup of the domain in the `url`'s `authority`;
 
 - `endpoint` contains an `EndpointMeasurement` for each endpoint
 we discovered for the domain inside `url`.
 
-Note that `index`, `url`, and `dns` should always be present. The
+Note that `url`, and `dns` should always be present. The
 `endpoint` field is empty if, e.g., the domain inside `url` does not exist.
+
+If the `url`'s authority contains an IP address rather than a domain, the test helper
+should include the corresponding address inside `dns`.
 
 The test helper guarantees that `CtrlResponse.urls[0]` is the measurement for `CtrlRequest.url`. Subsequent
 measurements derive from HTTP redirection or from testing HTTP3 endpoints discovered parsing
