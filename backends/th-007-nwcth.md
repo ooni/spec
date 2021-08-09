@@ -122,7 +122,7 @@ CtrlResponse = {
 }
 ```
 
-where `urls` is a list of `URLMeasurement`s:
+where `urls` is a list of `URLMeasurement`s and `URLMeasurement` contains these fields:
 
 ```
 URLMeasurement = {
