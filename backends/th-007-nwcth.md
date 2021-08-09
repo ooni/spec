@@ -81,16 +81,18 @@ The request message (`CtrlRequest`) contains these fields:
 
 ```
 CtrlRequest = {
-  "http_request_url": "",
-  "http_request_headers": {},
+  "url": "",
+  "headers": {},
   "endpoints": []
 }
 ```
 
-- `http_request_url` is a valid string-serialized URL and contains
+where:
+
+- `url` is a valid string-serialized URL and contains
 the URL that we should measure;
 
-- `http_request_headers` is the equivalent of a Go `map[string][]string`
+- `headers` is the equivalent of a Go `map[string][]string`
 and contains the HTTP headers to include in the measurement (see the algorithm
 section for more info on the semantics of this field);
 
@@ -108,38 +110,48 @@ For example, `1.2.3.4:5`, `[::1]:5`.
 
 ## Response message
 
-The response message is an instance of `CtrlResponse`:
+The response message (`CtrlResponse`) contains these fields:
 
 ```
-CtrlResponse{}
-```
-
-`CtrlResponse` contains a list of `URLMeasurement` objects:
-
-```
-{
-  "urls": []URLMeasurement{}
+CtrlResponse = {
+  "urls": []
 }
 ```
 
-`URLMeasurement` contains the following fields:
+where `urls` is a list of `URLMeasurement`s:
 
 ```
-{
-  "url": "/URL/",
-  "dns": DNSMeasurement{},
-  "endpoint": []EndpointMeasurement{}
+URLMeasurement = {
+  "index": 0,
+  "url": "",
+  "dns": {},
+  "endpoint": {}
 }
 ```
 
-- `url` is the string serialization of the URL to which
-this specific `URLMeasurement` refers to.
+where:
+
+- `index` is the unsigned integer index (starting from zero) of this
+`URLMeasurement` within the list in `CtrlResponse.urls`;
+
+- `url` is a valid string-serialized URL and contains
+the URL to which this `URLMeasurement` refers;
 
 - `dns` is a `DNSMeasurement` structure (see below) and contains
-the result of looking up the domain name inside `"url"`;
+the result of the DNS lookup of the domain inside `url`;
 
-- `endpoint` is a list of `EndpointMeasurement` structures (see below)
-and contains the result of measuring each endpoint.
+- `endpoint` contains an `EndpointMeasurement` for each endpoint
+we discovered for the domain inside `url`.
+
+Data consumers SHOULD NOT trust the order with which `URLMeasurement`
+are presented inside `CtrlResponse.urls`. Instead, they should rely
+on the `index` field to sort the list of `URLMeasurement`, knowing that
+the first measurement has index zero the index is an unsugned int.
+
+The `URLMeasurement` with index zero is the one originally requested
+to the test helper. Subsequent measurements derive from HTTP redirection or
+from follow up measurements (e.g., testing HTTP3 endpoints discovered
+while performing HTTPS measurements).
 
 ### DNSMeasurement
 
