@@ -306,7 +306,7 @@ size to `1<<24`, which is larger than all bodies in the test list.)
 ### HTTPGetter
 
 - input:
-    - `URL`: already parsed HTTP/HTTPS URL to measure
+    - `URL`: already parsed HTTP/HTTPS URL
     - `headers`: map containing optional request headers
     - `client`: HTTP/HTTP3 client possibly configured to use specific TLS/QUIC conn
     - `maxBodySize`: maximum response body size (bytes)
