@@ -89,7 +89,7 @@ we discovered for the `url.authority`'s domain.
 Note that `url`, and `dns` should always be present. The
 `endpoint` field is empty if, e.g., there is an `NXDOMAIN` error.
 
-If the `url`'s authority contains an IP address rather than a domain, the test helper
+If the `url`'s authority contains an IP address rather than a domain, we
 should include the corresponding address inside `dns`.
 
 The test helper guarantees that `CtrlResponse.urls[0]` is the measurement for `CtrlRequest.url`. Subsequent
