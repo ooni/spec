@@ -90,8 +90,8 @@ CtrlRequest = {
 - `http_request_url` is a valid string-serialized URL and contains
 the URL that we should measure;
 
-- `http_request_headers` is a `map[string][]string` and contains
-the HTTP headers to include in the measurement (see the algorithm
+- `http_request_headers` is the equivalent of a Go `map[string][]string`
+and contains the HTTP headers to include in the measurement (see the algorithm
 section for more info on the semantics of this field);
 
 - `endpoints` is a list of string-serialized endpoints that
