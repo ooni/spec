@@ -27,7 +27,7 @@ For example, `1.2.3.4:5`, `[::1]:5`.
 
 ### Request message
 
-*Implementation note*: changed since 2021-08-06-001.
+*Implementation note*: all the field names changed since 2021-08-06-001!
 
 The request message (`CtrlRequest`) contains these fields:
 
