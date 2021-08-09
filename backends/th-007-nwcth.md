@@ -1,17 +1,23 @@
 # New Web Connectivity Test Helper Spec
 
 * _Author_: sbs
-* _Version_: 2021-08-09-001
+* _Version_: 2021-08-09-002
 * _Status_: alpha
 
 This document describes a draft specification for the new web connectivity test
 helper. We tentatively expose this new API as `/api/unstable/wcth`.
 
-For brevity, we will not delve into rationale and other menial details here.
+A future version of this document will also provide a design rationale.
 
 ## Request message
 
-The request message is exactly as in the current test helper:
+The request message is an instance of `CtrlRequest`:
+
+```
+CtrlRequest{}
+```
+
+This data structure is as follows:
 
 ```
 {
@@ -21,11 +27,22 @@ The request message is exactly as in the current test helper:
 }
 ```
 
+The `URL` string is any string containing a valid URL.
+
+The `Endpoint` string is a valid IP address followed by `:`
+and by a valid port. IPv6 addresses are quoted, e.g., `[::1]:443`.
+
 See below for a definition of `URL` and `Endpoint`.
 
 ## Response message
 
-The response message contains a list of `URLMeasurement`:
+The response message is an instance of `CtrlResponses`:
+
+```
+CtrlResponse{}
+```
+
+In turn, `CtrlResponse` contains a list of `URLMeasurement`:
 
 ```
 {
@@ -86,8 +103,7 @@ An `H3Measurement` has the following structure:
 ```
 
 The `Endpoint` string is a valid IP address followed by `:`
-and by a valid port, e.g., `[::1]:443`.
-
+and by a valid port. IPv6 addresses are quoted, e.g., `[::1]:443`.
 The `HTTPOrHTTPS` string is either `http` or `https`.
 
 The `H3Protocol` string is `h3`, `h3-29`, etc.
