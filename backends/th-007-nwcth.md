@@ -126,7 +126,6 @@ where `urls` is a list of `URLMeasurement`s and `URLMeasurement` contains these 
 
 ```
 URLMeasurement = {
-  "index": 0,
   "url": "",
   "dns": {},
   "endpoint": []
@@ -134,9 +133,6 @@ URLMeasurement = {
 ```
 
 where:
-
-- `index` is the unsigned integer index (starting from zero) of this
-`URLMeasurement` within the list in `CtrlResponse.urls`;
 
 - `url` is a valid string-serialized URL and contains
 the URL to which this `URLMeasurement` refers;
@@ -150,15 +146,10 @@ we discovered for the domain inside `url`.
 Note that `index`, `url`, and `dns` should always be present. The
 `endpoint` field is empty if, e.g., the domain inside `url` does not exist.
 
-Data consumers SHOULD NOT trust the order with which `URLMeasurement`
-are presented inside `CtrlResponse.urls`. Instead, they should rely
-on the `index` field to sort the list of `URLMeasurement`, knowing that
-the first measurement has index zero and index is unsigned.
-
-The `URLMeasurement` with index zero is the one originally requested
-to the test helper. Subsequent measurements derive from HTTP redirection or
-from follow up measurements (e.g., testing HTTP3 endpoints discovered
-while performing HTTPS measurements).
+The test helper must fill the `CtrlResponse.urls` field in order. The first
+`URLMeasurement` the one originally requested to the test helper. Subsequent
+measurements derive from HTTP redirection or from follow up measurements
+(e.g., testing HTTP3 endpoints discovered while performing HTTPS measurements).
 
 ### DNSMeasurement
 
