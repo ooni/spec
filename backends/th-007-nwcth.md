@@ -106,6 +106,9 @@ followed by a valid port number.
 
 For example, `1.2.3.4:5`, `[::1]:5`.
 
+If the `url`'s authority contains an IP address rather than a domain, the client
+should include the corresponding endpoint inside `endpoints`.
+
 ## Response message
 
 The response message (`CtrlResponse`) contains these fields:
