@@ -303,6 +303,32 @@ We fill `m` using the error that occurred (if any), the response status
 code, the headers, and the body size. (We limit the maximum response body
 size to `1<<24`, which is larger than all bodies in the test list.)
 
+### HTTPGetter
+
+- input:
+    - `URL`: string containing HTTP(S) URL to measure
+    - `headers`: map containing optional request headers
+    - `client`: HTTP/HTTP3 client possibly configured to use specific TLS/QUIC conn
+    - `maxBodySize`: maximum response body size (bytes)
+- output:
+    - `m`: a `HTTPRequestMeasurement`
+    - `location`: string indicating where we're redirected
+    - XXX something for `Alt-Svc`
+    - `err`: error indicating a hard error
+- algorithm:
+    1. construct GET request `req` using URL
+    2. return `err` if we cannot parse URL
+    3. add `accept`, `accept-language`, `user-agent` from `headers` to `req`
+    4. issue the request
+    5. on failure, set `m.failure` and return
+    6. set `m.status_code`, `m.headers`
+    7. if there is a redirect, set `location` to be the redirect location
+    8. if there is `Alt-Svc`, parse to extract (XXX what?)
+    9. read body up to maximum body size
+    10. on failure, set `m.failure` and return
+    11. set `m.body_size`
+    15. return
+
 ### DNSResolver
 
 - input:
