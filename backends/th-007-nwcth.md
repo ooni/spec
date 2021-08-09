@@ -309,12 +309,12 @@ size to `1<<24`, which is larger than all bodies in the test list.)
     - `domain`: domain to resolve (or IP address)
 - output:
     - `m`: a `DNSMeasurement`
-    - `addrs`: resolved IP addresses
 - algorithm:
-    1. perform DNS resolution for `domain` using `https://dns.google/dns-query`
-    2. on failure, fill `m.failure` and return
-    3. save resolved addresses using `addrs`
-    4. return
+    1. if `domain` is an IP address, add it to `m.addrs` and return
+    2. perform DNS resolution for `domain` using `https://dns.google/dns-query`
+    3. on failure, fill `m.failure` and return
+    4. save resolved addresses using `m.addrs`
+    5. return
 
 ### TCPConnector
 
