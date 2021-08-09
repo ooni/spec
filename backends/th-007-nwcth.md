@@ -1,7 +1,7 @@
 # New Web Connectivity Test Helper Spec
 
 * _Author_: sbs
-* _Version_: 2021-08-09-002
+* _Version_: 2021-08-09-003
 * _Status_: alpha
 
 This document describes a draft specification for the new web connectivity test
@@ -10,6 +10,8 @@ helper. We tentatively expose this new API as `/api/unstable/wcth`.
 A future version of this document will also provide a design rationale.
 
 ## Common definitions
+
+### Strings
 
 We represent any string using `""`. If a string matches a
 specific pattern, we put the pattern between quotes. Say `Foo`
@@ -21,14 +23,20 @@ is a pattern. Then, `"Foo"` is a string matching `Foo`.
 followed by `:` and by a valid port number. IPv6 addresses must
 be quoted in this representation (e.g., `[::1]:443`).
 
+### Arrays
+
 We represent an array using `[]`. If an array contains only
 a specific type, we append such type to `[]`. Say `Foo` is a
 type, then `[]Foo` is an array of `Foo`.
+
+### Objects
 
 We represent any object using `{}`. Object keys are always
 strings. Object values could be of any type.
 
 If `Foo` is an object type, `Foo{}` is an object of type `Foo`.
+
+### Errors
 
 `OONIFailure` is either `null` or a OONI failure string:
 
@@ -37,6 +45,8 @@ OONIFailure = null | OONIFailureString
 ```
 
 (See `df-007-errors` for more information on failures.)
+
+### Maps
 
 `HTTPHeaders` is a map from string (the header key) to a list
 of strings (the values), i.e., is a `map[string][]""`.
