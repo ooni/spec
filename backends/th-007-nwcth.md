@@ -11,30 +11,54 @@ A future version of this document will also provide a design rationale.
 
 ## Common definitions
 
+This section introduces the notation with which we define types.
+
+### Null
+
+We use `null` to indicate null.
+
+### Integers
+
+We use `0` to indicate any integer value.
+
 ### Strings
 
-We represent any string using `""`. If a string matches a
-specific pattern, we put the pattern between quotes. Say `Foo`
-is a pattern. Then, `"Foo"` is a string matching `Foo`.
+We use `""` to represent any string.
 
-`"URL"` is a string containing a valid URL.
+If a string can only assume the value `foo`, then we write `"foo"`.
 
-`"Endpoint"` is a string containing a valid IPv4/IPv6 address
-followed by `:` and by a valid port number. IPv6 addresses must
-be quoted in this representation (e.g., `[::1]:443`).
+If `Foo` is a more complex pattern, then we write `"/Foo/"`.
+
+We define the following patterns:
+
+- `/URL/` matches any valid URL;
+
+- `/Endpoint/` matches any string containing a valid IPv4/IPv6
+address followed by `:` and a port number. In this representation,
+IPv6 addresses must be quote using `[` and `]`. For example,
+`[::1]:443`;
+
+- `/IPAddr/` matches any IPv4/IPv6 address.
 
 ### Arrays
 
 We represent an array using `[]`. If an array contains only
-a specific type, we append such type to `[]`. Say `Foo` is a
-type, then `[]Foo` is an array of `Foo`.
+a specific type, we append such type to `[]`. If `Foo` is
+a type, `[]Foo` is an array of `Foo` types.
 
 ### Objects
 
 We represent any object using `{}`. Object keys are always
 strings. Object values could be of any type.
 
-If `Foo` is an object type, `Foo{}` is an object of type `Foo`.
+`Foo{}` means an object of type `Foo`. Whenever we define
+an object, we also explicitly describe its structure.
+
+### Union Types
+
+We use `|` to indicate that a type is the
+[union](https://en.wikipedia.org/wiki/Algebraic_data_type)
+of two types.
 
 ### Errors
 
@@ -46,12 +70,10 @@ OONIFailure = null | OONIFailureString
 
 (See `df-007-errors` for more information on failures.)
 
-### Maps
+### HTTP Headers
 
-`HTTPHeaders` is a map from string (the header key) to a list
-of strings (the values), i.e., is a `map[string][]""`.
-
-`"IPAddress"` is a string-serialized IPv4 or IPv6 address.
+`HTTPHeaders` is a map from string (the header key) to
+a list of strings (the header values).
 
 ## Request message
 
@@ -65,11 +87,14 @@ CtrlRequest{}
 
 ```
 {
-  "http_request": "URL",
+  "http_request": "/URL/",
   "http_request_headers": HTTPHeaders,
-  "tcp_connect": []"Endpoint"
+  "tcp_connect": []"/Endpoint/"
 }
 ```
+
+This request is equal to the request used by the legacy
+Web Connectivity test helper.
 
 ## Response message
 
@@ -91,7 +116,7 @@ CtrlResponse{}
 
 ```
 {
-  "url": "URL",
+  "url": "/URL/",
   "dns": DNSMeasurement{},
   "endpoint": []EndpointMeasurement{}
 }
@@ -104,24 +129,23 @@ The `DNSMeasurement` struct is as follows:
 ```
 {
   "failure": OONIFailure,
-  "addrs": []"IPAddress",
+  "addrs": []"/IPAddr/",
 }
 ```
 
 ### EndpointMeasurement
 
-The `EndpointMeasurement` is the [sum](https://en.wikipedia.org/wiki/Algebraic_data_type)
-of `HTTPMeasurement` and `H3Measurement`:
+The `EndpointMeasurement` is the union of `HTTPMeasurement` and `H3Measurement`:
 
 ```
 EndpointMeasurement = HTTPMeasurement | H3Measurement
 ```
 
-An `HTTPMeasurement` has the following structure:
+`HTTPMeasurement` has the following structure:
 
 ```
 {
-  "endpoint": "Endpoint",
+  "endpoint": "/Endpoint/",
   "protocol": "http" | "https",
   "tcp_connect": TCPConnectMeasurement{},
   "tls_handshake": TLSHandshakeMeasurement{},
@@ -129,11 +153,11 @@ An `HTTPMeasurement` has the following structure:
 }
 ```
 
-An `H3Measurement` has the following structure:
+`H3Measurement` has the following structure:
 
 ```
 {
-  "endpoint": "Endpoint",
+  "endpoint": "/Endpoint/",
   "protocol": "h3" | "h3-29" | ...,
   "quic_handshake": TLSHandshakeMeasurement{},
   "http_request": HTTPRequestMeasurement{}
@@ -163,7 +187,7 @@ An `H3Measurement` has the following structure:
 {
   "body_length": 0,
   "failure": OONIFailure,
-  "headers": HTTPHeader,
+  "headers": HTTPHeaders,
   "status_code": 0,
 }
 ```
