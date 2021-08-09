@@ -129,7 +129,7 @@ URLMeasurement = {
   "index": 0,
   "url": "",
   "dns": {},
-  "endpoint": {}
+  "endpoint": []
 }
 ```
 
@@ -146,6 +146,9 @@ the result of the DNS lookup of the domain inside `url`;
 
 - `endpoint` contains an `EndpointMeasurement` for each endpoint
 we discovered for the domain inside `url`.
+
+Note that `index`, `url`, and `dns` must always be present. The
+`endpoint` field is empty if, e.g., the domain inside `url` does not exist.
 
 Data consumers SHOULD NOT trust the order with which `URLMeasurement`
 are presented inside `CtrlResponse.urls`. Instead, they should rely
