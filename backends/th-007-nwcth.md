@@ -1,0 +1,220 @@
+# New Web Connectivity Test Helper Spec
+
+* _Author_: sbs
+* _Version_: 2021-08-09-001
+* _Status_: alpha
+
+This document describes a draft specification for the new web connectivity test
+helper. We tentatively expose this new API as `/api/unstable/wcth`.
+
+For brevity, we will not delve into rationale and other menial details here.
+
+## Request message
+
+The request message is exactly as in the current test helper:
+
+```
+{
+  "http_request": URL"",
+  "http_request_headers": map[string][]string{},
+  "tcp_connect": []Endpoint""
+}
+```
+
+See below for a definition of `URL` and `Endpoint`.
+
+## Response message
+
+The response message contains a list of `URLMeasurement`:
+
+```
+{
+  "urls": []URLMeasurement{}
+}
+```
+
+The `URLMeasurement` data structure contains the following fields:
+
+```
+{
+  "url": URL"",
+  "dns": DNSMeasurement{},
+  "endpoint": []EndpointMeasurement{}
+}
+```
+
+The `URL` string is any string containing a valid URL.
+
+The `DNSMeasurement` struct is as follows:
+
+```
+{
+  "failure": OONIFailure,
+  "addrs": []string{},
+}
+```
+
+where `OONIFailure` is described below and `addrs` is a list of IPv4 or IPv6 addresses.
+
+The `EndpointMeasurement` is the [sum](https://en.wikipedia.org/wiki/Algebraic_data_type) of `HTTPMeasurement` and `H3Measurement`:
+
+```
+EndpointMeasurement = HTTPMeasurement | H3Measurement
+```
+
+An `HTTPMeasurement` has the following structure:
+
+```
+{
+  "endpoint": Endpoint"",
+  "protocol": HTTPOrHTTPS"",
+  "tcp_connect": TCPConnectMeasurement{},
+  "tls_handshake": TLSHandshakeMeasurement{},
+  "http_request": HTTPMeasurement{}
+}
+```
+
+An `H3Measurement` has the following structure:
+
+```
+{
+  "endpoint": Endpoint"",
+  "protocol": H3Protocol"",
+  "quic_handshake": TLSHandshakeMeasurement{},
+  "http_request": HTTPMeasurement{}
+}
+```
+
+The `Endpoint` string is a valid IP address followed by `:`
+and by a valid port, e.g., `[::1]:443`.
+
+The `HTTPOrHTTPS` string is either `http` or `https`.
+
+The `H3Protocol` string is `h3`, `h3-29`, etc.
+
+The `TCPConnectMeasurement` structure is like:
+
+```
+{
+  "failure": OONIFailure
+}
+```
+
+where `OONIFailure` is either `null` or a OONI failure string:
+
+```
+OONIFailure = null | OONIFailureString
+```
+
+See `df-007-errors` for more information on failures.
+
+The `TLSHandshakeMeasurement` is like:
+
+```
+{
+  "failure": OONIFailure
+}
+```
+
+The `HTTPMeasurement` is like:
+
+```
+{
+  "body_length": 0,
+  "failure": OONIFailure,
+  "headers": map[string][]string{},
+  "status_code": 0,
+}
+```
+
+## Test Helper Algorithm
+
+The test helper resolves the domain in the `URL""` at `http_request`. If the
+domain is an IPv4/IPv6 address, the test helper should return the same IP
+address as if it was the result of the DNS resolution, like `getaddrinfo` does. If the
+resolution fails, and the client has not provided any IP address, there are no
+IP addresses we can use, so the test helper stops and returns a message.
+
+Otherwise, the test helper merges the endpoints provided by the client inside
+the `tcp_connect` field with endpoints derived from the domain name resolution
+step. We extract the port to construct new endpoints from the `http_request`
+`URL""`: if there is an explicit port, we use it, otherwise we use the default
+port for the protocol scheme (`80` for `http` and `443` for `https`).
+
+At this stage, the test helper has constructed an `URLMeasurement{}` message
+and initialized its `url` and `dns` fields.
+
+For each endpoint obtained merging the client and the test helper endpoints, the
+test helper will then perform an `EndpointMeasurement`. Because there is no
+information concerning QUIC, the test helper will start off using TCP. (As we will
+see later, QUIC is identified by the `h3://` or `h3-29://` scheme.)
+
+The measurement will consist of the usual steps: TCP connect to the endpoint,
+perform a TLS handshake, do the HTTP round trip and fetch the body.
+
+These steps will generate an `EndpointMeasurement{}` for each endpoint.
+
+When all the endpoints have been measured, the test helper will determine
+whether it could perform additional follow-up measurements. Each new
+follow-up measurement generates a new `URLMeasurement{}` struct that will
+be appended to the top-level `urls` list.
+
+To decide whether it could perform more measurements, or whether it should
+stop here, the test helper will check the length of the `urls` array in
+the top-level response message it is constructing. If the length exceeds
+a reasonable threshold, the test helper should stop measuring.
+
+Otherwise, the test helper will determine whether it could perform
+additional measurements. To this end, it will extract new URLs to
+measure from the results of the previous measurements.
+
+To determine whether it should try QUIC endpoints, the test helper will
+parse the `Alt-Svc` header of all the responses it received. The test
+helper should of course merge equal `Alt-Svc` headers to perform a single
+follow-up measurement, if all headers have the same value.
+
+For a value of `Alt-Svc` equal to `h3-29=:443` the test helper should
+manipulate the original URL, replacing the scheme to be `h3-29` and
+the port to be `:443`. The code should be robust enough to handle the
+case where `Alt-Svc` contains a complete endpoint like `[::1]:444`.
+
+The value obtained from `Alt-Svc` is a new measurement to perform. The
+main difference is that the `h3` or `h3-xxx` scheme causes the test
+helper to use QUIC instead of HTTPS. The result of this measurement is
+a new `URLMeasurement{}` entry to be appended to `urls`.
+
+Likewise, for any `Location` header find in the response, the test
+helper should compute a new full URL to fetch. Again, the code should
+reduce equal `Location` headers discovered from multiple responses,
+to avoid duplicating work.
+
+We will not bother with caching the results of previous domain name
+resolutions at this stage of this draft spec. Should we choose to
+do that, it is quite trivial anyway.
+
+As an implementation note, if it's possible to obtain better URLs for
+follow-up QUIC or Location measurements using the Go API, then we should
+do that when possible. (Consider, for example, the `Location` method
+of the `Response`.)
+
+## Limitations
+
+This draft specification does not address these issues:
+
+1. adding logic to the test helper to choose whether it is smart
+to continue processing due to other considerations. For example, if
+we're redirected from `http://facebook.com/` to `https://facebook.com/`,
+it may be reasonable to stop the measurement instead of being
+further redirected to, say, `https://facebook.com/en_US/login.php`.
+
+2. whether the amount of information included in each `EndpointMeasurement{}`
+is such that the OONI Probe can unambiguously redo the same operation.
+
+3. because [recent measurements](https://github.com/ooni/probe/issues/1727) show that we can perform most
+redirects in the test list without cookies, it seems fine to stash
+this problem for the time being.
+
+4. we may or may not choose to avoid reading the whole body of `https` and
+`h3` responses for brevity. Also this problem is left for later.
+
+These problems will be solved at a later time.
