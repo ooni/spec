@@ -93,6 +93,18 @@ CtrlRequest{}
 }
 ```
 
+- `http_request_url` is a valid string-serialized URL and contains the
+URL that we should measure;
+
+- `http_request_headers` contains HTTP headers and contains optional
+headers to include into the request (see the algorithm for more
+info on which headers are actually considered).
+
+- `endpoints` is a list of string-serialized endpoints (as
+defined in the common definitions section). This list may be
+empty. It contains the endpoints that the client would use
+to communicate with the server in `http_request_url`.
+
 Note: This request IS NOT equal to the request used by the
 legacy Web Connectivity test helper.
 
@@ -122,6 +134,15 @@ CtrlResponse{}
 }
 ```
 
+- `url` is the string serialization of the URL to which
+this specific `URLMeasurement` refers to.
+
+- `dns` is a `DNSMeasurement` structure (see below) and contains
+the result of looking up the domain name inside `"url"`;
+
+- `endpoint` is a list of `EndpointMeasurement` structures (see below)
+and contains the result of measuring each endpoint.
+
 ### DNSMeasurement
 
 The `DNSMeasurement` struct is as follows:
@@ -132,6 +153,12 @@ The `DNSMeasurement` struct is as follows:
   "addrs": []"/IPAddr/",
 }
 ```
+
+- `failure` is a `OONIFailure` as defined above and represent the error that occurred
+when performing the DNS resolution (or `null` on success);
+
+- `addrs` is a list of strings containing valid IPv4/IPv6 addresses and is the
+(possibly empty) list of IP addresses returned by the DNS resolution.
 
 ### EndpointMeasurement
 
@@ -153,6 +180,12 @@ EndpointMeasurement = HTTPMeasurement | H3Measurement
 }
 ```
 
+- `endpoint` is a string containing an endpoint (as defined above);
+
+- `protocol` is either `"http"` or `"https"`;
+
+- the other fields are defined below.
+
 `H3Measurement` has the following structure:
 
 ```
@@ -164,6 +197,11 @@ EndpointMeasurement = HTTPMeasurement | H3Measurement
 }
 ```
 
+- `endpoint` is a string containing an endpoint (as defined above);
+
+- `protocol` is either `"h3"` or `"h3-29"` or any other supported HTTP/3 protocol;
+
+- the other fields are defined below.
 
 `TCPConnectMeasurement` is like:
 
