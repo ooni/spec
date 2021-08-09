@@ -161,7 +161,7 @@ where:
 
 - `endpoint` is a string containing an endpoint (as defined above);
 
-- `protocol` is either `"http"` or `"https"`;
+- `protocol` is either `"h3"`, `"h3-29"`, or any other supported experimental QUIC protocol;
 
 - `quic_handshake` is a `QUICHandshakeMeasurement`;
 
