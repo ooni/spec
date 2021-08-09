@@ -1,7 +1,7 @@
 # New Web Connectivity Test Helper Spec
 
 * _Author_: sbs
-* _Version_: 2021-08-09-004
+* _Version_: 2021-08-09-005
 * _Status_: alpha
 
 This document describes a draft specification for the new web connectivity test
@@ -77,36 +77,29 @@ a list of strings (the header values).
 
 ## Request message
 
-The request message is an instance of `CtrlRequest`:
+The request message (`CtrlRequest`) contains these fields:
 
 ```
-CtrlRequest{}
-```
-
-`CtrlRequest` contains these fields:
-
-```
-{
-  "http_request_url": "/URL/",
-  "http_request_headers": HTTPHeaders,
-  "endpoints": []"/Endpoint/"
+CtrlRequest = {
+  "http_request_url": "",
+  "http_request_headers": {},
+  "endpoints": []
 }
 ```
 
-- `http_request_url` is a valid string-serialized URL and contains the
-URL that we should measure;
+- `http_request_url` is a valid string-serialized URL and contains
+the URL that we should measure;
 
-- `http_request_headers` contains HTTP headers and contains optional
-headers to include into the request (see the algorithm for more
-info on which headers are actually considered).
+- `http_request_headers` is a `map[string][]string` and contains
+the HTTP headers to include in the measurement (see the algorithm
+section for more info on the semantics of this field);
 
-- `endpoints` is a list of string-serialized endpoints (as
-defined in the common definitions section). This list may be
-empty. It contains the endpoints that the client would use
-to communicate with the server in `http_request_url`.
+- `endpoints` is a list of string-serialized endpoints that
+we should connect (and possibly TLS handshake) to.
 
-Note: This request IS NOT equal to the request used by the
-legacy Web Connectivity test helper.
+An endpoint is an IPv4 address followed by `:` followed by a port
+number of an IPv6 address quoted using `[` and `]` followed by
+a port number. For example, `1.2.3.4:5`, `[::1]:5`.
 
 ## Response message
 
