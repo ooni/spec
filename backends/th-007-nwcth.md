@@ -322,7 +322,7 @@ size to `1<<24`, which is larger than all bodies in the test list.)
     5. set `m.status_code`, `m.headers`
     6. if there is a redirect, set `location` to be the redirect location
     7. if there is `Alt-Svc`, parse to extract (XXX what?)
-    8. read body up to maximum body size
+    8. read body up to `maxBodySize`
     9. on failure, set `m.failure` and return
     10. set `m.body_size`
     11. return
