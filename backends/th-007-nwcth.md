@@ -32,8 +32,6 @@ The `URL` string is any string containing a valid URL.
 The `Endpoint` string is a valid IP address followed by `:`
 and by a valid port. IPv6 addresses are quoted, e.g., `[::1]:443`.
 
-See below for a definition of `URL` and `Endpoint`.
-
 ## Response message
 
 The response message is an instance of `CtrlResponses`:
