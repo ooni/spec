@@ -80,7 +80,7 @@ where:
 - `url` is a valid string-serialized URL and contains
 the URL to which this `URLMeasurement` refers;
 
-- `dns` is a `DNSMeasurement` structure (see below) and contains
+- `dns` is a `DNSMeasurement` structure and contains
 the result of the DNS lookup of the domain in the `url`'s `authority`;
 
 - `endpoint` contains an `EndpointMeasurement` for each endpoint
