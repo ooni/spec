@@ -184,6 +184,8 @@ where:
 
 ##### TLSHandshakeMeasurement
 
+*Note*: this structure will support more field in the future.
+
 `TLSHandshakeMeasurement` is like:
 
 ```
