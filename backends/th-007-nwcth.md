@@ -85,7 +85,7 @@ An `HTTPMeasurement` has the following structure:
   "protocol": HTTPOrHTTPS"",
   "tcp_connect": TCPConnectMeasurement{},
   "tls_handshake": TLSHandshakeMeasurement{},
-  "http_request": HTTPMeasurement{}
+  "http_request": HTTPRequestMeasurement{}
 }
 ```
 
@@ -96,7 +96,7 @@ An `H3Measurement` has the following structure:
   "endpoint": Endpoint"",
   "protocol": H3Protocol"",
   "quic_handshake": TLSHandshakeMeasurement{},
-  "http_request": HTTPMeasurement{}
+  "http_request": HTTPRequestMeasurement{}
 }
 ```
 
@@ -130,7 +130,7 @@ The `TLSHandshakeMeasurement` is like:
 }
 ```
 
-The `HTTPMeasurement` is like:
+The `HTTPRequestMeasurement` is like:
 
 ```
 {
