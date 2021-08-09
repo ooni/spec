@@ -281,8 +281,8 @@ Web Connectivity Test Helper.
              - `DNSMeasurement` as `url.dns`
     3. init `addrs` as *a copy of* `url.dns.addrs`
     4. if `clientResolutions` contains an entry for `URL.hostname` merge its addresses with `addrs` and remove duplicates
-    5. create list of endpoints `epnts` using `addrs` and `URL.port` or the default port for `URL.scheme`
-    6. for each `epnt` in `epnts`:
+    5. create list of endpoints `endpoints` using `addrs` and `URL.port` or the default port for `URL.scheme`
+    6. for each `endpoint` in `endpoints`:
         1. if `URL.scheme` is `https` and `version` is set, call `H3EndpointMeasurer`
         2. else if `URL.scheme` is `https`, call `HTTPSEndpointMeasurer`
         3. else if `URL.scheme` is `http`, call `HTTPEndpointMeasurer`
