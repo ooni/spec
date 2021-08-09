@@ -1,7 +1,7 @@
 # New Web Connectivity Test Helper Spec
 
 * _Author_: sbs
-* _Version_: 2021-08-09-005
+* _Version_: 2021-08-09-1555
 * _Status_: alpha
 
 This document describes a draft specification for the new web connectivity test
