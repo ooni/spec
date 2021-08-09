@@ -97,9 +97,13 @@ section for more info on the semantics of this field);
 - `endpoints` is a list of string-serialized endpoints that
 we should connect (and possibly TLS handshake) to.
 
-An endpoint is an IPv4 address followed by `:` followed by a port
-number of an IPv6 address quoted using `[` and `]` followed by
-a port number. For example, `1.2.3.4:5`, `[::1]:5`.
+An endpoint is:
+
+- an IPv4 address followed by `:` followed by a port number; or
+
+- an IPv6 address quoted using `[` and `]` followed by a port number.
+
+For example, `1.2.3.4:5`, `[::1]:5`.
 
 ## Response message
 
