@@ -96,6 +96,8 @@ The test helper guarantees that `CtrlResponse.urls[0]` is the measurement for `C
 measurements derive from HTTP redirection or from testing HTTP3 endpoints discovered parsing
 `Alt-Svc` headers.
 
+#### DNSMeasurement
+
 The `DNSMeasurement` message contains these fields:
 
 ```
@@ -112,11 +114,15 @@ where:
 
 - `addrs` a possibly-empty list of IP addresses returned by the DNS lookup.
 
+#### EndpointMeasurement
+
 The `EndpointMeasurement` messsages is the union of `HTTPMeasurement` and `H3Measurement`:
 
 ```
 EndpointMeasurement = HTTPMeasurement | H3Measurement
 ```
+
+#### HTTPMeasurement
 
 `HTTPMeasurement` has the following structure:
 
@@ -142,6 +148,8 @@ where:
 
 - `http_request` is an `HTTPRequestMeasurement`.
 
+#### H3Measurement
+
 `H3Measurement` has the following structure:
 
 ```
@@ -163,6 +171,8 @@ where:
 
 - `http_request` is an `HTTPRequestMeasurement`.
 
+#### TCPConnectMeasurement
+
 `TCPConnectMeasurement` is like:
 
 ```
@@ -175,6 +185,8 @@ where:
 
 - `failure` is `null` on success or a OONI failure otherwise (see the
 `df-007-errors.md` document for more information).
+
+#### TLSHandshakeMeasurement
 
 `TLSHandshakeMeasurement` is like:
 
@@ -191,7 +203,11 @@ where:
 
 (*Note*: this structure will support more field in the future.)
 
+#### QUICHandshakeMeasurement
+
 `QUICHandshakeMeasurement` is an alias for `TLSHandshakeMeasurement`.
+
+#### HTTPRequestMeasurement
 
 `HTTPRequestMeasurement` is like:
 
