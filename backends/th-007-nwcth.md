@@ -308,7 +308,7 @@ size to `1<<24`, which is larger than all bodies in the test list.)
 - input:
     - `URL`: already parsed HTTP/HTTPS URL
     - `headers`: map containing optional request headers
-    - `client`: HTTP/HTTP3 client possibly configured to use specific TLS/QUIC conn
+    - `clnt`: HTTP/HTTP3 client possibly configured to use specific TLS/QUIC conn
     - `maxBodySize`: maximum response body size (bytes)
 - output:
     - `m`: a `HTTPRequestMeasurement`
@@ -317,7 +317,7 @@ size to `1<<24`, which is larger than all bodies in the test list.)
 - algorithm:
     1. construct GET request `req` using URL
     2. add `accept`, `accept-language`, `user-agent` from `headers` to `req`
-    3. issue the request
+    3. issue `req` using `clnt`
     4. on failure, set `m.failure` and return
     5. set `m.status_code`, `m.headers`
     6. if there is a redirect, set `location` to be the redirect location
