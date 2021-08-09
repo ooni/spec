@@ -154,6 +154,13 @@ perform a TLS handshake, do the HTTP round trip and fetch the body.
 
 These steps will generate an `EndpointMeasurement{}` for each endpoint.
 
+When sending the request part of the HTTP round trip, the test helper WILL use
+only the following headers from the request message:
+
+* `user-agent`
+* `accept`
+* `accept-language`
+
 When all the endpoints have been measured, the test helper will determine
 whether it could perform additional follow-up measurements. Each new
 follow-up measurement generates a new `URLMeasurement{}` struct that will
