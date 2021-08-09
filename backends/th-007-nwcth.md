@@ -57,7 +57,7 @@ CtrlRequest{}
 {
   "http_request": "URL",
   "http_request_headers": HTTPHeaders,
-  "tcp_connect": []Endpoint""
+  "tcp_connect": []"Endpoint"
 }
 ```
 
