@@ -146,10 +146,8 @@ we discovered for the domain inside `url`.
 Note that `index`, `url`, and `dns` should always be present. The
 `endpoint` field is empty if, e.g., the domain inside `url` does not exist.
 
-The test helper guarantees that the first
-`URLMeasurement` the one originally requested to the test helper. Subsequent
-measurements derive from HTTP redirection or from follow up measurements
-(e.g., testing HTTP3 endpoints discovered while performing HTTPS measurements).
+The test helper guarantees that the first `URLMeasurement` is for `CtrlRequest.url`. Subsequent
+measurements derive from HTTP redirection or from testing HTTP3 endpoints.
 
 ### DNSMeasurement
 
