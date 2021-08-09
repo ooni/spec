@@ -9,6 +9,40 @@ helper. We tentatively expose this new API as `/api/unstable/wcth`.
 
 A future version of this document will also provide a design rationale.
 
+## Common definitions
+
+We represent any string using `""`. If a string matches a
+specific pattern, we put the pattern between quotes. Say `Foo`
+is a pattern. Then, `"Foo"` is a string matching `Foo`.
+
+`"URL"` is a string containing a valid URL.
+
+`"Endpoint"` is a string containing a valid IPv4/IPv6 address
+followed by `:` and by a valid port number. IPv6 addresses must
+be quoted in this representation (e.g., `[::1]:443`).
+
+We represent an array using `[]`. If an array contains only
+a specific type, we append such type to `[]`. Say `Foo` is a
+type, then `[]Foo` is an array of `Foo`.
+
+We represent any object using `{}`. Object keys are always
+strings. Object values could be of any type.
+
+If `Foo` is an object type, `Foo{}` is an object of type `Foo`.
+
+`OONIFailure` is either `null` or a OONI failure string:
+
+```
+OONIFailure = null | OONIFailureString
+```
+
+(See `df-007-errors` for more information on failures.)
+
+`HTTPHeaders` is a map from string (the header key) to a list
+of strings (the values), i.e., is a `map[string][]""`.
+
+`"IPAddress"` is a string-serialized IPv4 or IPv6 address.
+
 ## Request message
 
 The request message is an instance of `CtrlRequest`:
@@ -17,20 +51,15 @@ The request message is an instance of `CtrlRequest`:
 CtrlRequest{}
 ```
 
-This data structure is as follows:
+`CtrlRequest` contains these fields:
 
 ```
 {
-  "http_request": URL"",
-  "http_request_headers": map[string][]string{},
+  "http_request": "URL",
+  "http_request_headers": HTTPHeaders,
   "tcp_connect": []Endpoint""
 }
 ```
-
-The `URL` string is any string containing a valid URL.
-
-The `Endpoint` string is a valid IP address followed by `:`
-and by a valid port. IPv6 addresses are quoted, e.g., `[::1]:443`.
 
 ## Response message
 
@@ -40,7 +69,7 @@ The response message is an instance of `CtrlResponse`:
 CtrlResponse{}
 ```
 
-In turn, `CtrlResponse` contains a list of `URLMeasurement`:
+`CtrlResponse` contains a list of `URLMeasurement` objects:
 
 ```
 {
@@ -48,17 +77,15 @@ In turn, `CtrlResponse` contains a list of `URLMeasurement`:
 }
 ```
 
-The `URLMeasurement` data structure contains the following fields:
+`URLMeasurement` contains the following fields:
 
 ```
 {
-  "url": URL"",
+  "url": "URL",
   "dns": DNSMeasurement{},
   "endpoint": []EndpointMeasurement{}
 }
 ```
-
-The `URL` string is any string containing a valid URL.
 
 ### DNSMeasurement
 
@@ -67,22 +94,14 @@ The `DNSMeasurement` struct is as follows:
 ```
 {
   "failure": OONIFailure,
-  "addrs": []string{},
+  "addrs": []"IPAddress",
 }
 ```
 
-where `addrs` is a list of IPv4 or IPv6 addresses and
-`OONIFailure` is either `null` or a OONI failure string:
-
-```
-OONIFailure = null | OONIFailureString
-```
-
-(See `df-007-errors` for more information on failures.)
-
 ### EndpointMeasurement
 
-The `EndpointMeasurement` is the [sum](https://en.wikipedia.org/wiki/Algebraic_data_type) of `HTTPMeasurement` and `H3Measurement`:
+The `EndpointMeasurement` is the [sum](https://en.wikipedia.org/wiki/Algebraic_data_type)
+of `HTTPMeasurement` and `H3Measurement`:
 
 ```
 EndpointMeasurement = HTTPMeasurement | H3Measurement
@@ -92,8 +111,8 @@ An `HTTPMeasurement` has the following structure:
 
 ```
 {
-  "endpoint": Endpoint"",
-  "protocol": HTTPOrHTTPS"",
+  "endpoint": "Endpoint",
+  "protocol": "http" | "https",
   "tcp_connect": TCPConnectMeasurement{},
   "tls_handshake": TLSHandshakeMeasurement{},
   "http_request": HTTPRequestMeasurement{}
@@ -104,18 +123,13 @@ An `H3Measurement` has the following structure:
 
 ```
 {
-  "endpoint": Endpoint"",
-  "protocol": H3Protocol"",
+  "endpoint": "Endpoint",
+  "protocol": "h3" | "h3-29" | ...,
   "quic_handshake": TLSHandshakeMeasurement{},
   "http_request": HTTPRequestMeasurement{}
 }
 ```
 
-The `Endpoint` string is a valid IP address followed by `:`
-and by a valid port. IPv6 addresses are quoted, e.g., `[::1]:443`.
-The `HTTPOrHTTPS` string is either `http` or `https`.
-
-The `H3Protocol` string is `h3`, `h3-29`, etc.
 
 The `TCPConnectMeasurement` structure is like:
 
@@ -139,14 +153,14 @@ The `HTTPRequestMeasurement` is like:
 {
   "body_length": 0,
   "failure": OONIFailure,
-  "headers": map[string][]string{},
+  "headers": HTTPHeader,
   "status_code": 0,
 }
 ```
 
 ## Test Helper Algorithm
 
-The test helper resolves the domain in the `URL""` at `http_request`. If the
+The test helper resolves the domain in the `"URL"` at `http_request`. If the
 domain is an IPv4/IPv6 address, the test helper should return the same IP
 address as if it was the result of the DNS resolution, like `getaddrinfo` does. If the
 resolution fails, and the client has not provided any IP address, there are no
@@ -155,7 +169,7 @@ IP addresses we can use, so the test helper stops and returns a message.
 Otherwise, the test helper merges the endpoints provided by the client inside
 the `tcp_connect` field with endpoints derived from the domain name resolution
 step. We extract the port to construct new endpoints from the `http_request`
-`URL""`: if there is an explicit port, we use it, otherwise we use the default
+`"URL"`: if there is an explicit port, we use it, otherwise we use the default
 port for the protocol scheme (`80` for `http` and `443` for `https`).
 
 At this stage, the test helper has constructed an `URLMeasurement{}` message
