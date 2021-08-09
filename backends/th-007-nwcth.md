@@ -69,7 +69,14 @@ The `DNSMeasurement` struct is as follows:
 }
 ```
 
-where `OONIFailure` is described below and `addrs` is a list of IPv4 or IPv6 addresses.
+where `addrs` is a list of IPv4 or IPv6 addresses and
+`OONIFailure` is either `null` or a OONI failure string:
+
+```
+OONIFailure = null | OONIFailureString
+```
+
+(See `df-007-errors` for more information on failures.)
 
 The `EndpointMeasurement` is the [sum](https://en.wikipedia.org/wiki/Algebraic_data_type) of `HTTPMeasurement` and `H3Measurement`:
 
@@ -113,14 +120,6 @@ The `TCPConnectMeasurement` structure is like:
   "failure": OONIFailure
 }
 ```
-
-where `OONIFailure` is either `null` or a OONI failure string:
-
-```
-OONIFailure = null | OONIFailureString
-```
-
-See `df-007-errors` for more information on failures.
 
 The `TLSHandshakeMeasurement` is like:
 
