@@ -11,7 +11,7 @@ A future version of this document will also provide a design rationale.
 
 ## Semantics
 
-This section defines the messages implementing the new Web
+This section defines the messages implementing the New Web
 Connectivity Test Helper protocol.
 
 ### Endpoint
