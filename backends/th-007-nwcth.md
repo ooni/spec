@@ -91,8 +91,8 @@ where:
 
 - `url` is mandatory and contains the string-serialized URL we should measure;
 
-- `headers` is optional, its type is equivalent to a Go `map[string][]string`,
-and contains HTTP headers the test helper should use in the measurement;
+- `headers` is an optional map from string to a list of strings containing the headers
+the test helper should include when measuring;
 
 - `endpoints` is an optional list of string-serialized endpoints for the
 domain inside `url` discovered by the client.
