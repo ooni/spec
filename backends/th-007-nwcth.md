@@ -279,7 +279,7 @@ Web Connectivity Test Helper.
              - `URL.hostname` 
          - output:
              - `DNSMeasurement` as `url.dns`
-    3. init `addrs` as `url.dns.addrs`
+    3. init `addrs` as *a copy of* `url.dns.addrs`
     4. if `clientResolutions` contains an entry for `URL.hostname` merge its addresses with `addrs` and remove duplicates
     5. create list of endpoints `epnts` using `addrs` and `URL.port` or the default port for `URL.scheme`
     6. for each `epnt` in `epnts`:
