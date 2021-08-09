@@ -1,7 +1,7 @@
 # New Web Connectivity Test Helper Spec
 
 * _Author_: sbs
-* _Version_: 202108.09.1555
+* _Version_: 202108.09.1955
 * _Status_: alpha
 
 This document describes a draft specification for the new web connectivity test
@@ -246,41 +246,46 @@ a valid HTTP status code, and all other fields may be empty.
 This section defines the algorithms implementing the New
 Web Connectivity Test Helper.
 
+### TopLevel
+
+- input:
+    - `creq`: a `CtrlRequest`
+- output:
+    - `cresp`: a `CtrlResponse`
+    - `err`: hard error that should cause a `400`
+- algorithm:
+    1. if `creq.url` is empty or does not parse, return error
+    2. let `URL` be the parsed URL
+    3. let `jar` be the mutable cookie state
+    4. let `headers` be `creq.headers`
+    5. for `i` in `1..20`
+        1. call `URL` measurer with obvious mappings and `""` as QUIC version
+        2. [...] XXX XXX XXX
+
 ### URLMeasurer
 
-XXX
-
-XXX
-
-XXX
-
-### HTTPEndpointMeasurer
-
-`HTTPEndpointMeasurer` takes in input a parsed URL (`URL`), an
-endpoint (`epnt`), the optional request headers (`hdrs`), and the
-current cookie state (`jar`). It returns to the caller an
-`HTTPEndpointMeasurement` structure (`m`).
-
-The first step is to apply the `TCPConnector` algorithm using
-`epnt` and saving the `TCPConnectMeasurement` (in `m.tcp_connect`)
-and the TCP connection (in `tcpConn`).
-
-If `tcpConn` is `nil`, we just return `m`.
-
-Otherwise, if `URL.scheme` is `"https"`, we apply the `TLSHandshaker`
-algorithm using `tcpConn`, using `URL.hostname` to configure the
-SNI field, and supplying "h2", "http/1.1" as the ALPN. We store the
-returned `TLSHandshakeMeasurement` as `m.tls_handshake`. If the returned
-TLS connection is nil, we just return `m`, otherwise we fall through.
-
-We send an HTTP request using the TLS connection (HTTPS case) or the
-TCP connection (HTTP case), `URL`, `jar`, and `hdrs`. We only include `accept`,
-`accept-language`, and `user-agent` into the outgoing request and
-we ignore all other headers inside `hdrs`.
-
-We fill `m` using the error that occurred (if any), the response status
-code, the headers, and the body size. (We limit the maximum response body
-size to `1<<24`, which is larger than all bodies in the test list.)
+- input:
+    - `URL`: already parsed HTTP URL
+    - `headers`: map containing optional request headers
+    - `jar`: current cookie state (mutable)
+    - `clientResolutions`: map from string (domain name) to list of strings (IP addresses resolved by the client)
+    - `version`: QUIC version or empty string to mean "use TCP"
+- output:
+    - `m`: a `URLMeasurement`
+- algorithm:
+    1. save `m.url` immediately
+    2. call `DNSResolver`
+         - input:
+             - `URL.hostname` 
+         - output:
+             - `DNSMeasurement` as `url.dns`
+    3. init `addrs` as `url.dns.addrs`
+    4. if `clientResolutions` contains an entry for `URL.hostname` merge its addresses with `addrs` and remove duplicates
+    5. create list of endpoints `epnts` using `addrs` and `URL.port` or the default port for `URL.scheme`
+    6. for each `epnt` in `epnts`:
+        1. if `URL.scheme` is `https` and `version` is set, call `H3EndpointMeasurer`
+        2. else if `URL.scheme` is `https`, call `HTTPSEndpointMeasurer`
+        3. else if `URL.scheme` is `http`, call `HTTPEndpointMeasurer`
 
 ### HTTPEndpointMeasurer
 
