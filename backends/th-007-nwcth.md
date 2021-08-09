@@ -9,73 +9,23 @@ helper. We tentatively expose this new API as `/api/unstable/wcth`.
 
 A future version of this document will also provide a design rationale.
 
-## Common definitions
+## Semantics
 
-This section introduces the notation with which we define types.
+This section defines the messages implementing the new Web
+Connectivity Test Helper protocol.
 
-### Null
+### Endpoint
 
-We use `null` to indicate null.
+An endpoint is:
 
-### Integers
+- an IPv4 address followed by `:` followed by a valid port number; or
 
-We use `0` to indicate any integer value.
+- an IPv6 address quoted using `[` and `]` followed by `:`
+followed by a valid port number.
 
-### Strings
+For example, `1.2.3.4:5`, `[::1]:5`.
 
-We use `""` to represent any string.
-
-If a string can only assume the value `foo`, then we write `"foo"`.
-
-If `Foo` is a more complex pattern, then we write `"/Foo/"`.
-
-We define the following patterns:
-
-- `/URL/` matches any valid URL;
-
-- `/Endpoint/` matches any string containing a valid IPv4/IPv6
-address followed by `:` and a port number. In this representation,
-IPv6 addresses must be quote using `[` and `]`. For example,
-`[::1]:443`;
-
-- `/IPAddr/` matches any IPv4/IPv6 address.
-
-### Arrays
-
-We represent an array using `[]`. If an array contains only
-a specific type, we append such type to `[]`. If `Foo` is
-a type, `[]Foo` is an array of `Foo` types.
-
-### Objects
-
-We represent any object using `{}`. Object keys are always
-strings. Object values could be of any type.
-
-`Foo{}` means an object of type `Foo`. Whenever we define
-an object, we also explicitly describe its structure.
-
-### Union Types
-
-We use `|` to indicate that a type is the
-[union](https://en.wikipedia.org/wiki/Algebraic_data_type)
-of two types.
-
-### Errors
-
-`OONIFailure` is either `null` or a OONI failure string:
-
-```
-OONIFailure = null | OONIFailureString
-```
-
-(See `df-007-errors` for more information on failures.)
-
-### HTTP Headers
-
-`HTTPHeaders` is a map from string (the header key) to
-a list of strings (the header values).
-
-## Request message
+### Request message
 
 The request message (`CtrlRequest`) contains these fields:
 
@@ -97,22 +47,13 @@ the test helper should include when measuring;
 - `endpoints` is an optional list of string-serialized endpoints for the
 domain inside `url` discovered by the client.
 
-An endpoint is:
-
-- an IPv4 address followed by `:` followed by a valid port number; or
-
-- an IPv6 address quoted using `[` and `]` followed by `:`
-followed by a valid port number.
-
-For example, `1.2.3.4:5`, `[::1]:5`.
-
 If the `url`'s authority contains an IP address rather than a domain, the client
 should include the corresponding endpoint inside `endpoints`.
 
 If the `url` is empty or invalid, the test helper cannot perform a measurement
 and must immediately return a 400 HTTP error.
 
-## Response message
+### Response message
 
 The response message (`CtrlResponse`) contains these fields:
 
@@ -150,26 +91,27 @@ The test helper guarantees that `CtrlResponse.urls[0]` is the measurement for `C
 measurements derive from HTTP redirection or from testing HTTP3 endpoints discovered parsing
 `Alt-Svc` headers.
 
-### DNSMeasurement
+#### DNSMeasurement
 
-The `DNSMeasurement` struct is as follows:
+The `DNSMeasurement` message contains these fields:
 
 ```
 {
-  "failure": OONIFailure,
-  "addrs": []"/IPAddr/",
+  "failure": null | "",
+  "addrs": [],
 }
 ```
 
-- `failure` is a `OONIFailure` as defined above and represent the error that occurred
-when performing the DNS resolution (or `null` on success);
+where:
 
-- `addrs` is a list of strings containing valid IPv4/IPv6 addresses and is the
-(possibly empty) list of IP addresses returned by the DNS resolution.
+- `failure` is `null` on success or a OONI failure otherwise (see the
+`df-007-errors.md` document for more information);
 
-### EndpointMeasurement
+- `addrs` a possibly-empty list of IP addresses returned by the DNS lookup.
 
-The `EndpointMeasurement` is the union of `HTTPMeasurement` and `H3Measurement`:
+#### EndpointMeasurement
+
+The `EndpointMeasurement` messsages is the union of `HTTPMeasurement` and `H3Measurement`:
 
 ```
 EndpointMeasurement = HTTPMeasurement | H3Measurement
@@ -179,19 +121,25 @@ EndpointMeasurement = HTTPMeasurement | H3Measurement
 
 ```
 {
-  "endpoint": "/Endpoint/",
+  "endpoint": "",
   "protocol": "http" | "https",
-  "tcp_connect": TCPConnectMeasurement{},
-  "tls_handshake": TLSHandshakeMeasurement{},
-  "http_request": HTTPRequestMeasurement{}
+  "tcp_connect": {},
+  "tls_handshake": {},
+  "http_request": {}
 }
 ```
+
+where:
 
 - `endpoint` is a string containing an endpoint (as defined above);
 
 - `protocol` is either `"http"` or `"https"`;
 
-- the other fields are defined below.
+- `tcp_connect` is a `TCPConnectMeasurement`;
+
+- `tls_handshake` is a `TLSHandshakeMeasurement`;
+
+- `http_request` is an `HTTPRequestMeasurement`.
 
 `H3Measurement` has the following structure:
 
@@ -204,40 +152,79 @@ EndpointMeasurement = HTTPMeasurement | H3Measurement
 }
 ```
 
+where:
+
 - `endpoint` is a string containing an endpoint (as defined above);
 
-- `protocol` is either `"h3"` or `"h3-29"` or any other supported HTTP/3 protocol;
+- `protocol` is either `"http"` or `"https"`;
 
-- the other fields are defined below.
+- `quic_handshake` is a `QUICHandshakeMeasurement`;
+
+- `http_request` is an `HTTPRequestMeasurement`.
+
+##### TCPConnectMeasurement
 
 `TCPConnectMeasurement` is like:
 
 ```
 {
-  "failure": OONIFailure
+  "failure": null | ""
 }
 ```
+
+where:
+
+- `failure` is `null` on success or a OONI failure otherwise (see the
+`df-007-errors.md` document for more information).
+
+##### TLSHandshakeMeasurement
 
 `TLSHandshakeMeasurement` is like:
 
 ```
 {
-  "failure": OONIFailure
+  "failure": null | ""
 }
 ```
+
+where:
+
+- `failure` is `null` on success or a OONI failure otherwise (see the
+`df-007-errors.md` document for more information).
+
+##### QUICHandshakeMeasurement
+
+`QUICHandshakeMeasurement` is an alias for `TLSHandshakeMeasurement`.
+
+##### HTTPRequestMeasurement
 
 `HTTPRequestMeasurement` is like:
 
 ```
 {
   "body_length": 0,
-  "failure": OONIFailure,
-  "headers": HTTPHeaders,
+  "failure": null | "",
+  "headers": {},
   "status_code": 0,
 }
 ```
 
-## Test Helper Algorithm
+where:
+
+- `body_length` is the optional body length in bytes;
+
+- `failure` is `null` on success or a OONI failure otherwise (see the
+`df-007-errors.md` document for more information);
+
+- `headers` is an optional map from string to a list of strings
+containing the response headers (if any);
+
+- `status_code` is the optional response status code.
+
+On failure, only `failure` is meaningful. On success, there must be
+a valid HTTP status code, and all other fields may be empty.
+
+## Algorithm
 
 The test helper resolves the domain in the `"URL"` at `http_request`. If the
 domain is an IPv4/IPv6 address, the test helper should return the same IP
