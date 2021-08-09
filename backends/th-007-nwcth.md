@@ -160,7 +160,7 @@ where:
 
 ```
 {
-  "endpoint": "/Endpoint/",
+  "endpoint": "",
   "protocol": "h3" | "h3-29" | ...,
   "quic_handshake": TLSHandshakeMeasurement{},
   "http_request": HTTPRequestMeasurement{}
@@ -282,26 +282,104 @@ We fill `m` using the error that occurred (if any), the response status
 code, the headers, and the body size. (We limit the maximum response body
 size to `1<<24`, which is larger than all bodies in the test list.)
 
+### HTTPEndpointMeasurer
+
+- input:
+    - `URL`: already parsed HTTP URL
+    - `headers`: map containing optional request headers
+    - `endpoint`: TCP endpoint to use
+    - `jar`: current cookie state (mutable)
+- output:
+    - `m`: a `H3EndpointMeasurement`
+- algorithm:
+    1. save `m.protocol` and `m.endpoint` immediately
+    2. call `TCPConnector`
+        - input:
+            - `endpoint`
+        - output:
+            - `TCPConnectMeasurement` as `m.tcp_connect`
+            - TCP connection as `tcpConn`
+    3. if `tcpConn` is `nil`, return
+    4. construct HTTP client (`clnt`) using `tcpConn` and `jar`
+    5. call `HTTPGetter`
+        - input:
+            - `URL`
+            - suitable `maxBodySize`
+            - `clnt`
+            - `headers`
+        - output:
+            - `HTTPRequestMeasurement` as `m.http_request`
+    6. return
+
+### HTTPSEndpointMeasurer
+
+- input:
+    - `URL`: already parsed HTTPS URL
+    - `headers`: map containing optional request headers
+    - `endpoint`: TCP endpoint to use
+    - `jar`: current cookie state (mutable)
+- output:
+    - `m`: a `H3EndpointMeasurement`
+- algorithm:
+    1. save `m.protocol` and `m.endpoint` immediately
+    2. call `TCPConnector`
+        - input:
+            - `endpoint`
+        - output:
+            - `TCPConnectMeasurement` as `m.tcp_connect`
+            - TCP connection as `tcpConn`
+    3. if `tcpConn` is `nil`, return
+    4. call `TLSHandshaker`
+        - input:
+            - `tcpConn`
+            - `["h2", "http/1.1"]` as `alpn`
+            - `URL.hostname` as `sni`
+        - output:
+            - `TLSHandshakeMeasurement` as `m.tls_handshake`
+            - TLS connection as `tlsConn`
+    5. if `tlsConn` is `nil`, return
+    6. construct HTTP client (`clnt`) using `tlsConn` and `jar`
+    7. call `HTTPGetter`
+        - input:
+            - `URL`
+            - suitable `maxBodySize`
+            - `clnt`
+            - `headers`
+        - output:
+            - `HTTPRequestMeasurement` as `m.http_request`
+    8. return
+
 ### H3EndpointMeasurer
 
-`H3EndpointMeasurer` takes in input a parsed URL (`URL`), an
-endpoint (`epnt`), the optional request headers (`hdrs`), the
-current cookie state (`jar`). It returns to the caller an
-`H3EndpointMeasurement` structure (`m`).
-
-The first step is to apply the `QUICHandshaker` algorithm using
-`epnt`, `URL.hostname` to configure the SNI field, and supplying
-"h2", "http/1.1" as the ALPN. We store the returned
-`QUICHandshakeMeasurement` as `m.quic_handshake`. If the returned
-QUIC session is nil, we just return `m`, otherwise we fall through.
-
-We send an HTTP request using the QUIC session, `URL`, `jar`, and `hdrs`. We
-only include `accept`, `accept-language`, and `user-agent` into the
-outgoing request and we ignore all other headers inside `hdrs`.
-
-We fill `m` using the error that occurred (if any), the response status
-code, the headers, and the body size. (We limit the maximum response body
-size to `1<<24`, which is larger than all bodies in the test list.)
+- input:
+    - `URL`: already parsed HTTPS URL
+    - `headers`: map containing optional request headers
+    - `endpoint`: UDP endpoint to use
+    - `version`: QUIC version to use
+    - `jar`: current cookie state (mutable)
+- output:
+    - `m`: a `H3EndpointMeasurement`
+- algorithm:
+    1. save `m.protocol` and `m.endpoint` immediately
+    2. call `QUICHandshaker`
+        - input:
+            - `endpoint`
+            - `version`
+            - `URL.hostname` as `sni`
+        - output:
+            - `QUICHandshakeMeasurement` as `m.quic_handshake`
+            - QUIC session as `sess`
+    3. if `sess` is `nil`, return
+    4. construct HTTP client (`clnt`) using `sess` and `jar`
+    5. call `HTTPGetter`
+        - input:
+            - `URL`
+            - suitable `maxBodySize`
+            - `clnt`
+            - `headers`
+        - output:
+            - `HTTPRequestMeasurement` as `m.http_request`
+    6. return
 
 ### HTTPGetter
 
@@ -312,20 +390,16 @@ size to `1<<24`, which is larger than all bodies in the test list.)
     - `maxBodySize`: maximum response body size (bytes)
 - output:
     - `m`: a `HTTPRequestMeasurement`
-    - `location`: string indicating where we're redirected
-    - XXX something for `Alt-Svc`
 - algorithm:
     1. construct GET request `req` using URL
     2. add `accept`, `accept-language`, `user-agent` from `headers` to `req`
     3. issue `req` using `clnt`
     4. on failure, set `m.failure` and return
     5. set `m.status_code`, `m.headers`
-    6. if there is a redirect, set `location` to be the redirect location
-    7. if there is `Alt-Svc`, parse to extract (XXX what?)
-    8. read body up to `maxBodySize`
-    9. on failure, set `m.failure` and return
-    10. set `m.body_size`
-    11. return
+    6. read body up to `maxBodySize`
+    7. on failure, set `m.failure` and return
+    8. set `m.body_size`
+    9. return
 
 ### DNSResolver
 
