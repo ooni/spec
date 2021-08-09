@@ -34,7 +34,7 @@ and by a valid port. IPv6 addresses are quoted, e.g., `[::1]:443`.
 
 ## Response message
 
-The response message is an instance of `CtrlResponses`:
+The response message is an instance of `CtrlResponse`:
 
 ```
 CtrlResponse{}
