@@ -97,8 +97,7 @@ and contains the HTTP headers to include in the measurement (see the algorithm
 section for more info on the semantics of this field);
 
 - `endpoints` is a list of string-serialized endpoints that
-for the domain inside `url` that the test helper client discovered
-its local DNS resolver.
+for the domain inside `url` discovered using `getaddrinfo`.
 
 An endpoint is:
 
