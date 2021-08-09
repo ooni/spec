@@ -1,7 +1,7 @@
 # New Web Connectivity Test Helper Spec
 
 * _Author_: sbs
-* _Version_: 2021-08-09-003
+* _Version_: 2021-08-09-004
 * _Status_: alpha
 
 This document describes a draft specification for the new web connectivity test
@@ -87,14 +87,14 @@ CtrlRequest{}
 
 ```
 {
-  "http_request": "/URL/",
+  "http_request_url": "/URL/",
   "http_request_headers": HTTPHeaders,
-  "tcp_connect": []"/Endpoint/"
+  "endpoints": []"/Endpoint/"
 }
 ```
 
-This request is equal to the request used by the legacy
-Web Connectivity test helper.
+Note: This request IS NOT equal to the request used by the
+legacy Web Connectivity test helper.
 
 ## Response message
 
