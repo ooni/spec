@@ -150,7 +150,7 @@ we discovered for the domain inside `url`.
 Data consumers SHOULD NOT trust the order with which `URLMeasurement`
 are presented inside `CtrlResponse.urls`. Instead, they should rely
 on the `index` field to sort the list of `URLMeasurement`, knowing that
-the first measurement has index zero the index is an unsugned int.
+the first measurement has index zero and index is unsigned.
 
 The `URLMeasurement` with index zero is the one originally requested
 to the test helper. Subsequent measurements derive from HTTP redirection or
