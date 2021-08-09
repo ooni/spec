@@ -116,15 +116,19 @@ where:
 
 #### EndpointMeasurement
 
+*Implementation note*: names changed since 2021-08-06-001!
+
 The `EndpointMeasurement` messsages is the union of `HTTPMeasurement` and `H3Measurement`:
 
 ```
-EndpointMeasurement = HTTPMeasurement | H3Measurement
+EndpointMeasurement = HTTPEndpointMeasurement | H3EndpointMeasurement
 ```
 
-#### HTTPMeasurement
+#### HTTPEndpointMeasurement
 
-`HTTPMeasurement` has the following structure:
+*Implementation note*: name changed since 2021-08-06-001!
+
+`HTTPEndpointMeasurement` has the following structure:
 
 ```
 {
@@ -148,9 +152,11 @@ where:
 
 - `http_request` is an `HTTPRequestMeasurement`.
 
-#### H3Measurement
+#### H3EndpointMeasurement
 
-`H3Measurement` has the following structure:
+*Implementation note*: name changed since 2021-08-06-001!
+
+`H3EndpointMeasurement` has the following structure:
 
 ```
 {
@@ -236,6 +242,119 @@ On failure, only `failure` is meaningful. On success, there must be
 a valid HTTP status code, and all other fields may be empty.
 
 ## Algorithm
+
+This section defines the algorithms implementing the New
+Web Connectivity Test Helper.
+
+### URLMeasurer
+
+XXX
+
+XXX
+
+XXX
+
+### HTTPEndpointMeasurer
+
+`HTTPEndpointMeasurer` takes in input a parsed URL (`URL`), an
+endpoint (`epnt`), the optional request headers (`hdrs`), and the
+current cookie state (`jar`). It returns to the caller an
+`HTTPEndpointMeasurement` structure (`m`).
+
+The first step is to apply the `TCPConnector` algorithm using
+`epnt` and saving the `TCPConnectMeasurement` (in `m.tcp_connect`)
+and the TCP connection (in `tcpConn`).
+
+If `tcpConn` is `nil`, we just return `m`.
+
+Otherwise, if `URL.scheme` is `"https"`, we apply the `TLSHandshaker`
+algorithm using `tcpConn`, using `URL.hostname` to configure the
+SNI field, and supplying "h2", "http/1.1" as the ALPN. We store the
+returned `TLSHandshakeMeasurement` as `m.tls_handshake`. If the returned
+TLS connection is nil, we just return `m`, otherwise we fall through.
+
+We send an HTTP request using the TLS connection (HTTPS case) or the
+TCP connection (HTTP case), `URL`, `jar`, and `hdrs`. We only include `accept`,
+`accept-language`, and `user-agent` into the outgoing request and
+we ignore all other headers inside `hdrs`.
+
+We fill `m` using the error that occurred (if any), the response status
+code, the headers, and the body size. (We limit the maximum response body
+size to `1<<24`, which is larger than all bodies in the test list.)
+
+### H3EndpointMeasurer
+
+`H3EndpointMeasurer` takes in input a parsed URL (`URL`), an
+endpoint (`epnt`), the optional request headers (`hdrs`), the
+current cookie state (`jar`). It returns to the caller an
+`H3EndpointMeasurement` structure (`m`).
+
+The first step is to apply the `QUICHandshaker` algorithm using
+`epnt`, `URL.hostname` to configure the SNI field, and supplying
+"h2", "http/1.1" as the ALPN. We store the returned
+`QUICHandshakeMeasurement` as `m.quic_handshake`. If the returned
+QUIC session is nil, we just return `m`, otherwise we fall through.
+
+We send an HTTP request using the QUIC session, `URL`, `jar`, and `hdrs`. We
+only include `accept`, `accept-language`, and `user-agent` into the
+outgoing request and we ignore all other headers inside `hdrs`.
+
+We fill `m` using the error that occurred (if any), the response status
+code, the headers, and the body size. (We limit the maximum response body
+size to `1<<24`, which is larger than all bodies in the test list.)
+
+### DNSResolver
+
+`DNSResolver` takes in input a string containing the domain to resolve (`domain`)
+and returns a `DNSMeasurement` data structure (`m`).
+
+If `domain` is an IP address, it appends `domain` to `m.addrs` and returns `m`.
+
+Otherwise, it resolves `domain` using `https://dns.google/dns-query`.
+
+If the resolution fails, it fills `m.failure` and returns `m`.
+
+Otherwise, it fills `m.addrs` and returns `m`.
+
+### TCPConnector
+
+`TCPConnector` takes in input a string containing the TCP endpoint to
+connect to (`epnt`), and returns a `TCPConnectMeasurement`
+data structure (`m`) and an optional TCP connection.
+
+`TCPConnect` attempts to connect to `epnt`.
+
+On failure, it fills `m.failure` and returns a tuple containing
+`m` and a `nil` TCP connection.
+
+Otherwise, it returns `m` and the established TCP connection.
+
+### TLSHandshaker
+
+`TLSHandshaker` takes in input a TCP connection (`conn`), the SNI to use
+(`sni`), and the ALPN to use (`alpn`). It returns to the caller a
+`TLSHandshakeMeasurement` (`m`) and a TLS connection.
+
+`TLSHandshaker` performs a TLS handshake using `conn`, `sni`, and `alpn`.
+
+On failure, it fills `m.failure` and returns `m` and a `nil` TLS connection.
+
+Otherwise, it returns `m` and the TLS connection.
+
+### QUICHandshaker
+
+`QUICHandshaker` takes in input the endpoint to use (`enpt`), the SNI to
+use (`sni`), and the QUIC version to use `version`. It returns to the caller a
+`QUICHandshakeMeasurement` (`m`) and a QUIC session.
+
+`QUICHandshaker` performs a QUIC handshake using `epnt`, `sni`, and `version`.
+
+On failure, it fills `m.failure`, then returns `m` and a `nil` QUIC session.
+
+Otherwise, it returns `m` and the QUIC session.
+
+
+## OLD CONTENT
 
 The test helper resolves the domain in the `"URL"` at `http_request`. If the
 domain is an IPv4/IPv6 address, the test helper should return the same IP
