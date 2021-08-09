@@ -344,7 +344,7 @@ Otherwise, it returns `m` and the TLS connection.
 ### QUICHandshaker
 
 `QUICHandshaker` takes in input the endpoint to use (`enpt`), the SNI to
-use (`sni`), and the QUIC version to use `version`. It returns to the caller a
+use (`sni`), and the QUIC version to use (`version`). It returns to the caller a
 `QUICHandshakeMeasurement` (`m`) and a QUIC session.
 
 `QUICHandshaker` performs a QUIC handshake using `epnt`, `sni`, and `version`.
