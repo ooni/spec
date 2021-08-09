@@ -356,6 +356,18 @@ On failure, it fills `m.failure`, then returns `m` and a `nil` QUIC session.
 
 Otherwise, it returns `m` and the QUIC session.
 
+- input:
+    - `endpoint`: UDP endpoint
+    - `sni`: SNI to use
+    - `version`: QUIC version to use 
+- output:
+    - `m`: a `QUICHandshakeMeasurement`
+    - `sess`: QUIC session
+- algorithm:
+    1. perform QUIC handshake using `endpoint`, `sni`, and `version`
+    2. on failure, fill `m.failure` and return
+    3. save QUIC session using `sess`
+    4. return
 
 ## OLD CONTENT
 
