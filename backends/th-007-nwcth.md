@@ -89,15 +89,13 @@ CtrlRequest = {
 
 where:
 
-- `url` is a valid string-serialized URL and contains
-the URL that we should measure;
+- `url` is mandatory and contains the string-serialized URL we should measure;
 
-- `headers` is the equivalent of a Go `map[string][]string`
-and contains the HTTP headers to include in the measurement (see the algorithm
-section for more info on the semantics of this field);
+- `headers` is optional, its type is equivalent to a Go `map[string][]string`,
+and contains HTTP headers the test helper should use in the measurement;
 
-- `endpoints` is a list of string-serialized endpoints that
-for the domain inside `url` discovered using `getaddrinfo`.
+- `endpoints` is an optional list of string-serialized endpoints for the
+domain inside `url` discovered by the client.
 
 An endpoint is:
 
