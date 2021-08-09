@@ -99,9 +99,10 @@ we should connect (and possibly TLS handshake) to.
 
 An endpoint is:
 
-- an IPv4 address followed by `:` followed by a port number; or
+- an IPv4 address followed by `:` followed by a valid port number; or
 
-- an IPv6 address quoted using `[` and `]` followed by a port number.
+- an IPv6 address quoted using `[` and `]` followed by `:`
+followed by a valid port number.
 
 For example, `1.2.3.4:5`, `[::1]:5`.
 
