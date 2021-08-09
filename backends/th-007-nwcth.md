@@ -201,7 +201,7 @@ where:
 - `failure` is `null` on success or a OONI failure otherwise (see the
 `df-007-errors.md` document for more information).
 
-(*Note*: this structure will support more field in the future.)
+(*Note*: this structure will support more fields in the future.)
 
 #### QUICHandshakeMeasurement
 
