@@ -52,8 +52,8 @@ domain inside `url` discovered by the client.
 If the `url`'s authority contains an IP address rather than a domain, the client
 should include the corresponding endpoint inside `endpoints`.
 
-If the `url` is empty or invalid, the test helper cannot perform a measurement
-and must immediately return a 400 HTTP error.
+If the `url` is empty or invalid, the test helper should consider the message as invalid
+and act accordingly (typically returning a 400 error).
 
 ### Response message
 
