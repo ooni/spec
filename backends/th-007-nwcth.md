@@ -147,7 +147,8 @@ Note that `index`, `url`, and `dns` should always be present. The
 `endpoint` field is empty if, e.g., the domain inside `url` does not exist.
 
 The test helper guarantees that the first `URLMeasurement` is for `CtrlRequest.url`. Subsequent
-measurements derive from HTTP redirection or from testing HTTP3 endpoints.
+measurements derive from HTTP redirection or from testing HTTP3 endpoints discovered parsing
+`Alt-Svc` headers.
 
 ### DNSMeasurement
 
