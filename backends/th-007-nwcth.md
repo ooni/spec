@@ -346,16 +346,6 @@ size to `1<<24`, which is larger than all bodies in the test list.)
 
 ### QUICHandshaker
 
-`QUICHandshaker` takes in input the endpoint to use (`enpt`), the SNI to
-use (`sni`), and the QUIC version to use (`version`). It returns to the caller a
-`QUICHandshakeMeasurement` (`m`) and a QUIC session.
-
-`QUICHandshaker` performs a QUIC handshake using `epnt`, `sni`, and `version`.
-
-On failure, it fills `m.failure`, then returns `m` and a `nil` QUIC session.
-
-Otherwise, it returns `m` and the QUIC session.
-
 - input:
     - `endpoint`: UDP endpoint
     - `sni`: SNI to use
