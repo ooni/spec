@@ -131,7 +131,7 @@ An `H3Measurement` has the following structure:
 ```
 
 
-The `TCPConnectMeasurement` structure is like:
+`TCPConnectMeasurement` is like:
 
 ```
 {
@@ -139,7 +139,7 @@ The `TCPConnectMeasurement` structure is like:
 }
 ```
 
-The `TLSHandshakeMeasurement` is like:
+`TLSHandshakeMeasurement` is like:
 
 ```
 {
@@ -147,7 +147,7 @@ The `TLSHandshakeMeasurement` is like:
 }
 ```
 
-The `HTTPRequestMeasurement` is like:
+`HTTPRequestMeasurement` is like:
 
 ```
 {
