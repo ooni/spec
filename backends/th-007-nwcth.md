@@ -109,6 +109,9 @@ For example, `1.2.3.4:5`, `[::1]:5`.
 If the `url`'s authority contains an IP address rather than a domain, the client
 should include the corresponding endpoint inside `endpoints`.
 
+If the `url` is empty or invalid, the test helper cannot perform a measurement
+and must immediately return a 400 HTTP error.
+
 ## Response message
 
 The response message (`CtrlResponse`) contains these fields:
