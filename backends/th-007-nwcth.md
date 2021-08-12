@@ -1,7 +1,7 @@
 # New Web Connectivity Test Helper Spec
 
 * _Author_: sbs
-* _Version_: 202108.09.1955
+* _Version_: 202108.12.1737
 * _Status_: alpha
 
 This document describes a draft specification for the new web connectivity test
@@ -35,7 +35,7 @@ The request message (`CtrlRequest`) contains these fields:
 CtrlRequest = {
   "url": "",
   "headers": {},
-  "endpoints": []
+  "addrs": []
 }
 ```
 
@@ -46,14 +46,14 @@ where:
 - `headers` is an optional map from string to a list of strings containing the headers
 the test helper should include when measuring;
 
-- `endpoints` is an optional list of string-serialized endpoints for the
+- `addrs` is an optional list of string-serialized IP addresses for the
 domain inside the `url`'s `authority` discovered by the client.
 
 If the `url`'s authority contains an IP address rather than a domain, the client
-should include the corresponding endpoint inside `endpoints`.
+should include the corresponding address inside `addrs`.
 
 If the `url` is empty or invalid, the test helper should consider the message as invalid
-and act accordingly (e.g., return a 400 error).
+and act accordingly (e.g., return a `400` error).
 
 ### Response message
 
@@ -71,7 +71,7 @@ where `urls` is a list of `URLMeasurement`s and `URLMeasurement` contains these 
 URLMeasurement = {
   "url": "",
   "dns": {},
-  "endpoint": []
+  "endpoints": []
 }
 ```
 
@@ -83,18 +83,19 @@ the URL to which this `URLMeasurement` refers;
 - `dns` is a `DNSMeasurement` structure and contains
 the result of the DNS lookup of the domain in the `url`'s `authority`;
 
-- `endpoint` contains an `EndpointMeasurement` for each endpoint
+- `endpoints` contains an `EndpointMeasurement` for each endpoint
 we discovered for the `url.authority`'s domain.
 
 Note that `url`, and `dns` should always be present. The
-`endpoint` field is empty if, e.g., there is an `NXDOMAIN` error.
+`endpoints` field is empty if, e.g., there is an `NXDOMAIN` error.
 
 If the `url`'s authority contains an IP address rather than a domain, we
 should include the corresponding address inside `dns`.
 
-The test helper guarantees that `CtrlResponse.urls[0]` is the measurement for `CtrlRequest.url`. Subsequent
-measurements derive from HTTP redirection or from testing HTTP3 endpoints discovered parsing
-`Alt-Svc` headers.
+The test helper guarantees that `CtrlResponse.urls[0]` is the measurement
+for `CtrlRequest.url`. Subsequent measurements derive from HTTP redirections
+or from testing HTTP3 endpoints discovered using a suitable discovery
+mechanism (e.g., parsing `Alt-Svc` header).
 
 #### DNSMeasurement
 
@@ -109,10 +110,10 @@ The `DNSMeasurement` message contains these fields:
 
 where:
 
-- `failure` is `null` on success or a OONI failure otherwise (see the
+- `failure` is `null` on success and a OONI failure otherwise (see the
 `df-007-errors.md` document for more information);
 
-- `addrs` a possibly-empty list of IP addresses returned by the DNS lookup.
+- `addrs` is a possibly-empty list of IP addresses returned by the DNS lookup.
 
 #### EndpointMeasurement
 
@@ -179,7 +180,7 @@ where:
 
 #### TCPConnectMeasurement
 
-`TCPConnectMeasurement` is like:
+`TCPConnectMeasurement` has the following structure:
 
 ```
 {
@@ -189,12 +190,12 @@ where:
 
 where:
 
-- `failure` is `null` on success or a OONI failure otherwise (see the
+- `failure` is `null` on success and a OONI failure otherwise (see the
 `df-007-errors.md` document for more information).
 
 #### TLSHandshakeMeasurement
 
-`TLSHandshakeMeasurement` is like:
+`TLSHandshakeMeasurement` has the following structure:
 
 ```
 {
@@ -204,18 +205,18 @@ where:
 
 where:
 
-- `failure` is `null` on success or a OONI failure otherwise (see the
+- `failure` is `null` on success and a OONI failure otherwise (see the
 `df-007-errors.md` document for more information).
 
 (*Note*: this structure will support more fields in the future.)
 
 #### QUICHandshakeMeasurement
 
-`QUICHandshakeMeasurement` is an alias for `TLSHandshakeMeasurement`.
+`QUICHandshakeMeasurement` is (currently) an alias for `TLSHandshakeMeasurement`.
 
 #### HTTPRequestMeasurement
 
-`HTTPRequestMeasurement` is like:
+`HTTPRequestMeasurement` has the following structure:
 
 ```
 {
@@ -230,7 +231,7 @@ where:
 
 - `body_length` is the optional body length in bytes;
 
-- `failure` is `null` on success or a OONI failure otherwise (see the
+- `failure` is `null` on success and a OONI failure otherwise (see the
 `df-007-errors.md` document for more information);
 
 - `headers` is an optional map from string to a list of strings
@@ -238,8 +239,12 @@ containing the response headers (if any);
 
 - `status_code` is the optional response status code.
 
-On failure, only `failure` is meaningful. On success, there must be
+On failure, only the `failure` field is meaningful. On success, there must be
 a valid HTTP status code, and all other fields may be empty.
+
+*Note*: it may be worthwhile to use a list of string pairs for headers
+but the representation of map from string to strings seems more robust to
+parse because it's really not ambiguous.
 
 ## Algorithm
 
