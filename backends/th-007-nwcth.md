@@ -358,8 +358,8 @@ same DoH resolver used in the previous step. With such
 an HTTP client, the test helper follows any possible
 redirection from the input URL. This step also
 includes discovering HTTP/3 endpoints. We discover
-such endpoints using `Alt-Svc`. In the future, we should
-also consider using DNS SVCB for this task.
+them using `Alt-Svc`. In the future, we should
+also consider using DNS SVCB.
 
 This HTTP client will use the `accept`, `accept-language`,
 and `user-agent` headers provided by the client in the
