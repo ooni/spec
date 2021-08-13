@@ -187,7 +187,7 @@ where:
 
 - `endpoint` is a string containing an endpoint (as defined above);
 
-- `protocol` is either `"http"` or `"https"`;
+- `protocol` is `"http"`;
 
 - `tcp_connect` is a `TCPConnectMeasurement`;
 
@@ -211,7 +211,7 @@ where:
 
 - `endpoint` is a string containing an endpoint (as defined above);
 
-- `protocol` is either `"http"` or `"https"`;
+- `protocol` is `"https"`;
 
 - `tcp_connect` is a `TCPConnectMeasurement`;
 
