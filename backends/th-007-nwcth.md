@@ -167,7 +167,7 @@ The `EndpointMeasurement` messsages is one of `HTTPEndpointMeasurement`,
 `HTTPSEndpointMeasurement`, and `H3EndpointMeasurement`:
 
 ```
-EndpointMeasurement = HTTPEndpointMeasurement | H3EndpointMeasurement
+EndpointMeasurement = HTTPEndpointMeasurement | HTTPSEndpointMeasurement | H3EndpointMeasurement
 ```
 
 #### HTTPEndpointMeasurement
