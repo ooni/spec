@@ -159,7 +159,7 @@ where:
 
 #### EndpointMeasurement
 
-The `EndpointMeasurement` messsages is the union of `HTTPMeasurement` and `H3Measurement`:
+The `EndpointMeasurement` messsages is either `HTTPMeasurement` or `H3Measurement`:
 
 ```
 EndpointMeasurement = HTTPEndpointMeasurement | H3EndpointMeasurement
