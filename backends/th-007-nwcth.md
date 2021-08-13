@@ -363,7 +363,8 @@ also consider using DNS SVCB.
 
 This HTTP client will use the `accept`, `accept-language`,
 and `user-agent` headers provided by the client in the
-`headers` field of the `CtrlRequest`.
+`headers` field of the `CtrlRequest`. All other headers
+will be silently ignored.
 
 The output of this step consists of three lists of requests, for
 HTTP, HTTPS, and HTTP/3 respectively. Depending on the scheme
