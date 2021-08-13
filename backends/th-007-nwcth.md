@@ -55,7 +55,8 @@ where:
 - `url` is mandatory and contains the string-serialized URL we should measure;
 
 - `headers` is an optional map from string to a list of strings containing the headers
-the test helper should include when measuring;
+the test helper should include when measuring (which headers from this map will be used
+in specified more in detail below);
 
 - `addrs` is an optional list of string-serialized IP addresses for the
 domain inside the `url`'s `authority` discovered by the client.
