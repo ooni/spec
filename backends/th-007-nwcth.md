@@ -12,7 +12,7 @@ helper. We tentatively expose this new API as `/api/unstable/wcth`.
 The test helper should help OONI Probe to discover all the relevant TCP/UDP endpoints
 deriving from the input URL coming from the test lists or from user input.
 
-This discovery includes finding out HTTPS URLs corresponding to HTTP URLs
+This discovery process includes finding out HTTPS URLs corresponding to HTTP URLs
 in case of redirections. It also includes discovering whether there are
 HTTP/3 endpoints associated to HTTPS URLs.
 
