@@ -10,7 +10,7 @@ helper. We tentatively expose this new API as `/api/unstable/wcth`.
 ## Design
 
 The test helper should help OONI Probe to discover all the relevant endpoints
-deriving from the input URL that the Probe should test.
+deriving from the input URL coming from the test lists or from user input.
 
 This discovery includes finding out HTTPS URLs corresponding to HTTP URLs
 in case of redirections. It also includes discovering whether there are
