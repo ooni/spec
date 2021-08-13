@@ -662,6 +662,13 @@ cookies (0.09% according to [ooni/probe#1727](https://github.com/ooni/probe/issu
     3. save QUIC session using `sess`
     4. return
 
+## Implementation considerations
+
+The test helper implementation should use the same codebase of the Probe
+and the same configuration to the largest possible extent. This requirement
+should help to minimize the possibility of mismatches between the test
+helper and the Probe's measurements.
+
 ## Limitations
 
 This draft specification does not address these issues:
@@ -683,4 +690,4 @@ seems useful to detect throttling) or stop reading early.
 more suspicious way, and which check we could perform directly inside of the
 test helper to discover right away DNS censorship.
 
-These problems will be solved at a later time.
+These problems will be addressed by a later draft of this spec.
