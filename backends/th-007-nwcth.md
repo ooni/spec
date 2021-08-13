@@ -352,7 +352,7 @@ TBD
 ## Algorithm
 
 This section describes algorithms and data structures to implement the test helper. An
-implementation is free to choose any equivalent set of algorithms and data structures
+implementation is free to choose different algorithms and data structures
 as long as the end result is functionally equivalent to what we describe in here.
 
 The top-level algorithm consists of three major steps:
