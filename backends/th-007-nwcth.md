@@ -49,6 +49,8 @@ used for the endpoint, e.g., `http://[::1]/`. The authority may
 also contain a port, e.g., `http://[::1]:8080/`. If the port isn't
 specified, we use the default port for the URL scheme.
 
+Having clarified URL and endpoint semantics, we can now discuss messages.
+
 ### Request message
 
 The request message (`CtrlRequest`) contains these fields:
