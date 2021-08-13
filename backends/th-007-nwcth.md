@@ -22,8 +22,10 @@ error when performing DNS lookups for the hostname in the URL.
 
 The Probe will test all the endpoints indicated by the test helper.
 
-We assume that the Probe can reach the test helper. The companion spec for
-the Probe should define what happens when this assumption is false.
+This specification does not mean to imply that the new Web Connectivity
+requires a test helper to function. It is out of the scope of this
+spec to discuss this problem. We will discuss it in a companion spec
+that covers the client side implementation of the new test.
 
 ## Semantics
 
