@@ -606,4 +606,8 @@ is such that the OONI Probe can unambiguously redo the same operation.
 3. how to choose whether the Probe should read whole response bodies (which
 seems useful to detect throttling) or stop reading early.
 
+4. we do not discuss how to treat IP addresses resolved by the client in a
+more suspicious way, and which check we could perform directly inside of the
+test helper to discover right away DNS censorship.
+
 These problems will be solved at a later time.
