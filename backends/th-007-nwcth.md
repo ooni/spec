@@ -356,7 +356,7 @@ The test helper creates an ordinary HTTP client with
 redirection enabled, support for cookies, and using the
 same DoH resolver used in the previous step. With such
 an HTTP client, the test helper follows any possible
-redirection starting from the input URL. This step also
+redirection from the input URL. This step also
 includes discovering HTTP/3 endpoints. We discover
 such endpoints using `Alt-Svc`. In the future, we should
 also consider using DNS SVCB for this task.
