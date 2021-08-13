@@ -128,7 +128,7 @@ the URL to which this `URLMeasurement` refers;
 the result of the DNS lookup of the domain in the `url`;
 
 - `endpoints` contains an `EndpointMeasurement` for each endpoint
-we discovered for the `url's domain.
+we discovered for the `url`'s domain.
 
 Note that `url`, and `dns` should always be present. The
 `endpoints` field is empty if, e.g., there is an `NXDOMAIN` error.
