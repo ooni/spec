@@ -300,7 +300,7 @@ where `request` is an `HTTPRequestMeasurement` and `response` is an
 
 `HTTPRequestMeasurement` has the following structure:
 
-``
+```
 HTTPRequestMeasurement = {
   "method": "",
   "url": "",
