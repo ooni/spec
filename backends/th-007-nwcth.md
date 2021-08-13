@@ -4,7 +4,7 @@
 * _Version_: 202108.13.1410
 * _Status_: alpha
 
-This document describes a draft specification for the new web connectivity test
+This document contains a draft specification for the new web connectivity test
 helper. We tentatively expose this new API as `/api/unstable/wcth`.
 
 ## Design
