@@ -144,7 +144,7 @@ test helper wants the probe to perform measurements.
 The `DNSMeasurement` message contains these fields:
 
 ```
-{
+DNSMeasurement = {
   "failure": null | "",
   "addrs": [],
 }
@@ -170,7 +170,7 @@ EndpointMeasurement = HTTPEndpointMeasurement | H3EndpointMeasurement
 `HTTPEndpointMeasurement` has the following structure:
 
 ```
-{
+HTTPEndpointMeasurement = {
   "endpoint": "",
   "protocol": "http" | "https",
   "tcp_connect": {},
@@ -196,7 +196,7 @@ where:
 `H3EndpointMeasurement` has the following structure:
 
 ```
-{
+H3EndpointMeasurement = {
   "endpoint": "",
   "protocol": "h3" | "h3-29" | ...,
   "quic_handshake": TLSHandshakeMeasurement{},
@@ -219,7 +219,7 @@ where:
 `TCPConnectMeasurement` has the following structure:
 
 ```
-{
+TCPConnectMeasurement = {
   "failure": null | ""
 }
 ```
@@ -236,7 +236,7 @@ A future draft of this specification may include more fields.
 `TLSHandshakeMeasurement` has the following structure:
 
 ```
-{
+TLSHandshakeMeasurement = {
   "failure": null | ""
 }
 ```
@@ -252,12 +252,16 @@ A future draft of this specification may include more fields.
 
 `QUICHandshakeMeasurement` is (currently) an alias for `TLSHandshakeMeasurement`.
 
+```
+QUICHandshakeMeasurement = TLSHandshakeMeasurement
+```
+
 #### HTTPRequestMeasurement
 
 `HTTPRequestMeasurement` has the following structure:
 
 ```
-{
+HTTPRequestMeasurement = {
   "body_length": 0,
   "failure": null | "",
   "headers": {},
