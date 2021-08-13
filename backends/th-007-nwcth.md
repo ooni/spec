@@ -359,7 +359,7 @@ an HTTP client, the test helper follows any possible
 redirection starting from the input URL. This step also
 includes discovering HTTP/3 endpoints. We discover
 such endpoints using `Alt-Svc`. In the future, we should
-also consider using DNS SVCB for discovering HTTP/3 endpoints.
+also consider using DNS SVCB for this task.
 
 This HTTP client will use the `accept`, `accept-language`,
 and `user-agent` headers provided by the client in the
