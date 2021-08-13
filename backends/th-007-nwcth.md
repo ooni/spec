@@ -7,6 +7,10 @@
 This document contains a draft specification for the new web connectivity test
 helper. We tentatively expose this new API as `/api/unstable/wcth`.
 
+The name of this document and its unique URL should not be considered stable. Once
+this document has been merged to the main branch, it is recommended to link to it
+using a GitHub URL that references a specific commit.
+
 ## Design
 
 The test helper should help OONI Probe to discover all the relevant TCP/UDP endpoints
