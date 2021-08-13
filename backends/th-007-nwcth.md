@@ -164,7 +164,7 @@ where:
 #### EndpointMeasurement
 
 The `EndpointMeasurement` messsages is one of `HTTPEndpointMeasurement`,
-`HTTPSEndpointMeasurement` or `H3EndpointMeasurement`:
+`HTTPSEndpointMeasurement`, and `H3EndpointMeasurement`:
 
 ```
 EndpointMeasurement = HTTPEndpointMeasurement | H3EndpointMeasurement
