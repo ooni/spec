@@ -376,9 +376,9 @@ If there is no redirection, a list will contain a
 single request for the input URL.
 
 The information stored for each redirection should be
-enough to redo the same request with equal headers including
-the request cookies. We do not fetch bodies at this stage,
-because doing that would slow down the discovery.
+enough to redo the same request with equal headers (including
+cookies). We do not fetch bodies at this stage,
+because doing that would slow down the operations.
 
 At present, the test helper is not designed to cover the
 case where the redirection chain fails midway. This would
