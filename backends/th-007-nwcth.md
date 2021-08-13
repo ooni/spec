@@ -75,7 +75,7 @@ where:
 
 - `headers` is an optional map from string to a list of strings containing the headers
 the test helper should include when measuring (which headers from this map will be used
-in specified more in detail below);
+is specified more in detail below);
 
 - `addrs` is an optional list of string-serialized IP addresses for the
 `url`'s domain discovered by the client.
