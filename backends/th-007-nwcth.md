@@ -339,9 +339,6 @@ the `CtrlResponse` will be as follows in this case:
 }
 ```
 
-If the preliminary step complete successfully, the test
-helper will then discover all the URLs that matter.
-
 The reason why we check for a nonexisting domain immediately
 is that around 1% of the domains in the test lists are not
 registered anymore (according to [ooni/probe#1727](
@@ -349,6 +346,9 @@ https://github.com/ooni/probe/issues/1727)). Given the burden
 of keeping the test lists _always_ up to date, the test
 helper provides for this relatively common error case and
 includes code to handle it in the most graceful way.
+
+If the preliminary step complete successfully, the test
+helper will then discover all the URLs that matter.
 
 ### URLs discovery
 
