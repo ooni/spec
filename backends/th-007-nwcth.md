@@ -1,7 +1,7 @@
 # New Web Connectivity Test Helper Spec
 
 * _Author_: sbs
-* _Version_: 202108.13.1410
+* _Version_: 202108.13.1700
 * _Status_: alpha
 
 This document contains a draft specification for the new web connectivity test
@@ -34,7 +34,9 @@ Connectivity Test Helper protocol.
 
 ### Endpoint
 
-Before discussing messages, we need to define _endpoint_, which is
+Before discussing messages, we need to define TCP and UDP _endpoints_.
+
+In terms of syntax, an endpoint is
 
 - an IPv4 address followed by `:` followed by a valid port number; or
 
@@ -145,12 +147,15 @@ The `DNSMeasurement` message contains these fields:
 
 ```
 DNSMeasurement = {
+  "domain": "",
   "failure": null | "",
   "addrs": [],
 }
 ```
 
 where:
+
+- `domain` is the domain we tried to resolve;
 
 - `failure` is `null` on success and a OONI failure otherwise (see the
 `df-007-errors.md` document for more information);
@@ -159,7 +164,8 @@ where:
 
 #### EndpointMeasurement
 
-The `EndpointMeasurement` messsages is either `HTTPMeasurement` or `H3Measurement`:
+The `EndpointMeasurement` messsages is one of `HTTPEndpointMeasurement`,
+`HTTPSEndpointMeasurement` or `H3EndpointMeasurement`:
 
 ```
 EndpointMeasurement = HTTPEndpointMeasurement | H3EndpointMeasurement
@@ -172,10 +178,33 @@ EndpointMeasurement = HTTPEndpointMeasurement | H3EndpointMeasurement
 ```
 HTTPEndpointMeasurement = {
   "endpoint": "",
-  "protocol": "http" | "https",
+  "protocol": "http",
+  "tcp_connect": {},
+  "http_round_trip": {}
+}
+```
+
+where:
+
+- `endpoint` is a string containing an endpoint (as defined above);
+
+- `protocol` is either `"http"` or `"https"`;
+
+- `tcp_connect` is a `TCPConnectMeasurement`;
+
+- `http_round_trip` is an `HTTPRoundTripMeasurement`.
+
+#### HTTPSEndpointMeasurement
+
+`HTTPSEndpointMeasurement` has the following structure:
+
+```
+HTTPSEndpointMeasurement = {
+  "endpoint": "",
+  "protocol": "https",
   "tcp_connect": {},
   "tls_handshake": {},
-  "http_request": {}
+  "http_round_trip": {}
 }
 ```
 
@@ -189,7 +218,7 @@ where:
 
 - `tls_handshake` is a `TLSHandshakeMeasurement`;
 
-- `http_request` is an `HTTPRequestMeasurement`.
+- `http_request` is an `HTTPRoundTripMeasurement`.
 
 #### H3EndpointMeasurement
 
@@ -200,7 +229,7 @@ H3EndpointMeasurement = {
   "endpoint": "",
   "protocol": "h3" | "h3-29" | ...,
   "quic_handshake": TLSHandshakeMeasurement{},
-  "http_request": HTTPRequestMeasurement{}
+  "http_round_trip": HTTPRoundTripMeasurement{}
 }
 ```
 
@@ -212,7 +241,7 @@ where:
 
 - `quic_handshake` is a `QUICHandshakeMeasurement`;
 
-- `http_request` is an `HTTPRequestMeasurement`.
+- `http_round_trip` is an `HTTPRoundTripMeasurement`.
 
 #### TCPConnectMeasurement
 
@@ -256,12 +285,43 @@ A future draft of this specification may include more fields.
 QUICHandshakeMeasurement = TLSHandshakeMeasurement
 ```
 
-#### HTTPRequestMeasurement
+#### HTTPRoundTripMeasurement
+
+`HTTPRoundTripMeasurement` has the following structure:
+
+```
+HTTPRoundTripMeasurement = {
+  "request": {},
+  "response": {}
+}
+```
+
+where `request` is an `HTTPRequestMeasurement` and `response` is an
+`HTTPResponseMeasurement`.
 
 `HTTPRequestMeasurement` has the following structure:
 
-```
+``
 HTTPRequestMeasurement = {
+  "method": "",
+  "url": "",
+  "headers": {}
+}
+```
+
+where:
+
+- `method` is the request method;
+
+- `url` is the request URL;
+
+- `headers` is an optional map from string to a list of strings
+containing the request headers (if any);
+
+`HTTPResponseMeasurement` has the following structure:
+
+```
+HTTPResponseMeasurement = {
   "body_length": 0,
   "failure": null | "",
   "headers": {},
@@ -292,14 +352,17 @@ TBD
 
 ## Algorithm
 
-This section defines the algorithms implementing the New
-Web Connectivity Test Helper, which consists of three major steps:
+This section describes algorithms and data structures to implement the test helper. An
+implementation is free to choose any equivalent set of algorithms and data structures
+as long as the end result is functionally equivalent to what we describe in here.
+
+The top-level algorithm consists of three major steps:
 
 1. preliminary checks;
 2. URLs discovery;
 3. endpoints measurement.
 
-We will discuss each step separately
+We will discuss each step separately.
 
 ### Preliminary checks
 
