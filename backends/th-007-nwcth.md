@@ -449,8 +449,8 @@ pointing to an URL containing a nonexistent domain. We will
 revisit this decision if it turns out that this case is
 quite common (currently, it's not). For now, if a chain fails
 midway, we will just ignore it. If all the three chains
-are empty at the end of the step, then we assume there was
-an error in the test helper. This condition could occur, for
+are empty at the end of this step, then we assume there was
+a failure in the test helper. This condition could occur, for
 example, if there's an issue with our DNS resolver. In
 such a case, we return a `500` error.
 
