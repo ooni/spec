@@ -1,22 +1,35 @@
 # New Web Connectivity Test Helper Spec
 
 * _Author_: sbs
-* _Version_: 202108.12.1737
+* _Version_: 202108.13.1400
 * _Status_: alpha
 
 This document describes a draft specification for the new web connectivity test
 helper. We tentatively expose this new API as `/api/unstable/wcth`.
 
-A future version of this document will also provide a design rationale.
+## Design
+
+The test helper should help OONI Probe to discover all the relevant endpoints
+deriving from the input URL that OONI Probe should test.
+
+This discovery includes finding out HTTPS URLs corresponding to HTTP URLs
+in case of 301 redirections. It also includes discovering whether there are
+QUIC endpoints associated to HTTPS URLs.
+
+Because we perform this discovery, we also cover the case where a Probe
+cannot continue to perform a measurement, because it receives a `NXDOMAIN`
+error when performing DNS lookups for the hostname in the URL.
+
+The Probe will test all the endpoints indicated by the test helper.
 
 ## Semantics
 
-This section defines the messages implementing the New Web
+This section defines the messages of the New Web
 Connectivity Test Helper protocol.
 
 ### Endpoint
 
-An endpoint is:
+Before discussing messages, we need to define _endpoint_, which is
 
 - an IPv4 address followed by `:` followed by a valid port number; or
 
@@ -26,8 +39,6 @@ followed by a valid port number.
 For example, `1.2.3.4:5`, `[::1]:5`.
 
 ### Request message
-
-*Implementation note*: all the field names changed since 2021-08-06-001!
 
 The request message (`CtrlRequest`) contains these fields:
 
@@ -49,11 +60,25 @@ the test helper should include when measuring;
 - `addrs` is an optional list of string-serialized IP addresses for the
 domain inside the `url`'s `authority` discovered by the client.
 
-If the `url`'s authority contains an IP address rather than a domain, the client
-should include the corresponding address inside `addrs`.
+If the `url`'s hostname is an IP address, the client should include the
+corresponding address inside `addrs`.
 
-If the `url` is empty or invalid, the test helper should consider the message as invalid
-and act accordingly (e.g., return a `400` error).
+Example:
+
+```JSON
+{
+  "url": "http://www.example.com",
+  "headers": {
+    "User-Agent": [
+      "curl/7.64.1"
+    ]
+  },
+  "addrs": [
+    "93.184.216.34",
+    "2606:2800:220:1:248:1893:25c8:1946"
+  ]
+}
+```
 
 ### Response message
 
@@ -92,10 +117,8 @@ Note that `url`, and `dns` should always be present. The
 If the `url`'s authority contains an IP address rather than a domain, we
 should include the corresponding address inside `dns`.
 
-The test helper guarantees that `CtrlResponse.urls[0]` is the measurement
-for `CtrlRequest.url`. Subsequent measurements derive from HTTP redirections
-or from testing HTTP3 endpoints discovered using a suitable discovery
-mechanism (e.g., parsing `Alt-Svc` header).
+The order of the `CtrlResponse.urls` field is the order in which the
+test helper wants the probe to perform measurements.
 
 #### DNSMeasurement
 
