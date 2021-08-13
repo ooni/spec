@@ -14,7 +14,7 @@ deriving from the input URL that OONI Probe should test.
 
 This discovery includes finding out HTTPS URLs corresponding to HTTP URLs
 in case of 301 redirections. It also includes discovering whether there are
-QUIC endpoints associated to HTTPS URLs.
+HTTP/3 endpoints associated to HTTPS URLs.
 
 Because we perform this discovery, we also cover the case where a Probe
 cannot continue to perform a measurement, because it receives a `NXDOMAIN`
@@ -308,7 +308,7 @@ the `CtrlResponse` will be as follows in this case:
   "urls": [{
     "url": "http://nonexistent.com",
     "dns": {
-      "failure": "dns_nxdomain_error"
+      "failure": "dns_nxdomain_error",
       "addrs": []
     },
     "endpoints": []
@@ -322,7 +322,7 @@ helper will then discover all the URLs that matter.
 The reason why we check for a nonexisting domain immediately
 is that around 1% of the domains in the test lists are not
 registered anymore (according to [ooni/probe#1727](
-https://github.com/ooni/probe/issues/1727). Given the burden
+https://github.com/ooni/probe/issues/1727)). Given the burden
 of keeping the test lists _always_ up to date, the test
 helper provides for this relatively common error case and
 includes code to handle it in the most graceful way.
@@ -331,13 +331,79 @@ includes code to handle it in the most graceful way.
 
 The test helper creates an ordinary HTTP client with
 redirection enabled, support for cookies, and using the
-same DoH resolver used in the previous step.
+same DoH resolver used in the previous step. With such
+an HTTP client, the test helper follows any possible
+redirection starting from the input URL. This step also
+includes discovering HTTP/3 endpoints. We discover
+such endpoints using `Alt-Svc`. In the future, we should
+also consider using DNS SVCB for discovering HTTP/3 endpoints.
 
-With such an HTTP client, the test helper follows any
-possible redirection starting from the input URL.
+This HTTP client will use the `accept`, `accept-language`,
+and `user-agent` headers provided by the client in the
+`headers` field of the `CtrlRequest`.
 
-TDB
+The output of this step consists of three lists of requests, for
+HTTP, HTTPS, and HTTP/3 respectively. Depending on the scheme
+of the input URL and on discovery results, some lists may be
+empty. For example, if the input URL is `https://www.example.com`
+and there is no HTTP/3 availability, then only the HTTPS
+list will contain information, and the other two will be empty.
+Likewise, if there is no redirection, a list will contain a
+single request for the input URL.
 
+The information stored for each redirection should be
+enough to redo the same request with equal headers including
+the request cookies. We do not fetch bodies at this stage,
+because doing that would slow down the discovery.
+
+At present, the test helper is not designed to cover the
+case where the redirection chain fails midway. This would
+happen, for example, if the input URL was a `bit.ly` URL
+pointing to an URL containing a nonexistent domain. We will
+revisit this decision if it turns out that this case is
+quite common (currently, it's not). For now, if a chain fails
+midway, we will just ignore it. If all the three chains
+are empty at the end of the step, then we assume there was
+an error in the test helper. This condition could occur, for
+example, if there's an issue with our DNS resolver. In
+such a case, we return a `500` error.
+
+### Endpoints measurement
+
+The test helper walks the HTTP, HTTPS, and HTTP/3 lists. For
+each request in the list, the test helper executes this algorithm:
+
+- input:
+    - `URL`: already parsed HTTP URL (from the discovery step)
+    - `headers`: map containing request headers (from the discovery step)
+    - `clientResolutions`: map from string (domain name) to list of strings (IP addresses resolved by the client)
+    - `version`: QUIC version or empty string to mean "use TCP"
+- output:
+    - `m`: a `URLMeasurement`
+- algorithm:
+    1. save `m.url` immediately
+    2. call `DNSResolver` (see below) with
+         - input:
+             - `URL.hostname` 
+         - output:
+             - `DNSMeasurement` as `url.dns`
+    3. init `addrs` as *a copy of* `url.dns.addrs`
+    4. if `clientResolutions` contains an entry for `URL.hostname` merge its addresses with `addrs` and remove duplicates
+    5. create a list of endpoints `endpoints` using `addrs` and `URL.port` or the default port for `URL.scheme`
+    6. for each `endpoint` in `endpoints`:
+        1. if `URL.scheme` is `https` and `version` is set, call `H3EndpointMeasurer` (see below)
+        2. else if `URL.scheme` is `https`, call `HTTPSEndpointMeasurer` (see below)
+        3. else if `URL.scheme` is `http`, call `HTTPEndpointMeasurer` (see below)
+
+The output of this step is a list of `URLMeasurement`, one for
+each previously discovered URL. In turn, each `URLMeasurement` contains
+an `EndpointMeasurement` for each endpoint.
+
+We will reuse headers from the previous step, where we used a
+cookie aware client. This means that we will reuse previously discovered
+cookies. There is, in fact, a small fraction of URLs in the test list
+that fail to properly redirect without the correct cookies (0.09% according to
+[ooni/probe#1727](https://github.com/ooni/probe/issues/1727)).
 
 ### TopLevel
 
@@ -357,28 +423,7 @@ TDB
 
 ### URLMeasurer
 
-- input:
-    - `URL`: already parsed HTTP URL
-    - `headers`: map containing optional request headers
-    - `jar`: current cookie state (mutable)
-    - `clientResolutions`: map from string (domain name) to list of strings (IP addresses resolved by the client)
-    - `version`: QUIC version or empty string to mean "use TCP"
-- output:
-    - `m`: a `URLMeasurement`
-- algorithm:
-    1. save `m.url` immediately
-    2. call `DNSResolver`
-         - input:
-             - `URL.hostname` 
-         - output:
-             - `DNSMeasurement` as `url.dns`
-    3. init `addrs` as *a copy of* `url.dns.addrs`
-    4. if `clientResolutions` contains an entry for `URL.hostname` merge its addresses with `addrs` and remove duplicates
-    5. create list of endpoints `endpoints` using `addrs` and `URL.port` or the default port for `URL.scheme`
-    6. for each `endpoint` in `endpoints`:
-        1. if `URL.scheme` is `https` and `version` is set, call `H3EndpointMeasurer`
-        2. else if `URL.scheme` is `https`, call `HTTPSEndpointMeasurer`
-        3. else if `URL.scheme` is `http`, call `HTTPEndpointMeasurer`
+
 
 ### HTTPEndpointMeasurer
 
