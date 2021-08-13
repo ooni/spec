@@ -17,8 +17,8 @@ This discovery process includes finding out HTTPS URLs corresponding to HTTP URL
 in case of redirections. It also includes discovering whether there are
 HTTP/3 endpoints associated to HTTPS URLs.
 
-Because we perform this discovery, we also cover the case where a Probe
-cannot continue to perform a measurement, because it receives a `NXDOMAIN`
+Since we perform this discovery, we also cover the case where a Probe
+cannot continue to perform a measurement because it receives a `NXDOMAIN`
 error when performing DNS lookups for the hostname in the URL.
 
 This specification does not mean to imply that the new Web Connectivity
