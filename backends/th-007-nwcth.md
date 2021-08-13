@@ -38,6 +38,17 @@ followed by a valid port number.
 
 For example, `1.2.3.4:5`, `[::1]:5`.
 
+### URL
+
+We also need to state what is perhaps obvious. An URL contains an
+`authority` field. Such a field usually contains a domain name, e.g.,
+`http://www.example.com` contains `www.example.com`. The authority
+_could_ also contain an IP address, e.g., `http://8.8.8.8`. If
+the IP address is an IPv6 address, it is quoted using the same rules
+used for the endpoint, e.g., `http://[::1]/`. The authority may
+also contain a port, e.g., `http://[::1]:8080/`. If the port isn't
+specified, we use the default port for the URL scheme.
+
 ### Request message
 
 The request message (`CtrlRequest`) contains these fields:
@@ -59,7 +70,7 @@ the test helper should include when measuring (which headers from this map will 
 in specified more in detail below);
 
 - `addrs` is an optional list of string-serialized IP addresses for the
-domain inside the `url`'s `authority` discovered by the client.
+`url`'s domain discovered by the client.
 
 If the `url`'s hostname is an IP address, the client should include the
 corresponding address inside `addrs`.
@@ -107,10 +118,10 @@ where:
 the URL to which this `URLMeasurement` refers;
 
 - `dns` is a `DNSMeasurement` structure and contains
-the result of the DNS lookup of the domain in the `url`'s `authority`;
+the result of the DNS lookup of the domain in the `url`;
 
 - `endpoints` contains an `EndpointMeasurement` for each endpoint
-we discovered for the `url.authority`'s domain.
+we discovered for the `url's domain.
 
 Note that `url`, and `dns` should always be present. The
 `endpoints` field is empty if, e.g., there is an `NXDOMAIN` error.
