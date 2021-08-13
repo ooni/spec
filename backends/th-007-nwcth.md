@@ -444,7 +444,7 @@ cookies (0.09% according to [ooni/probe#1727](https://github.com/ooni/probe/issu
             - `TCPConnectMeasurement` as `m.tcp_connect`
             - TCP connection as `tcpConn`
     3. if `tcpConn` is `nil`, return
-    4. construct a single-use HTTP client (`clnt`) using `tcpConn`
+    4. construct a single-use HTTP client (`clnt`) w/o redirection using `tcpConn`
     5. call `HTTPGetter`
         - input:
             - `URL`
@@ -481,7 +481,7 @@ cookies (0.09% according to [ooni/probe#1727](https://github.com/ooni/probe/issu
             - `TLSHandshakeMeasurement` as `m.tls_handshake`
             - TLS connection as `tlsConn`
     5. if `tlsConn` is `nil`, return
-    6. construct a single-use HTTP client (`clnt`) using `tlsConn`
+    6. construct a single-use HTTP client (`clnt`) w/o redirection using `tlsConn`
     7. call `HTTPGetter`
         - input:
             - `URL`
@@ -512,7 +512,7 @@ cookies (0.09% according to [ooni/probe#1727](https://github.com/ooni/probe/issu
             - `QUICHandshakeMeasurement` as `m.quic_handshake`
             - QUIC session as `sess`
     3. if `sess` is `nil`, return
-    4. construct a single-use HTTP client (`clnt`) using `sess`
+    4. construct a single-use HTTP client (`clnt`) w/o redirection using `sess`
     5. call `HTTPGetter`
         - input:
             - `URL`
