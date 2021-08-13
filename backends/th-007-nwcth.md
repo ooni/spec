@@ -13,7 +13,7 @@ The test helper should help OONI Probe to discover all the relevant endpoints
 deriving from the input URL that the Probe should test.
 
 This discovery includes finding out HTTPS URLs corresponding to HTTP URLs
-in case of 301 redirections. It also includes discovering whether there are
+in case of redirections. It also includes discovering whether there are
 HTTP/3 endpoints associated to HTTPS URLs.
 
 Because we perform this discovery, we also cover the case where a Probe
