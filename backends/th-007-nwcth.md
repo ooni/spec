@@ -372,7 +372,7 @@ of the input URL and on discovery results, some lists may be
 empty. For example, if the input URL is `https://www.example.com`
 and there is no HTTP/3 availability, then only the HTTPS
 list will contain information, and the other two will be empty.
-Likewise, if there is no redirection, a list will contain a
+If there is no redirection, a list will contain a
 single request for the input URL.
 
 The information stored for each redirection should be
