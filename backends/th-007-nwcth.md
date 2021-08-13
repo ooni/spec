@@ -11,6 +11,7 @@ helper. We tentatively expose this new API as `/api/unstable/wcth`.
 
 The test helper should help OONI Probe to discover all the relevant TCP/UDP endpoints
 deriving from the input URL coming from the test lists or from user input.
+The Probe will then test all the endpoints indicated by the test helper.
 
 This discovery process includes finding out HTTPS URLs corresponding to HTTP URLs
 in case of redirections. It also includes discovering whether there are
@@ -19,8 +20,6 @@ HTTP/3 endpoints associated to HTTPS URLs.
 Because we perform this discovery, we also cover the case where a Probe
 cannot continue to perform a measurement, because it receives a `NXDOMAIN`
 error when performing DNS lookups for the hostname in the URL.
-
-The Probe will test all the endpoints indicated by the test helper.
 
 This specification does not mean to imply that the new Web Connectivity
 requires a test helper to function. It is out of the scope of this
