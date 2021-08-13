@@ -439,7 +439,7 @@ single request for the input URL.
 
 The information stored for each redirection should be
 enough to redo the same request with equal headers (including
-cookies). We do not fetch bodies at this stage,
+cookies). We should not fetch bodies at this stage,
 because doing that would slow down the operations.
 
 At present, the test helper is not designed to cover the
