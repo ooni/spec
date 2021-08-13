@@ -1,7 +1,7 @@
 # New Web Connectivity Test Helper Spec
 
 * _Author_: sbs
-* _Version_: 202108.13.1400
+* _Version_: 202108.13.1410
 * _Status_: alpha
 
 This document describes a draft specification for the new web connectivity test
@@ -397,33 +397,11 @@ each request in the list, the test helper executes this algorithm:
 
 The output of this step is a list of `URLMeasurement`, one for
 each previously discovered URL. In turn, each `URLMeasurement` contains
-an `EndpointMeasurement` for each endpoint.
-
-We will reuse headers from the previous step, where we used a
-cookie aware client. This means that we will reuse previously discovered
-cookies. There is, in fact, a small fraction of URLs in the test list
-that fail to properly redirect without the correct cookies (0.09% according to
-[ooni/probe#1727](https://github.com/ooni/probe/issues/1727)).
-
-### TopLevel
-
-- input:
-    - `creq`: a `CtrlRequest`
-- output:
-    - `cresp`: a `CtrlResponse`
-    - `err`: hard error that should cause a `400`
-- algorithm:
-    1. if `creq.url` is empty or does not parse, return error
-    2. let `URL` be the parsed URL
-    3. let `jar` be the mutable cookie state
-    4. let `headers` be `creq.headers`
-    5. for `i` in `1..20`
-        1. call `URL` measurer with obvious mappings and `""` as QUIC version
-        2. [...] XXX XXX XXX
-
-### URLMeasurer
-
-
+an `EndpointMeasurement` for each endpoint. We will reuse headers from the
+previous step, where we used a cookie aware client. This means that we
+will reuse previously discovered cookies. There is, in fact, a small fraction
+of URLs in the test list that fail to properly redirect without the correct
+cookies (0.09% according to [ooni/probe#1727](https://github.com/ooni/probe/issues/1727)).
 
 ### HTTPEndpointMeasurer
 
@@ -431,9 +409,8 @@ that fail to properly redirect without the correct cookies (0.09% according to
     - `URL`: already parsed HTTP URL
     - `headers`: map containing optional request headers
     - `endpoint`: TCP endpoint to use
-    - `jar`: current cookie state (mutable)
 - output:
-    - `m`: a `H3EndpointMeasurement`
+    - `m`: a `HTTPEndpointMeasurement`
 - algorithm:
     1. save `m.protocol` and `m.endpoint` immediately
     2. call `TCPConnector`
@@ -443,7 +420,7 @@ that fail to properly redirect without the correct cookies (0.09% according to
             - `TCPConnectMeasurement` as `m.tcp_connect`
             - TCP connection as `tcpConn`
     3. if `tcpConn` is `nil`, return
-    4. construct HTTP client (`clnt`) using `tcpConn` and `jar`
+    4. construct a single-use HTTP client (`clnt`) using `tcpConn`
     5. call `HTTPGetter`
         - input:
             - `URL`
@@ -460,9 +437,8 @@ that fail to properly redirect without the correct cookies (0.09% according to
     - `URL`: already parsed HTTPS URL
     - `headers`: map containing optional request headers
     - `endpoint`: TCP endpoint to use
-    - `jar`: current cookie state (mutable)
 - output:
-    - `m`: a `H3EndpointMeasurement`
+    - `m`: a `HTTPEndpointMeasurement`
 - algorithm:
     1. save `m.protocol` and `m.endpoint` immediately
     2. call `TCPConnector`
@@ -481,7 +457,7 @@ that fail to properly redirect without the correct cookies (0.09% according to
             - `TLSHandshakeMeasurement` as `m.tls_handshake`
             - TLS connection as `tlsConn`
     5. if `tlsConn` is `nil`, return
-    6. construct HTTP client (`clnt`) using `tlsConn` and `jar`
+    6. construct a single-use HTTP client (`clnt`) using `tlsConn`
     7. call `HTTPGetter`
         - input:
             - `URL`
@@ -499,7 +475,6 @@ that fail to properly redirect without the correct cookies (0.09% according to
     - `headers`: map containing optional request headers
     - `endpoint`: UDP endpoint to use
     - `version`: QUIC version to use
-    - `jar`: current cookie state (mutable)
 - output:
     - `m`: a `H3EndpointMeasurement`
 - algorithm:
@@ -513,7 +488,7 @@ that fail to properly redirect without the correct cookies (0.09% according to
             - `QUICHandshakeMeasurement` as `m.quic_handshake`
             - QUIC session as `sess`
     3. if `sess` is `nil`, return
-    4. construct HTTP client (`clnt`) using `sess` and `jar`
+    4. construct a single-use HTTP client (`clnt`) using `sess`
     5. call `HTTPGetter`
         - input:
             - `URL`
@@ -535,7 +510,7 @@ that fail to properly redirect without the correct cookies (0.09% according to
     - `m`: a `HTTPRequestMeasurement`
 - algorithm:
     1. construct GET request `req` using URL
-    2. add `accept`, `accept-language`, `user-agent` from `headers` to `req`
+    2. add `headers` to `req`
     3. issue `req` using `clnt`
     4. on failure, set `m.failure` and return
     5. set `m.status_code`, `m.headers`
@@ -552,7 +527,7 @@ that fail to properly redirect without the correct cookies (0.09% according to
     - `m`: a `DNSMeasurement`
 - algorithm:
     1. if `domain` is an IP address, add it to `m.addrs` and return
-    2. perform DNS resolution for `domain` using `https://dns.google/dns-query`
+    2. perform DNS resolution for `domain` using the same DoH resolver of previous steps
     3. on failure, fill `m.failure` and return
     4. save resolved addresses using `m.addrs`
     5. return
@@ -600,83 +575,6 @@ that fail to properly redirect without the correct cookies (0.09% according to
     3. save QUIC session using `sess`
     4. return
 
-## OLD CONTENT
-
-The test helper resolves the domain in the `"URL"` at `http_request`. If the
-domain is an IPv4/IPv6 address, the test helper should return the same IP
-address as if it was the result of the DNS resolution, like `getaddrinfo` does. If the
-resolution fails, and the client has not provided any IP address, there are no
-IP addresses we can use, so the test helper stops and returns a message.
-
-Otherwise, the test helper merges the endpoints provided by the client inside
-the `tcp_connect` field with endpoints derived from the domain name resolution
-step. We extract the port to construct new endpoints from the `http_request`
-`"URL"`: if there is an explicit port, we use it, otherwise we use the default
-port for the protocol scheme (`80` for `http` and `443` for `https`).
-
-At this stage, the test helper has constructed an `URLMeasurement{}` message
-and initialized its `url` and `dns` fields.
-
-For each endpoint obtained merging the client and the test helper endpoints, the
-test helper will then perform an `EndpointMeasurement`. Because there is no
-information concerning QUIC, the test helper will start off using TCP. (As we will
-see later, QUIC is identified by the `h3://` or `h3-29://` scheme.)
-
-The measurement will consist of the usual steps: TCP connect to the endpoint,
-perform a TLS handshake, do the HTTP round trip and fetch the body.
-
-These steps will generate an `EndpointMeasurement{}` for each endpoint.
-
-When sending the request part of the HTTP round trip, the test helper WILL use
-only the following headers from the request message:
-
-* `user-agent`
-* `accept`
-* `accept-language`
-
-When all the endpoints have been measured, the test helper will determine
-whether it could perform additional follow-up measurements. Each new
-follow-up measurement generates a new `URLMeasurement{}` struct that will
-be appended to the top-level `urls` list.
-
-To decide whether it could perform more measurements, or whether it should
-stop here, the test helper will check the length of the `urls` array in
-the top-level response message it is constructing. If the length exceeds
-a reasonable threshold, the test helper should stop measuring.
-
-Otherwise, the test helper will determine whether it could perform
-additional measurements. To this end, it will extract new URLs to
-measure from the results of the previous measurements.
-
-To determine whether it should try QUIC endpoints, the test helper will
-parse the `Alt-Svc` header of all the responses it received. The test
-helper should of course merge equal `Alt-Svc` headers to perform a single
-follow-up measurement, if all headers have the same value.
-
-For a value of `Alt-Svc` equal to `h3-29=:443` the test helper should
-manipulate the original URL, replacing the scheme to be `h3-29` and
-the port to be `:443`. The code should be robust enough to handle the
-case where `Alt-Svc` contains a complete endpoint like `[::1]:444`.
-
-The value obtained from `Alt-Svc` is a new measurement to perform. The
-main difference is that the `h3` or `h3-xxx` scheme causes the test
-helper to use QUIC instead of HTTPS. The result of this measurement is
-a new `URLMeasurement{}` entry to be appended to `urls`.
-
-Likewise, for any `Location` header find in the response, the test
-helper should compute a new full URL to fetch. Again, the code should
-reduce equal `Location` headers discovered from multiple responses,
-to avoid duplicating work.
-
-We will not bother with caching the results of previous domain name
-resolutions at this stage of this draft spec. Should we choose to
-do that, it is quite trivial anyway.
-
-As an implementation note, if it's possible to obtain better URLs for
-follow-up QUIC or Location measurements using the Go API, then we should
-do that when possible. (Consider, for example, the `Location` method
-of the `Response`.)
-
 ## Limitations
 
 This draft specification does not address these issues:
@@ -685,16 +583,13 @@ This draft specification does not address these issues:
 to continue processing due to other considerations. For example, if
 we're redirected from `http://facebook.com/` to `https://facebook.com/`,
 it may be reasonable to stop the measurement instead of being
-further redirected to, say, `https://facebook.com/en_US/login.php`.
+further redirected to, say, `https://facebook.com/en_US/login.php`. This
+could be done by postprocessing the results of the discovery step.
 
 2. whether the amount of information included in each `EndpointMeasurement{}`
 is such that the OONI Probe can unambiguously redo the same operation.
 
-3. because [recent measurements](https://github.com/ooni/probe/issues/1727) show that we can perform most
-redirects in the test list without cookies, it seems fine to stash
-this problem for the time being.
-
-4. we may or may not choose to avoid reading the whole body of `https` and
-`h3` responses for brevity. Also this problem is left for later.
+3. how to choose whether the Probe should read whole response bodies (which
+seems useful to detect throttling) or stop reading early.
 
 These problems will be solved at a later time.
