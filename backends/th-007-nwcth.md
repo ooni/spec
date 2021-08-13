@@ -140,8 +140,6 @@ where:
 
 #### EndpointMeasurement
 
-*Implementation note*: names changed since 2021-08-06-001!
-
 The `EndpointMeasurement` messsages is the union of `HTTPMeasurement` and `H3Measurement`:
 
 ```
@@ -149,8 +147,6 @@ EndpointMeasurement = HTTPEndpointMeasurement | H3EndpointMeasurement
 ```
 
 #### HTTPEndpointMeasurement
-
-*Implementation note*: name changed since 2021-08-06-001!
 
 `HTTPEndpointMeasurement` has the following structure:
 
@@ -178,8 +174,6 @@ where:
 
 #### H3EndpointMeasurement
 
-*Implementation note*: name changed since 2021-08-06-001!
-
 `H3EndpointMeasurement` has the following structure:
 
 ```
@@ -195,7 +189,7 @@ where:
 
 - `endpoint` is a string containing an endpoint (as defined above);
 
-- `protocol` is either `"h3"`, `"h3-29"`, or any other supported experimental QUIC protocol;
+- `protocol` is `"h3"`, `"h3-29"`, or any other supported experimental QUIC protocol;
 
 - `quic_handshake` is a `QUICHandshakeMeasurement`;
 
@@ -216,6 +210,8 @@ where:
 - `failure` is `null` on success and a OONI failure otherwise (see the
 `df-007-errors.md` document for more information).
 
+A future draft of this specification may include more fields.
+
 #### TLSHandshakeMeasurement
 
 `TLSHandshakeMeasurement` has the following structure:
@@ -231,7 +227,7 @@ where:
 - `failure` is `null` on success and a OONI failure otherwise (see the
 `df-007-errors.md` document for more information).
 
-(*Note*: this structure will support more fields in the future.)
+A future draft of this specification may include more fields.
 
 #### QUICHandshakeMeasurement
 
@@ -265,14 +261,83 @@ containing the response headers (if any);
 On failure, only the `failure` field is meaningful. On success, there must be
 a valid HTTP status code, and all other fields may be empty.
 
-*Note*: it may be worthwhile to use a list of string pairs for headers
-but the representation of map from string to strings seems more robust to
-parse because it's really not ambiguous.
+A future draft of this specification may include more fields.
+
+### Response example
+
+TBD
 
 ## Algorithm
 
 This section defines the algorithms implementing the New
-Web Connectivity Test Helper.
+Web Connectivity Test Helper, which consists of three major steps:
+
+1. preliminary checks;
+2. URLs discovery;
+3. endpoints measurement.
+
+We will discuss each step separately
+
+### Preliminary checks
+
+The test helper returns `400` to the caller if:
+
+1. the request method is not `POST`; or
+2. it cannot read request body; or
+3. it cannot parse request body as a JSON object; or
+4. the `CtrlRequest.url` field is empty; or
+5. the `CtrlRequest.url` field is not a valid URL.
+
+The test helper will then resolve the domain inside the URL
+using a DNS resolver. Such a resolver must not be the system
+one. We should instead configure a DoH resolver with a well
+known provider (e.g., Google or Cloudflare) and consistently
+use that for all DNS operations. This design choice ensures
+that the test helper behaves consistently regardless of its
+deployment environment. Additionally, by using a secure
+transport, we eliminate the risk of query tampering.
+
+If the result of such a DNS resolution is an error, the test
+helper returns to the caller a `CtrlResponse` indicating that
+such an error occurred. Assuming the input URL is
+`http://nonexistent.com` and the error is `dns_nxdomain_error`,
+the `CtrlResponse` will be as follows in this case:
+
+```JSON
+{
+  "urls": [{
+    "url": "http://nonexistent.com",
+    "dns": {
+      "failure": "dns_nxdomain_error"
+      "addrs": []
+    },
+    "endpoints": []
+  }]
+}
+```
+
+If the preliminary step complete successfully, the test
+helper will then discover all the URLs that matter.
+
+The reason why we check for a nonexisting domain immediately
+is that around 1% of the domains in the test lists are not
+registered anymore (according to [ooni/probe#1727](
+https://github.com/ooni/probe/issues/1727). Given the burden
+of keeping the test lists _always_ up to date, the test
+helper provides for this relatively common error case and
+includes code to handle it in the most graceful way.
+
+### URLs discovery
+
+The test helper creates an ordinary HTTP client with
+redirection enabled, support for cookies, and using the
+same DoH resolver used in the previous step.
+
+With such an HTTP client, the test helper follows any
+possible redirection starting from the input URL.
+
+TDB
+
 
 ### TopLevel
 
