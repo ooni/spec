@@ -371,7 +371,8 @@ The test helper returns `400` to the caller if:
 2. it cannot read request body; or
 3. it cannot parse request body as a JSON object; or
 4. the `CtrlRequest.url` field is empty; or
-5. the `CtrlRequest.url` field is not a valid URL.
+5. the `CtrlRequest.url` field is not a valid URL;
+6. the URL's scheme is not `http` or `https`.
 
 The test helper will then resolve the domain inside the URL
 using a DNS resolver. Such a resolver must not be the system
