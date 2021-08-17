@@ -1,11 +1,11 @@
-# New Web Connectivity Test Helper Spec
+# Websteps Test Helper Spec
 
 * _Author_: sbs
-* _Version_: 202108.13.1700
+* _Version_: 202108.17.1114
 * _Status_: alpha
 
-This document contains a draft specification for the new web connectivity test
-helper. We tentatively expose this new API as `/api/unstable/wcth`.
+This document contains a draft specification for the websteps
+helper. We tentatively expose this new API as `/api/unstable/websteps`.
 
 The name of this document and its unique URL should not be considered stable. Once
 this document has been merged to the main branch, it is recommended to link to it
@@ -25,15 +25,14 @@ Since we perform this discovery, we also cover the case where a Probe
 cannot continue to perform a measurement because it receives a `NXDOMAIN`
 error when performing DNS lookups for the hostname in the URL.
 
-This specification does not mean to imply that the new Web Connectivity
+This specification does not mean to imply that websteps
 requires a test helper to function. It is out of the scope of this
 spec to discuss this problem. We will discuss it in a companion spec
 that covers the client side implementation of the new test.
 
 ## Semantics
 
-This section defines the messages of the New Web
-Connectivity Test Helper protocol.
+This section defines the messages of the websteps Test Helper protocol.
 
 ### Endpoint
 
