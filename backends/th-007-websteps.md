@@ -1,7 +1,7 @@
 # Websteps Test Helper Spec
 
 * _Author_: sbs
-* _Version_: 202108.17.1114
+* _Version_: 202108.19.1755
 * _Status_: alpha
 
 This document contains a draft specification for the websteps
@@ -78,7 +78,7 @@ where:
 
 - `headers` is an optional map from string to a list of strings containing the headers
 the test helper should include when measuring (which headers from this map will be used
-is specified more in detail below);
+is specified more in detail [below](#algorithm));
 
 - `addrs` is an optional list of string-serialized IP addresses for the
 `url`'s domain discovered by the client.
@@ -188,7 +188,7 @@ HTTPEndpointMeasurement = {
 
 where:
 
-- `endpoint` is a string containing an endpoint (as defined above);
+- `endpoint` is a string containing an endpoint ([as defined above](#endpoint));
 
 - `protocol` is `"http"`;
 
@@ -212,7 +212,7 @@ HTTPSEndpointMeasurement = {
 
 where:
 
-- `endpoint` is a string containing an endpoint (as defined above);
+- `endpoint` is a string containing an endpoint ([as defined above](#endpoint));
 
 - `protocol` is `"https"`;
 
@@ -237,7 +237,7 @@ H3EndpointMeasurement = {
 
 where:
 
-- `endpoint` is a string containing an endpoint (as defined above);
+- `endpoint` is a string containing an endpoint ([as defined above](#endpoint));
 
 - `protocol` is `"h3"`, `"h3-29"`, or any other supported experimental QUIC protocol;
 
@@ -318,7 +318,8 @@ where:
 - `url` is the request URL;
 
 - `headers` is an optional map from string to a list of strings
-containing the request headers (if any);
+containing the request headers (see [below](#algorithm) for more
+information on how we fill this field).
 
 `HTTPResponseMeasurement` has the following structure:
 
@@ -339,7 +340,8 @@ where:
 `df-007-errors.md` document for more information);
 
 - `headers` is an optional map from string to a list of strings
-containing the response headers (if any);
+containing the response headers (see [below](#algorithm) for more
+information on how we fill this field);
 
 - `status_code` is the optional response status code.
 
