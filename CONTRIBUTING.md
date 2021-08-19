@@ -7,8 +7,6 @@ reviewer is satisfied, they will merge the pull request.
 
 ## OONI Software Development Guidelines
 
-Please, before opening a new issue, check whether the issue or feature request
-you want us to consider has not already been reported by someone else.
 Please, make sure you read [OONI Software Development Guidelines](
 https://ooni.org/post/ooni-software-development-guidelines/).
 
