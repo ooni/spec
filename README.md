@@ -20,28 +20,28 @@ to be familiar with this document to understand the context.
 
 *Nettests (aka experiments)*
 
-Are network experiments in a box that deliver some meaningful results to end users.
+Are network experiments that deliver some meaningful results to end users. See
+the [nettests](nettests) directory.
 
 *OONI Probe (aka the Probe)*
 
-The software that users run to perform nettests.
+The software that users run to perform nettests. See the [probe](probe) directory.
 
 *Techniques*
 
 Are strategies that we follow for implementing nettests, hypothesis we are
-interested in testing and implementation details for each target platform.
+interested in testing and implementation details for each target platform. See
+the [techniques](techniques) directory.
 
 *Data formats*
 
-Define how data is presented to end users or analysts.
+Define how data is presented to end users or analysts. See the
+[data-formats](data-formats) directory.
 
 *Backends*
 
-Are core OONI infrastructure components that are necessary to carry out experiments.
-
-Every piece of code developer by OONI should ideally be specified in this
-repository and the specific code documentation should ideally refer to
-the specifications included into this repository.
+Are core OONI infrastructure components that are necessary to carry out experiments. See
+the [backends](backends) directory.
 
 ## New proposal process
 
