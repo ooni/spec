@@ -43,22 +43,6 @@ Define how data is presented to end users or analysts. See the
 Are core OONI infrastructure components that are necessary to carry out experiments. See
 the [backends](backends) directory.
 
-## New proposal process
+## Contributing
 
-If you are interested in having a new experiment be part of OONI, that's great!
-
-The process for suggesting a new experiment is as follows:
-
-1. You figure out if you want to specify a technique (it's just an idea or some
-   extra data we should collect as part of many tests) or full fledged nettest
-   (it's delivering some new and interesting results conclusions to end users)
-
-2. You copy the nettest template or create a new technique document
-
-3. File a pull requests on github
-
-4. Discussion happens on github and it's merged
-
-5. If it's feasible, you implement it as a test or technique in measurement-kit
-
-6. If it's useful for our users to run it, we ship it in OONI Probe
+Please, see [CONTRIBUTING.md](CONTRIBUTING.md).
