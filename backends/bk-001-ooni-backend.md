@@ -1,13 +1,13 @@
 # oonib specification
 
+* author: Arturo Filastò, Aaron Gibson, Simone Basso
 * version: 1.4.2
 * date: 2019-04-30
-* author: Arturo Filastò, Aaron Gibson, Simone Basso
+* status: _obsolete_
 
 This document aims at providing a functional specification of oonib. At the
 time of writing this document not all parts are fully implemented, though the
 application interface to oonib is.
-
 
 # 0.0 Notes
 

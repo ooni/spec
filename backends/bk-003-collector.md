@@ -1,8 +1,9 @@
 # OONI collector specification
 
+* author: Simone Basso (v2.0.0+); Arturo Filastò, Aaron Gibson (v1.4.0)
 * version: 3.0.0
 * date: 2020-12-15
-* author: Simone Basso (v2.0.0+); Arturo Filastò, Aaron Gibson (v1.4.0)
+* status: _obsolete_
 
 This document aims at providing a functional specification of the OONI collector. It
 has been forked from version 1.4.0 of [bk-001-ooni-backend.md](bk-001-ooni-backend.md)

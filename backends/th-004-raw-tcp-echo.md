@@ -2,6 +2,8 @@
 
 2014-12-15-000
 
+* status: _obsolete_
+
 # Specification name
 
 Raw TCP Echo Test Helper
@@ -16,10 +18,10 @@ against the packets sent by an ooni-probe meter.
 
 # Helper preconditions
 
- * An Internet connection
- * An Internet-Reachable TCP Port (preferably port 80)
- * No known middleboxes rewriting IP or TCP headers in unexpected ways between
-   the helper and the transit ISP
+* An Internet connection
+* An Internet-Reachable TCP Port (preferably port 80)
+* No known middleboxes rewriting IP or TCP headers in unexpected ways between
+  the helper and the transit ISP
 
 # Expected impact
 
@@ -64,4 +66,3 @@ Learmonth <<irl@fsfe.org>> using Scapy.
 
 [RFC2616]: http://tools.ietf.org/html/rfc2616
 [Wikipedia-3WHS]: http://en.wikipedia.org/wiki/Transmission_Control_Protocol#Connection_establishment
-

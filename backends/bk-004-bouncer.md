@@ -3,6 +3,7 @@
 * version: 2.0.0
 * date: 2019-03-15
 * author: Simone Basso
+* status: _obsolete_
 
 This document aims at providing a functional specification of the
 OONI bouncer. We keep a description of the _legacy_ bouncer behaviour

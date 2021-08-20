@@ -2,6 +2,8 @@
 
 2014-12-15-000
 
+* status: _obsolete_
+
 # Specification name
 
 Reverse Traceroute Test Helper

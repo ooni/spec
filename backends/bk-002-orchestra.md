@@ -1,8 +1,9 @@
 # OONI Probe Orchestration System Design
 
+* author: Arturo Filastò
 * version: 0.0.1
 * date: 2017-01-23
-* author: Arturo Filastò
+* status: _obsolete_
 
 The goal of the OONI Probe Orchestration System (OPOS) is to support a more dynamic
 and adaptive way of instrumenting instances of ooniprobe.

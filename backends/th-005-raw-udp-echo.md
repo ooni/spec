@@ -2,6 +2,8 @@
 
 2014-12-15-000
 
+* status: _obsolete_
+
 # Specification name
 
 Raw UDP Echo Test Helper
@@ -66,4 +68,3 @@ An implementation of this test helper is currently being worked on by Iain R.
 Learmonth <<irl@fsfe.org>> using Scapy.
 
 [RFC3828]: http://tools.ietf.org/html/rfc3828
-
