@@ -11,7 +11,7 @@ This makes it possible to have a deep understanding of how OONI tests work,
 explain the assumption we make in them and make it possible to create
 independent implementations.
 
-To get an introduction of how we operate from the point of view of ooniprobe,
+To get an introduction of how we operate from the point of view of OONI Probe,
 i.e. the software that users can install, please see [the specific
 documentation describing that](probe). New developers would ideally want
 to be familiar with this document to understand the context.
@@ -22,7 +22,7 @@ to be familiar with this document to understand the context.
 
 Are network experiments in a box that deliver some meaningful results to end users.
 
-*Probe*
+*OONI Probe (aka the Probe)*
 
 The software that users run to perform nettests.
 
