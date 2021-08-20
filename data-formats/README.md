@@ -201,6 +201,7 @@ of the following extensions:
 - [the TLSHandshake data format](df-006-tlshandshake.md)
 - [the available failure strings](df-007-errors.md)
 - [the network events data format](df-008-netevents.md)
+- [the tunnel data format](df-009-tunnel.md)
 
 See the [nettests](../nettests) directory for the experiments' specs.
 
