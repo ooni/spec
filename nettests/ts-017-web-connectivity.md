@@ -2,6 +2,8 @@
 
 2021-03-22-001
 
+* _status_: current
+
 # Specification name
 
 Web connectivity

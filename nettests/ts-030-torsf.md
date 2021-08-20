@@ -2,6 +2,8 @@
 
 2021-06-18-001
 
+* _status_: experimental
+
 # Specification name
 
 `torsf` (Tor using snowflake)

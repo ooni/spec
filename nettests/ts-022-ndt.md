@@ -2,6 +2,8 @@
 
 2020-04-08-001
 
+* _status_: current
+
 # Specification name
 
 NDT (Network Diagnostic Tool)

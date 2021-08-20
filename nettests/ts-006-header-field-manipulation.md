@@ -2,6 +2,8 @@
 
 0.2.1
 
+* _status_: current
+
 # Specification name
 
 Header Field Manipulation Test

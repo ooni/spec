@@ -2,6 +2,8 @@
 
 2020-01-11-001
 
+* _status_: current
+
 # Specification name
 
 Telegram

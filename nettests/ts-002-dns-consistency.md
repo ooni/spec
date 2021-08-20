@@ -2,6 +2,8 @@
 
 0.2.0
 
+* _status_: obsolete
+
 # Specification name
 
 DNS Consistency

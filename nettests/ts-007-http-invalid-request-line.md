@@ -2,6 +2,8 @@
 
 1.0.0
 
+* _status_: current
+
 # Specification name
 
 HTTP Invalid Request Line test

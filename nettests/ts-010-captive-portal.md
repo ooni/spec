@@ -2,6 +2,8 @@
 
 0.4.0
 
+* _status_: current
+
 # Specification name
 
 Captive portal test.

@@ -2,6 +2,8 @@
 
 2013-01-19_000
 
+* _status_: obsolete
+
 # Specification name
 
 bridgeT

@@ -2,6 +2,8 @@
 
 2020-12-14-000
 
+* _status_: experimental
+
 # Specification name
 
 dnscheck

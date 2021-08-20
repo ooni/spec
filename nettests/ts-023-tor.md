@@ -2,6 +2,8 @@
 
 2020-06-16-001
 
+* _status_: current
+
 # Specification name
 
 Tor (`tor`)

@@ -2,6 +2,8 @@
 
 2020-07-09-002
 
+* _status_: current
+
 # Specification name
 
 WhatsApp

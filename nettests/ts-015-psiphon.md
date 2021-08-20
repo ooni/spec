@@ -2,6 +2,8 @@
 
 0.3.3
 
+* _status_: current
+
 # Specification name
 
 Psiphon

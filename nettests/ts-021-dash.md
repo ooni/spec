@@ -2,6 +2,8 @@
 
 2020-04-20-001
 
+* _status_: current
+
 # Specification name
 
 DASH

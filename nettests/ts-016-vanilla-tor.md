@@ -2,6 +2,8 @@
 
 0.1.0
 
+* _status_: obsolete
+
 # Specification name
 
 Vanilla Tor Test

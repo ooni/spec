@@ -2,6 +2,8 @@
 
 2020-06-01-000
 
+* _status_: experimental
+
 # Specification name
 
 STUN reachability (`stun_reachability`)

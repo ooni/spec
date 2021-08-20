@@ -2,6 +2,8 @@
 
 2020-11-12-001
 
+* _status_: experimental
+
 # Specification name
 
 SNI blocking (`sni_blocking`)

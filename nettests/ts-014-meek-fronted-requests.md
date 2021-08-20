@@ -2,6 +2,8 @@
 
 2015-04-01-000
 
+* _status_: obsolete
+
 # Specification name
 
 Meek Fronted Request Test

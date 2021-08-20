@@ -2,6 +2,8 @@
 
 2021-02-15-001
 
+* _status_: current
+
 # Specification name
 
 Signal

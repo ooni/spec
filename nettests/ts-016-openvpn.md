@@ -2,6 +2,8 @@
 
 2015-10-11-000
 
+* _status_: obsolete
+
 # Specification name
 
 OpenVPN Client Test

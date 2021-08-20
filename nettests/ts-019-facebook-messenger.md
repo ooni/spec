@@ -2,6 +2,8 @@
 
 2016-10-25-001
 
+* _status_: current
+
 # Specification name
 
 Facebook Messenger
