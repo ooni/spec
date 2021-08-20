@@ -1,5 +1,7 @@
 # Measurements and URL policy
 
+* _status_: needs updating (it references the defunct governance roster for OPOS)
+
 This document explains the policy we follow when considering what URLs and
 Measurements should be scheduled via the OONI Probe Orchestration System (OPOS)
 and/or any other system run by OONI to gather network measurement data.
