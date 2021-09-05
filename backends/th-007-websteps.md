@@ -229,7 +229,7 @@ where:
 ```
 H3EndpointMeasurement = {
   "endpoint": "",
-  "protocol": "h3" | "h3-29" | ...,
+  "protocol": "h3" | ...,
   "quic_handshake": TLSHandshakeMeasurement{},
   "http_round_trip": HTTPRoundTripMeasurement{}
 }
@@ -239,7 +239,7 @@ where:
 
 - `endpoint` is a string containing an endpoint ([as defined above](#endpoint));
 
-- `protocol` is `"h3"`, `"h3-29"`, or any other supported experimental QUIC protocol;
+- `protocol` is `"h3"`;
 
 - `quic_handshake` is a `QUICHandshakeMeasurement`;
 
