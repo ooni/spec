@@ -1,6 +1,6 @@
 # Specification version number
 
-2021-03-22-001
+2021-11-05-001
 
 * _status_: current
 
@@ -317,6 +317,9 @@ Response:
     }
 }
 ```
+
+*Note*: the control will set `body_length` and `status_code` to `-1` in
+case of failure. The client code must correctly handle this case.
 
 ## Example output sample
 
