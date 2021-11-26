@@ -1,6 +1,6 @@
 # Specification version number
 
-2020-06-01-000
+2020-11-26-000
 
 * _status_: experimental
 
@@ -18,12 +18,12 @@ Detect whether [STUN](https://en.wikipedia.org/wiki/STUN) is working in a specif
 
 # Expected inputs
 
-This nettest will test all the stun server endpoints (i.e. `"<domain>:<port>"`) passed
-as input. If no input is provided, `"stun.l.google.com:19302"` is tested.
+This nettest will test all the STUN-server endpoints encoded as URLs (i.e. `stun://"<domain>:<port>"`)
+passed as input. If no input is provided, the test fails.
 
 # Test description
 
-For each STUN input endpoint, this nettest sends a binding request to the specified
+For each STUN input URL, this nettest sends a binding request to the given URL's
 endpoint and receives the corresponding response. If a valid response is received, then
 the nettest is successful, otherwise it failed.
 
@@ -70,7 +70,7 @@ or `null` if no error occurred (see `df-007-errors`);
     "dnst": 0,
     "netevents": 0
   },
-  "input": null,
+  "input": "stun://stun.l.google.com:19302",
   "measurement_start_time": "2020-06-01 16:51:44",
   "probe_asn": "AS30722",
   "probe_cc": "IT",
