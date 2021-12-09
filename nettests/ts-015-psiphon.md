@@ -1,6 +1,6 @@
 # Specification version number
 
-0.3.3
+0.3.4
 
 * _status_: current
 
@@ -14,7 +14,9 @@ None
 
 # Expected impact
 
-Ability to measure whether Psiphon is working from the given network vantage point.
+Ability to measure whether (1) we can create a Psiphon tunnel from the
+user vantage point starting from scratch (i.e., without any cache directory)
+and (2) we can use this tunnel to fetch a webpage.
 
 # Expected inputs
 
