@@ -42,6 +42,7 @@ The ooni/probe-legacy contains mostly the legacy errors, listed below.
 
 |              Error                   |Details|
 |:------------------------------------:|:-----:|
+|`"socks_error"`                       |Generic error in SOCKS code. <mark>Also an (MK) error</mark>|
 |`"address_family_not_supported_error"`|[socket.gaierror](https://docs.python.org/3.8/library/socket.html#socket.gaierror)|
 |`"connect_error"`                     |[t.i.e.ConnectError](https://twistedmatrix.com/documents/15.4.0/api/twisted.internet.error.ConnectError.html)||
 |`"connection_done"`                   |[t.i.e.ConnectionDone](https://twistedmatrix.com/documents/15.4.0/api/twisted.internet.error.ConnectionDone.html)|
@@ -56,7 +57,6 @@ The ooni/probe-legacy contains mostly the legacy errors, listed below.
 |`"socks_command_not_supported"`       |[txsocksx.errors.CommandNotSupported](https://github.com/habnabit/txsocksx/blob/59ac4e088ea064ae9ee44ac371df3ed46ca3b92f/txsocksx/errors.py)|
 |`"socks_connection_not_allowed"`      |[txsocksx.errors.ConnectionNotAllowed](https://github.com/habnabit/txsocksx/blob/59ac4e088ea064ae9ee44ac371df3ed46ca3b92f/txsocksx/errors.py)|
 |`"socks_connection_refused"`          |[txsocksx.errors.ConnectionRefused](https://github.com/habnabit/txsocksx/blob/59ac4e088ea064ae9ee44ac371df3ed46ca3b92f/txsocksx/errors.py)|
-|`"socks_error"`                       |Generic error in SOCKS code <mark>Also an (MK) error</mark>|
 |`"socks_host_unreachable"`            |[txsocksx.errors.HostUnreachable](https://github.com/habnabit/txsocksx/blob/59ac4e088ea064ae9ee44ac371df3ed46ca3b92f/txsocksx/errors.py)|
 |`"socks_network_unreachable"`         |[txsocksx.errors.NetworkUnreachable](https://github.com/habnabit/txsocksx/blob/59ac4e088ea064ae9ee44ac371df3ed46ca3b92f/txsocksx/errors.py)
 |`"socks_server_failure"`              |[txsocksx.errors.ServerFailure](https://github.com/habnabit/txsocksx/blob/59ac4e088ea064ae9ee44ac371df3ed46ca3b92f/txsocksx/errors.py)|
