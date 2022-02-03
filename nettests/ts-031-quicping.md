@@ -29,7 +29,8 @@ The experiment takes in as input a single domain name or IP address, or a list o
 
 The following options can be configured (for now by using the `miniooni` client):
 - target port, option `Port` (`int64`, default: 443)
-- number of ping repetitions, option `Repetitions` (`int64`, default: 10)
+- number of ping requests that `quicping` will send, option `Repetitions` (`int64`, default: 10)
+    - `quicping` does *not* stop when it successfully receives a response but always sends `Repetitions` times of ping requests
 - number of milliseconds before read timeout, option `Timeout` (`int64`, default: 5000).
 
 
@@ -49,9 +50,10 @@ A QUIC PING is a single QUIC Initial packet which elicits a single response from
 `quicping` behavior:
 - create a QUIC Initial packet with random payload (i.e. no TLS handshake payload)
 - set the QUIC version to a version that the target server will not accept
-- create a UDP socket and sends the QUIC ping packet 
-- *if the server receives the ping packet, it will respond with a Version Negotiation packet*
-- wait for `x` milliseconds to receive the Version Negotiation response
+- repeat 10 times (or `Repetitions` times, if specified):
+    - create a UDP socket and sends the QUIC ping packet 
+    - *if the server receives the ping packet, it will respond with a Version Negotiation packet*
+    - wait for `x` milliseconds to receive the Version Negotiation response
 
 # Expected output
 
@@ -91,11 +93,11 @@ where:
 - `domain` (`string`) is the domain of the target host
 
 - `pings` is the list of ping operations:
-    - `conn_id_dst` (`[]byte`) is the used destination connection ID
-    - `conn_id_src` (`[]byte`) is the used source connection ID
+    - `conn_id_dst` (`[]byte`) is the used destination connection ID, base64 encoded
+    - `conn_id_src` (`[]byte`) is the used source connection ID, base64 encoded
     - `failure` conforms to `df-007-errors`
-    - `request` is the raw ping request, or `nil`
-    - `response` is the raw ping response, or `nil`
+    - `request` is the raw ping request, or `nil`, base64 encoded
+    - `response` is the raw ping response, or `nil, base64 encoded
     - `supported_versions` is the list of supported QUIC versions announced by the server
 
 - `repetitions` (`int64`) is the number of subsequent pings.
