@@ -37,7 +37,7 @@ chooses between the `"amp"` and `"domain_fronting"` Snowflake rendezvous
 methods. A `""` value for this option indicates we should be using
 the default rendezvous method (`"domain_fronting"` as of 2022-02-07).
 
-These options and their values may change at a later time, once we have
+These options and their default values may change at a later time, once we have
 improved our understanding of the `torsf` experiment. See
 [probe#2004](https://github.com/ooni/probe/issues/2004) for more context
 on what led us to add these options.
