@@ -178,7 +178,7 @@ a persistent data dir necessarily leads to faster bootstrap times _in
 all cases_.
 
 To figure out whether `tor` had enough cached information to perform an
-in-theory-fastest bootstrap, you should look into the sequence of bootstrap
+in-theory-faster bootstrap, you should look into the sequence of bootstrap
 events. The following bootstrap (which, by the way, too 316 seconds to
 complete) did not require `tor` to fetch _additional_ information because
 its datadir already contained a fresh cache:
