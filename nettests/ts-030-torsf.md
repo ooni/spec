@@ -235,4 +235,5 @@ anecdotally, it took 67 seconds to complete):
 ```
 
 Thus, we can say that there is enough cached information if the bootstrap jumps from
-`15% (handshake_done)` to `75% (enough_dirinfo)`.
+`handshake_done` to `enough_dirinfo` without emitting the `onehop_create`, `requesting_status`
+and `requesting_descriptors` bootstrap events.
