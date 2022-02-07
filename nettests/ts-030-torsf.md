@@ -234,5 +234,5 @@ anecdotally, it took 67 seconds to complete):
 }
 ```
 
-Thus, we can say that there is enough cached information is the bootstrap jumps from
+Thus, we can say that there is enough cached information if the bootstrap jumps from
 `15% (handshake_done)` to `75% (enough_dirinfo)`.
