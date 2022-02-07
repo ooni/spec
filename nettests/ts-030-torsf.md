@@ -1,6 +1,6 @@
 # Specification version number
 
-2022-02-07-001
+2022-02-07-002
 
 * _status_: experimental
 
@@ -145,8 +145,6 @@ the [data analysis considerations](#data-analysis-considerations) section below.
     "rendezvous_method": "domain_fronting",
     "tor_logs": [
       "Feb 07 12:42:20.000 [notice] Bootstrapped 0% (starting): Starting",
-      "Feb 07 12:42:20.000 [notice] new bridge descriptor 'flakey1' (cached): $2B280B23E1107BB62ABFC40DDCC8824814F80A72~flakey1 [1zOHpg+FxqQfi/6jDLtCpHHqBTH8gjYmCKXkus1D5Ko] at 192.0.2.3",
-      "Feb 07 12:42:20.000 [notice] new bridge descriptor 'flakey3' (cached): $2B280B23E1107BB62ABFC40DDCC8824814F80A72~flakey3 [1zOHpg+FxqQfi/6jDLtCpHHqBTH8gjYmCKXkus1D5Ko] at 192.0.2.3",
       "Feb 07 12:42:20.000 [notice] Bootstrapped 1% (conn_pt): Connecting to pluggable transport",
       "Feb 07 12:42:20.000 [notice] Bootstrapped 2% (conn_done_pt): Connected to pluggable transport",
       "Feb 07 12:42:20.000 [notice] Bootstrapped 10% (conn_done): Connected to a relay",
@@ -187,8 +185,6 @@ its datadir already contained a fresh cache:
 {
     "tor_logs": [
       "Feb 07 12:42:20.000 [notice] Bootstrapped 0% (starting): Starting",
-      "Feb 07 12:42:20.000 [notice] new bridge descriptor 'flakey1' (cached): $2B280B23E1107BB62ABFC40DDCC8824814F80A72~flakey1 [1zOHpg+FxqQfi/6jDLtCpHHqBTH8gjYmCKXkus1D5Ko] at 192.0.2.3",
-      "Feb 07 12:42:20.000 [notice] new bridge descriptor 'flakey3' (cached): $2B280B23E1107BB62ABFC40DDCC8824814F80A72~flakey3 [1zOHpg+FxqQfi/6jDLtCpHHqBTH8gjYmCKXkus1D5Ko] at 192.0.2.3",
       "Feb 07 12:42:20.000 [notice] Bootstrapped 1% (conn_pt): Connecting to pluggable transport",
       "Feb 07 12:42:20.000 [notice] Bootstrapped 2% (conn_done_pt): Connected to pluggable transport",
       "Feb 07 12:42:20.000 [notice] Bootstrapped 10% (conn_done): Connected to a relay",
@@ -216,7 +212,6 @@ anecdotally, it took 67 seconds to complete):
       "Feb 07 12:38:45.000 [notice] Bootstrapped 15% (handshake_done): Handshake with a relay done",
       "Feb 07 12:38:45.000 [notice] Bootstrapped 20% (onehop_create): Establishing an encrypted directory connection",
       "Feb 07 12:38:46.000 [notice] Bootstrapped 25% (requesting_status): Asking for networkstatus consensus",
-      "Feb 07 12:38:46.000 [notice] new bridge descriptor 'flakey1' (fresh): $2B280B23E1107BB62ABFC40DDCC8824814F80A72~flakey1 [1zOHpg+FxqQfi/6jDLtCpHHqBTH8gjYmCKXkus1D5Ko] at 192.0.2.3",
       "Feb 07 12:38:49.000 [notice] Bootstrapped 30% (loading_status): Loading networkstatus consensus",
       "Feb 07 12:38:52.000 [notice] Bootstrapped 45% (requesting_descriptors): Asking for relay descriptors",
       "Feb 07 12:38:52.000 [notice] Bootstrapped 58% (loading_descriptors): Loading relay descriptors",
