@@ -26,6 +26,7 @@ Since UDP has no acknowledgement mechanism, UDP endpoints cannot be tested with 
 # Expected inputs
 
 The experiment takes in as input a single domain name or IP address, or a list of domains/IP addresses.
+Additionally, `quicping` allows URL input. Although the URL is not the semantically precise target of the experiment, this behavior makes `quicping` consistent with other experiments and enables us to reuse test lists.
 
 The following options can be configured (for now by using the `miniooni` client):
 - target port, option `Port` (`int64`, default: 443)
