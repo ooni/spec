@@ -919,4 +919,4 @@ Whether specific DoT/DoH/Do53 servers work.
 
 ## See also
 
-[Basso, S. (2021). Measuring DoT/DoH Blocking Using OONI Probe: a Preliminary Study. In In Network and Distributed System Security Symposium (NDSS’21).](https://www.ndss-symposium.org/wp-content/uploads/dnspriv21-02-paper.pdf)
+[Basso, S. (2021). Measuring DoT/DoH Blocking Using OONI Probe: a Preliminary Study. In Network and Distributed System Security Symposium (NDSS’21).](https://www.ndss-symposium.org/wp-content/uploads/dnspriv21-02-paper.pdf)
