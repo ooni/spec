@@ -86,6 +86,7 @@ considered as a failure to start the test up;
 ```JSON
 {
     "bootstrap_time": 1.1,
+    "default_timeout": 600,
     "failure": null,
     "persistent_datadir": true,
     "rendezvous_method": "domain_fronting",
@@ -98,6 +99,8 @@ where:
 
 - `bootstrap_time` (`float`) is zero if the bootstrap times out and otherwise is
 the number of seconds it required to bootstrap;
+
+- `default_timeout` (`float`) is the default timeout for the experiment;
 
 - `failure` conforms to `df-007-errors`;
 
@@ -140,6 +143,7 @@ the [data analysis considerations](#data-analysis-considerations) section below.
   "software_version": "3.14.0-alpha.1",
   "test_keys": {
     "bootstrap_time": 316.569053291,
+    "default_timeout": 600,
     "failure": null,
     "persistent_datadir": true,
     "rendezvous_method": "domain_fronting",
