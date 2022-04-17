@@ -22,6 +22,7 @@ code. See this directory's [README](README.md) for the basic concepts.
 
 ```JSON
 {
+    "address": "",
     "cipher_suite": "",
     "conn_id": 1231,
     "failure": "ssl_invalid_hostname",
@@ -33,6 +34,8 @@ code. See this directory's [README](README.md) for the basic concepts.
     "transaction_id": 1
 }
 ```
+
+- `address` (`string`): The endpoint IP address with which the handshake is performed.
 
 - `cipher_suite` (`string`): the negotiated cipher suite, if any.
 
@@ -69,6 +72,7 @@ not relevant to the TLS data format:
   "test_keys": {
     "tls_handshakes": [
       {
+        "address": "142.250.193.14"
         "cipher_suite": "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
         "failure": null,
         "negotiated_protocol": "http/1.1",
