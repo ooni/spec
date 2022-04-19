@@ -72,7 +72,7 @@ not relevant to the TLS data format:
   "test_keys": {
     "tls_handshakes": [
       {
-        "address": "142.250.193.14"
+        "address": "142.250.193.14:443"
         "cipher_suite": "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
         "failure": null,
         "negotiated_protocol": "http/1.1",
