@@ -35,7 +35,7 @@ code. See this directory's [README](README.md) for the basic concepts.
 }
 ```
 
-- `address` (`string`): The endpoint IP address with which the handshake is performed.
+- `address` (`string`): The endpoint IP address (host:port) with which the handshake is performed.
 
 - `cipher_suite` (`string`): the negotiated cipher suite, if any.
 
