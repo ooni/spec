@@ -24,7 +24,7 @@ follow redirects, set to `redirect` otherwise.
 - `request` (`[]Transaction`): list of transaction objects. See below.
 
 - `socksproxy` (`string`; optional): address of the SOCKS proxy being
-used. Omit or set to `null` if no SOCKS proxy is being used. The format
+used in a nettest. Note that this proxy is different from the one used to contact the backend. Omit or set to `null` if no SOCKS proxy is being used. The format
 to be used is `1.2.3.4:54321` for IPv4 and `[::1234]:54321` for IPv6.
 
 ## Transaction
