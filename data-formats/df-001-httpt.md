@@ -6,7 +6,7 @@ code. See this directory's [README](README.md) for the basic concepts.
 
 | Name       | `httpt` |
 |------------|---------|
-| Version    | 0       |
+| Version    | 1       |
 
 ## Specification
 
