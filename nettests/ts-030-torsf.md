@@ -100,7 +100,7 @@ where:
 - `bootstrap_time` (`float`) is zero if the bootstrap times out and otherwise is
 the number of seconds it required to bootstrap;
 
-- `default_timeout` (`float`) is the default timeout for the experiment;
+- `default_timeout` (`float`) is the default timeout for the experiment (in seconds);
 
 - `failure` conforms to `df-007-errors`;
 
