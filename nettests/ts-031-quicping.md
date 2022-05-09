@@ -22,6 +22,9 @@ Since UDP has no acknowledgement mechanism, UDP endpoints cannot be tested with 
 
 2) The ability to measure HTTP/3 / QUIC blocking in a more sophisticated way by distinguishing TLS censorship from UDP and QUIC blocking.
 
+(The `ts-034-simplequicping` experiment measures _whether_ we could use a QUIC endpoint
+while this experiment tries to determine _how_ QUIC could be blocked.)
+
 
 # Expected inputs
 

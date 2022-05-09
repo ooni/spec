@@ -6,7 +6,7 @@
 
 # Specification name
 
-`tlsping` (TLS ping)
+`simplequicping` (simple QUIC ping)
 
 # Test preconditions
 
@@ -14,25 +14,28 @@
 
 # Expected impact
 
-The possibility of pinging a TLS endpoint.
+The possibility of pinging a QUIC endpoint.
+
+(The `ts-032-quicping` experiment measures _whether_ QUIC is blocked at the UDP
+or TLS level, while this experiment is simpler and just checks for whether we could
+establish a QUIC connection to a given QUIC endpoint.)
 
 # Expected inputs
 
-* A URL like `tlshandshake://<host>:<port>`.
+* A URL like `quichandshake://<host>:<port>`.
 
 * An optional SNI to use (`-O SNI=value` with `miniooni`).
 
 # Test description
 
-The experiment will attempt to connect and handshake to the given TLS
-endpoint every second for ten times and return the results.
+The experiment will attempt to handshake to the given QUIC endpoint every
+second for ten times and return the results.
 
 # Expected output
 
 ## Parent data format
 
 * `df-005-tcpconnect`
-* `df-006-tlshandshake`
 * `df-008-netevents`
 
 ## Semantics
@@ -45,8 +48,7 @@ endpoint every second for ten times and return the results.
 
 where:
 
-- `pings` contains a list of `df-005-tcpconnect`, `df-006-tlshandhsake`,
-and `df-008-netevents` results.
+- `pings` contains a list of `df-006-tlshandhsake`, and `df-008-netevents` results.
 
 ## Possible conclusions
 
@@ -64,8 +66,8 @@ from its results but it is useful to perform censorship research.
     "platform": "macos"
   },
   "data_format_version": "0.2.0",
-  "input": "tlshandshake://8.8.8.8:443",
-  "measurement_start_time": "2022-05-09 08:04:08",
+  "input": "quichandshake://8.8.8.8:443",
+  "measurement_start_time": "2022-05-09 08:57:43",
   "options": [
     "SNI=dns.google"
   ],
@@ -73,7 +75,7 @@ from its results but it is useful to perform censorship research.
   "probe_cc": "IT",
   "probe_ip": "127.0.0.1",
   "probe_network_name": "Vodafone Italia S.p.A.",
-  "report_id": "20220509T080408Z_tlsping_IT_30722_n1_7mJtuWRHS1ocwWaW",
+  "report_id": "20220509T085744Z_simplequicping_IT_30722_n1_f5vAYRi4KrvSWDno",
   "resolver_asn": "AS30722",
   "resolver_ip": "91.80.36.92",
   "resolver_network_name": "Vodafone Italia S.p.A.",
@@ -86,58 +88,108 @@ from its results but it is useful to perform censorship research.
           {
             "address": "8.8.8.8:443",
             "failure": null,
-            "num_bytes": 280,
-            "operation": "write",
-            "proto": "tcp",
-            "t": 0.023834208,
-            "started": 0.023748375
+            "num_bytes": 1252,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 0.005243417,
+            "started": 0.005098084
           },
           {
             "address": "8.8.8.8:443",
             "failure": null,
-            "num_bytes": 517,
-            "operation": "read",
-            "proto": "tcp",
-            "t": 0.058688583,
-            "started": 0.02384975
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 0.022103792,
+            "started": 0.004514167
           },
           {
             "address": "8.8.8.8:443",
             "failure": null,
-            "num_bytes": 4301,
-            "operation": "read",
-            "proto": "tcp",
-            "t": 0.059104292,
-            "started": 0.059039917
+            "num_bytes": 1252,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 0.022579084,
+            "started": 0.022500917
           },
           {
             "address": "8.8.8.8:443",
             "failure": null,
-            "num_bytes": 64,
-            "operation": "write",
-            "proto": "tcp",
-            "t": 0.06095525,
-            "started": 0.060911167
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 0.038119834,
+            "started": 0.022119084
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 0.038136084,
+            "started": 0.038129584
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 0.038145084,
+            "started": 0.038139959
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 0.038152625,
+            "started": 0.038148292
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 117,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 0.038158,
+            "started": 0.038153917
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 44,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 0.038406834,
+            "started": 0.038357709
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 44,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 0.0384265,
+            "started": 0.038411375
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 83,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 0.039876209,
+            "started": 0.039839792
           }
         ],
-        "tcp_connect": [
+        "quic_handshakes": [
           {
-            "ip": "8.8.8.8",
-            "port": 443,
-            "t": 0.02338725,
-            "status": {
-              "blocked": false,
-              "failure": null,
-              "success": true
-            },
-            "started": 0.006157042
-          }
-        ],
-        "tls_handshakes": [
-          {
-            "cipher_suite": "TLS_AES_128_GCM_SHA256",
+            "cipher_suite": "TLS_CHACHA20_POLY1305_SHA256",
             "failure": null,
-            "negotiated_proto": "h2",
+            "negotiated_proto": "h3",
             "tls_version": "TLSv1.3",
             "peer_certificates": [
               {
@@ -153,16 +205,15 @@ from its results but it is useful to perform censorship research.
                 "format": "base64"
               }
             ],
-            "t": 0.060990958,
+            "t": 0.039839625,
             "address": "8.8.8.8:443",
             "server_name": "dns.google",
             "alpn": [
-              "h2",
-              "http/1.1"
+              "h3"
             ],
             "no_tls_verify": false,
-            "proto": "tcp",
-            "started": 0.023443792
+            "proto": "quic",
+            "started": 0.004255792
           }
         ]
       },
@@ -171,58 +222,117 @@ from its results but it is useful to perform censorship research.
           {
             "address": "8.8.8.8:443",
             "failure": null,
-            "num_bytes": 280,
-            "operation": "write",
-            "proto": "tcp",
-            "t": 1.025652417,
-            "started": 1.025586625
+            "num_bytes": 1252,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 1.007740542,
+            "started": 1.007607792
           },
           {
             "address": "8.8.8.8:443",
             "failure": null,
-            "num_bytes": 517,
-            "operation": "read",
-            "proto": "tcp",
-            "t": 1.06052025,
-            "started": 1.025660625
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 1.024162542,
+            "started": 1.007077709
           },
           {
             "address": "8.8.8.8:443",
             "failure": null,
-            "num_bytes": 4301,
-            "operation": "read",
-            "proto": "tcp",
-            "t": 1.060936042,
-            "started": 1.06085575
+            "num_bytes": 1252,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 1.024637792,
+            "started": 1.024592459
           },
           {
             "address": "8.8.8.8:443",
             "failure": null,
-            "num_bytes": 64,
-            "operation": "write",
-            "proto": "tcp",
-            "t": 1.062136375,
-            "started": 1.062079875
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 1.040605917,
+            "started": 1.024187667
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 1.040622417,
+            "started": 1.0406155
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 1.040633125,
+            "started": 1.040626667
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 1.040662792,
+            "started": 1.040657584
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 115,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 1.040671625,
+            "started": 1.040665334
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 44,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 1.040879292,
+            "started": 1.04082625
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 44,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 1.040901084,
+            "started": 1.040882542
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 83,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 1.042761792,
+            "started": 1.042716334
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 33,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 1.042786167,
+            "started": 1.042766292
           }
         ],
-        "tcp_connect": [
+        "quic_handshakes": [
           {
-            "ip": "8.8.8.8",
-            "port": 443,
-            "t": 1.02496775,
-            "status": {
-              "blocked": false,
-              "failure": null,
-              "success": true
-            },
-            "started": 1.007172542
-          }
-        ],
-        "tls_handshakes": [
-          {
-            "cipher_suite": "TLS_AES_128_GCM_SHA256",
+            "cipher_suite": "TLS_CHACHA20_POLY1305_SHA256",
             "failure": null,
-            "negotiated_proto": "h2",
+            "negotiated_proto": "h3",
             "tls_version": "TLSv1.3",
             "peer_certificates": [
               {
@@ -238,16 +348,15 @@ from its results but it is useful to perform censorship research.
                 "format": "base64"
               }
             ],
-            "t": 1.062176417,
+            "t": 1.0427260839999999,
             "address": "8.8.8.8:443",
             "server_name": "dns.google",
             "alpn": [
-              "h2",
-              "http/1.1"
+              "h3"
             ],
             "no_tls_verify": false,
-            "proto": "tcp",
-            "started": 1.025058333
+            "proto": "quic",
+            "started": 1.006765375
           }
         ]
       },
@@ -256,58 +365,117 @@ from its results but it is useful to perform censorship research.
           {
             "address": "8.8.8.8:443",
             "failure": null,
-            "num_bytes": 280,
-            "operation": "write",
-            "proto": "tcp",
-            "t": 2.024804542,
-            "started": 2.024738958
+            "num_bytes": 1252,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 2.009436,
+            "started": 2.009307709
           },
           {
             "address": "8.8.8.8:443",
             "failure": null,
-            "num_bytes": 517,
-            "operation": "read",
-            "proto": "tcp",
-            "t": 2.059690875,
-            "started": 2.024810542
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 2.026164417,
+            "started": 2.008734334
           },
           {
             "address": "8.8.8.8:443",
             "failure": null,
-            "num_bytes": 4301,
-            "operation": "read",
-            "proto": "tcp",
-            "t": 2.060112958,
-            "started": 2.060023667
+            "num_bytes": 1252,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 2.0267135,
+            "started": 2.026653292
           },
           {
             "address": "8.8.8.8:443",
             "failure": null,
-            "num_bytes": 64,
-            "operation": "write",
-            "proto": "tcp",
-            "t": 2.061246333,
-            "started": 2.061195375
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 2.043212959,
+            "started": 2.026181625
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 2.043235,
+            "started": 2.043224542
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 2.043251125,
+            "started": 2.043239292
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 2.043259459,
+            "started": 2.043253709
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 117,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 2.043295959,
+            "started": 2.043290125
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 44,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 2.043528792,
+            "started": 2.043479584
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 44,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 2.043550209,
+            "started": 2.0435325
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 83,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 2.045380084,
+            "started": 2.045355875
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 33,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 2.045410334,
+            "started": 2.045385084
           }
         ],
-        "tcp_connect": [
+        "quic_handshakes": [
           {
-            "ip": "8.8.8.8",
-            "port": 443,
-            "t": 2.024229792,
-            "status": {
-              "blocked": false,
-              "failure": null,
-              "success": true
-            },
-            "started": 2.007389583
-          }
-        ],
-        "tls_handshakes": [
-          {
-            "cipher_suite": "TLS_AES_128_GCM_SHA256",
+            "cipher_suite": "TLS_CHACHA20_POLY1305_SHA256",
             "failure": null,
-            "negotiated_proto": "h2",
+            "negotiated_proto": "h3",
             "tls_version": "TLSv1.3",
             "peer_certificates": [
               {
@@ -323,16 +491,15 @@ from its results but it is useful to perform censorship research.
                 "format": "base64"
               }
             ],
-            "t": 2.061281833,
+            "t": 2.045370667,
             "address": "8.8.8.8:443",
             "server_name": "dns.google",
             "alpn": [
-              "h2",
-              "http/1.1"
+              "h3"
             ],
             "no_tls_verify": false,
-            "proto": "tcp",
-            "started": 2.024314
+            "proto": "quic",
+            "started": 2.008397709
           }
         ]
       },
@@ -341,58 +508,117 @@ from its results but it is useful to perform censorship research.
           {
             "address": "8.8.8.8:443",
             "failure": null,
-            "num_bytes": 280,
-            "operation": "write",
-            "proto": "tcp",
-            "t": 3.034900833,
-            "started": 3.034828792
+            "num_bytes": 1252,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 3.008320542,
+            "started": 3.0082105
           },
           {
             "address": "8.8.8.8:443",
             "failure": null,
-            "num_bytes": 517,
-            "operation": "read",
-            "proto": "tcp",
-            "t": 3.069628375,
-            "started": 3.034908208
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 3.034615792,
+            "started": 3.007805292
           },
           {
             "address": "8.8.8.8:443",
             "failure": null,
-            "num_bytes": 4301,
-            "operation": "read",
-            "proto": "tcp",
-            "t": 3.0701675,
-            "started": 3.070063125
+            "num_bytes": 1252,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 3.035186417,
+            "started": 3.035118792
           },
           {
             "address": "8.8.8.8:443",
             "failure": null,
-            "num_bytes": 64,
-            "operation": "write",
-            "proto": "tcp",
-            "t": 3.071683458,
-            "started": 3.071627417
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 3.050836209,
+            "started": 3.03464475
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 3.050869584,
+            "started": 3.05086
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 44,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 3.051307417,
+            "started": 3.051136584
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 3.053056375,
+            "started": 3.050877542
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 3.05308625,
+            "started": 3.053075167
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 121,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 3.053118459,
+            "started": 3.053092209
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 44,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 3.053374334,
+            "started": 3.053293042
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 83,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 3.055937292,
+            "started": 3.055883875
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 33,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 3.05598075,
+            "started": 3.055941792
           }
         ],
-        "tcp_connect": [
+        "quic_handshakes": [
           {
-            "ip": "8.8.8.8",
-            "port": 443,
-            "t": 3.034201417,
-            "status": {
-              "blocked": false,
-              "failure": null,
-              "success": true
-            },
-            "started": 3.008498083
-          }
-        ],
-        "tls_handshakes": [
-          {
-            "cipher_suite": "TLS_AES_128_GCM_SHA256",
+            "cipher_suite": "TLS_CHACHA20_POLY1305_SHA256",
             "failure": null,
-            "negotiated_proto": "h2",
+            "negotiated_proto": "h3",
             "tls_version": "TLSv1.3",
             "peer_certificates": [
               {
@@ -408,16 +634,15 @@ from its results but it is useful to perform censorship research.
                 "format": "base64"
               }
             ],
-            "t": 3.0717335,
+            "t": 3.055895709,
             "address": "8.8.8.8:443",
             "server_name": "dns.google",
             "alpn": [
-              "h2",
-              "http/1.1"
+              "h3"
             ],
             "no_tls_verify": false,
-            "proto": "tcp",
-            "started": 3.034290292
+            "proto": "quic",
+            "started": 3.007550792
           }
         ]
       },
@@ -426,58 +651,117 @@ from its results but it is useful to perform censorship research.
           {
             "address": "8.8.8.8:443",
             "failure": null,
-            "num_bytes": 280,
-            "operation": "write",
-            "proto": "tcp",
-            "t": 4.026989042,
-            "started": 4.026896792
+            "num_bytes": 1252,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 4.0079495,
+            "started": 4.007845917
           },
           {
             "address": "8.8.8.8:443",
             "failure": null,
-            "num_bytes": 517,
-            "operation": "read",
-            "proto": "tcp",
-            "t": 4.061562958,
-            "started": 4.026997708
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 4.028193125,
+            "started": 4.007434
           },
           {
             "address": "8.8.8.8:443",
             "failure": null,
-            "num_bytes": 4301,
-            "operation": "read",
-            "proto": "tcp",
-            "t": 4.06210475,
-            "started": 4.061998625
+            "num_bytes": 1252,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 4.028732334,
+            "started": 4.028674834
           },
           {
             "address": "8.8.8.8:443",
             "failure": null,
-            "num_bytes": 64,
-            "operation": "write",
-            "proto": "tcp",
-            "t": 4.06363875,
-            "started": 4.063576708
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 4.043755834,
+            "started": 4.0282245
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 4.043788834,
+            "started": 4.043779084
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 44,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 4.044139875,
+            "started": 4.044060834
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 4.044336417,
+            "started": 4.043794709
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 44,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 4.044479625,
+            "started": 4.044441959
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 4.044606167,
+            "started": 4.0443465
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 117,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 4.0452439590000004,
+            "started": 4.044615584
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 83,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 4.047179334,
+            "started": 4.047123417
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 33,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 4.047201542,
+            "started": 4.047183125
           }
         ],
-        "tcp_connect": [
+        "quic_handshakes": [
           {
-            "ip": "8.8.8.8",
-            "port": 443,
-            "t": 4.0262705,
-            "status": {
-              "blocked": false,
-              "failure": null,
-              "success": true
-            },
-            "started": 4.008873125
-          }
-        ],
-        "tls_handshakes": [
-          {
-            "cipher_suite": "TLS_AES_128_GCM_SHA256",
+            "cipher_suite": "TLS_CHACHA20_POLY1305_SHA256",
             "failure": null,
-            "negotiated_proto": "h2",
+            "negotiated_proto": "h3",
             "tls_version": "TLSv1.3",
             "peer_certificates": [
               {
@@ -493,16 +777,15 @@ from its results but it is useful to perform censorship research.
                 "format": "base64"
               }
             ],
-            "t": 4.063688333,
+            "t": 4.047139667,
             "address": "8.8.8.8:443",
             "server_name": "dns.google",
             "alpn": [
-              "h2",
-              "http/1.1"
+              "h3"
             ],
             "no_tls_verify": false,
-            "proto": "tcp",
-            "started": 4.026353167
+            "proto": "quic",
+            "started": 4.007187709
           }
         ]
       },
@@ -511,58 +794,108 @@ from its results but it is useful to perform censorship research.
           {
             "address": "8.8.8.8:443",
             "failure": null,
-            "num_bytes": 280,
-            "operation": "write",
-            "proto": "tcp",
-            "t": 5.026262208,
-            "started": 5.026191875
+            "num_bytes": 1252,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 5.008398792,
+            "started": 5.008290334
           },
           {
             "address": "8.8.8.8:443",
             "failure": null,
-            "num_bytes": 517,
-            "operation": "read",
-            "proto": "tcp",
-            "t": 5.059043458,
-            "started": 5.026269625
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 5.036004167,
+            "started": 5.007840167
           },
           {
             "address": "8.8.8.8:443",
             "failure": null,
-            "num_bytes": 4301,
-            "operation": "read",
-            "proto": "tcp",
-            "t": 5.059572542,
-            "started": 5.059461458
+            "num_bytes": 1252,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 5.03652575,
+            "started": 5.036481709
           },
           {
             "address": "8.8.8.8:443",
             "failure": null,
-            "num_bytes": 64,
-            "operation": "write",
-            "proto": "tcp",
-            "t": 5.061068292,
-            "started": 5.061019333
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 5.051925792,
+            "started": 5.036033625
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 5.05198025,
+            "started": 5.051969625
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 44,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 5.052345459,
+            "started": 5.052276917
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 5.053939667,
+            "started": 5.051986209
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 5.053972834,
+            "started": 5.053961417
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 121,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 5.053985875,
+            "started": 5.053976084
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 44,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 5.054199542,
+            "started": 5.054134375
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 83,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 5.05699975,
+            "started": 5.05692875
           }
         ],
-        "tcp_connect": [
+        "quic_handshakes": [
           {
-            "ip": "8.8.8.8",
-            "port": 443,
-            "t": 5.025574167,
-            "status": {
-              "blocked": false,
-              "failure": null,
-              "success": true
-            },
-            "started": 5.008453625
-          }
-        ],
-        "tls_handshakes": [
-          {
-            "cipher_suite": "TLS_AES_128_GCM_SHA256",
+            "cipher_suite": "TLS_CHACHA20_POLY1305_SHA256",
             "failure": null,
-            "negotiated_proto": "h2",
+            "negotiated_proto": "h3",
             "tls_version": "TLSv1.3",
             "peer_certificates": [
               {
@@ -578,16 +911,15 @@ from its results but it is useful to perform censorship research.
                 "format": "base64"
               }
             ],
-            "t": 5.061112458,
+            "t": 5.056945,
             "address": "8.8.8.8:443",
             "server_name": "dns.google",
             "alpn": [
-              "h2",
-              "http/1.1"
+              "h3"
             ],
             "no_tls_verify": false,
-            "proto": "tcp",
-            "started": 5.025663875
+            "proto": "quic",
+            "started": 5.007570959
           }
         ]
       },
@@ -596,58 +928,117 @@ from its results but it is useful to perform censorship research.
           {
             "address": "8.8.8.8:443",
             "failure": null,
-            "num_bytes": 280,
-            "operation": "write",
-            "proto": "tcp",
-            "t": 6.026162542,
-            "started": 6.026098083
+            "num_bytes": 1252,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 6.00710225,
+            "started": 6.006978292
           },
           {
             "address": "8.8.8.8:443",
             "failure": null,
-            "num_bytes": 517,
-            "operation": "read",
-            "proto": "tcp",
-            "t": 6.057927292,
-            "started": 6.02616925
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 6.026403667,
+            "started": 6.006515417
           },
           {
             "address": "8.8.8.8:443",
             "failure": null,
-            "num_bytes": 4301,
-            "operation": "read",
-            "proto": "tcp",
-            "t": 6.058550833,
-            "started": 6.058424125
+            "num_bytes": 1252,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 6.026949709,
+            "started": 6.026896834
           },
           {
             "address": "8.8.8.8:443",
             "failure": null,
-            "num_bytes": 64,
-            "operation": "write",
-            "proto": "tcp",
-            "t": 6.060996292,
-            "started": 6.060939667
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 6.041891584,
+            "started": 6.026423959
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 6.041910875,
+            "started": 6.041902959
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 44,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 6.042197875,
+            "started": 6.042137375
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 6.042338334,
+            "started": 6.041916959
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 44,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 6.042433167,
+            "started": 6.042408834
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 1251,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 6.043456375,
+            "started": 6.042344959
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 67,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 6.043473417,
+            "started": 6.043463709
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 83,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 6.045342167,
+            "started": 6.045309667
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 33,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 6.045404667,
+            "started": 6.045360834
           }
         ],
-        "tcp_connect": [
+        "quic_handshakes": [
           {
-            "ip": "8.8.8.8",
-            "port": 443,
-            "t": 6.025524792,
-            "status": {
-              "blocked": false,
-              "failure": null,
-              "success": true
-            },
-            "started": 6.0068255
-          }
-        ],
-        "tls_handshakes": [
-          {
-            "cipher_suite": "TLS_AES_128_GCM_SHA256",
+            "cipher_suite": "TLS_CHACHA20_POLY1305_SHA256",
             "failure": null,
-            "negotiated_proto": "h2",
+            "negotiated_proto": "h3",
             "tls_version": "TLSv1.3",
             "peer_certificates": [
               {
@@ -663,16 +1054,15 @@ from its results but it is useful to perform censorship research.
                 "format": "base64"
               }
             ],
-            "t": 6.061033125,
+            "t": 6.0453765839999996,
             "address": "8.8.8.8:443",
             "server_name": "dns.google",
             "alpn": [
-              "h2",
-              "http/1.1"
+              "h3"
             ],
             "no_tls_verify": false,
-            "proto": "tcp",
-            "started": 6.025630417
+            "proto": "quic",
+            "started": 6.006132459
           }
         ]
       },
@@ -681,67 +1071,117 @@ from its results but it is useful to perform censorship research.
           {
             "address": "8.8.8.8:443",
             "failure": null,
-            "num_bytes": 280,
-            "operation": "write",
-            "proto": "tcp",
-            "t": 7.024771208,
-            "started": 7.024683125
+            "num_bytes": 1252,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 7.007598792,
+            "started": 7.007461375
           },
           {
             "address": "8.8.8.8:443",
             "failure": null,
-            "num_bytes": 517,
-            "operation": "read",
-            "proto": "tcp",
-            "t": 7.057152583,
-            "started": 7.024780042
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 7.033784917,
+            "started": 7.006873834
           },
           {
             "address": "8.8.8.8:443",
             "failure": null,
-            "num_bytes": 3737,
-            "operation": "read",
-            "proto": "tcp",
-            "t": 7.057550625,
-            "started": 7.057484333
+            "num_bytes": 1252,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 7.0343725,
+            "started": 7.034313
           },
           {
             "address": "8.8.8.8:443",
             "failure": null,
-            "num_bytes": 564,
-            "operation": "read",
-            "proto": "tcp",
-            "t": 7.057627667,
-            "started": 7.057551917
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 7.049205709,
+            "started": 7.033804542
           },
           {
             "address": "8.8.8.8:443",
             "failure": null,
-            "num_bytes": 64,
-            "operation": "write",
-            "proto": "tcp",
-            "t": 7.058774167,
-            "started": 7.058728958
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 7.04923,
+            "started": 7.04921975
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 7.049244542,
+            "started": 7.049235542
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 7.0492609999999996,
+            "started": 7.049253459
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 119,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 7.049276,
+            "started": 7.049269375
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 44,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 7.049555917,
+            "started": 7.04948125
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 44,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 7.049589459,
+            "started": 7.049561084
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 83,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 7.052086875,
+            "started": 7.052042334
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 33,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 7.05211075,
+            "started": 7.052090459
           }
         ],
-        "tcp_connect": [
+        "quic_handshakes": [
           {
-            "ip": "8.8.8.8",
-            "port": 443,
-            "t": 7.023882667,
-            "status": {
-              "blocked": false,
-              "failure": null,
-              "success": true
-            },
-            "started": 7.007858833
-          }
-        ],
-        "tls_handshakes": [
-          {
-            "cipher_suite": "TLS_AES_128_GCM_SHA256",
+            "cipher_suite": "TLS_CHACHA20_POLY1305_SHA256",
             "failure": null,
-            "negotiated_proto": "h2",
+            "negotiated_proto": "h3",
             "tls_version": "TLSv1.3",
             "peer_certificates": [
               {
@@ -757,16 +1197,15 @@ from its results but it is useful to perform censorship research.
                 "format": "base64"
               }
             ],
-            "t": 7.058812833,
+            "t": 7.052060417,
             "address": "8.8.8.8:443",
             "server_name": "dns.google",
             "alpn": [
-              "h2",
-              "http/1.1"
+              "h3"
             ],
             "no_tls_verify": false,
-            "proto": "tcp",
-            "started": 7.023993333
+            "proto": "quic",
+            "started": 7.006575334
           }
         ]
       },
@@ -775,58 +1214,117 @@ from its results but it is useful to perform censorship research.
           {
             "address": "8.8.8.8:443",
             "failure": null,
-            "num_bytes": 280,
-            "operation": "write",
-            "proto": "tcp",
-            "t": 8.031679208,
-            "started": 8.031610417
+            "num_bytes": 1252,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 8.008200084,
+            "started": 8.008090792
           },
           {
             "address": "8.8.8.8:443",
             "failure": null,
-            "num_bytes": 517,
-            "operation": "read",
-            "proto": "tcp",
-            "t": 8.063257,
-            "started": 8.03168675
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 8.034468084,
+            "started": 8.0076125
           },
           {
             "address": "8.8.8.8:443",
             "failure": null,
-            "num_bytes": 4301,
-            "operation": "read",
-            "proto": "tcp",
-            "t": 8.063821417,
-            "started": 8.063722
+            "num_bytes": 1252,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 8.034967917,
+            "started": 8.034914042
           },
           {
             "address": "8.8.8.8:443",
             "failure": null,
-            "num_bytes": 64,
-            "operation": "write",
-            "proto": "tcp",
-            "t": 8.065341083,
-            "started": 8.065295292
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 8.051006334,
+            "started": 8.034489167
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 8.051031417,
+            "started": 8.051022625
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 8.051043292,
+            "started": 8.051037042
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 8.051055167,
+            "started": 8.05105025
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 44,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 8.051333917,
+            "started": 8.05127625
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 44,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 8.051359917,
+            "started": 8.051339709
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 116,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 8.051508084,
+            "started": 8.051057167
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 83,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 8.053081042,
+            "started": 8.053057959
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 33,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 8.053097459,
+            "started": 8.053083459
           }
         ],
-        "tcp_connect": [
+        "quic_handshakes": [
           {
-            "ip": "8.8.8.8",
-            "port": 443,
-            "t": 8.030996125,
-            "status": {
-              "blocked": false,
-              "failure": null,
-              "success": true
-            },
-            "started": 8.007571
-          }
-        ],
-        "tls_handshakes": [
-          {
-            "cipher_suite": "TLS_AES_128_GCM_SHA256",
+            "cipher_suite": "TLS_CHACHA20_POLY1305_SHA256",
             "failure": null,
-            "negotiated_proto": "h2",
+            "negotiated_proto": "h3",
             "tls_version": "TLSv1.3",
             "peer_certificates": [
               {
@@ -842,16 +1340,15 @@ from its results but it is useful to perform censorship research.
                 "format": "base64"
               }
             ],
-            "t": 8.065386375,
+            "t": 8.053070334,
             "address": "8.8.8.8:443",
             "server_name": "dns.google",
             "alpn": [
-              "h2",
-              "http/1.1"
+              "h3"
             ],
             "no_tls_verify": false,
-            "proto": "tcp",
-            "started": 8.031078458
+            "proto": "quic",
+            "started": 8.007340584
           }
         ]
       },
@@ -860,58 +1357,117 @@ from its results but it is useful to perform censorship research.
           {
             "address": "8.8.8.8:443",
             "failure": null,
-            "num_bytes": 280,
-            "operation": "write",
-            "proto": "tcp",
-            "t": 9.02378425,
-            "started": 9.023729958
+            "num_bytes": 1252,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 9.007747209,
+            "started": 9.007600084
           },
           {
             "address": "8.8.8.8:443",
             "failure": null,
-            "num_bytes": 517,
-            "operation": "read",
-            "proto": "tcp",
-            "t": 9.057059333,
-            "started": 9.023791
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 9.035038167,
+            "started": 9.006991792
           },
           {
             "address": "8.8.8.8:443",
             "failure": null,
-            "num_bytes": 4301,
-            "operation": "read",
-            "proto": "tcp",
-            "t": 9.057467792,
-            "started": 9.057395625
+            "num_bytes": 1252,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 9.035618334,
+            "started": 9.035565709
           },
           {
             "address": "8.8.8.8:443",
             "failure": null,
-            "num_bytes": 64,
-            "operation": "write",
-            "proto": "tcp",
-            "t": 9.05860625,
-            "started": 9.058563917
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 9.051023334,
+            "started": 9.035056917
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 9.051047584,
+            "started": 9.051037959
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 44,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 9.051342625,
+            "started": 9.051264792
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 9.051531625,
+            "started": 9.05105275
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 44,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 9.051640292,
+            "started": 9.051604542
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 1252,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 9.052558334,
+            "started": 9.051541292
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 120,
+            "operation": "read_from",
+            "proto": "quic",
+            "t": 9.052582209,
+            "started": 9.052570334
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 83,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 9.055192917,
+            "started": 9.055137584
+          },
+          {
+            "address": "8.8.8.8:443",
+            "failure": null,
+            "num_bytes": 33,
+            "operation": "write_to",
+            "proto": "quic",
+            "t": 9.055223042,
+            "started": 9.055198459
           }
         ],
-        "tcp_connect": [
+        "quic_handshakes": [
           {
-            "ip": "8.8.8.8",
-            "port": 443,
-            "t": 9.023198,
-            "status": {
-              "blocked": false,
-              "failure": null,
-              "success": true
-            },
-            "started": 9.007330792
-          }
-        ],
-        "tls_handshakes": [
-          {
-            "cipher_suite": "TLS_AES_128_GCM_SHA256",
+            "cipher_suite": "TLS_CHACHA20_POLY1305_SHA256",
             "failure": null,
-            "negotiated_proto": "h2",
+            "negotiated_proto": "h3",
             "tls_version": "TLSv1.3",
             "peer_certificates": [
               {
@@ -927,24 +1483,23 @@ from its results but it is useful to perform censorship research.
                 "format": "base64"
               }
             ],
-            "t": 9.058639917,
+            "t": 9.055151584,
             "address": "8.8.8.8:443",
             "server_name": "dns.google",
             "alpn": [
-              "h2",
-              "http/1.1"
+              "h3"
             ],
             "no_tls_verify": false,
-            "proto": "tcp",
-            "started": 9.023293875
+            "proto": "quic",
+            "started": 9.00669725
           }
         ]
       }
     ]
   },
-  "test_name": "tlsping",
-  "test_runtime": 9.058800667,
-  "test_start_time": "2022-05-09 08:03:59",
+  "test_name": "simplequicping",
+  "test_runtime": 9.055608292,
+  "test_start_time": "2022-05-09 08:57:34",
   "test_version": "0.1.0"
 }
 ```
