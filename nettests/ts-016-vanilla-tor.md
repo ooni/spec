@@ -49,7 +49,7 @@ error:
     null: no error was detected.
 
 success:
-    **boolean** indiciating if whether or not we were able to connect to the
+    **boolean** indicating if whether or not we were able to connect to the
     Tor network.
 
     True: indicates that we reached 100% bootstrap
