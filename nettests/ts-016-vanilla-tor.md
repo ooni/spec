@@ -1,18 +1,24 @@
 # Specification version number
 
-0.1.0
+2022-05-10
 
-* _status_: obsolete
+This version of the specification documents the Go implementation of
+`vanilla_tor`, written on 2022-05-10. The
+[previous](https://github.com/ooni/spec/blob/fc05b9a12f4202d824f2bcdb52b4eacfbb914a4e/nettests/ts-016-vanilla-tor.md)
+(and slightly incompatible!) version of this specification documents the original and
+obsolete Python implementation inside `ooni/probe-legacy`.
+
+* _status_: experimental
 
 # Specification name
 
-Vanilla Tor Test
+`vanilla_tor` (Vanilla Tor)
 
 # Test preconditions
 
 * An internet connection
 
-* Tor is installed
+* The `tor` binary installed on the system
 
 # Expected impact
 
@@ -25,66 +31,87 @@ None
 
 # Test description
 
-The test will run the tor executable and monitor the standard
-output looking for a line in it's output indicating it has
-bootstrapped to 100%.
+The test will run the tor executable and collect logs. The bootstrap
+will either succeed or eventually time out.
 
 # Expected output
 
 ## Parent data format
 
-None
+* none
 
-## Required output data
-
-A flag to indicate if we were able to establish a Tor connection.
+However, this test tries to produce a data structure as
+similar as possible to `ts-030-torsf.md`.
 
 ## Semantics
 
-error:
-    **string** indicating that an error occurred
+```JSON
+{
+    "bootstrap_time": 1.1,
+    "error": null,
+    "failure": null,
+    "success": false,
+    "timeout": 600,
+    "tor_logs": [],
+    "tor_progress": 0,
+    "tor_progress_tag": "",
+    "tor_progress_summary": "",
+    "tor_version": "",
+    "transport_name": "vanilla"
+}
+```
 
-    timeout-reached: to indicate tor was unable to bootstrap in the allocated time.
+where:
 
-    null: no error was detected.
+- `bootstrap_time` (`float`) is zero if the bootstrap times out and otherwise is
+the number of seconds it required to bootstrap;
 
-success:
-    **boolean** indicating if whether or not we were able to connect to the
-    Tor network.
+- `error` (`null | string`) is `null` on success, `timeout-reached` in case of
+timeout, and `unknown-error` otherwise (this field only exists for backwards
+compatibility with the previous version of the `vanilla_tor` spec);
 
-    True: indicates that we reached 100% bootstrap
+- `failure` conforms to `df-007-errors`;
 
-    False: indicates that we were unable to reach 100% bootstrap before the
-    timeout was reached.
+- `success` (`bool`) is set to `true` if we bootstrap, to `false` otherwise (this
+field only exists for backwards compatibility);
 
-    null: indicates that tor exited before we were able to complete the test,
-    this can be due to some unhandled error.
+- `timeout` (`float`) is the default timeout for the experiment (in seconds);
 
+- `tor_logs` (`[]string`) is a list of bootstrap-related logs emitted by
+the tor daemon during the bootstrap;
 
-timeout:
-    **integer** indicating the timeout, in seconds, after which we should
-    consider Tor as not working. The default it is set to 200 seconds.
+- `tor_progress` (`int`) is the progress in the last bootstrap line;
 
-transport_name:
-    **string** always set to vanilla
+- `tor_progress_tag` (`string`) is the machine readable tag of the last bootstrap line;
 
-tor_version:
-    **string** indicating the version string of the tor client being used.
+- `tor_progress_summary` (`string`) is the human readable description of
+the last bootstrap line;
 
-tor_progress:
-    **integer** indicating the percentage of tor bootstrapping at which we
-    stopped.
+- `tor_version` (`string`) is the version of `tor` we're using;
 
-tor_progress_tag:
-    **string** a string giving a textual description of what the progress
-    percentage means.
+- `transport_name` (`string`) is always set to `"vanilla"`.
 
-tor_progress_summary:
-    **string** a more verbose string giving a textual description of what the
-    progress percentage state is.
+## Incompatibility with ooni/probe-legacy
 
-tor_log:
-    **string** notice level log output of tor.
+The `ooni/probe-legacy` implementation used different field names and/or data types as
+documented [by the previous version of this spec](
+https://github.com/ooni/spec/blob/fc05b9a12f4202d824f2bcdb52b4eacfbb914a4e/nettests/ts-016-vanilla-tor.md).
+The following table shows which fields changed since the previous implementation:
+
+| legacy name            | legacy type     | new name      | new type        |
+| ---------------------- | --------------- | ------------- | --------------- |
+| `tor_log`              | `string`        | `tor_logs`    | `[]string`      |
+| `timeout`              | `integer`       | `timeout`     | `float`         |
+
+The _main_ difference between the new and the old implementation is that the new
+implementation collects the logs as an array of lines while the old implementation
+collects the logs as a single string.
+
+The `timeout` field changed only in its type and it should be possible to parse it
+using a language such as Python or JavaScript without major issues, since it's still
+a numeric value. Also, the timeout we set is always an integral number of seconds,
+which means that most JSON emitters (including
+Golang's JSON emitter) will emit an integer.
 
 ## Possible conclusions
 
@@ -92,106 +119,65 @@ If Tor with the default configuration can successfully bootstrap.
 
 ## Example output sample
 
-```
-###########################################
-# OONI Probe Report for vanilla_tor (0.1.0)
-# Tue Mar 15 15:09:33 2016
-###########################################
----
-annotations: null
-input_hashes: []
-options: []
-probe_asn: AS0
-probe_cc: ZZ
-probe_city: null
-probe_ip: 127.0.0.1
-report_id: wvKi9dtBJXFub4lBSwgcA0DZDiCJ38DRjhh3rYeBOwpwfJ0bfUznBLva5djRFOHR
-software_name: ooniprobe
-software_version: 1.3.2
-start_time: 1458047373.0
-test_helpers: {}
-test_name: vanilla_tor
-test_version: 0.1.0
-...
----
-{error: null, input: null, success: true, test_runtime: 7.101379871368408, test_start_time: 1458047374.0,
-  timeout: 200, tor_log: 'Mar 15 15:09:34.000 [notice] Tor 0.2.6.10 (git-58c51dc6087b0936)
-    opening new log file.
-
-    Mar 15 15:09:34.063 [warn] OpenSSL version from headers does not match the version
-    we''re running with. If you get weird crashes, that might be why. (Compiled with
-    1000204f: OpenSSL 1.0.2d 9 Jul 2015; running with 1000206f: OpenSSL 1.0.2f  28
-    Jan 2016).
-
-    Mar 15 15:09:34.064 [notice] Tor v0.2.6.10 (git-58c51dc6087b0936) running on Darwin
-    with Libevent 2.0.22-stable, OpenSSL 1.0.2f and Zlib 1.2.5.
-
-    Mar 15 15:09:34.082 [notice] Tor can''t help you if you use it wrong! Learn how
-    to be safe at https://www.torproject.org/download/download#warning
-
-    Mar 15 15:09:34.121 [notice] Configuration file "/non-existant" not present, using
-    reasonable defaults.
-
-    Mar 15 15:09:34.172 [notice] Opening Socks listener on 127.0.0.1:1886
-
-    Mar 15 15:09:34.173 [notice] Opening Control listener on 127.0.0.1:27345
-
-    Mar 15 15:09:34.000 [notice] Parsing GEOIP IPv4 file /usr/local/Cellar/tor/0.2.6.10/share/tor/geoip.
-
-    Mar 15 15:09:34.000 [notice] Parsing GEOIP IPv6 file /usr/local/Cellar/tor/0.2.6.10/share/tor/geoip6.
-
-    Mar 15 15:09:34.000 [notice] Bootstrapped 0%: Starting
-
-    Mar 15 15:09:34.000 [notice] New control connection opened from 127.0.0.1.
-
-    Mar 15 15:09:34.000 [notice] Tor 0.2.6.10 (git-58c51dc6087b0936) opening log file.
-
-    Mar 15 15:09:35.000 [notice] Bootstrapped 5%: Connecting to directory server
-
-    Mar 15 15:09:35.000 [notice] Bootstrapped 10%: Finishing handshake with directory
-    server
-
-    Mar 15 15:09:35.000 [notice] Bootstrapped 15%: Establishing an encrypted directory
-    connection
-
-    Mar 15 15:09:35.000 [notice] Bootstrapped 20%: Asking for networkstatus consensus
-
-    Mar 15 15:09:35.000 [notice] Bootstrapped 25%: Loading networkstatus consensus
-
-    Mar 15 15:09:36.000 [notice] I learned some more directory information, but not
-    enough to build a circuit: We have no usable consensus.
-
-    Mar 15 15:09:36.000 [notice] Bootstrapped 40%: Loading authority key certs
-
-    Mar 15 15:09:36.000 [notice] Bootstrapped 45%: Asking for relay descriptors
-
-    Mar 15 15:09:36.000 [notice] I learned some more directory information, but not
-    enough to build a circuit: We need more microdescriptors: we have 0/7138, and
-    can only build 0% of likely paths. (We have 0% of guards bw, 0% of midpoint bw,
-    and 0% of exit bw = 0% of path bw.)
-
-    Mar 15 15:09:37.000 [notice] Bootstrapped 50%: Loading relay descriptors
-
-    Mar 15 15:09:38.000 [notice] Bootstrapped 57%: Loading relay descriptors
-
-    Mar 15 15:09:38.000 [notice] Bootstrapped 66%: Loading relay descriptors
-
-    Mar 15 15:09:39.000 [notice] Bootstrapped 72%: Loading relay descriptors
-
-    Mar 15 15:09:39.000 [notice] Bootstrapped 78%: Loading relay descriptors
-
-    Mar 15 15:09:39.000 [notice] Bootstrapped 80%: Connecting to the Tor network
-
-    Mar 15 15:09:39.000 [notice] Bootstrapped 90%: Establishing a Tor circuit
-
-    Mar 15 15:09:41.000 [notice] Tor has successfully opened a circuit. Looks like
-    client functionality is working.
-
-    Mar 15 15:09:41.000 [notice] Bootstrapped 100%: Done
-
-    Mar 15 15:09:41.000 [notice] Catching signal TERM, exiting cleanly.
-
-    ', tor_progress: 100, tor_progress_summary: Done, tor_progress_tag: done, tor_version: 0.2.6.10,
-  transport_name: vanilla}
-...                                                                                                                                                                                     ''}
+```JSON
+{
+  "annotations": {
+    "architecture": "arm64",
+    "engine_name": "ooniprobe-engine",
+    "engine_version": "3.15.0-alpha",
+    "platform": "macos"
+  },
+  "data_format_version": "0.2.0",
+  "input": null,
+  "measurement_start_time": "2022-05-10 11:31:29",
+  "probe_asn": "AS30722",
+  "probe_cc": "IT",
+  "probe_ip": "127.0.0.1",
+  "probe_network_name": "Vodafone Italia S.p.A.",
+  "report_id": "",
+  "resolver_asn": "AS30722",
+  "resolver_ip": "91.80.36.88",
+  "resolver_network_name": "Vodafone Italia S.p.A.",
+  "software_name": "miniooni",
+  "software_version": "3.15.0-alpha",
+  "test_keys": {
+    "bootstrap_time": 3.620014542,
+    "error": null,
+    "failure": null,
+    "success": true,
+    "timeout": 200,
+    "tor_logs": [
+      "May 10 13:31:26.000 [notice] Bootstrapped 0% (starting): Starting",
+      "May 10 13:31:26.000 [notice] Bootstrapped 5% (conn): Connecting to a relay",
+      "May 10 13:31:26.000 [notice] Bootstrapped 10% (conn_done): Connected to a relay",
+      "May 10 13:31:26.000 [notice] Bootstrapped 14% (handshake): Handshaking with a relay",
+      "May 10 13:31:26.000 [notice] Bootstrapped 15% (handshake_done): Handshake with a relay done",
+      "May 10 13:31:26.000 [notice] Bootstrapped 20% (onehop_create): Establishing an encrypted directory connection",
+      "May 10 13:31:26.000 [notice] Bootstrapped 25% (requesting_status): Asking for networkstatus consensus",
+      "May 10 13:31:26.000 [notice] Bootstrapped 30% (loading_status): Loading networkstatus consensus",
+      "May 10 13:31:27.000 [notice] Bootstrapped 40% (loading_keys): Loading authority key certs",
+      "May 10 13:31:27.000 [notice] Bootstrapped 45% (requesting_descriptors): Asking for relay descriptors",
+      "May 10 13:31:28.000 [notice] Bootstrapped 50% (loading_descriptors): Loading relay descriptors",
+      "May 10 13:31:29.000 [notice] Bootstrapped 55% (loading_descriptors): Loading relay descriptors",
+      "May 10 13:31:29.000 [notice] Bootstrapped 61% (loading_descriptors): Loading relay descriptors",
+      "May 10 13:31:29.000 [notice] Bootstrapped 70% (loading_descriptors): Loading relay descriptors",
+      "May 10 13:31:29.000 [notice] Bootstrapped 75% (enough_dirinfo): Loaded enough directory info to build circuits",
+      "May 10 13:31:29.000 [notice] Bootstrapped 80% (ap_conn): Connecting to a relay to build circuits",
+      "May 10 13:31:29.000 [notice] Bootstrapped 85% (ap_conn_done): Connected to a relay to build circuits",
+      "May 10 13:31:29.000 [notice] Bootstrapped 89% (ap_handshake): Finishing handshake with a relay to build circuits",
+      "May 10 13:31:29.000 [notice] Bootstrapped 90% (ap_handshake_done): Handshake finished with a relay to build circuits",
+      "May 10 13:31:29.000 [notice] Bootstrapped 95% (circuit_create): Establishing a Tor circuit",
+      "May 10 13:31:29.000 [notice] Bootstrapped 100% (done): Done"
+    ],
+    "tor_progress": 100,
+    "tor_progress_tag": "done",
+    "tor_progress_summary": "Done",
+    "tor_version": "0.4.7.7",
+    "transport_name": "vanilla"
+  },
+  "test_name": "vanilla_tor",
+  "test_runtime": 3.8545842500000003,
+  "test_start_time": "2022-05-10 11:31:26",
+  "test_version": "0.2.0"
+}
 ```
