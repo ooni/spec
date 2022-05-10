@@ -1,6 +1,6 @@
 # Specification version number
 
-2022-04-12-003
+2022-05-10
 
 * _status_: experimental
 
@@ -11,6 +11,7 @@
 # Test preconditions
 
 * An internet connection
+
 * The `tor` binary installed on the system
 
 # Expected impact
@@ -81,17 +82,26 @@ considered as a failure to start the test up;
 
 * none
 
+However, this test tries to produce a data structure as
+similar as possible to `ts-016-vanilla-tor.md`.
+
 ## Semantics
 
 ```JSON
 {
     "bootstrap_time": 1.1,
-    "default_timeout": 600,
+    "error": null,
     "failure": null,
+    "success": false,
+    "timeout": 600,
     "persistent_datadir": true,
     "rendezvous_method": "domain_fronting",
     "tor_logs": [],
-    "tor_version": ""
+    "tor_progress": 0,
+    "tor_progress_tag": "",
+    "tor_progress_summary": "",
+    "tor_version": "",
+    "transport_name": "snowflake"
 }
 ```
 
@@ -100,7 +110,9 @@ where:
 - `bootstrap_time` (`float`) is zero if the bootstrap times out and otherwise is
 the number of seconds it required to bootstrap;
 
-- `default_timeout` (`float`) is the default timeout for the experiment (in seconds);
+- `error` (`null | string`) is `null` on success, `timeout-reached` in case of
+timeout, and `unknown-error` otherwise (this field only exists for backwards
+compatibility with the previous version of the `vanilla_tor` spec);
 
 - `failure` conforms to `df-007-errors`;
 
@@ -108,10 +120,27 @@ the number of seconds it required to bootstrap;
 
 - `rendezvous_method` (`string`) is the value of the `RendezvousMethod` option;
 
+- `success` (`bool`) is set to `true` if we bootstrap, to `false` otherwise (this
+field only exists for backwards compatibility);
+
+- `timeout` (`float`) is the default timeout for the experiment (in seconds);
+
 - `tor_logs` (`[]string`) is a list of bootstrap-related logs emitted by
 the tor daemon during the bootstrap;
 
-- `tor_version` (`string`) is the version of `tor` we're using.
+- `tor_progress` (`int`) is the progress in the last bootstrap line;
+
+- `tor_progress_tag` (`string`) is the machine readable tag of the last bootstrap line;
+
+- `tor_progress_summary` (`string`) is the human readable description of
+the last bootstrap line;
+
+- `tor_version` (`string`) is the version of `tor` we're using;
+
+- `transport_name` (`string`) is always set to `"vanilla"`.
+
+*Note*: unreleased versions of ooniprobe used `default_timeout` instead of
+`timeout` between 2022-04-12 and 2022-05-10.
 
 ## Possible conclusions
 
@@ -120,51 +149,62 @@ the [data analysis considerations](#data-analysis-considerations) section below.
 
 ## Example output sample
 
-```json
+```JSON
 {
   "annotations": {
     "architecture": "arm64",
     "engine_name": "ooniprobe-engine",
-    "engine_version": "3.14.0-alpha.1",
+    "engine_version": "3.15.0-alpha",
     "platform": "macos"
   },
   "data_format_version": "0.2.0",
   "input": null,
-  "measurement_start_time": "2022-02-07 11:47:37",
+  "measurement_start_time": "2022-05-10 12:39:51",
   "probe_asn": "AS30722",
   "probe_cc": "IT",
   "probe_ip": "127.0.0.1",
   "probe_network_name": "Vodafone Italia S.p.A.",
-  "report_id": "20220207T114738Z_torsf_IT_30722_n1_rK0MhS3m1DHoXoOm",
+  "report_id": "",
   "resolver_asn": "AS30722",
-  "resolver_ip": "91.80.36.88",
+  "resolver_ip": "91.80.36.92",
   "resolver_network_name": "Vodafone Italia S.p.A.",
   "software_name": "miniooni",
-  "software_version": "3.14.0-alpha.1",
+  "software_version": "3.15.0-alpha",
   "test_keys": {
-    "bootstrap_time": 316.569053291,
-    "default_timeout": 600,
+    "bootstrap_time": 18.437362125,
+    "error": null,
     "failure": null,
+    "success": true,
     "persistent_datadir": true,
     "rendezvous_method": "domain_fronting",
+    "timeout": 600,
     "tor_logs": [
-      "Feb 07 12:42:20.000 [notice] Bootstrapped 0% (starting): Starting",
-      "Feb 07 12:42:20.000 [notice] Bootstrapped 1% (conn_pt): Connecting to pluggable transport",
-      "Feb 07 12:42:20.000 [notice] Bootstrapped 2% (conn_done_pt): Connected to pluggable transport",
-      "Feb 07 12:42:20.000 [notice] Bootstrapped 10% (conn_done): Connected to a relay",
-      "Feb 07 12:47:32.000 [notice] Bootstrapped 14% (handshake): Handshaking with a relay",
-      "Feb 07 12:47:33.000 [notice] Bootstrapped 15% (handshake_done): Handshake with a relay done",
-      "Feb 07 12:47:33.000 [notice] Bootstrapped 75% (enough_dirinfo): Loaded enough directory info to build circuits",
-      "Feb 07 12:47:34.000 [notice] Bootstrapped 90% (ap_handshake_done): Handshake finished with a relay to build circuits",
-      "Feb 07 12:47:34.000 [notice] Bootstrapped 95% (circuit_create): Establishing a Tor circuit",
-      "Feb 07 12:47:37.000 [notice] Bootstrapped 100% (done): Done"
+      "May 10 14:39:32.000 [notice] Bootstrapped 0% (starting): Starting",
+      "May 10 14:39:33.000 [notice] Bootstrapped 1% (conn_pt): Connecting to pluggable transport",
+      "May 10 14:39:33.000 [notice] Bootstrapped 2% (conn_done_pt): Connected to pluggable transport",
+      "May 10 14:39:33.000 [notice] Bootstrapped 10% (conn_done): Connected to a relay",
+      "May 10 14:39:46.000 [notice] Bootstrapped 14% (handshake): Handshaking with a relay",
+      "May 10 14:39:46.000 [notice] Bootstrapped 15% (handshake_done): Handshake with a relay done",
+      "May 10 14:39:46.000 [notice] Bootstrapped 45% (requesting_descriptors): Asking for relay descriptors",
+      "May 10 14:39:46.000 [notice] Bootstrapped 50% (loading_descriptors): Loading relay descriptors",
+      "May 10 14:39:49.000 [notice] Bootstrapped 57% (loading_descriptors): Loading relay descriptors",
+      "May 10 14:39:50.000 [notice] Bootstrapped 62% (loading_descriptors): Loading relay descriptors",
+      "May 10 14:39:51.000 [notice] Bootstrapped 70% (loading_descriptors): Loading relay descriptors",
+      "May 10 14:39:51.000 [notice] Bootstrapped 75% (enough_dirinfo): Loaded enough directory info to build circuits",
+      "May 10 14:39:51.000 [notice] Bootstrapped 90% (ap_handshake_done): Handshake finished with a relay to build circuits",
+      "May 10 14:39:51.000 [notice] Bootstrapped 95% (circuit_create): Establishing a Tor circuit",
+      "May 10 14:39:51.000 [notice] Bootstrapped 100% (done): Done"
     ],
-    "tor_version": "0.4.6.9"
+    "tor_progress": 100,
+    "tor_progress_tag": "done",
+    "tor_progress_summary": "Done",
+    "tor_version": "0.4.7.7",
+    "transport_name": "snowflake"
   },
   "test_name": "torsf",
-  "test_runtime": 316.935133083,
-  "test_start_time": "2022-02-07 11:42:20",
-  "test_version": "0.2.0"
+  "test_runtime": 18.948177959,
+  "test_start_time": "2022-05-10 12:39:32",
+  "test_version": "0.3.0"
 }
 ```
 
