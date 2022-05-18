@@ -3527,6 +3527,13 @@ The scrubbing procedure SHOULD only be applied to the specific
 results referring to private bridges. It SHOULD NOT be applied to
 other results referring to non-private bridges.
 
-# Packet capture considerations
+# Data analysis considerations
 
-This test does not capture packets by default.
+Since ~2022-05-18 the id of the bridge 51.222.13.177:80 changed from
+`fa69b2ee7a7c8975af2452ecd566f67a6459d397a4cefc30be86a670675cdc23` to
+`662218447d396b9d4f01b585457d267735601fedbeb9a19b86b942f238fe4e7b`.
+
+When analysing data you might want to consider results for these two distinct
+bridge IDs as the same.
+
+See: https://github.com/ooni/sysadmin/pull/495
