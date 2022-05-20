@@ -89,7 +89,7 @@ experimental, research-oriented client `miniooni`.
 - `probe_asn` (`string`): AS Number of the probe (prefixed by AS, e.g.,
 `"AS1234"`), or `"AS0"` if the user does not want to share their ASN.
 
-- `probe_network_name` (`string`; optional; since `XXXX-XX-XX`): The organisation name corresponding to 
+- `probe_network_name` (`string`; optional; since `2020-04-22`): The organisation name corresponding to 
 the AS of the probe.
 
 - `probe_cc` (`string`): two letter country code of the probe (e.g.,
