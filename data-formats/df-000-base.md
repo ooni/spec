@@ -18,6 +18,7 @@ directory's [README](README.md) for the basic concepts.
     "measurement_start_time": "2019-10-10 23:59:23",
     "options": [],
     "probe_asn": "AS13285",
+    "probe_network_name": "TalkTalk Communications Limited",
     "probe_cc": "GB",
     "probe_city": "",
     "probe_ip": "127.0.0.1",
@@ -87,6 +88,9 @@ experimental, research-oriented client `miniooni`.
 
 - `probe_asn` (`string`): AS Number of the probe (prefixed by AS, e.g.,
 `"AS1234"`), or `"AS0"` if the user does not want to share their ASN.
+
+- `probe_network_name` (`string`; optional; since `2020-04-22`): The organisation name corresponding to 
+the AS of the probe.
 
 - `probe_cc` (`string`): two letter country code of the probe (e.g.,
 `"IT"`) or `"ZZ"` if the user does not want to share their country code.
@@ -240,6 +244,7 @@ because it was not relevant for this discussion.
   "input": null,
   "measurement_start_time": "2020-01-10 17:25:19",
   "probe_asn": "AS30722",
+  "probe_network_name": "Vodafone Italia S.p.A.",
   "probe_cc": "IT",
   "probe_ip": "127.0.0.1",
   "report_id": "20200110T172519Z_AS30722_5UdG13d6rEfOVCTHEdMjuXGah8vF6dpShA0jditnrHCmH10o1K",
