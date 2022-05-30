@@ -46,7 +46,8 @@ be unique during a measurement session.
 
 - `engine` (`string`; optional): the specific engine used to perform
 the DNS query. If omitted implies `"system"`, which means that we are
-using in a way or another `getaddrinfo`.
+using in a way or another `getaddrinfo`. See also below for a list
+of available resolver engines.
 
 - `failure` (`string`; nullable): if there was an error, this field is
 a string indicating the error, otherwise it MUST be `null`.
@@ -73,6 +74,24 @@ measured in the moment in which `failure` is determined.
 
 - `transaction_id` (`int`; optional; since 2020-01-11): if present, this is the
 ID of the HTTP transaction that caused this query.
+
+### DNS resolver engines
+
+The following table documents the available DNS resolver engines.
+
+| Engine name | Description |
+| :---------- | ----------- |
+| system      | We are using getaddrinfo |
+| netgo       | We are using Golang's "netgo" DNS resolver |
+| udp         | Custom DNS-over-UDP resolver |
+| tcp         | Custom DNS-over-TCP resolver |
+| dot         | Custom DNS-over-TLS resolver |
+| doh         | Custom DNS-over-HTTPS resolver |
+
+Before 2022-05-29 (i.e., for `ooniprobe<3.16.0`), we did not distinguish
+between cases where we were using getaddrinfo and cases where we were
+using the netgo resolver (see [ooni/probe-cli#765](
+https://github.com/ooni/probe-cli/pull/765)).
 
 ## Answer
 
