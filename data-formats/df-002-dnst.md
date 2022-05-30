@@ -82,16 +82,19 @@ The following table documents the available DNS resolver engines.
 | Engine name | Description |
 | :---------- | ----------- |
 | system      | We are using getaddrinfo |
-| netgo       | We are using Golang's "netgo" DNS resolver |
+| go          | Whatever the Go stdlib uses for the current platform |
 | udp         | Custom DNS-over-UDP resolver |
 | tcp         | Custom DNS-over-TCP resolver |
 | dot         | Custom DNS-over-TLS resolver |
 | doh         | Custom DNS-over-HTTPS resolver |
 
-Before 2022-05-29 (i.e., for `ooniprobe<3.16.0`), we did not distinguish
-between cases where we were using getaddrinfo and cases where we were
-using the netgo resolver (see [ooni/probe-cli#765](
-https://github.com/ooni/probe-cli/pull/765)).
+Since 2022-05-29 (i.e., for `ooniprobe>=3.16.0`), we explicitly use
+`getaddrinfo` whenever possible and fall back to using `go` only when
+`CGO_ENABLED=0`, which happens when cross compiling or when who's
+building OONI has passed `CGO_ENABLED=0` explicitly from the command
+line See [ooni/probe-cli#765](https://github.com/ooni/probe-cli/pull/765)
+and [ooni/probe-cli#766](https://github.com/ooni/probe-cli/pull/766) for
+more details about how we choose the resolver name.
 
 ## Answer
 
