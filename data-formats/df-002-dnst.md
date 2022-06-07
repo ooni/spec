@@ -101,6 +101,8 @@ more details about how we choose the resolver name.
 ```JSON
 {
     "answer_type": "AAAA",
+    "asn": 13335
+    "as_org_name": "Cloudflare, Inc."
     "expiration_limit": "",
     "hostname": "",
     "ipv4": "1.1.1.1",
@@ -114,7 +116,11 @@ more details about how we choose the resolver name.
 }
 ```
 
-- `answer_type`: like `Query.query_type`.
+- `answer_type`: (`string`) like `Query.query_type`.
+
+- `asn`: (`int`) the Authonomous System Number of the returned ipv4 or ipv6 address.
+
+- `as_org_name`: (`int`) the Authonomous System organisation name of the returned ipv4 or ipv6 address.
 
 - `expiration_limit` (`string`; only for SOA answers): the time
 after which this zone should no longer be authoritative.
