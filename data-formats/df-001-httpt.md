@@ -60,6 +60,7 @@ for longer than that.
 
 ```JavaScript
 {
+    "url": "https://example.com/",
     "body": MaybeBinaryData(),
     "body_is_truncated": false,
     "headers": {},
@@ -68,6 +69,8 @@ for longer than that.
     "tor": {}
 }
 ```
+
+- `url` (`string`): this is the URL that was used for issuing the request.
 
 - `body` (`string` or `BinaryData`): this is the request body. The body is a
 `string` if it can be represented using UTF-8. Otherwise it is a `BinaryData`
