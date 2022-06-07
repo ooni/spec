@@ -66,7 +66,8 @@ for longer than that.
     "headers": {},
     "headers_list": [],
     "method": "GET",
-    "tor": {}
+    "tor": {},
+    "x_transport": "tcp"
 }
 ```
 
@@ -94,6 +95,8 @@ are multiple values for the same header key. See below the definition of
 
 - `tor` (`TorInfo`): this is an object containing information on the
 instance of `tor` that we may be using for measuring.
+
+- `x_transport` (`string`): indicates what transports was used for issuing the request.
 
 In case we have the following headers:
 
