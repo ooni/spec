@@ -62,11 +62,11 @@ a TLS MITM would be visible as a failure.
 
 Moreover, if the user has enabled [strict enhanced tracking
 protection](https://support.mozilla.org/en-US/kb/enhanced-tracking-protection-firefox-desktop#w_strict-enhanced-tracking-protection)
-on Firefox, requests to certain sites (ex. twitter.com or facebook.com) will
+on Firefox, requests to [certain sites](https://github.com/disconnectme/disconnect-tracking-protection/blob/master/services.json) (ex. twitter.com or facebook.com) will
 fail and appear to be a result of blocking.
-The workaround is to detect if the user has enabled this setting and if so
-request that they add a whitelist of the site hosting the `browser_web`
-experiment.
+Firefox users should be asked, if they have strict enhanced tracking protection
+enabled, to add a whitelist rule for the website hosting the experiment,
+however this is not a guarantee that they will run the test with it on.
 
 # Expected output
 
