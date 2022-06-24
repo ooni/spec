@@ -88,7 +88,7 @@ where:
 * `result` (`string`) will be `ok` in the case of a successful measurement,
   while it will be `error` in the case of a failure;
 * `load_time_ms` (`float`) indicates the number of milliseconds it took to load
-  the requested resource;
+  the requested resource.
 
 ## Possible conclusions
 
