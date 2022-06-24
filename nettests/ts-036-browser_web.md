@@ -41,6 +41,8 @@ This test will produce as a final result the time it took to load the resource
 API](https://developer.mozilla.org/en-US/docs/Web/API/Performance)) and whether the
 result was successful.
 
+## Caveats
+
 Because the information collected by this test is not very detailed some extra
 precautions need to be taken when interpreting the results.
 
