@@ -58,6 +58,14 @@ content is consistent with what we would expect to see. It's therefore advisable
 to only use as testing targets HTTPS websites as an inconsistent DNS response or
 a TLS MITM would be visible as a failure.
 
+Moreover, if the user has enabled [strict enhanced tracking
+protection](https://support.mozilla.org/en-US/kb/enhanced-tracking-protection-firefox-desktop#w_strict-enhanced-tracking-protection)
+on Firefox, requests to certain sites (ex. twitter.com or facebook.com) will
+fail and appear to be a result of blocking.
+The workaround is to detect if the user has enabled this setting and if so
+request that they add a whitelist of the site hosting the `browser_web`
+experiment.
+
 # Expected output
 
 ## Parent data format
