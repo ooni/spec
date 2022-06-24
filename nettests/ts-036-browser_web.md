@@ -38,7 +38,7 @@ to measure if certain target URLs are being blocked.
 
 This test will produce as a final result the time it took to load the resource
 (using the [performance
-API](https://developer.mozilla.org/en-US/docs/Web/API/Performance)) and if the
+API](https://developer.mozilla.org/en-US/docs/Web/API/Performance)) and whether the
 result was successful.
 
 Because the information collected by this test is not very detailed some extra
