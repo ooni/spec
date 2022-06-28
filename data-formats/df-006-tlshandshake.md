@@ -27,6 +27,7 @@ code. See this directory's [README](README.md) for the basic concepts.
     "conn_id": 1231,
     "failure": "ssl_invalid_hostname",
     "negotiated_protocol": "",
+    "no_tls_verify": false,
     "peer_certificates": [],
     "t": 1.11,
     "tags": [],
@@ -46,6 +47,9 @@ the discussion in `df-008-netevents.md`.
 a string indicating the error, otherwise it MUST be `null`.
 
 - `negotiated_protocol`: (`string`): the protocol negotiated with ALPN, if any.
+
+- `no_tls_verify`: (`bool`): indicates if we have bypassed certificate chain validation when performing 
+the TLS handshake.
 
 - `peer_certificates`: (`[]BinaryData`): list of peer certificates in ASN.1
 DER format represented using the `BinaryData` object described
