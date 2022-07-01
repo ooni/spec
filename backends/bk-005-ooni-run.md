@@ -9,7 +9,7 @@ This document provides a functional specification for OONI Run.
 
 # 1.0 System overview
 
-The api exposes an HTTP API allowing OONI Run web app to submit links to the
+The ooni/api exposes an HTTP API allowing OONI Run web app to submit links to the
 backend and also allow the OONI Probe to query OONI Run link data.
 The client and the server MUST NOT assume a keep
 alive semantics for the HTTP connections.
