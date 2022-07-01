@@ -92,7 +92,7 @@ request conforming to the following, informal specification:
          [
             {
                   "ta": {
-                     "urls": []
+                     "inputs": []
                   },
                   "tn": "web_connectivity"
             },
