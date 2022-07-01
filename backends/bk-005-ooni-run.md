@@ -157,7 +157,7 @@ Updating an OONI Run Link means appending a test to the OONI Run Link.
 
 To update an OONI Run Link, the client issues a request compliant with:
 
-    POST /report/${ooni_run_id}
+    POST /api/v2/oonirun/link/${ooni_run_id}
 
     {
      "name":
