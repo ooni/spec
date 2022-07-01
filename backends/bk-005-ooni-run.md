@@ -170,7 +170,7 @@ To update an OONI Run Link, the client issues a request compliant with:
          [
             {
                   "ta": {
-                     "urls": []
+                     "inputs": []
                   },
                   "tn": "web_connectivity"
             },
