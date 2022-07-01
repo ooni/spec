@@ -5,7 +5,7 @@
 * date: 2022-06-15
 * status: _draft_
 
-This document aims at providing a functional specification for OONI Run.
+This document provides a functional specification for OONI Run.
 
 # 1.0 System overview
 
