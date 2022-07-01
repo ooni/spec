@@ -1,6 +1,6 @@
 # Specification version number
 
-2022-05-09
+2022-06-22
 
 * _status_: experimental
 
@@ -41,7 +41,21 @@ every second for ten times and return the results.
 
 where:
 
-- `pings` contains a list of `df-005-tcpconnect` results.
+- `pings` is a `SinglePing` instance, which looks like:
+
+```JSON
+{
+	"tcp_connect": {}
+}
+```
+
+where:
+
+- `tcp_connect` follows the `df-005-tcpconnect` data format.
+
+Before 2022-06-22, `tcp_connect` pointed to a *list* of `df-005-tcpconnect`
+data. We changed this because the nettest is still experimental and we want to
+clearly indicate that a single TCP connect per `SinglePing` is possible.
 
 ## Possible conclusions
 
@@ -55,179 +69,139 @@ from its results but it is useful to perform censorship research.
   "annotations": {
     "architecture": "arm64",
     "engine_name": "ooniprobe-engine",
-    "engine_version": "3.15.0-alpha",
+    "engine_version": "3.16.0-alpha",
     "platform": "macos"
   },
   "data_format_version": "0.2.0",
   "input": "tcpconnect://8.8.8.8:443",
-  "measurement_start_time": "2022-05-09 07:00:09",
+  "measurement_start_time": "2022-06-22 13:32:07",
   "probe_asn": "AS30722",
   "probe_cc": "IT",
   "probe_ip": "127.0.0.1",
   "probe_network_name": "Vodafone Italia S.p.A.",
-  "report_id": "",
+  "report_id": "20220622T133208Z_tcpping_IT_30722_n1_tWfDobdbZfWsdwHG",
   "resolver_asn": "AS30722",
   "resolver_ip": "91.80.36.88",
   "resolver_network_name": "Vodafone Italia S.p.A.",
   "software_name": "miniooni",
-  "software_version": "3.15.0-alpha",
+  "software_version": "3.16.0-alpha",
   "test_keys": {
     "pings": [
       {
-        "tcp_connect": [
-          {
-            "ip": "8.8.8.8",
-            "port": 443,
-            "t": 0.0157685,
-            "status": {
-              "blocked": false,
-              "failure": null,
-              "success": true
-            },
-            "started": 0.00027075
-          }
-        ]
+        "tcp_connect": {
+          "ip": "8.8.8.8",
+          "port": 443,
+          "status": {
+            "failure": null,
+            "success": true
+          },
+          "t": 0.020375
+        }
       },
       {
-        "tcp_connect": [
-          {
-            "ip": "8.8.8.8",
-            "port": 443,
-            "t": 1.016991917,
-            "status": {
-              "blocked": false,
-              "failure": null,
-              "success": true
-            },
-            "started": 1.001177334
-          }
-        ]
+        "tcp_connect": {
+          "ip": "8.8.8.8",
+          "port": 443,
+          "status": {
+            "failure": null,
+            "success": true
+          },
+          "t": 1.028173
+        }
       },
       {
-        "tcp_connect": [
-          {
-            "ip": "8.8.8.8",
-            "port": 443,
-            "t": 2.026658709,
-            "status": {
-              "blocked": false,
-              "failure": null,
-              "success": true
-            },
-            "started": 2.001280459
-          }
-        ]
+        "tcp_connect": {
+          "ip": "8.8.8.8",
+          "port": 443,
+          "status": {
+            "failure": null,
+            "success": true
+          },
+          "t": 2.02758
+        }
       },
       {
-        "tcp_connect": [
-          {
-            "ip": "8.8.8.8",
-            "port": 443,
-            "t": 3.025365,
-            "status": {
-              "blocked": false,
-              "failure": null,
-              "success": true
-            },
-            "started": 3.001233959
-          }
-        ]
+        "tcp_connect": {
+          "ip": "8.8.8.8",
+          "port": 443,
+          "status": {
+            "failure": null,
+            "success": true
+          },
+          "t": 3.026412
+        }
       },
       {
-        "tcp_connect": [
-          {
-            "ip": "8.8.8.8",
-            "port": 443,
-            "t": 4.019205709,
-            "status": {
-              "blocked": false,
-              "failure": null,
-              "success": true
-            },
-            "started": 4.001288084
-          }
-        ]
+        "tcp_connect": {
+          "ip": "8.8.8.8",
+          "port": 443,
+          "status": {
+            "failure": null,
+            "success": true
+          },
+          "t": 4.028897
+        }
       },
       {
-        "tcp_connect": [
-          {
-            "ip": "8.8.8.8",
-            "port": 443,
-            "t": 5.027602292,
-            "status": {
-              "blocked": false,
-              "failure": null,
-              "success": true
-            },
-            "started": 5.000583125
-          }
-        ]
+        "tcp_connect": {
+          "ip": "8.8.8.8",
+          "port": 443,
+          "status": {
+            "failure": null,
+            "success": true
+          },
+          "t": 5.026734
+        }
       },
       {
-        "tcp_connect": [
-          {
-            "ip": "8.8.8.8",
-            "port": 443,
-            "t": 6.082865667,
-            "status": {
-              "blocked": false,
-              "failure": null,
-              "success": true
-            },
-            "started": 6.001351792
-          }
-        ]
+        "tcp_connect": {
+          "ip": "8.8.8.8",
+          "port": 443,
+          "status": {
+            "failure": null,
+            "success": true
+          },
+          "t": 6.020745
+        }
       },
       {
-        "tcp_connect": [
-          {
-            "ip": "8.8.8.8",
-            "port": 443,
-            "t": 7.255470792,
-            "status": {
-              "blocked": false,
-              "failure": null,
-              "success": true
-            },
-            "started": 7.001372834
-          }
-        ]
+        "tcp_connect": {
+          "ip": "8.8.8.8",
+          "port": 443,
+          "status": {
+            "failure": null,
+            "success": true
+          },
+          "t": 7.019039
+        }
       },
       {
-        "tcp_connect": [
-          {
-            "ip": "8.8.8.8",
-            "port": 443,
-            "t": 8.13132125,
-            "status": {
-              "blocked": false,
-              "failure": null,
-              "success": true
-            },
-            "started": 8.001229584
-          }
-        ]
+        "tcp_connect": {
+          "ip": "8.8.8.8",
+          "port": 443,
+          "status": {
+            "failure": null,
+            "success": true
+          },
+          "t": 8.027933
+        }
       },
       {
-        "tcp_connect": [
-          {
-            "ip": "8.8.8.8",
-            "port": 443,
-            "t": 9.021270834,
-            "status": {
-              "blocked": false,
-              "failure": null,
-              "success": true
-            },
-            "started": 9.001323625
-          }
-        ]
+        "tcp_connect": {
+          "ip": "8.8.8.8",
+          "port": 443,
+          "status": {
+            "failure": null,
+            "success": true
+          },
+          "t": 9.025553
+        }
       }
     ]
   },
   "test_name": "tcpping",
-  "test_runtime": 9.021483791,
-  "test_start_time": "2022-05-09 07:00:00",
-  "test_version": "0.1.0"
+  "test_runtime": 9.025986292,
+  "test_start_time": "2022-06-22 13:31:58",
+  "test_version": "0.2.0"
 }
 ```
