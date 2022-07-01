@@ -320,7 +320,7 @@ Upon receiving this request, the collector:
    code has been sent to the client (the goal being to keep the
    connection open for as little as possible to avoid the risk that
    a middlebox in a constrained network flags the connection as
-   stale and closse it, thus preventing the server from telling the client
+   stale and close it, thus preventing the server from telling the client
    that the measurement has been successfully submitted).
 
 9. if everything is okay, returns `200` to the client (see below).
