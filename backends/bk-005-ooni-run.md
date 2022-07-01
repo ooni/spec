@@ -236,7 +236,7 @@ opaque UTF-8 string that has some meaning to the server.
 
 To delete a report, a client should submit a request like:
 
-    DELETE /link/${ooni_run_id}
+    DELETE /api/v2/oonirun/link/${ooni_run_id}
 
 If the report exists, `200` is returned
 and the response MUST include this body for backwards
