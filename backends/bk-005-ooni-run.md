@@ -185,7 +185,7 @@ To update an OONI Run Link, the client issues a request compliant with:
 
 ### Response status code
 
-Upon receiving this request, the collector:
+Upon receiving this request, the OONI Run backend:
 
 1. SHOULD check whether `${ooni_run_id}` is a valid, OONI Run ID and reject
    the request with a `4xx` status otherwise.
