@@ -76,7 +76,7 @@ The standard flow for OONI RUN Link is the following:
 
 ### Request
 
-When a you *create* a new OONI RUN link, the frontend sends a `POST`
+When you *create* a new OONI RUN link, the frontend sends a `POST`
 request conforming to the following, informal specification:
 
     POST /link
