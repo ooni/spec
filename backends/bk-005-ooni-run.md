@@ -25,7 +25,7 @@ implementatons MUST be able to deal with legacy clients that possibly
 do not correctly set the `Content-Type`.
 
 Tests submitted to the OONI Run API will be stored and processed by OONI backend
-and OONNI Probes the URL is shared with.
+and OONI Probes the URL is shared with.
 How that will happen is out of the scope of this document. You may also want to read
 [about our data policy](https://ooni.io/about/data-policy/).
 
