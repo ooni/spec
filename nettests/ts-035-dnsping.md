@@ -518,7 +518,7 @@ from its results but it is useful to perform censorship research.
   "test_name": "dnsping",
   "test_runtime": 10.00088401,
   "test_start_time": "2022-07-08 16:12:01",
-  "test_version": "0.1.0"
+  "test_version": "0.2.0"
 }
 
 ```
