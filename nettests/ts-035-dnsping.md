@@ -59,6 +59,7 @@ where:
 Before 2022-07-08, `query` pointed to a *list* of `df-002-dnst`
 data. We changed this because the nettest is still experimental and we want to
 clearly indicate that a single DNS Lookup per `SinglePing` is possible.
+
 ## Possible conclusions
 
 This experiment is an exploratory tool. There is no immediate conclusion
