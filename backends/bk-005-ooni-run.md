@@ -9,265 +9,352 @@ This document provides a functional specification for OONI Run.
 
 # 1.0 System overview
 
-The ooni/api exposes an HTTP API allowing OONI Run web app to submit links to the
-backend and also allow the OONI Probe to query OONI Run link data.
-The client and the server MUST NOT assume a keep
-alive semantics for the HTTP connections.
+OONI Run links allow users to coordinate measurement campagins with
+volunteers by sharing a mobile deep link that will instrument the OONI Probe
+application to run a set of nettests (or experiments) configured in a certain
+way.
 
-New server implementations MUST support `Content-Encoding: gzip` to
-compress request bodies. OONI production clients MUST NOT use this
-feature until all OONI's production servers server are known to have
-implemented it. Third party clients should either coordinate with
-us or be prepared to retry without compression.
+Below are definitions for important components of the system:
+* OONI Run link, is a mobile deep link that when clicked or tapped on a system
+  with the OONI Probe app installed allows the user to instrument their probe to
+  run the nettests configured by the link creator. If the OONI Probe app is not
+  installed, it will display a web page asking them to download the app.
+* OONI Run descriptor, contains the metadata for a specific OONI Run link and
+  the nettest definitions: what nettests should be run and how they should be
+  configured (ex. what URLs should be tested)
+* OONI Run descriptor URL, is the web resource from which the descriptor is
+  retrieved.
 
-New implementations MUST properly set `Content-Type`. Server side
-implementatons MUST be able to deal with legacy clients that possibly
-do not correctly set the `Content-Type`.
+The high level workflow looks something like the following:
+```mermaid
+sequenceDiagram
+    actor CampaignOrganizer as Campagin Organizer
+    participant OONIAPI
+    actor Volunteer
 
-Tests submitted to the OONI Run API will be stored and processed by OONI backend
-and OONI Probes the URL is shared with.
-How that will happen is out of the scope of this document. You may also want to read
-[about our data policy](https://ooni.io/about/data-policy/).
+    CampaignOrganizer->>OONIAPI: Create OONI Run link to run web_connectivity with http://example.com
+    OONIAPI->>CampaignOrganizer: OONI Run link: https://run.ooni.io/v2/deadbeef
+    CampaignOrganizer-->>Volunteer: Hey, can you open the link https://run.ooni.io/v2/deadbeef with OONI Probe?
+    Volunteer-)OONIAPI: What is the descriptor for OONI Run link with ID "deadbeef"
+    OONIAPI->>Volunteer: Here is the descriptro for "deadbeef"
+```
 
-The OONI Run MUST be exposed as an HTTPS service. It MUST also be exposed as
-a Tor onion service as long as legacy OONI probe clients use it. The need
-to expose an onion service will be rediscussed when legacy OONI probe
-clients will no longer be relevant. A [legacy document](
-https://ooni.torproject.org/docs/architecture.html)
-explains why the OONI project originally chose to allow for both HTTPS
-and Tor onion service services (henceforth, Onion).
+It's important to notice how, in the event that the user has the OONI Probe app
+installed, a web request to `https://run.ooni.org/io/v2/deadbeef` will never be
+issued on the network, but rather the metadata encoded in the URL itself is used
+to retrieve the OONI Run descriptor from a different OONI API endpoint.
 
-It is also outside of the scope of this section to define the way in which
-a OONI probe discovers the collector API endpoint, as well as how, given
-several endpoints and/or endpoint types (HTTPS, Onion), it chooses a specific
-endpoint.
+When a Volunteer taps on an OONI Run link (in the above example
+`https://run.ooni.io/v2/deadbeef`) the OONI Probe app is opened and a they are
+presented with the metadata of the OONI Run link as well as the nettests it is
+configured with.
+At this point, assuming they feel confortable with running the nettests they see
+on their screen, they can "install" the OONI Run link inside their app making it
+available as new card on the dashboard page allowing them to manually or
+automatically run it as part of regular OONI Probe testing.
+
+In a way, an OONI Run link generated card, is very similar to the existing OONI
+Probe test groups, except these can be community contributed.
 
 # 2.0 Threat model
 
-The OONI RUN Service transport MUST guarantee some reasonable level of encryption
-and authentication between the OONI probe and itself. Therefore, a malicious
-lazy actor won't be able to easily modify test results that they have not
-created while they are being submitted to the OONI Run Service. Also, they will not
-be able to easily log the messages exchanged with the OONI Run Service.
+The OONI Run service MUST ensure that only the creator of a link is able to
+perform UPDATE operations through some form of authentication. It is outside
+of the scope of this document to specify the exact details of how authentication
+should work, but traditional techniques for implementing authentication should be
+used (ex. JWT token sent using appropriate HTTP headers).
 
-It is outside of the scope of the OONI Run Service to provide blocking resistance or
-to conceal to a passive network observer the fact that they are communicating to
-a OONI Run Service. Such properties are to be provided by other software, e.g. Tor.
+Communication with the OONI API MUST be done over a communication channel that
+ensures confidentiality, integrity and authenticity of the transmitted content,
+such as TLS or onion services.
 
-Therefore a client implementation of the OONI Run Service protocol SHOULD allow one
-to specify a [SOCKS5](https://tools.ietf.org/html/rfc1928) proxy where the
-name resolution is performed by the circumvention tool (`socks5h`).
+Whenever a change is made to an OONI Run link, it's important that the end user
+is informed about them and the OONI Run link is disabled until they agree with
+them.
+
+It is outside of the current scope of this document to prescribe if and how some
+level of blocking resistance should be implemented or provided by the system.
+That said it's worth noting that since the content of a OONI Run descriptor is
+static, it should be possible server it from a mirror that provides higher
+levels of blocking resistance (and potentially some higher level of stealth),
+such as s3 or github.
 
 # 3.0 API
 
-The same API is available via HTTP and Onion.
+In order to support the above workflow the OONI API needs to support the following operations:
+* CREATE a new OONI Run link, returning the OONI Run link ID (see 3.1)
+* UPDATE an existing OONI Run link (see 3.2)
+* GET the OONI Run descriptor, provided an ID (3.3)
 
-The standard flow for OONI RUN Link is the following:
+In the following sections we will specify how these operations should be done.
 
-- you create an OONI RUN Link (see 3.1);
+TODO(discuss): Do we want to support a delete operation? I would say we probably
+do not, since a user should always have access to the OONI Run link which they
+have configured on their device, if we do support deleting them, they might be
+surprised to see it disappear from their device in the future.
 
-- you update it by adding more tests or metadata (see 3.2);
+## 3.1 CREATE a new OONI Run link
 
-- you access it from probes or frontend service (see 3.3);
+This operation will be performed by a logged in user that is interested in
+performing an OONI Run link based measurement campaign.
 
-- then, you can disable/delete it (see 3.4).
-
-## 3.1 Create a new OONI Run link
+It is outside of the scope of this document to specify how registration and
+authentication should be handled.
 
 ### Request
 
-When you *create* a new OONI RUN link, the frontend sends a `POST`
-request conforming to the following, informal specification:
+When you `CREATE` a new OONI RUN link, the client sends a HTTP `POST`
+request conforming to the following:
 
-    POST /api/v2/oonirun/link
+`POST /api/v1/ooni_run`
 
-    {
-     "name":
-        (required) `string` it is required property used in identifying the link in the OONI probe and other parts of the system.
+```json
+{
+"name":
+   (required) `string` is the display name for the OONI Run link
 
-     "description":
-        (optional) `string` describing the tests included as part of the OONI Run link.
-      
-      "tests": `array` provides a JSON array of tests to be run.
-         [
-            {
-                  "ta": {
-                     "inputs": []
-                  },
-                  "tn": "web_connectivity"
-            },
-            {
-                  "tn": "telegram"
-            },
-            {
-                  "tn": "signal"
-            }
-         ]
-    }
+"description":
+   (optional) `string` describing the scope of this OONI Run link system
 
-Where the above is intended as an informal specification for generating a
-compliant, serialized JSON object.
+"icon":
+   (optional) `string` the ID of any icon part of the OONI icon set
+
+"author":
+   (optional) `string` name of the creator of this OONI Run link
+
+"nettests": `array` provides a JSON array of tests to be run.
+   [
+      {
+         "inputs": [
+            "https://example.com/",
+            "https://ooni.org/"
+         ],
+         "options": {
+            "HTTP3Enabled": true,
+         },
+         "test_name": "web_connectivity"
+      },
+      {
+         "test_name": "dnscheck"
+      }
+   ]
+}
+```
+
 
 ### Response status code
 
-Upon receiving a request to create a report, the OONI Run Service:
+Upon receiving a request to create a link, the API will respond:
 
 1. SHOULD fail with `4xx` if the request body does not parse, it is not a JSON object,
    any required field is missing and/or if any present field has an invalid value.
 
-2. MUST fail with `4xx` if the request is not compliant with its policies.
-
-3. MUST fail with `5xx` if it cannot generate the OONI Run ID (see below) or
-   in case of other failures opening the OONI Run.
-
-4. if everything is okay, MUST return a `200` response.
+2. if everything is okay, MUST return a `200` response.
 
 ### Response body
 
-In case of failure, the OONI Run Service MUST return a JSON object, whose content
-is implementation dependent and MAY be empty. Some existing implementations
-return a `{"error": "string"}` object to make debugging easier.
+In case of failure, the OONI Run Service MUST return a JSON object formatted as
+`{"error": "string"}` containing details about the encountered error.
 
-In case of success (i.e. `200` response), the OONI Run Service MUST return a JSON body
-generated in compliance with the following, informal specification:
+In case of success (i.e. `200` response), the OONI Run Service MUST return the
+following JSON body:
 
-    {
-      "backend_version":
-        `string` containing the version of the backend. This version MUST
-        match the regex provided above for 'software_version'.
+```json
+{
+"ooni_run_link_id":
+   `string` OONI Run link identifier.
 
-      "ooni_run_id":
-        `string` OONI Run identifier. The format of this field is not
-        specified, except that is MUST be a valid UTF-8 string, of
-        course. The client MUST NOT make any assumption with respect
-        to the structure of this field.
-    }
+"title": "",
 
-### Response processing requirements
+"description": "",
 
-Upon receiving a response, new written clients MUST check that the
-status is `200` before continuing, MUST ensure that the server supports
-their preferred data submission format, and MUST save the OONI Run ID.
+"author": "",
 
-## 3.2 Update an OONI Run Link
+[... rest of the OONI Run link payload]
 
-Updating an OONI Run Link means appending a test to the OONI Run Link.
+}
+```
+
+## 3.2 UPDATE an existing OONI Run link
+
+This operation will be performed by a logged in user that is interested in
+performing an OONI Run link based measurement campaign.
+
+It is outside of the scope of this document to specify how registration and
+authentication should be handled.
+
+Updating an OONI Run Link means editing any of the fields of an OONI Run link
+descriptor. This may involve adding or removing tests, editing targets of
+existing ones or making changes to the OONI Run link metadata.
+
+The web UI should discourage users from making changes to the title, icon and
+descriptions of OONI Run links as to not confused volunteers that have installed
+a link.
 
 ### Request
 
 To update an OONI Run Link, the client issues a request compliant with:
 
-    POST /api/v2/oonirun/link/${ooni_run_id}
+`PUT /api/v1/ooni_run/{ooni_run_link_id}`
 
-    {
-     "name":
-        (required) `string` it is required property used in identifying the link in the OONI probe and other parts of the system.
+```json
+{
+"name":
+   (required) `string` is the display name for the OONI Run link
 
-     "description":
-        (optional) `string` describing the tests included as part of the OONI Run link.
-      
-      "tests": `array` provides a JSON array of tests to be run.
-         [
-            {
-                  "ta": {
-                     "inputs": []
-                  },
-                  "tn": "web_connectivity"
-            },
-            {
-                  "tn": "telegram"
-            },
-            {
-                  "tn": "signal"
-            }
-         ]
-    }
+"description":
+   (optional) `string` describing the scope of this OONI Run link system
+
+"icon":
+   (optional) `string` the ID of any icon part of the OONI icon set
+
+"author":
+   (optional) `string` name of the creator of this OONI Run link
+
+"nettests": `array` provides a JSON array of tests to be run.
+   [
+      {
+         "inputs": [
+            "https://example.com/",
+            "https://ooni.org/",
+            "https://torproject.org/"
+         ],
+         "options": {
+            "HTTP3Enabled": true,
+         },
+         "test_name": "web_connectivity"
+      },
+      {
+         "test_name": "dnscheck"
+      }
+   ]
+}
+```
 
 ### Response status code
 
 Upon receiving this request, the OONI Run backend:
 
-1. SHOULD check whether `${ooni_run_id}` is a valid, OONI Run ID and reject
-   the request with a `4xx` status otherwise.
+1. SHOULD check whether the `${ooni_run_id}` exists and they have permission to
+   edit it and reject the request with a `4xx` status otherwise.
 
 2. SHOULD reject the request with a `4xx` if the JSON does not
    parse or the parsed value is not a JSON object.
 
-3. MUST "commit" the OONI Run data to persistent storage or to some
-   database before returning `200` to the client making
-   sure that it successfully saved the OONI Run Data (e.g. by
-   checking the return value of `fclose`). There SHOULD be
-   integration tests to check whether the JSON serialized by
-   a specific implementation is compliant with the format
-   expected by the pipeline (e.g. in `go` with `omitempty`
-   `null` values are removed by a marshal-serialize cycle
-   while the Python parser preserves them).
-
-4. is allowed to perform additional quick operations that may have
-   an impact on the status code, and SHOULD defer other operations
-   that do not have an impact on the status code to after the status
-   code has been sent to the client (the goal being to keep the
-   connection open for as little as possible to avoid the risk that
-   a middlebox in a constrained network flags the connection as
-   stale and closse it, thus preventing the server from telling the client
-   that the measurement has been successfully submitted).
-
-5. if everything is okay, returns `200` to the client (see below).
+3. if everything is okay, returns `200` to the client (see below).
 
 ### Response body
 
-In case of failure, the OONI Run Service MUST return a JSON object, whose content
-is implementation dependent and MAY be empty. Some existing implementations
-return a `{"error": "string"}` object to make debugging easier.
+In case of failure, the OONI Run Service MUST return a JSON object formatted as
+`{"error": "string"}` containing details about the encountered error.
 
-In case of `200` responses, new OONI Run Service implementations MAY
-include a unique identifier for the OONI Run Link that the
-client may later use to reference said OONI Run Link. For example:
+In case of success (i.e. `200` response), the OONI Run Service MUST return the
+following JSON body:
 
+```json
+{
+"ooni_run_link_id":
+   `string` OONI Run link identifier.
 
-```JSON
-{"ooni_run_id":"e00c584e6e9e5326"}
+"title": "",
+
+"description": "",
+
+"author": "",
+
+[... rest of the OONI Run link payload]
+
+}
 ```
 
-As far as the client is concerned, this `ooni_run_id` is an
-opaque UTF-8 string that has some meaning to the server.
+## 3.3 GET the OONI Run descriptor
 
-## 3.3 Deleting an OONI Run Link
+This operation is performed by OONI Probe clients to retrieve the descriptor of
+a certain OONI Run link given the ID.
 
-To delete a report, a client should submit a request like:
+As such, this request does not require any authentication.
 
-    DELETE /api/v2/oonirun/link/${ooni_run_id}
+### Request
 
-If the report exists, `200` is returned
-and the response MUST include this body for backwards
-compatibility with existing implementations:
+To retrieve an OONI Run link descriptor, the client issues a request compliant with:
 
-```JSON
-{"status": "success"}
+`GET /api/v1/ooni_run/{ooni_run_link_id}`
+
+### Response status code
+
+Upon receiving this request, the OONI Run backend:
+
+1. SHOULD check whether the `${ooni_run_id}` exists and return 404 if it does
+   not.
+
+2. if everything is okay, returns `200` to the client (see below).
+
+### Response body
+
+In case of success (i.e. `200` response), the OONI Run Service MUST return the
+following JSON body:
+
+```json
+{
+"ooni_run_link_id":
+   `string` OONI Run link identifier.
+
+"name":
+   (required) `string` is the display name for the OONI Run link
+
+"description":
+   (optional) `string` describing the scope of this OONI Run link system
+
+"icon":
+   (optional) `string` the ID of any icon part of the OONI icon set
+
+"author":
+   (optional) `string` name of the creator of this OONI Run link
+
+"nettests": `array` provides a JSON array of tests to be run.
+   [
+      {
+         "inputs": [
+            "https://example.com/",
+            "https://ooni.org/"
+         ],
+         "options": {
+            "HTTP3Enabled": true,
+         },
+         "test_name": "web_connectivity"
+      },
+      {
+         "test_name": "dnscheck"
+      }
+   ]
+}
 ```
-
-Otherwise, in case of failure, the OONI Run Service MUST return a JSON object, whose
-content is implementation dependent and MAY be empty. Some existing implementations
-return a `{"error": "string"}` object to make debugging easier.
 
 # 4.0 Implementation considerations
 
-A client side implementation of the OONI Run Service MUST make sure
-that it is emitting timestamps using UTC rather than local time.
+Special attention should be placed in ensuring the OONI Run links (which are
+mobile deep links) are sharable though various apps.
+In particular the format of the OONI Run link should be such that if the URL is
+being truncated, it should be visible to the end, as such it's recommend that we
+restrict the character set of the `ooni_run_link_id` to just numbers. Since we
+might not end up having that many OONI Run link, this also lends itself well to
+allowing users to manually type OONI Run links directly into the app.
 
-A client side implementation MAY retry any failing OONI Run Service operation
-immediately for three times in case there is a DNS or TCP error. This
-is to ensure that transient errors do not prevent us from submitting the
-data immediately. If all these immediate retries fail, then the client
-SHOULD arrange for resubmitting the OONI Run Link at a later time, either
-requiring user input or automatically. In the latter case, the delay
-after which the client will attempt to resubmit SHOULD be exponentially
-distributed and SHOULD NOT be smaller than 15 minutes.
+Mobile deep links can be registered using two different methods, one is a custom
+prefix (ex. `ooni://`), the other is a custom URL prefix (ex.
+`https://run.ooni.io/1234`). In our testing we have seen that the custom prefix
+is more reliable, yet it has the tradeoff of not allowing us to display a web
+page when the user does not have the app installed. As such the recommended
+strategy is to encourage users to share the custom URL prefix OONI Run link, but
+on the web page itself, in the event that the app did not handle the deep link,
+have a link to the custom prefix approach to "force" the opening of the app.
 
-A server implementation MAY publish metrics allowing OONI to gradually
-enforce more JSON schema correctness in the OONI Run Service, both for the
-open-report request and for submitted data. A possible strategy to make
-this happen consists of parsing without rejecting, counting the number
-of failures, and then iterating until the number of failures starts
-converging to zero. At that point, it is possible to make the checks
-mandatory and reject invalid input.
+As such we recommend using the following addresses for OONI Run link and OONI Run descriptor URLs:
+* `https://run.ooni.io/{ooni_run_link_id}`, where `{ooni_run_link_id}` is a number
+* `ooni://runv2/{ooni_run_link_id}`
+* `https://api.ooni.io/api/v1/ooni_run/{ooni_run_link_id}`
+
+Moreover, we could at some point host these links on s3 or github and have them
+be accessible via URLs in the form:
+* `https://raw.githubusercontent.com/ooni/run-links/master/data/{ooni_run_link_id}.json`
+* `https://s3.amazonaws.com/ooni-data/ooni-run-links/{ooni_run_link_id}.json`
