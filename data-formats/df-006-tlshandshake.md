@@ -22,6 +22,7 @@ code. See this directory's [README](README.md) for the basic concepts.
 
 ```JSON
 {
+    "network": "",
     "address": "",
     "cipher_suite": "",
     "conn_id": 1231,
@@ -35,6 +36,7 @@ code. See this directory's [README](README.md) for the basic concepts.
     "transaction_id": 1
 }
 ```
+- `network` (`string`; optional): The network for the handshake (`tls` or `quic`) 
 
 - `address` (`string`): The endpoint IP address (host:port) with which the handshake is performed.
 
