@@ -121,7 +121,7 @@ more details about how we choose the resolver name.
 As of 2022-08-23, resolutions performed by the system/go resolver are
 represented in two distinct ways:
 
-1. all mainline experiments artifically split a lookup into two entries, one
+1. all mainline experiments artificially split a lookup into two queries and replies, one
 for `A` and the other for `AAAA`;
 
 2. new step-by-step code (which eventually will become the default) represents a
