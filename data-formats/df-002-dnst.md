@@ -101,7 +101,8 @@ The following table documents the available DNS resolver engines.
 
 | Engine name | Description |
 | :---------- | ----------- |
-| system      | We are using getaddrinfo |
+| system      | We are using getaddrinfo (legacy) |
+| getaddrinfo | We are using getaddrinfo |
 | go          | Whatever the Go stdlib uses for the current platform |
 | udp         | Custom DNS-over-UDP resolver |
 | tcp         | Custom DNS-over-TCP resolver |
