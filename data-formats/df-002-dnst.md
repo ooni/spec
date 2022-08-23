@@ -125,7 +125,7 @@ represented in two distinct ways:
 for `A` and the other for `AAAA`;
 
 2. new step-by-step code (which eventually will become the default) represents a
-system/go lookup as a single `ANY` query containing all the `A`, `AAAA`, and
+system/go lookup as a single `ANY` query/reply containing all the `A`, `AAAA`, and
 `CNAME` records returned by `getaddrinfo` (or by the Go resolver).
 
 The latter approach is more correct in terms of representing which low
