@@ -124,7 +124,7 @@ represented in two distinct ways:
 1. all mainline experiments artifically split a lookup into two entries, one
 for `A` and the other for `AAAA`;
 
-2. new step-by-step code (which eventually will become the default) represent a
+2. new step-by-step code (which eventually will become the default) represents a
 system/go lookup as a single `ANY` query containing all the `A`, `AAAA`, and
 `CNAME` records returned by `getaddrinfo` (or by the Go resolver).
 
