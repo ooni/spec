@@ -70,7 +70,7 @@ note below regarding representing the system/go resolver results;
 response for the engines that allow us to observe it;
 
 - `rcode`: an optional int64 containing the DNS rcode inside the `raw_response`
-fro the engines that allow us to observe it;
+for the engines that allow us to observe it;
 
 - `resolver_address` (`string`; since 2019-12-29): more flexible way of
 specifying the resolver address that also allows for DoH, because it does
