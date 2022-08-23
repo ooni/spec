@@ -63,9 +63,8 @@ is the system-dependent error code returned by `getaddrinfo`;
 - `hostname` (`string`): the hostname used in the DNS query, which MUST
 be reversed for PTR lookups like `1.0.0.127.in-addr.arpa.`.
 
-- `query_type`: (`string`): a valid DNS query type (e.g. `MX`). Since
-~2022-08-23, queries using the system resolver use the `ANY` type because
-that is the most clear mapping to the system resolver's semantics;
+- `query_type`: (`string`): a valid DNS query type (e.g. `MX`)&mdash;see the
+note below regarding representing the system/go resolver results;
 
 - `raw_response`: an optional base64 string containing the bytes of the
 response for the engines that allow us to observe it;
@@ -116,6 +115,22 @@ building OONI has passed `CGO_ENABLED=0` explicitly from the command
 line See [ooni/probe-cli#765](https://github.com/ooni/probe-cli/pull/765)
 and [ooni/probe-cli#766](https://github.com/ooni/probe-cli/pull/766) for
 more details about how we choose the resolver name.
+
+### Representing system/go resolver results
+
+As of 2022-08-23, resolutions performed by the system/go resolver are
+represented in two distinct ways:
+
+1. all mainline experiments artifically split a lookup into two entries, one
+for `A` and the other for `AAAA`;
+
+2. new step-by-step code (which eventually will become the default) represent a
+system/go lookup as a single `ANY` query containing all the `A`, `AAAA`, and
+`CNAME` records returned by `getaddrinfo` (or by the Go resolver).
+
+The latter approach is more correct in terms of representing which low
+level operations occurred, since a `getaddrinfo` is actually a single lookup
+and it's not faithful to reality to fake out two lookups.
 
 ## Answer
 
@@ -194,10 +209,11 @@ not relevant to the DNS data format:
         "engine": "system",
         "failure": null,
         "hostname": "web.telegram.org",
-        "query_type": "A",
+        "query_type": "ANY",
         "resolver_hostname": null,
         "resolver_port": null,
         "resolver_address": "",
+        "t0": 1.001,
         "t": 1.114,
         "transaction_id": 1
       }
