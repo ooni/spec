@@ -26,11 +26,15 @@ code. See this directory's [README](README.md) for the basic concepts.
     "dial_id": 177171,
     "engine": "udp",
     "failure": "dns_nxdomain_error",
+    "getaddrinfo_error": 0,
     "hostname": "dns.googlex",
     "query_type": "A",
+    "raw_response": "",
+    "rcode": 0,
     "resolver_address": "8.8.8.8:53",
-    "resolver_hostname": "8.8.8.8",
-    "resolve_port": "53",
+    "resolver_hostname": null,
+    "resolve_port": null,
+    "t0": 1.007,
     "t": 1.114,
     "transaction_id": 1
 }
@@ -52,25 +56,42 @@ of available resolver engines.
 - `failure` (`string`; nullable): if there was an error, this field is
 a string indicating the error, otherwise it MUST be `null`.
 
-- `hostname`: (`string`): the hostname used in the DNS query, which MUST
-be reversed for PTR lookups like `1.0.0.127.in-addr.arpa`.
+- `getaddrinfo_error` (`int`; optional; since 2022-08-23): if the
+underlying engine used `getaddrinfo` and `getaddrinfo` failed, this
+is the system-dependent error code returned by `getaddrinfo`;
 
-- `query_type`: (`string`): a valid DNS query type (e.g. `MX`).
+- `hostname` (`string`): the hostname used in the DNS query, which MUST
+be reversed for PTR lookups like `1.0.0.127.in-addr.arpa.`.
 
-- `resolver_address`: (`string`; since 2019-12-29): more flexible way of
+- `query_type`: (`string`): a valid DNS query type (e.g. `MX`). Since
+~2022-08-23, queries using the system resolver use the `ANY` type because
+that is the most clear mapping to the system resolver's semantics;
+
+- `raw_response`: an optional base64 string containing the bytes of the
+response for the engines that allow us to observe it;
+
+- `rcode`: an optional int64 containing the DNS rcode inside the `raw_response`
+fro the engines that allow us to observe it;
+
+- `resolver_address` (`string`; since 2019-12-29): more flexible way of
 specifying the resolver address that also allows for DoH, because it does
 not assume that the resolver is identified by an address, port tuple.
 
-- `resolver_hostname`: (`string`; optional; deprecated): legacy way to
+- `resolver_hostname` (`string`; optional; deprecated): legacy way to
 specify the resolver hostname when using a custom resolver. This is not
 used by ooni/probe-engine, which sets it to `null`.
 
-- `resolver_port`: (`string`; optional; deprecated): legacy way to
+- `resolver_port` (`string`; optional; deprecated): legacy way to
 specify the resolver hostname when using a custom resolver. This is not
 used by ooni/probe-engine, which sets it to `null`.
+
+- `t0` (`float`): number of seconds elapsed since `measurement_start_time`
+measured in the moment in which we started the operation (`t - t0` gives you
+the amount of time spent performing the given lookup);
 
 - `t` (`float`): number of seconds elapsed since `measurement_start_time`
-measured in the moment in which `failure` is determined.
+measured in the moment in which `failure` is determined (`t - t0` gives you
+the amount of time spent performing the given lookup);
 
 - `transaction_id` (`int`; optional; since 2020-01-11): if present, this is the
 ID of the HTTP transaction that caused this query.
