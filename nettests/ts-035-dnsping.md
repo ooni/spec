@@ -49,7 +49,7 @@ where:
 ```JSON
 {
   "query": {},
-  "delayed_response": []
+  "delayed_responses": []
 }
 ```
 
@@ -57,7 +57,7 @@ where:
 
 - `query` follows the `df-002-dnst` data format
 
-- `delayed_response` contains one or more delayed DNS responses of `df-002-dnst` data format
+- `delayed_responses` contains one or more delayed DNS responses of `df-002-dnst` data format
 
 Before 2022-07-08, `query` pointed to a *list* of `df-002-dnst`
 data. We changed this because the nettest is still experimental and we want to
