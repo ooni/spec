@@ -106,7 +106,7 @@ The following table documents the available DNS resolver engines.
 
 | Engine name         | Description |
 | :------------------ | ----------- |
-| unknown             | We don't know what resolver we're using |
+| unknown             | We don't know what resolver we're using (added on 2022-08-27) |
 | system              | We are using getaddrinfo (legacy since 2022-08-27) |
 | getaddrinfo         | We are using getaddrinfo |
 | golang_net_resolver | We are using golang's `net.Resolver` |
