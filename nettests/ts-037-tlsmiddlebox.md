@@ -74,7 +74,8 @@ We will include data following these data formats:
 {
    "queries": [],
    "tcp_connect": [],
-   "trace": {
+   "iterative_trace": {
+      "address": "",
       "control_trace": {},
       "target_trace": {}
    }
@@ -87,7 +88,7 @@ where:
 
 - `tcp_connect` contains a list of `df-005-tcpconnect` instances
 
-- `trace` contains the SNI-based iterative trace of the form:
+- `iterative_trace` contains the SNI-based iterative trace of the form:
 
 ```JSON
 {
@@ -122,10 +123,11 @@ Response:
     "platform": "linux"
   },
   "data_format_version": "0.2.0",
-  "input": "https://example.com",
-  "measurement_start_time": "2022-07-22 08:19:26",
+  "input": "tlstrace://1337x.be",
+  "measurement_start_time": "2022-08-27 07:32:06",
   "options": [
-    "SNI=1337x.be"
+    "SNIControl=google.com",
+    "TestHelper=tlshandshake://example.com"
   ],
   "probe_asn": "AS24560",
   "probe_cc": "IN",
@@ -142,6 +144,45 @@ Response:
       {
         "answers": [
           {
+            "asn": 13335,
+            "as_org_name": "Cloudflare, Inc.",
+            "answer_type": "A",
+            "ipv4": "104.16.248.249",
+            "ttl": null
+          },
+          {
+            "asn": 13335,
+            "as_org_name": "Cloudflare, Inc.",
+            "answer_type": "A",
+            "ipv4": "104.16.249.249",
+            "ttl": null
+          },
+          {
+            "asn": 13335,
+            "as_org_name": "Cloudflare, Inc.",
+            "answer_type": "AAAA",
+            "ipv6": "2606:4700:91b3:8ced:8739:0:1827:bcee",
+            "ttl": null
+          },
+          {
+            "answer_type": "CNAME",
+            "hostname": "mozilla.cloudflare-dns.com",
+            "ttl": null
+          }
+        ],
+        "engine": "system",
+        "failure": null,
+        "hostname": "mozilla.cloudflare-dns.com",
+        "query_type": "ANY",
+        "resolver_hostname": null,
+        "resolver_port": null,
+        "resolver_address": "",
+        "t0": 0.000442173,
+        "t": 0.01428492
+      },
+      {
+        "answers": [
+          {
             "asn": 15133,
             "as_org_name": "Edgecast Inc.",
             "answer_type": "A",
@@ -153,10 +194,12 @@ Response:
         "failure": null,
         "hostname": "example.com",
         "query_type": "A",
+        "raw_response": "hhKBoAABAAIAAAABB2V4YW1wbGUDY29tAAABAAHADAABAAEAAUhKAARduNgiwAwALgABAAFISgCfAAEIAgABUYBjHAvgYwDk6AaWB2V4YW1wbGUDY29tABKm/2/eVl7Xqf/0X1iKOlFbF8vNFewGZUvOEd/19pMMC4hzqmMz3wDbU4e/SoTUb6rRzKxciolbYu5tDCGuysl7bMBpduGW0vzXShus0J4sjRT1XZyWa9ahtDy9juNeen+3Szo+zJuGiS+TfbXhxk9NS1QrPK1n3+w1SDsINq0PAAApBNAAAIAAAPEADADtAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
         "resolver_hostname": null,
         "resolver_port": null,
         "resolver_address": "https://mozilla.cloudflare-dns.com/dns-query",
-        "t": 0.043338156
+        "t0": 0.000291861,
+        "t": 0.287258145
       },
       {
         "answers": [
@@ -172,10 +215,12 @@ Response:
         "failure": null,
         "hostname": "example.com",
         "query_type": "AAAA",
+        "raw_response": "kpmBoAABAAIAAAABB2V4YW1wbGUDY29tAAAcAAHADAAcAAEAAVGAABAmBigAAiAAAQJIGJMlyBlGwAwALgABAAFRgACfABwIAgABUYBjHTHnYwEdKgaWB2V4YW1wbGUDY29tAGewwJzy9va8IhAIedDOGo0Ckq4k4m66WJgiJavq+aGEWEMzZOXYMv6B5em4fU0nLM/VHwXng9fVPJnORL0PAfRuM3y9ljlrmTPu+ymCCo2pzNI0XqGE9DglaoGyzPdctkT9EPFsD+pVSWoQEoANZCLPWPMblcBiDn24kY9OKbc6AAApBNAAAIAAAOUADADhAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
         "resolver_hostname": null,
         "resolver_port": null,
         "resolver_address": "https://mozilla.cloudflare-dns.com/dns-query",
-        "t": 0.044354607
+        "t0": 0.000171096,
+        "t": 0.557063367
       }
     ],
     "tcp_connect": [
@@ -186,7 +231,7 @@ Response:
           "failure": "network_unreachable",
           "success": false
         },
-        "t": 0.0445309
+        "t": 0.557563823
       },
       {
         "ip": "93.184.216.34",
@@ -195,10 +240,10 @@ Response:
           "failure": null,
           "success": true
         },
-        "t": 0.306253862
+        "t": 0.770129981
       }
     ],
-    "trace": [
+    "iterative_trace": [
       {
         "address": "[2606:2800:220:1:248:1893:25c8:1946]:443",
         "control_trace": null,
@@ -207,19 +252,21 @@ Response:
       {
         "address": "93.184.216.34:443",
         "control_trace": {
-          "server_name": "example.com",
+          "server_name": "google.com",
           "iterations": [
             {
               "ttl": 1,
               "handshake": {
+                "network": "tls",
                 "address": "93.184.216.34:443",
                 "cipher_suite": "",
                 "failure": "generic_timeout_error",
+                "icmp_failure": "host_unreachable",
                 "negotiated_protocol": "",
                 "no_tls_verify": true,
                 "peer_certificates": [],
-                "server_name": "example.com",
-                "t": 10.534567764,
+                "server_name": "google.com",
+                "t": 11.006691967,
                 "tags": [],
                 "tls_version": ""
               }
@@ -227,14 +274,16 @@ Response:
             {
               "ttl": 2,
               "handshake": {
+                "network": "tls",
                 "address": "93.184.216.34:443",
                 "cipher_suite": "",
                 "failure": "generic_timeout_error",
+                "icmp_failure": "host_unreachable",
                 "negotiated_protocol": "",
                 "no_tls_verify": true,
                 "peer_certificates": [],
-                "server_name": "example.com",
-                "t": 10.630160034,
+                "server_name": "google.com",
+                "t": 11.095136104,
                 "tags": [],
                 "tls_version": ""
               }
@@ -242,14 +291,16 @@ Response:
             {
               "ttl": 3,
               "handshake": {
+                "network": "tls",
                 "address": "93.184.216.34:443",
                 "cipher_suite": "",
                 "failure": "generic_timeout_error",
+                "icmp_failure": "host_unreachable",
                 "negotiated_protocol": "",
                 "no_tls_verify": true,
                 "peer_certificates": [],
-                "server_name": "example.com",
-                "t": 10.730830548,
+                "server_name": "google.com",
+                "t": 11.214704372,
                 "tags": [],
                 "tls_version": ""
               }
@@ -257,14 +308,16 @@ Response:
             {
               "ttl": 4,
               "handshake": {
+                "network": "tls",
                 "address": "93.184.216.34:443",
                 "cipher_suite": "",
                 "failure": "generic_timeout_error",
+                "icmp_failure": "host_unreachable",
                 "negotiated_protocol": "",
                 "no_tls_verify": true,
                 "peer_certificates": [],
-                "server_name": "example.com",
-                "t": 10.830433958,
+                "server_name": "google.com",
+                "t": 11.305097717,
                 "tags": [],
                 "tls_version": ""
               }
@@ -272,14 +325,16 @@ Response:
             {
               "ttl": 5,
               "handshake": {
+                "network": "tls",
                 "address": "93.184.216.34:443",
                 "cipher_suite": "",
                 "failure": "generic_timeout_error",
+                "icmp_failure": "host_unreachable",
                 "negotiated_protocol": "",
                 "no_tls_verify": true,
                 "peer_certificates": [],
-                "server_name": "example.com",
-                "t": 10.933887702,
+                "server_name": "google.com",
+                "t": 11.410661235,
                 "tags": [],
                 "tls_version": ""
               }
@@ -287,14 +342,16 @@ Response:
             {
               "ttl": 6,
               "handshake": {
+                "network": "tls",
                 "address": "93.184.216.34:443",
                 "cipher_suite": "",
                 "failure": "generic_timeout_error",
+                "icmp_failure": "host_unreachable",
                 "negotiated_protocol": "",
                 "no_tls_verify": true,
                 "peer_certificates": [],
-                "server_name": "example.com",
-                "t": 11.039546173,
+                "server_name": "google.com",
+                "t": 11.493195567,
                 "tags": [],
                 "tls_version": ""
               }
@@ -302,14 +359,16 @@ Response:
             {
               "ttl": 7,
               "handshake": {
+                "network": "tls",
                 "address": "93.184.216.34:443",
                 "cipher_suite": "",
                 "failure": "generic_timeout_error",
+                "icmp_failure": "host_unreachable",
                 "negotiated_protocol": "",
                 "no_tls_verify": true,
                 "peer_certificates": [],
-                "server_name": "example.com",
-                "t": 11.136232723,
+                "server_name": "google.com",
+                "t": 11.589679486,
                 "tags": [],
                 "tls_version": ""
               }
@@ -317,14 +376,16 @@ Response:
             {
               "ttl": 8,
               "handshake": {
+                "network": "tls",
                 "address": "93.184.216.34:443",
                 "cipher_suite": "",
                 "failure": "generic_timeout_error",
+                "icmp_failure": "host_unreachable",
                 "negotiated_protocol": "",
                 "no_tls_verify": true,
                 "peer_certificates": [],
-                "server_name": "example.com",
-                "t": 11.237782609,
+                "server_name": "google.com",
+                "t": 11.70713495,
                 "tags": [],
                 "tls_version": ""
               }
@@ -332,14 +393,16 @@ Response:
             {
               "ttl": 9,
               "handshake": {
+                "network": "tls",
                 "address": "93.184.216.34:443",
                 "cipher_suite": "",
                 "failure": "generic_timeout_error",
+                "icmp_failure": "host_unreachable",
                 "negotiated_protocol": "",
                 "no_tls_verify": true,
                 "peer_certificates": [],
-                "server_name": "example.com",
-                "t": 11.333499188,
+                "server_name": "google.com",
+                "t": 11.802585433,
                 "tags": [],
                 "tls_version": ""
               }
@@ -347,14 +410,16 @@ Response:
             {
               "ttl": 10,
               "handshake": {
+                "network": "tls",
                 "address": "93.184.216.34:443",
                 "cipher_suite": "",
                 "failure": "generic_timeout_error",
+                "icmp_failure": "host_unreachable",
                 "negotiated_protocol": "",
                 "no_tls_verify": true,
                 "peer_certificates": [],
-                "server_name": "example.com",
-                "t": 11.440203943,
+                "server_name": "google.com",
+                "t": 11.903219316,
                 "tags": [],
                 "tls_version": ""
               }
@@ -362,14 +427,16 @@ Response:
             {
               "ttl": 11,
               "handshake": {
+                "network": "tls",
                 "address": "93.184.216.34:443",
                 "cipher_suite": "",
                 "failure": "generic_timeout_error",
+                "icmp_failure": "host_unreachable",
                 "negotiated_protocol": "",
                 "no_tls_verify": true,
                 "peer_certificates": [],
-                "server_name": "example.com",
-                "t": 11.533830076,
+                "server_name": "google.com",
+                "t": 11.992776107,
                 "tags": [],
                 "tls_version": ""
               }
@@ -377,6 +444,7 @@ Response:
             {
               "ttl": 12,
               "handshake": {
+                "network": "tls",
                 "address": "93.184.216.34:443",
                 "cipher_suite": "TLS_AES_256_GCM_SHA384",
                 "failure": null,
@@ -392,8 +460,8 @@ Response:
                     "format": "base64"
                   }
                 ],
-                "server_name": "example.com",
-                "t": 2.04712174,
+                "server_name": "google.com",
+                "t": 2.518908669,
                 "tags": [],
                 "tls_version": "TLSv1.3"
               }
@@ -406,14 +474,16 @@ Response:
             {
               "ttl": 1,
               "handshake": {
+                "network": "tls",
                 "address": "93.184.216.34:443",
                 "cipher_suite": "",
                 "failure": "generic_timeout_error",
+                "icmp_failure": "host_unreachable",
                 "negotiated_protocol": "",
                 "no_tls_verify": true,
                 "peer_certificates": [],
                 "server_name": "1337x.be",
-                "t": 21.760579703,
+                "t": 22.215312389,
                 "tags": [],
                 "tls_version": ""
               }
@@ -421,14 +491,16 @@ Response:
             {
               "ttl": 2,
               "handshake": {
+                "network": "tls",
                 "address": "93.184.216.34:443",
                 "cipher_suite": "",
                 "failure": "generic_timeout_error",
+                "icmp_failure": "host_unreachable",
                 "negotiated_protocol": "",
                 "no_tls_verify": true,
                 "peer_certificates": [],
                 "server_name": "1337x.be",
-                "t": 21.854424131000002,
+                "t": 22.316945083,
                 "tags": [],
                 "tls_version": ""
               }
@@ -436,14 +508,16 @@ Response:
             {
               "ttl": 3,
               "handshake": {
+                "network": "tls",
                 "address": "93.184.216.34:443",
                 "cipher_suite": "",
                 "failure": "generic_timeout_error",
+                "icmp_failure": "host_unreachable",
                 "negotiated_protocol": "",
                 "no_tls_verify": true,
                 "peer_certificates": [],
                 "server_name": "1337x.be",
-                "t": 21.964248811,
+                "t": 22.416479398,
                 "tags": [],
                 "tls_version": ""
               }
@@ -451,6 +525,7 @@ Response:
             {
               "ttl": 4,
               "handshake": {
+                "network": "tls",
                 "address": "93.184.216.34:443",
                 "cipher_suite": "",
                 "failure": "connection_reset",
@@ -458,7 +533,7 @@ Response:
                 "no_tls_verify": true,
                 "peer_certificates": [],
                 "server_name": "1337x.be",
-                "t": 12.087101766,
+                "t": 12.555797842,
                 "tags": [],
                 "tls_version": ""
               }
@@ -469,8 +544,8 @@ Response:
     ]
   },
   "test_name": "tlsmiddlebox",
-  "test_runtime": 22.763357122,
-  "test_start_time": "2022-07-22 08:19:03",
+  "test_runtime": 22.416619229,
+  "test_start_time": "2022-08-27 07:31:44",
   "test_version": "0.1.0"
 }
 ```
