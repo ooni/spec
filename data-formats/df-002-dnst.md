@@ -134,7 +134,7 @@ The `go` engine is a misnomer that we corrected to `golang_net_resolver`
 on 2022-08-27 during the ooniprobe 3.16.0-alpha release cycle and it
 has not otherwise been used by stable ooniprobe versions. Calling such an
 engine `go` was confusing because it may seem to imply that we were
-actually using a DNS resolver written in Go, which we're not sure about. In
+actually using a DNS resolver written in Go, which we don't know. In
 fact, it may either be `netgo` or it may be `getaddrinfo` depending on
 golang's policies for the platform we're using.
 
