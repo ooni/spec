@@ -138,23 +138,17 @@ actually using a DNS resolver written in Go, which we don't know. In
 fact, it may either be `netgo` or it may be `cgo` and hence `getaddrinfo`,
 depending on golang's policies for the `GOOS` we're using.
 
-When the engine is `system`, there are three cases:
+Save for `ooniprobe 3.16.0-alpha` builds, when the engine is `system` we
+artificially split a lookup into an `A` query and reply and an `AAAA` query
+and reply (which is what we've been doing since Measurement Kit).
 
-* `ooniprobe < 3.16.0` artificially split a lookup into an `A`
-query and reply and an `AAAA` query and reply (which is what we've
-been doing since the Measurement Kit days);
-
-* `ooniprobe 3.16.0-alpha` behaved like `getaddrinfo` until 2022-08-27
-when this behavior has been fixed (it's noteworthy that this behavior
-only affected unreleased versions of ooniprobe);
-
-* `ooniprobe >= 3.16.0` does not use the `system` engine.
-
-The `ooniprobe >= 3.16.0` approach is more correct in terms of representing which low
-level operations occurred, since a `getaddrinfo` is actually a single lookup
-and it's not faithful to reality to fake out two lookups. We choose to change the
-engine name because we changed how we represent the results of queries, moving
-away form the incorrect two-fake-queries-and-replies approach.
+The `getaddrinfo` / `golang_net_resolver` approach is more correct in terms of
+representing which low-level operations occurred. `Getaddrinfo` is a single operation
+and it's not faithful to reality to fake out two lookups because this is what _may_
+have happended at the network level. In going forward, new experiments and
+refactored experiments will stop using the `system` engine name. We could have
+continued to use it with the new, no-split approach, but we chose to change
+the name because we change our way of representing getaddrinfo-like resolutions.
 
 ## Answer
 
