@@ -136,7 +136,7 @@ has not otherwise been used by stable ooniprobe versions. Calling such an
 engine `go` was confusing because it may seem to imply that we were
 actually using a DNS resolver written in Go, which we don't know. In
 fact, it may either be `netgo` or it may be `cgo` and hence `getaddrinfo`, depending on
-golang's policies for the platform we're using.
+golang's policies for the `GOOS` we're using.
 
 When the engine is `system`, there are three cases:
 
