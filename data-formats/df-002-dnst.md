@@ -149,7 +149,7 @@ and it's not faithful to reality to fake out two lookups because this is what _m
 have happended at the network level. In going forward, new experiments and
 refactored experiments will stop using the `system` engine name. We could have
 continued to use it with the new, no-split approach, but we chose to change
-the name because we change our way of representing getaddrinfo-like resolutions.
+the name because we changed our way of representing getaddrinfo-like resolutions.
 
 ## Answer
 
