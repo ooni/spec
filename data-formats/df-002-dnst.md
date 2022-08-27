@@ -99,39 +99,51 @@ ID of the HTTP transaction that caused this query.
 
 The following table documents the available DNS resolver engines.
 
-| Engine name | Description |
-| :---------- | ----------- |
-| system      | We are using getaddrinfo (legacy) |
-| getaddrinfo | We are using getaddrinfo |
-| go          | Whatever the Go stdlib uses for the current platform |
-| udp         | Custom DNS-over-UDP resolver |
-| tcp         | Custom DNS-over-TCP resolver |
-| dot         | Custom DNS-over-TLS resolver |
-| doh         | Custom DNS-over-HTTPS resolver |
+| Engine name         | Description |
+| :------------------ | ----------- |
+| system              | We are using getaddrinfo (legacy) |
+| getaddrinfo         | We are using getaddrinfo |
+| golang_net_resolver | We are using golang's `net.Resolver` |
+| go                  | Alias for `golang_net_resolver` (deprecated) |
+| udp                 | Custom DNS-over-UDP resolver |
+| tcp                 | Custom DNS-over-TCP resolver |
+| dot                 | Custom DNS-over-TLS resolver |
+| doh                 | Custom DNS-over-HTTPS resolver |
 
 Since 2022-05-29 (i.e., for `ooniprobe>=3.16.0`), we explicitly use
-`getaddrinfo` whenever possible and fall back to using `go` only when
+`getaddrinfo` whenever possible and fall back to using `net.Resolver` only when
 `CGO_ENABLED=0`, which happens when cross compiling or when who's
 building OONI has passed `CGO_ENABLED=0` explicitly from the command
 line See [ooni/probe-cli#765](https://github.com/ooni/probe-cli/pull/765)
 and [ooni/probe-cli#766](https://github.com/ooni/probe-cli/pull/766) for
 more details about how we choose the resolver name.
 
-### Representing system/go resolver results
+When the engine is `getaddrinfo` or `golang_net_resolver` or `go`, we
+represent a lookup host operation as a single `ANY` query and include into
+the results any returned `A`, `AAAA`, and `CNAME` information by faking
+a reply containing such records as answers.
 
-As of 2022-08-23, resolutions performed by the system/go resolver are
-represented in two distinct ways:
+The `go` engine is a misnomer that we corrected to `golang_net_resolver`
+on 2022-08-27 during the ooniprobe 3.16.0-alpha release cycle and it
+has not otherwise been used by stable ooniprobe versions.
 
-1. all mainline experiments artificially split a lookup into two queries and replies, one
-for `A` and the other for `AAAA`;
+When the engine is `system`, there are three cases:
 
-2. new step-by-step code (which eventually will become the default) represents a
-system/go lookup as a single `ANY` query/reply containing all the `A`, `AAAA`, and
-`CNAME` records returned by `getaddrinfo` (or by the Go resolver).
+* `ooniprobe < 3.16.0` artificially split a lookup into an `A`
+query and reply and an `AAAA` query and reply (which is what we've
+been doing since the Measurement Kit days);
 
-The latter approach is more correct in terms of representing which low
+* `ooniprobe 3.16.0-alpha` behaved like `getaddrinfo` until 2022-08-27
+when this behavior has been fixed (it's noteworthy that this behavior
+only affected unreleased versions of ooniprobe);
+
+* `ooniprobe >= 3.16.0` does not use the `system` engine.
+
+The `ooniprobe >= 3.16.0` approach is more correct in terms of representing which low
 level operations occurred, since a `getaddrinfo` is actually a single lookup
-and it's not faithful to reality to fake out two lookups.
+and it's not faithful to reality to fake out two lookups. We choose to change the
+engine name because we changed how we represent the results of queries, moving
+away form the incorrect two-fake-queries-and-replies approach.
 
 ## Answer
 
