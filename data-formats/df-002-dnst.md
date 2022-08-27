@@ -128,7 +128,7 @@ more details about how we choose the resolver name.
 When the engine is `getaddrinfo` or `golang_net_resolver` or `go`, we
 represent a lookup host operation as a single `ANY` query and include into
 the results any returned `A`, `AAAA`, and `CNAME` information by faking
-a reply containing such records as answers.
+a response containing such records as answers.
 
 The `go` engine is a misnomer that we corrected to `golang_net_resolver`
 on 2022-08-27 during the ooniprobe 3.16.0-alpha release cycle and it
