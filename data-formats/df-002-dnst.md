@@ -49,8 +49,8 @@ emit the dial_id when it is zero. Rest assured that the dial_id will
 be unique during a measurement session.
 
 - `engine` (`string`; optional): the specific engine used to perform
-the DNS query. If omitted implies `"system"`, which means that we are
-using in a way or another `getaddrinfo`. See also below for a list
+the DNS query. If omitted implies `"unknown"`, which means that we are
+not sure about what resolver we're using. See also below for a list
 of available resolver engines.
 
 - `failure` (`string`; nullable): if there was an error, this field is
@@ -101,10 +101,11 @@ The following table documents the available DNS resolver engines.
 
 | Engine name         | Description |
 | :------------------ | ----------- |
-| system              | We are using getaddrinfo (legacy) |
+| unknown             | We don't know what resolver we're using |
+| system              | We are using getaddrinfo (legacy since 2022-08-27) |
 | getaddrinfo         | We are using getaddrinfo |
 | golang_net_resolver | We are using golang's `net.Resolver` |
-| go                  | Alias for `golang_net_resolver` (deprecated) |
+| go                  | Alias for `golang_net_resolver` (deprecated since 2022-08-27) |
 | udp                 | Custom DNS-over-UDP resolver |
 | tcp                 | Custom DNS-over-TCP resolver |
 | dot                 | Custom DNS-over-TLS resolver |
@@ -125,7 +126,11 @@ a reply containing such records as answers.
 
 The `go` engine is a misnomer that we corrected to `golang_net_resolver`
 on 2022-08-27 during the ooniprobe 3.16.0-alpha release cycle and it
-has not otherwise been used by stable ooniprobe versions.
+has not otherwise been used by stable ooniprobe versions. Calling such an
+engine `go` was confusing because it may seem to imply that we were
+actually using a DNS resolver written in Go, which we're not sure about. In
+fact, it may either be `netgo` or it may be `getaddrinfo` depending on
+golang's policies for the platform we're using.
 
 When the engine is `system`, there are three cases:
 
