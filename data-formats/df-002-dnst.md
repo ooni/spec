@@ -138,7 +138,8 @@ actually using a DNS resolver written in Go, which we don't know. In
 fact, it may either be `netgo` or it may be `cgo` and hence `getaddrinfo`,
 depending on golang's policies for the `GOOS` we're using.
 
-Save for `ooniprobe 3.16.0-alpha` builds, when the engine is `system` we
+Save for `ooniprobe 3.16.0-alpha` builds, which have behaved inconsistently
+while we were figuring out this issue of naming, when the engine is `system` we
 artificially split a lookup into an `A` query and reply and an `AAAA` query
 and reply (which is what we've been doing since Measurement Kit).
 
