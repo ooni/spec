@@ -93,7 +93,7 @@ measured in the moment in which `failure` is determined (`t - t0` gives you
 the amount of time spent performing the given lookup);
 
 - `transaction_id` (`int`; optional; since 2020-01-11): if present and nonzero,
-this is the ID of the transaction that caused this query. By grouping by treansaction
+this is the ID of the transaction that caused this query. By grouping by transaction
 ID, you could observe chains of events that are logically related. For example, a
 DoH lookup includes ancillary DNS lookups, TCP connects, TLS handshakes, etc. If
 zero, this field just indicates we don't know the transaction ID. Before 2022-08-26,
