@@ -98,7 +98,7 @@ ID, you could observe chains of events that are logically related. For example, 
 DoH lookup includes ancillary DNS lookups, TCP connects, TLS handshakes, etc. If
 zero, this field just indicates we don't know the transaction ID. Before 2022-08-26,
 this field was not used in production and had a different definition where the
-transaction was necessarily an HTTP transaction, which was acually too strict.
+transaction was necessarily an HTTP transaction, which was too strict.
 
 ### DNS resolver engines
 
