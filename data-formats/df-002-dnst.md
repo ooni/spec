@@ -120,7 +120,7 @@ Since 2022-05-29 (i.e., for `ooniprobe>=3.16.0`), we explicitly use
 `getaddrinfo` whenever possible and fall back to using `net.Resolver` only when
 `CGO_ENABLED=0`, which happens when cross compiling or when who's
 building OONI has passed `CGO_ENABLED=0` explicitly from the command
-line See [ooni/probe-cli#765](https://github.com/ooni/probe-cli/pull/765)
+line. See [ooni/probe-cli#765](https://github.com/ooni/probe-cli/pull/765)
 and [ooni/probe-cli#766](https://github.com/ooni/probe-cli/pull/766) for
 more details about how we choose the resolver name.
 
