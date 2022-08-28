@@ -57,8 +57,7 @@ blocked at the HTTP level.
 ## Telegram web version test
 
 Telegram’s web version is likely blocked if HTTP GET requests on ports 80 and
-443 to `web.telegram.org` do not send back a consistent response to OONI’s
-servers.
+443 to `web.telegram.org` do not send back a consistent response to OONI Probe.
 
 We check to see if Telegram web version is working properly by doing a HTTP GET
 request to the following URLs:

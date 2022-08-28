@@ -59,7 +59,7 @@ where:
 
 - `tcp_connect` contains a single `df-005-tcpconnect` entry;
 
-- `tls_handshake` is `null` or contains a single `df-006-tlshandhsake` entry;
+- `tls_handshake` is `null` or contains a single `df-006-tlshandhshake` entry;
 
 - `network_events` contains zero or more `df-008-netevents`.
 
