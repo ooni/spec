@@ -27,7 +27,7 @@ code. See this directory's [README](README.md) for the basic concepts.
     "cipher_suite": "",
     "conn_id": 1231,
     "failure": "ssl_invalid_hostname",
-    "icmp_failure": "host_unreachable",
+    "so_error": "host_unreachable",
     "negotiated_protocol": "",
     "no_tls_verify": false,
     "peer_certificates": [],
@@ -49,7 +49,7 @@ the discussion in `df-008-netevents.md`.
 - `failure` (`string`; nullable): if there was an error, this field is
 a string indicating the error, otherwise it MUST be `null`.
 
-- `icmp_failure` (`string`; optional): If there was a soft error (e.g. `ICMP Time Exceeded`), this 
+- `so_error` (`string`; optional): If there was a soft error (e.g. `ICMP Time Exceeded`), this 
 field is a string indicating the error, otherwise it is omitted.
 
 - `negotiated_protocol`: (`string`): the protocol negotiated with ALPN, if any.
