@@ -119,37 +119,29 @@ Response:
   "annotations": {
     "architecture": "amd64",
     "engine_name": "ooniprobe-engine",
-    "engine_version": "3.16.0-alpha",
+    "engine_version": "3.16.0-alpha.2",
     "platform": "linux"
   },
   "data_format_version": "0.2.0",
   "input": "tlstrace://1337x.be",
-  "measurement_start_time": "2022-08-27 07:32:06",
+  "measurement_start_time": "2022-09-01 16:37:55",
   "options": [
-    "SNIControl=google.com",
     "TestHelper=tlshandshake://example.com"
   ],
   "probe_asn": "AS24560",
   "probe_cc": "IN",
   "probe_ip": "127.0.0.1",
   "probe_network_name": "Bharti Airtel Limited",
-  "report_id": "",
+  "report_id": "20220901T163755Z_tlsmiddlebox_IN_24560_n1_zUFu0wK85oGNlnbG",
   "resolver_asn": "AS13335",
   "resolver_ip": "162.158.45.17",
   "resolver_network_name": "Cloudflare, Inc.",
   "software_name": "miniooni",
-  "software_version": "3.16.0-alpha",
+  "software_version": "3.16.0-alpha.2",
   "test_keys": {
     "queries": [
       {
         "answers": [
-          {
-            "asn": 13335,
-            "as_org_name": "Cloudflare, Inc.",
-            "answer_type": "A",
-            "ipv4": "104.16.248.249",
-            "ttl": null
-          },
           {
             "asn": 13335,
             "as_org_name": "Cloudflare, Inc.",
@@ -160,8 +152,15 @@ Response:
           {
             "asn": 13335,
             "as_org_name": "Cloudflare, Inc.",
+            "answer_type": "A",
+            "ipv4": "104.16.248.249",
+            "ttl": null
+          },
+          {
+            "asn": 13335,
+            "as_org_name": "Cloudflare, Inc.",
             "answer_type": "AAAA",
-            "ipv6": "2606:4700:91b3:8ced:8739:0:1827:bcee",
+            "ipv6": "2606:4700:83b3:8ced:8739:0:1827:bcee",
             "ttl": null
           },
           {
@@ -170,15 +169,16 @@ Response:
             "ttl": null
           }
         ],
-        "engine": "system",
+        "engine": "getaddrinfo",
         "failure": null,
         "hostname": "mozilla.cloudflare-dns.com",
         "query_type": "ANY",
         "resolver_hostname": null,
         "resolver_port": null,
         "resolver_address": "",
-        "t0": 0.000442173,
-        "t": 0.01428492
+        "t0": 0.000127901,
+        "t": 0.000422598,
+        "transaction_id": 0
       },
       {
         "answers": [
@@ -194,12 +194,13 @@ Response:
         "failure": null,
         "hostname": "example.com",
         "query_type": "A",
-        "raw_response": "hhKBoAABAAIAAAABB2V4YW1wbGUDY29tAAABAAHADAABAAEAAUhKAARduNgiwAwALgABAAFISgCfAAEIAgABUYBjHAvgYwDk6AaWB2V4YW1wbGUDY29tABKm/2/eVl7Xqf/0X1iKOlFbF8vNFewGZUvOEd/19pMMC4hzqmMz3wDbU4e/SoTUb6rRzKxciolbYu5tDCGuysl7bMBpduGW0vzXShus0J4sjRT1XZyWa9ahtDy9juNeen+3Szo+zJuGiS+TfbXhxk9NS1QrPK1n3+w1SDsINq0PAAApBNAAAIAAAPEADADtAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "raw_response": "72KBoAABAAIAAAABB2V4YW1wbGUDY29tAAABAAHADAABAAEAAUMIAARduNgiwAwALgABAAFDCACfAAEIAgABUYBjHAvgYwDk6AaWB2V4YW1wbGUDY29tABKm/2/eVl7Xqf/0X1iKOlFbF8vNFewGZUvOEd/19pMMC4hzqmMz3wDbU4e/SoTUb6rRzKxciolbYu5tDCGuysl7bMBpduGW0vzXShus0J4sjRT1XZyWa9ahtDy9juNeen+3Szo+zJuGiS+TfbXhxk9NS1QrPK1n3+w1SDsINq0PAAApBNAAAIAAAPEADADtAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
         "resolver_hostname": null,
         "resolver_port": null,
         "resolver_address": "https://mozilla.cloudflare-dns.com/dns-query",
-        "t0": 0.000291861,
-        "t": 0.287258145
+        "t0": 0.000098138,
+        "t": 0.121407471,
+        "transaction_id": 0
       },
       {
         "answers": [
@@ -215,12 +216,13 @@ Response:
         "failure": null,
         "hostname": "example.com",
         "query_type": "AAAA",
-        "raw_response": "kpmBoAABAAIAAAABB2V4YW1wbGUDY29tAAAcAAHADAAcAAEAAVGAABAmBigAAiAAAQJIGJMlyBlGwAwALgABAAFRgACfABwIAgABUYBjHTHnYwEdKgaWB2V4YW1wbGUDY29tAGewwJzy9va8IhAIedDOGo0Ckq4k4m66WJgiJavq+aGEWEMzZOXYMv6B5em4fU0nLM/VHwXng9fVPJnORL0PAfRuM3y9ljlrmTPu+ymCCo2pzNI0XqGE9DglaoGyzPdctkT9EPFsD+pVSWoQEoANZCLPWPMblcBiDn24kY9OKbc6AAApBNAAAIAAAOUADADhAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "raw_response": "f4WBoAABAAIAAAABB2V4YW1wbGUDY29tAAAcAAHADAAcAAEAAVGAABAmBigAAiAAAQJIGJMlyBlGwAwALgABAAFRgACfABwIAgABUYBjHTHnYwEdKgaWB2V4YW1wbGUDY29tAGewwJzy9va8IhAIedDOGo0Ckq4k4m66WJgiJavq+aGEWEMzZOXYMv6B5em4fU0nLM/VHwXng9fVPJnORL0PAfRuM3y9ljlrmTPu+ymCCo2pzNI0XqGE9DglaoGyzPdctkT9EPFsD+pVSWoQEoANZCLPWPMblcBiDn24kY9OKbc6AAApBNAAAIAAAOUADADhAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
         "resolver_hostname": null,
         "resolver_port": null,
         "resolver_address": "https://mozilla.cloudflare-dns.com/dns-query",
-        "t0": 0.000171096,
-        "t": 0.557063367
+        "t0": 0.000052631,
+        "t": 0.34243427,
+        "transaction_id": 0
       }
     ],
     "tcp_connect": [
@@ -231,7 +233,9 @@ Response:
           "failure": "network_unreachable",
           "success": false
         },
-        "t": 0.557563823
+        "t0": 0.342688667,
+        "t": 0.342975162,
+        "transaction_id": 1
       },
       {
         "ip": "93.184.216.34",
@@ -240,7 +244,9 @@ Response:
           "failure": null,
           "success": true
         },
-        "t": 0.770129981
+        "t0": 0.34271378,
+        "t": 0.560168233,
+        "transaction_id": 0
       }
     ],
     "iterative_trace": [
@@ -252,7 +258,7 @@ Response:
       {
         "address": "93.184.216.34:443",
         "control_trace": {
-          "server_name": "google.com",
+          "server_name": "example.com",
           "iterations": [
             {
               "ttl": 1,
@@ -261,14 +267,16 @@ Response:
                 "address": "93.184.216.34:443",
                 "cipher_suite": "",
                 "failure": "generic_timeout_error",
-                "icmp_failure": "host_unreachable",
+                "so_error": "host_unreachable",
                 "negotiated_protocol": "",
                 "no_tls_verify": true,
                 "peer_certificates": [],
-                "server_name": "google.com",
-                "t": 11.006691967,
+                "server_name": "example.com",
+                "t0": 0.806588718,
+                "t": 10.807752529,
                 "tags": [],
-                "tls_version": ""
+                "tls_version": "",
+                "transaction_id": 0
               }
             },
             {
@@ -278,14 +286,16 @@ Response:
                 "address": "93.184.216.34:443",
                 "cipher_suite": "",
                 "failure": "generic_timeout_error",
-                "icmp_failure": "host_unreachable",
+                "so_error": "host_unreachable",
                 "negotiated_protocol": "",
                 "no_tls_verify": true,
                 "peer_certificates": [],
-                "server_name": "google.com",
-                "t": 11.095136104,
+                "server_name": "example.com",
+                "t0": 0.914062501,
+                "t": 10.915233266,
                 "tags": [],
-                "tls_version": ""
+                "tls_version": "",
+                "transaction_id": 0
               }
             },
             {
@@ -295,14 +305,16 @@ Response:
                 "address": "93.184.216.34:443",
                 "cipher_suite": "",
                 "failure": "generic_timeout_error",
-                "icmp_failure": "host_unreachable",
+                "so_error": "host_unreachable",
                 "negotiated_protocol": "",
                 "no_tls_verify": true,
                 "peer_certificates": [],
-                "server_name": "google.com",
-                "t": 11.214704372,
+                "server_name": "example.com",
+                "t0": 1.01293851,
+                "t": 11.013575444,
                 "tags": [],
-                "tls_version": ""
+                "tls_version": "",
+                "transaction_id": 0
               }
             },
             {
@@ -312,14 +324,16 @@ Response:
                 "address": "93.184.216.34:443",
                 "cipher_suite": "",
                 "failure": "generic_timeout_error",
-                "icmp_failure": "host_unreachable",
+                "so_error": "host_unreachable",
                 "negotiated_protocol": "",
                 "no_tls_verify": true,
                 "peer_certificates": [],
-                "server_name": "google.com",
-                "t": 11.305097717,
+                "server_name": "example.com",
+                "t0": 1.080355309,
+                "t": 11.080976051,
                 "tags": [],
-                "tls_version": ""
+                "tls_version": "",
+                "transaction_id": 0
               }
             },
             {
@@ -329,14 +343,16 @@ Response:
                 "address": "93.184.216.34:443",
                 "cipher_suite": "",
                 "failure": "generic_timeout_error",
-                "icmp_failure": "host_unreachable",
+                "so_error": "host_unreachable",
                 "negotiated_protocol": "",
                 "no_tls_verify": true,
                 "peer_certificates": [],
-                "server_name": "google.com",
-                "t": 11.410661235,
+                "server_name": "example.com",
+                "t0": 1.185732563,
+                "t": 11.186405305,
                 "tags": [],
-                "tls_version": ""
+                "tls_version": "",
+                "transaction_id": 0
               }
             },
             {
@@ -346,14 +362,16 @@ Response:
                 "address": "93.184.216.34:443",
                 "cipher_suite": "",
                 "failure": "generic_timeout_error",
-                "icmp_failure": "host_unreachable",
+                "so_error": "host_unreachable",
                 "negotiated_protocol": "",
                 "no_tls_verify": true,
                 "peer_certificates": [],
-                "server_name": "google.com",
-                "t": 11.493195567,
+                "server_name": "example.com",
+                "t0": 1.30764149,
+                "t": 11.308075848,
                 "tags": [],
-                "tls_version": ""
+                "tls_version": "",
+                "transaction_id": 0
               }
             },
             {
@@ -363,14 +381,16 @@ Response:
                 "address": "93.184.216.34:443",
                 "cipher_suite": "",
                 "failure": "generic_timeout_error",
-                "icmp_failure": "host_unreachable",
+                "so_error": "host_unreachable",
                 "negotiated_protocol": "",
                 "no_tls_verify": true,
                 "peer_certificates": [],
-                "server_name": "google.com",
-                "t": 11.589679486,
+                "server_name": "example.com",
+                "t0": 1.408247724,
+                "t": 11.408401526,
                 "tags": [],
-                "tls_version": ""
+                "tls_version": "",
+                "transaction_id": 0
               }
             },
             {
@@ -380,14 +400,16 @@ Response:
                 "address": "93.184.216.34:443",
                 "cipher_suite": "",
                 "failure": "generic_timeout_error",
-                "icmp_failure": "host_unreachable",
+                "so_error": "host_unreachable",
                 "negotiated_protocol": "",
                 "no_tls_verify": true,
                 "peer_certificates": [],
-                "server_name": "google.com",
-                "t": 11.70713495,
+                "server_name": "example.com",
+                "t0": 1.483209508,
+                "t": 11.483764881,
                 "tags": [],
-                "tls_version": ""
+                "tls_version": "",
+                "transaction_id": 0
               }
             },
             {
@@ -397,14 +419,16 @@ Response:
                 "address": "93.184.216.34:443",
                 "cipher_suite": "",
                 "failure": "generic_timeout_error",
-                "icmp_failure": "host_unreachable",
+                "so_error": "host_unreachable",
                 "negotiated_protocol": "",
                 "no_tls_verify": true,
                 "peer_certificates": [],
-                "server_name": "google.com",
-                "t": 11.802585433,
+                "server_name": "example.com",
+                "t0": 1.592801069,
+                "t": 11.593133327,
                 "tags": [],
-                "tls_version": ""
+                "tls_version": "",
+                "transaction_id": 0
               }
             },
             {
@@ -414,14 +438,16 @@ Response:
                 "address": "93.184.216.34:443",
                 "cipher_suite": "",
                 "failure": "generic_timeout_error",
-                "icmp_failure": "host_unreachable",
+                "so_error": "host_unreachable",
                 "negotiated_protocol": "",
                 "no_tls_verify": true,
                 "peer_certificates": [],
-                "server_name": "google.com",
-                "t": 11.903219316,
+                "server_name": "example.com",
+                "t0": 1.681079291,
+                "t": 11.681597026,
                 "tags": [],
-                "tls_version": ""
+                "tls_version": "",
+                "transaction_id": 0
               }
             },
             {
@@ -431,14 +457,16 @@ Response:
                 "address": "93.184.216.34:443",
                 "cipher_suite": "",
                 "failure": "generic_timeout_error",
-                "icmp_failure": "host_unreachable",
+                "so_error": "host_unreachable",
                 "negotiated_protocol": "",
                 "no_tls_verify": true,
                 "peer_certificates": [],
-                "server_name": "google.com",
-                "t": 11.992776107,
+                "server_name": "example.com",
+                "t0": 1.80795438,
+                "t": 11.808075717,
                 "tags": [],
-                "tls_version": ""
+                "tls_version": "",
+                "transaction_id": 0
               }
             },
             {
@@ -460,10 +488,12 @@ Response:
                     "format": "base64"
                   }
                 ],
-                "server_name": "google.com",
-                "t": 2.518908669,
+                "server_name": "example.com",
+                "t0": 1.904429709,
+                "t": 2.37451115,
                 "tags": [],
-                "tls_version": "TLSv1.3"
+                "tls_version": "TLSv1.3",
+                "transaction_id": 0
               }
             }
           ]
@@ -478,14 +508,16 @@ Response:
                 "address": "93.184.216.34:443",
                 "cipher_suite": "",
                 "failure": "generic_timeout_error",
-                "icmp_failure": "host_unreachable",
+                "so_error": "host_unreachable",
                 "negotiated_protocol": "",
                 "no_tls_verify": true,
                 "peer_certificates": [],
                 "server_name": "1337x.be",
-                "t": 22.215312389,
+                "t0": 12.057799537,
+                "t": 22.058602821,
                 "tags": [],
-                "tls_version": ""
+                "tls_version": "",
+                "transaction_id": 0
               }
             },
             {
@@ -495,14 +527,16 @@ Response:
                 "address": "93.184.216.34:443",
                 "cipher_suite": "",
                 "failure": "generic_timeout_error",
-                "icmp_failure": "host_unreachable",
+                "so_error": "host_unreachable",
                 "negotiated_protocol": "",
                 "no_tls_verify": true,
                 "peer_certificates": [],
                 "server_name": "1337x.be",
-                "t": 22.316945083,
+                "t0": 12.158662773,
+                "t": 22.159214986,
                 "tags": [],
-                "tls_version": ""
+                "tls_version": "",
+                "transaction_id": 0
               }
             },
             {
@@ -512,14 +546,16 @@ Response:
                 "address": "93.184.216.34:443",
                 "cipher_suite": "",
                 "failure": "generic_timeout_error",
-                "icmp_failure": "host_unreachable",
+                "so_error": "host_unreachable",
                 "negotiated_protocol": "",
                 "no_tls_verify": true,
                 "peer_certificates": [],
                 "server_name": "1337x.be",
-                "t": 22.416479398,
+                "t0": 12.262444805,
+                "t": 22.263151325,
                 "tags": [],
-                "tls_version": ""
+                "tls_version": "",
+                "transaction_id": 0
               }
             },
             {
@@ -533,9 +569,11 @@ Response:
                 "no_tls_verify": true,
                 "peer_certificates": [],
                 "server_name": "1337x.be",
-                "t": 12.555797842,
+                "t0": 12.361798829,
+                "t": 12.451137716,
                 "tags": [],
-                "tls_version": ""
+                "tls_version": "",
+                "transaction_id": 0
               }
             }
           ]
@@ -544,8 +582,8 @@ Response:
     ]
   },
   "test_name": "tlsmiddlebox",
-  "test_runtime": 22.416619229,
-  "test_start_time": "2022-08-27 07:31:44",
+  "test_runtime": 22.457373373,
+  "test_start_time": "2022-09-01 16:37:32",
   "test_version": "0.1.0"
 }
 ```
