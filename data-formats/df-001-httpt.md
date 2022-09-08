@@ -46,7 +46,11 @@ probes always set this field to `null`.
 ```
 
 - `network` (`string`; optional): if available, the network of the
-underlying connection we are using: either `"tcp"` or `"udp"`.
+underlying connection we are using: either `"tcp"` or `"udp"`. Until 2022-09-08, we used
+`"tcp"` or `"quic"` but we realized that using `"udp"` instead of `"quic"` would
+be more consistent, so we also changed `"quic"` to always become `"udp"`. These
+changes occurred between during the OONI Probe v3.16.0 release cycle in
+[ooni/probe-cli#946](https://github.com/ooni/probe-cli/pull/946).
 
 - `address` (`string`; optional): if available, the endpoint of the
 underlying connection we are using (e.g., `"[::1]:443"`).
