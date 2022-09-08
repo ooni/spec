@@ -65,7 +65,7 @@ where:
 
 Before 2022-08-06, `quic_handshake` was a list but we
 changed that because this is an experimental nettest and it seems better
-to avoid suggesting there could be more than a single QUIC handshake for 
+to avoid suggesting there could be more than a single QUIC handshake for
 each ping
 
 ## Possible conclusions
@@ -211,7 +211,7 @@ from its results but it is useful to perform censorship research.
           }
         ],
         "quic_handshake": {
-          "network": "quic",
+          "network": "udp",
           "address": "8.8.8.8:443",
           "cipher_suite": "TLS_CHACHA20_POLY1305_SHA256",
           "failure": null,
@@ -347,7 +347,7 @@ from its results but it is useful to perform censorship research.
           }
         ],
         "quic_handshake": {
-          "network": "quic",
+          "network": "udp",
           "address": "8.8.8.8:443",
           "cipher_suite": "TLS_CHACHA20_POLY1305_SHA256",
           "failure": null,
@@ -483,7 +483,7 @@ from its results but it is useful to perform censorship research.
           }
         ],
         "quic_handshake": {
-          "network": "quic",
+          "network": "udp",
           "address": "8.8.8.8:443",
           "cipher_suite": "TLS_CHACHA20_POLY1305_SHA256",
           "failure": null,
@@ -619,7 +619,7 @@ from its results but it is useful to perform censorship research.
           }
         ],
         "quic_handshake": {
-          "network": "quic",
+          "network": "udp",
           "address": "8.8.8.8:443",
           "cipher_suite": "TLS_CHACHA20_POLY1305_SHA256",
           "failure": null,
@@ -755,7 +755,7 @@ from its results but it is useful to perform censorship research.
           }
         ],
         "quic_handshake": {
-          "network": "quic",
+          "network": "udp",
           "address": "8.8.8.8:443",
           "cipher_suite": "TLS_CHACHA20_POLY1305_SHA256",
           "failure": null,
@@ -891,7 +891,7 @@ from its results but it is useful to perform censorship research.
           }
         ],
         "quic_handshake": {
-          "network": "quic",
+          "network": "udp",
           "address": "8.8.8.8:443",
           "cipher_suite": "TLS_CHACHA20_POLY1305_SHA256",
           "failure": null,
@@ -1019,7 +1019,7 @@ from its results but it is useful to perform censorship research.
           }
         ],
         "quic_handshake": {
-          "network": "quic",
+          "network": "udp",
           "address": "8.8.8.8:443",
           "cipher_suite": "TLS_CHACHA20_POLY1305_SHA256",
           "failure": null,
@@ -1155,7 +1155,7 @@ from its results but it is useful to perform censorship research.
           }
         ],
         "quic_handshake": {
-          "network": "quic",
+          "network": "udp",
           "address": "8.8.8.8:443",
           "cipher_suite": "TLS_CHACHA20_POLY1305_SHA256",
           "failure": null,
@@ -1291,7 +1291,7 @@ from its results but it is useful to perform censorship research.
           }
         ],
         "quic_handshake": {
-          "network": "quic",
+          "network": "udp",
           "address": "8.8.8.8:443",
           "cipher_suite": "TLS_CHACHA20_POLY1305_SHA256",
           "failure": null,
@@ -1427,7 +1427,7 @@ from its results but it is useful to perform censorship research.
           }
         ],
         "quic_handshake": {
-          "network": "quic",
+          "network": "udp",
           "address": "8.8.8.8:443",
           "cipher_suite": "TLS_CHACHA20_POLY1305_SHA256",
           "failure": null,
