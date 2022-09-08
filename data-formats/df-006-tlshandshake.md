@@ -37,9 +37,12 @@ code. See this directory's [README](README.md) for the basic concepts.
     "transaction_id": 1
 }
 ```
-- `network` (`string`; optional): The network for the handshake (`"tcp"` or `"quic"`). Until
+- `network` (`string`; optional): The network for the handshake (`"tcp"` or `"udp"`). Until
 2022-09-08, we incorrectly documented that this could have been either `"tls"` or `"quic"` but
-the code always used `"tcp"`, so we adapted the spec to the code.
+the code always used `"tcp"`, so we adapted the spec to the code. On the same day, we also
+realized that using `"udp"` instead of `"quic"` would be more consistent, so we also changed
+`"quic"` to always become `"udp"`. These changes occurred between during the OONI Probe
+v3.16.0 release cycle in [ooni/probe-cli#946](https://github.com/ooni/probe-cli/pull/946).
 
 - `address` (`string`): The endpoint IP address (host:port) with which the handshake is performed.
 
