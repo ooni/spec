@@ -20,10 +20,10 @@ code. See this directory's [README](README.md) for the basic concepts.
 
 ## Query
 
-```JSON
+```JavaScript
 {
+    // fields currently used as 2022-09-08
     "answers": [],
-    "dial_id": 177171,
     "engine": "udp",
     "failure": "dns_nxdomain_error",
     "getaddrinfo_error": 0,
@@ -32,17 +32,20 @@ code. See this directory's [README](README.md) for the basic concepts.
     "raw_response": "",
     "rcode": 0,
     "resolver_address": "8.8.8.8:53",
-    "resolver_hostname": null,
-    "resolve_port": null,
     "t0": 1.007,
     "t": 1.114,
-    "transaction_id": 1
+    "transaction_id": 1,
+
+    // specified but unused or deprecated fields
+    "dial_id": 177171,
+    "resolver_hostname": null,
+    "resolve_port": null,
 }
 ```
 
 - `answers` (`[]Answer`): list of answer objects. See below.
 
-- `dial_id` (`int`; optional; since 2020-01-11): identifier of a dialing
+- `dial_id` (`int`; optional; since 2020-01-11; deprecated): identifier of a dialing
 operation (i.e. name resolution followed by connect). The zero dial_id
 means that we don't know the real dial ID. Applications SHOULD NOT
 emit the dial_id when it is zero. Rest assured that the dial_id will
@@ -86,19 +89,16 @@ used by ooni/probe-engine, which sets it to `null`.
 
 - `t0` (`float`): number of seconds elapsed since `measurement_start_time`
 measured in the moment in which we started the operation (`t - t0` gives you
-the amount of time spent performing the given lookup);
+the amount of time spent performing the operation);
 
 - `t` (`float`): number of seconds elapsed since `measurement_start_time`
 measured in the moment in which `failure` is determined (`t - t0` gives you
-the amount of time spent performing the given lookup);
+the amount of time spent performing the operation);
 
-- `transaction_id` (`int`; optional; since 2020-01-11): if present and nonzero,
-this is the ID of the transaction that caused this query. By grouping by transaction
-ID, you could observe chains of events that are logically related. For example, a
-DoH lookup includes ancillary DNS lookups, TCP connects, TLS handshakes, etc. If
-zero, this field just indicates we don't know the transaction ID. Before 2022-08-26,
-this field was not used in production and had a different definition where the
-transaction was necessarily an HTTP transaction, which was too strict.
+- `transaction_id` (`int`; optional; since 2020-01-11): the set of operations
+to which this event belongs to (typically an HTTP transaction or a DNS
+round trip). A zero or missing value means we don't know the transaction
+to which this code belongs to.
 
 ### DNS resolver engines
 
@@ -153,21 +153,24 @@ the name because we changed our way of representing getaddrinfo-like resolutions
 
 ## Answer
 
-```JSON
+```JavaScript
 {
+    // fields currently used as 2022-09-08
     "answer_type": "AAAA",
     "asn": 13335
     "as_org_name": "Cloudflare, Inc."
-    "expiration_limit": "",
     "hostname": "",
     "ipv4": "1.1.1.1",
     "ipv6": "",
+    "ttl": null,
+
+    // specified but unused or deprecated fields
+    "expiration_limit": "",
     "minimum_ttl": "",
     "refresh_interval": "",
     "responsible_name": "",
     "retry_interval": "",
     "serial_number": 0,
-    "ttl": null,
 }
 ```
 
@@ -213,30 +216,23 @@ not relevant to the DNS data format:
 
 ```JSON
 {
-  "test_keys": {
-    "agent": "redirect",
-    "queries": [
-      {
-        "answers": [
-          {
-            "answer_type": "A",
-            "ipv4": "149.154.167.99",
-            "ttl": null
-          }
-        ],
-        "dial_id": 177171,
-        "engine": "system",
-        "failure": null,
-        "hostname": "web.telegram.org",
-        "query_type": "ANY",
-        "resolver_hostname": null,
-        "resolver_port": null,
-        "resolver_address": "",
-        "t0": 1.001,
-        "t": 1.114,
-        "transaction_id": 1
-      }
-    ]
-  }
-}
+    "answers": [{
+        "asn": 15133,
+        "as_org_name": "Edgecast Inc.",
+        "answer_type": "A",
+        "ipv4": "93.184.216.34",
+        "ttl": null
+    }],
+    "engine": "udp",
+    "failure": null,
+    "hostname": "example.com",
+    "query_type": "A",
+    "raw_response": "dUuBgAABAAEAAAAAB2V4YW1wbGUDY29tAAABAAHADAABAAEAAE2IAARduNgi",
+    "resolver_hostname": null,
+    "resolver_port": null,
+    "resolver_address": "8.8.4.4:53",
+    "t0": 0.001145,
+    "t": 0.06544,
+    "transaction_id": 2
+},
 ```

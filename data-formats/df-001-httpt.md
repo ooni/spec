@@ -14,7 +14,7 @@ code. See this directory's [README](README.md) for the basic concepts.
 {
   "agent": "redirect",
   "requests": [],
-  "socksproxy": "127.0.0.1:54321"
+  "socksproxy": null
 }
 ```
 
@@ -23,21 +23,36 @@ follow redirects, set to `redirect` otherwise.
 
 - `request` (`[]Transaction`): list of transaction objects. See below.
 
-- `socksproxy` (`string`; optional): address of the SOCKS proxy being
+- `socksproxy` (`string`; optional; legacy): address of the SOCKS proxy being
 used in a nettest. Note that this proxy is different from the one used to contact the backend. Omit or set to `null` if no SOCKS proxy is being used. The format
-to be used is `1.2.3.4:54321` for IPv4 and `[::1234]:54321` for IPv6.
+to be used is `1.2.3.4:54321` for IPv4 and `[::1234]:54321` for IPv6. Modern
+probes always set this field to `null`.
 
 ## Transaction
 
 ```JSON
 {
+    "network": "tcp",
+    "address": "1.1.1.1:443",
+    "alpn": "h2",
     "failure": "dns_nxdomain_error",
     "request": {},
     "response": {},
     "response_length": 1234,
+    "t0": 0.9,
+    "t": 1.0,
     "transaction_id": 1
 }
 ```
+
+- `network` (`string`; optional): if available, the network of the
+underlying connection we are using: either `"tcp"` or `"quic"`.
+
+- `address` (`string`; optional): if available, the endpoint of the
+underlying connection we are using (e.g., `"[::1]:443"`).
+
+- `alpn` (`string`; optional): if available and applicable, the ALPN
+that was negotiated with the server, typically `"http/1.1"`, `"h2"` or `"h3"`.
 
 - `failure` (`string`; nullable): if there was an error, this field is
 a string indicating the error, otherwise it MUST be `null`.
@@ -46,15 +61,22 @@ a string indicating the error, otherwise it MUST be `null`.
 
 - `response` (`Response`): object describing the response.
 
-- `response_length` (`int`; deprecated): this is a legacy field that
+- `response_length` (`int`; optional; deprecated): this is a legacy field that
 contains the response length and is typically set to `null` or directly
 omitted by modern clients (e.g. from Measurement Kit onwards).
 
-- `transaction_id` (`int`; optional; since 2020-01-11): unique ID of this
-transaction. A zero transaction ID means "unspecified". The code SHOULD
-NOT include the transaction ID in this case. This ID will be unique
-within a single measurement session; do not assume it will be unique
-for longer than that.
+- `t0` (`float`): number of seconds elapsed since `measurement_start_time`
+measured in the moment in which we started the operation (`t - t0` gives you
+the amount of time spent performing the operation);
+
+- `t` (`float`): number of seconds elapsed since `measurement_start_time`
+measured in the moment in which `failure` is determined (`t - t0` gives you
+the amount of time spent performing the operation);
+
+- `transaction_id` (`int`; optional; since 2020-01-11): the set of operations
+to which this event belongs to (typically an HTTP transaction or a DNS
+round trip). A zero or missing value means we don't know the transaction
+to which this code belongs to.
 
 ## Request
 
@@ -96,7 +118,8 @@ are multiple values for the same header key. See below the definition of
 - `tor` (`TorInfo`): this is an object containing information on the
 instance of `tor` that we may be using for measuring.
 
-- `x_transport` (`string`): indicates what transports was used for issuing the request.
+- `x_transport` (`string`; deprecated): indicates what transports was used for
+issuing the request. Typically `"tcp"` or `"quic"`.
 
 In case we have the following headers:
 
@@ -199,65 +222,117 @@ not relevant to the HTTP data format:
 
 ```JSON
 {
-  "test_keys": {
-    "agent": "redirect",
-    "requests": [
-      {
-        "failure": null,
-        "request": {
-          "body": "",
-          "body_is_truncated": false,
-          "headers_list": [[
-              "Host", "149.154.171.5"
-            ], [
-              "User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
-            ], [
-              "Content-Length", "0"
-            ], [
-              "Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
-            ], [
-              "Accept-Language", "en-US;q=0.8,en;q=0.5"
-            ]
-          ],
-          "headers": {
-            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-            "Accept-Language": "en-US;q=0.8,en;q=0.5",
-            "Content-Length": "0",
-            "Host": "149.154.171.5",
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
-          },
-          "method": "POST",
-          "tor": {
-            "exit_ip": null,
-            "exit_name": null,
-            "is_tor": false
-          },
-          "url": "http://149.154.171.5/"
-        },
-        "response": {
-          "body": "<html>\r\n<head><title>501 Not Implemented</title></head>\r\n<body bgcolor=\"white\">\r\n<center><h1>501 Not Implemented</h1></center>\r\n<hr><center>nginx/0.3.33</center>\r\n</body>\r\n</html>\r\n",
-          "body_is_truncated": false,
-          "code": 501,
-          "headers_list": [[
-              "Content-Length", "181"
-            ], [
-              "Server", "nginx/0.3.33"
-            ], [
-              "Date", "Fri, 10 Jan 2020 17:25:20 GMT"
-            ], [
-              "Content-Type", "text/html"
-            ]
-          ],
-          "headers": {
-            "Content-Length": "181",
-            "Content-Type": "text/html",
-            "Date": "Fri, 10 Jan 2020 17:25:20 GMT",
-            "Server": "nginx/0.3.33"
-          }
-        },
-        "transaction_id": 1
-      }
-    ]
-  }
+  "network": "tcp",
+  "address": "93.184.216.34:443",
+  "alpn": "h2",
+  "failure": null,
+  "request": {
+    "body": "",
+    "body_is_truncated": false,
+    "headers_list": [
+      [
+        "Accept",
+        "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+      ],
+      [
+        "Accept-Language",
+        "en-US,en;q=0.9"
+      ],
+      [
+        "Host",
+        "example.com"
+      ],
+      [
+        "Referer",
+        ""
+      ],
+      [
+        "User-Agent",
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36"
+      ]
+    ],
+    "headers": {
+      "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+      "Accept-Language": "en-US,en;q=0.9",
+      "Host": "example.com",
+      "Referer": "",
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36"
+    },
+    "method": "GET",
+    "tor": {
+      "exit_ip": null,
+      "exit_name": null,
+      "is_tor": false
+    },
+    "x_transport": "tcp",
+    "url": "https://example.com"
+  },
+  "response": {
+    "body": "<!doctype html>\n<html>\n<head>\n    <title>Example Domain</title>\n\n    <meta charset=\"utf-8\" />\n    <meta http-equiv=\"Content-type\" content=\"text/html; charset=utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <style type=\"text/css\">\n    body {\n        background-color: #f0f0f2;\n        margin: 0;\n        padding: 0;\n        font-family: -apple-system, system-ui, BlinkMacSystemFont, \"Segoe UI\", \"Open Sans\", \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n        \n    }\n    div {\n        width: 600px;\n        margin: 5em auto;\n        padding: 2em;\n        background-color: #fdfdff;\n        border-radius: 0.5em;\n        box-shadow: 2px 3px 7px 2px rgba(0,0,0,0.02);\n    }\n    a:link, a:visited {\n        color: #38488f;\n        text-decoration: none;\n    }\n    @media (max-width: 700px) {\n        div {\n            margin: 0 auto;\n            width: auto;\n        }\n    }\n    </style>    \n</head>\n\n<body>\n<div>\n    <h1>Example Domain</h1>\n    <p>This domain is for use in illustrative examples in documents. You may use this\n    domain in literature without prior coordination or asking for permission.</p>\n    <p><a href=\"https://www.iana.org/domains/example\">More information...</a></p>\n</div>\n</body>\n</html>\n",
+    "body_is_truncated": false,
+    "code": 200,
+    "headers_list": [
+      [
+        "Age",
+        "590050"
+      ],
+      [
+        "Cache-Control",
+        "max-age=604800"
+      ],
+      [
+        "Content-Length",
+        "1256"
+      ],
+      [
+        "Content-Type",
+        "text/html; charset=UTF-8"
+      ],
+      [
+        "Date",
+        "Thu, 08 Sep 2022 09:47:49 GMT"
+      ],
+      [
+        "Etag",
+        "\"3147526947+ident\""
+      ],
+      [
+        "Expires",
+        "Thu, 15 Sep 2022 09:47:49 GMT"
+      ],
+      [
+        "Last-Modified",
+        "Thu, 17 Oct 2019 07:18:26 GMT"
+      ],
+      [
+        "Server",
+        "ECS (dcb/7F5B)"
+      ],
+      [
+        "Vary",
+        "Accept-Encoding"
+      ],
+      [
+        "X-Cache",
+        "HIT"
+      ]
+    ],
+    "headers": {
+      "Age": "590050",
+      "Cache-Control": "max-age=604800",
+      "Content-Length": "1256",
+      "Content-Type": "text/html; charset=UTF-8",
+      "Date": "Thu, 08 Sep 2022 09:47:49 GMT",
+      "Etag": "\"3147526947+ident\"",
+      "Expires": "Thu, 15 Sep 2022 09:47:49 GMT",
+      "Last-Modified": "Thu, 17 Oct 2019 07:18:26 GMT",
+      "Server": "ECS (dcb/7F5B)",
+      "Vary": "Accept-Encoding",
+      "X-Cache": "HIT"
+    }
+  },
+  "t0": 0.900978,
+  "t": 1.051177,
+  "transaction_id": 4
 }
 ```
