@@ -20,27 +20,31 @@ MAY use to include network-level events. See this directory's
 
 ## Event
 
-```JSON
+```JavaScript
 {
+    // fields currently used as of 2022-09-08
     "address": "1.1.1.1:443",
-    "conn_id": 11,
-    "dial_id": 4,
     "failure": "connection_reset",
     "num_bytes": 4114,
     "operation": "read",
     "proto": "tcp",
+    "t0": 1.001,
     "t": 1.174,
     "tags": [],
-    "transaction_id": 1
+    "transaction_id": 1,
+
+    // deprecated or unused fields
+    "conn_id": 11,
+    "dial_id": 4,
 }
 ```
 
 - `address` (`string`; optional): address for `connect`.
 
-- `conn_id` (`int`; optional): identifier of this connection (see below). When
+- `conn_id` (`int`; optional; deprecated): identifier of this connection (see below). When
 zero, it means we don't know the conn ID. SHOULD be omitted when zero.
 
-- `dial_id` (`int`; optional; since 2020-01-11): identifier of a dialing
+- `dial_id` (`int`; optional; since 2020-01-11; deprecated): identifier of a dialing
 operation (i.e. name resolution followed by connect). See the
 discussion in `df-002-dnst.md`.
 
@@ -54,16 +58,23 @@ a string indicating the error, otherwise it MUST be `null`.
 
 - `proto` (`string`; optional): protocol for `connect` (`tcp` or `udp`).
 
+- `t0` (`float`): number of seconds elapsed since `measurement_start_time`
+measured in the moment in which we started the operation (`t - t0` gives you
+the amount of time spent performing the operation);
+
 - `t` (`float`): number of seconds elapsed since `measurement_start_time`
-measured when `operation` is complete.
+measured in the moment in which `failure` is determined (`t - t0` gives you
+the amount of time spent performing the operation);
 
 - `tags` (`[]string`): list of tags for this event. This is useful to
 understand what part of a complex measurement generated an event.
 
-- `transaction_id` (`int`; optional; since 2020-01-11): if present, this is the
-ID of the HTTP transaction that caused this TCP connect.
+- `transaction_id` (`int`; optional; since 2020-01-11): the set of operations
+to which this event belongs to (typically an HTTP transaction or a DNS
+round trip). A zero or missing value means we don't know the transaction
+to which this code belongs to.
 
-## Connection ID and Life Cycle
+## Connection ID and Life Cycle (deprecated)
 
 When a connection is created you see a `connect` event with a
 specific `conn_id` and no failure. Subsequently you should see
@@ -83,42 +94,13 @@ not relevant to the netevents data format:
 
 ```JSON
 {
-    "test_keys": {
-        "network_events": [{
-            "address": "1.1.1.1:444",
-            "conn_id": 11,
-            "dial_id": 4,
-            "failure": "connection_refused",
-            "operation": "connect",
-            "proto": "tcp",
-            "t": 0.11,
-            "tags": ["tcptls_experiment"],
-            "transaction_id": 1
-        }, {
-            "address": "1.1.1.1:443",
-            "conn_id": 12,
-            "dial_id": 4,
-            "failure": null,
-            "operation": "connect",
-            "proto": "tcp",
-            "t": 0.16,
-            "tags": ["tcptls_experiment"],
-            "transaction_id": 1
-        }, {
-            "conn_id": 12,
-            "failure": null,
-            "num_bytes": 1024,
-            "operation": "write",
-            "t": 0.17,
-            "tags": ["tcptls_experiment"]
-        }, {
-            "conn_id": 12,
-            "failure": null,
-            "num_bytes": 5110,
-            "operation": "read",
-            "t": 0.44,
-            "tags": ["tcptls_experiment"]
-        }]
-    }
+  "address": "93.184.216.34:443",
+  "failure": null,
+  "num_bytes": 99,
+  "operation": "read",
+  "proto": "tcp",
+  "t0": 0.602109,
+  "t": 0.746866,
+  "transaction_id": 4
 }
 ```
