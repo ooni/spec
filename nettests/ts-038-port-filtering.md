@@ -60,7 +60,7 @@ where:
 Response:
 
 ```JSON
-`{
+{
   "annotations": {
     "architecture": "amd64",
     "engine_name": "ooniprobe-engine",
