@@ -1,6 +1,6 @@
 # OONI Run specification
 
-* author: Norbel Ambanumben
+* author: Norbel Ambanumben, Arturo Filastò
 * version: 0.0.1
 * date: 2022-06-15
 * status: _draft_
@@ -79,12 +79,221 @@ static, it should be possible server it from a mirror that provides higher
 levels of blocking resistance (and potentially some higher level of stealth),
 such as s3 or github.
 
-# 3.0 API
+# 3.0 OONI Run descriptor
+
+OONI Run descriptors define a set of experiments and configuration vectors used.
+It also includes additional metadata used to display a particular OONI Run object
+to the end user.
+
+Our goal is to use OONI Run descriptors to implement all the cards currently
+present inside of the OONI Probe app. As such we will be having a set of default
+OONI Run links that apps will ship with.
+
+An OONI Run link descriptor is a JSON file with the following semantics:
+```json
+{
+"name": "(required) `string` is the display name for the OONI Run link",
+// (optional) `map` of translations to language codes for the name
+"name_intl": {
+   "it": "Il nome del test in italiano",
+},
+// TODO: recommend a maximum length for this field
+"short_description": "(optional) `string` short_description for the OONI Run link.",
+// (optional) `map` of translations to language codes for the short_description
+"short_description_intl": {},
+"description": "(optional) `string` full description for this OONI Run link. This goes into the details of the card. Markdown is supported.",
+// (optional) `map` of translations to language codes for the description
+"description_intl": {
+   "it": "La descrizione del test in italiano"
+},
+"icon": "(optional) `string` the ID of any icon part of the OONI icon set",
+"author": "(optional) `string` name of the creator of this OONI Run link",
+// `array` provides a JSON array of tests to be run.
+"nettests":
+   [
+      {
+         // (optional) `array` provides a JSON array of tests to be run.
+         "inputs": [
+            "https://example.com/",
+            "https://ooni.org/"
+         ],
+         // (optional) `map` options arguments provided to the specified test_name
+         "options": {
+            "HTTP3Enabled": true,
+         },
+         // (optional) `map` settings which are sent to probe_services for retrieving the inputs vector
+         // It's possible to reference user configured settings by using accessing the 
+         // $settings special variable.
+         // In particular the content of the test_settings will be sent to the /api/v1/check-in call nested 
+         // under the relative test_name.
+         "test_settings": {
+            "category_codes": "$settings.category_codes"
+         },
+         // (optional) `bool` indicates if this test should be run as part of autoruns. Defaults to true.
+         "is_background_run_enabled": true,
+         // (optional) `bool` indicates if this test should be run as part of manual runs. Defaults to true.
+         "is_manual_run_enabled": true,
+         "test_name": "web_connectivity"
+      },
+      {
+         "test_name": "openvpn",
+         "test_settings": {
+            "provider": "riseupvpn"
+         },
+      }
+   ],
+}
+```
+
+Based on the above specification it would be possible to re-implement the cards for the OONI Probe
+dashboard as follows:
+
+### Websites
+
+```json
+{
+"name": "Websites",
+"short_description": "Test the blocking of websites",
+"description": "Check whether websites are blocked using OONI's [Web Connectivity test](https://ooni.org/nettest/web-connectivity/)...",
+"icon": "OONINettestGroupWebsites",
+"author": "contact@ooni.org",
+"nettests":
+   [
+      {
+         "options": {
+            "MaxRuntime": "$settings.max_runtime",
+         },
+         "test_settings": {
+            "category_codes": "$settings.category_codes"
+         },
+         "is_manual_run_enabled": true,
+         "is_background_run_enabled": false,
+         "test_name": "web_connectivity"
+      },
+      {
+         "test_settings": {
+            "category_codes": "$settings.category_codes"
+         },
+         "is_manual_run_enabled": false,
+         "is_background_run_enabled": true,
+         "test_name": "web_connectivity"
+      },
+   ]
+}
+```
+
+### Instant Messaging
+
+```json
+{
+"name": "Instant Messaging",
+"short_description": "Test the blocking of instant messaging apps",
+"description": "Check whether [WhatsApp](https://ooni.org/nettest/whatsapp/), ...",
+"icon": "OONINettestGroupInstantMessaging",
+"author": "contact@ooni.org",
+"nettests":
+   [
+      {
+         "test_name": "whatsapp"
+      },
+      {
+         "test_name": "telegram"
+      },
+      {
+         "test_name": "facebook_messenger"
+      },
+      {
+         "test_name": "signal"
+      },
+   ]
+}
+```
+
+### Instant Messaging
+
+```json
+{
+"name": "Circumvention",
+"short_description": "Test the blocking of censorship circumvention tools",
+"description": "Check whether [Psiphon](https://ooni.org/nettest/psiphon/), ...",
+"icon": "OONINettestGroupCircumvention",
+"author": "contact@ooni.org",
+"nettests":
+   [
+      {
+         "test_name": "psiphon"
+      },
+      {
+         "test_name": "tor"
+      },
+      {
+         "test_name": "riseupvpn"
+      }
+   ]
+}
+```
+
+### Performance
+
+```json
+{
+"name": "Performance",
+"short_description": "Test your network speed and performance",
+"description": "Measure the speed and performance of your network using the [NDT](https://ooni.org/nettest/ndt/) test. ...",
+"icon": "OONINettestGroupPerformance",
+"author": "contact@ooni.org",
+"nettests":
+   [
+      {
+         "test_name": "http_invalid_request_line"
+      },
+      {
+         "test_name": "http_header_field_manipulation"
+      },
+      {
+         "test_name": "ndt"
+      },
+      {
+         "test_name": "dash"
+      },
+   ]
+}
+```
+
+### Experimental
+
+```json
+{
+"name": "Experimental",
+"short_description": "Run new experimental tests",
+"icon": "OONINettestGroupExperimental",
+"author": "contact@ooni.org",
+"nettests":
+   [
+      {
+         "test_name": "stun_reachability"
+      },
+      {
+         "test_name": "dnscheck"
+      },
+      {
+         "is_manual_run_enabled": false,
+         "test_name": "tor_snowflake"
+      },
+      {
+         "is_manual_run_enabled": false,
+         "test_name": "vanilla_tor"
+      },
+   ]
+}
+```
+
+# 4.0 API
 
 In order to support the above workflow the OONI API needs to support the following operations:
-* CREATE a new OONI Run link, returning the OONI Run link ID (see 3.1)
-* UPDATE an existing OONI Run link (see 3.2)
-* GET the OONI Run descriptor, provided an ID (3.3)
+* CREATE a new OONI Run link, returning the OONI Run link ID (see 4.1)
+* UPDATE an existing OONI Run link (see 4.2)
+* GET the OONI Run descriptor, provided an ID (4.3)
 
 In the following sections we will specify how these operations should be done.
 
@@ -93,7 +302,7 @@ do not, since a user should always have access to the OONI Run link which they
 have configured on their device, if we do support deleting them, they might be
 surprised to see it disappear from their device in the future.
 
-## 3.1 CREATE a new OONI Run link
+## 4.1 CREATE a new OONI Run link
 
 This operation will be performed by a logged in user that is interested in
 performing an OONI Run link based measurement campaign.
@@ -175,7 +384,7 @@ following JSON body:
 }
 ```
 
-## 3.2 UPDATE an existing OONI Run link
+## 4.2 UPDATE an existing OONI Run link
 
 This operation will be performed by a logged in user that is interested in
 performing an OONI Run link based measurement campaign.
@@ -267,7 +476,7 @@ following JSON body:
 }
 ```
 
-## 3.3 GET the OONI Run descriptor
+## 4.3 GET the OONI Run descriptor
 
 This operation is performed by OONI Probe clients to retrieve the descriptor of
 a certain OONI Run link given the ID.
@@ -330,7 +539,7 @@ following JSON body:
 }
 ```
 
-# 4.0 Implementation considerations
+# 5.0 Implementation considerations
 
 Special attention should be placed in ensuring the OONI Run links (which are
 mobile deep links) are sharable though various apps.
