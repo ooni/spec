@@ -37,7 +37,7 @@ The endpoints used for testing are the following:
 * https://cdn2.signal.org/
 * https://sfu.voip.signal.org/
 
-The TLS certificate is validated against the custom Signal CA root certificate:
+The TLS certificate is validated against these custom Signal CA root certificates:
 ```
 -----BEGIN CERTIFICATE-----
 MIID7zCCAtegAwIBAgIJAIm6LatK5PNiMA0GCSqGSIb3DQEBBQUAMIGNMQswCQYD
@@ -62,6 +62,37 @@ iOheyv7UzJOefb2pLOc9qsuvI4fnaESh9bhzln+LXxtCrRPGhkxA1IMIo3J/s2WF
 /oF4usY5J7LPkxK3LWzMJnb5EIJDmRvyH8pyRwWg6Qm6qiGFaI4nL8QU4La1x2en
 4DGXRaLMPRwjELNgQPodR38zoCMuA8gHZfZYYoZ7D7Q1wNUiVHcxuFrEeBaYJbLE
 rwLV
+-----END CERTIFICATE-----
+```
+
+and
+```
+-----BEGIN CERTIFICATE-----
+MIIEjDCCAnSgAwIBAgITV+dgmSk1+75Wwn/Mjz8f+gQ9qTANBgkqhkiG9w0BAQsF
+ADB1MQswCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEWMBQGA1UEBxMN
+TW91bnRhaW4gVmlldzEeMBwGA1UEChMVU2lnbmFsIE1lc3NlbmdlciwgTExDMRkw
+FwYDVQQDExBTaWduYWwgTWVzc2VuZ2VyMB4XDTIyMDgyMzE2NTIxMVoXDTIzMDky
+MzIyNDA1NlowADCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALf8th0A
+N5TFsvvdfaSP1WyCMn5Ql81IF5D0pXrdE9fGDz5AaeAbCazxXU8tnjZiUr4a/BGD
+h3ZxORHXJ2SA3HA2UFG+qHik59QNGkY4Jv4emTM5QLw0fcsGRgJnzb7A60LRoxGs
+17jxD1zyVl/SXn/Ql3cvBrHjxPzJ6NcQG4Pek7YieH2xiMP794QUu0XJYlBx0uvx
+xOI3qpw5c6oNORGY8hlwWzbv+sqvShXhteOlkzluKtIqpL8+NV206JIqLkaKFjB7
+To14TSFF3tYxxsHYwDhRKPatqYpbebx3iCo0H33dL0gjoUtdvRgsdHqnUQXSqoRH
+cUYCIPs3FivKNrcCAwEAAaOBiTCBhjATBgNVHSUEDDAKBggrBgEFBQcDATAMBgNV
+HRMBAf8EAjAAMB0GA1UdDgQWBBSidZq+TLJkcDuNV5j1KbOm/l+dhjAfBgNVHSME
+GDAWgBS180vG5dZL0OWAa4xQw2dbvLHzcTAhBgNVHREBAf8EFzAVghNzZnUudm9p
+cC5zaWduYWwub3JnMA0GCSqGSIb3DQEBCwUAA4ICAQCDchlftHXUm3sFWL86GKUs
+w7nxOiJDZYR+xIVGbsUarBolEsZZkYjTDB427ZjgBS+Nfhhbrw4k2LMarkxf2TQX
+aelPHRa5xNPVfkrN8xw4fv/8TLE9GSjKlrNJm1EoTZL5CYWQU+qe4CuKfAJU6h8l
+xIkcik61aCeNLQoaI1L3V8tPXmmqMWpsnZmFg6YLGeMTLs4skdFqgLOnx9EF2jgO
+7EAJ9HcrgSPirQeuDJKhamaLtQiqIQR8L3H4YG1FDiuOeto6f1LRCIqjH1Mye1BM
+33Qg/VilLQIWp8+C4GJZ0+LO1cfatNh8tkDbrwMzUeA1nLEZHMlgXE05z00euNlQ
+0+evTmJzWRKJHugPnA3vvdzy4lbYvYWaXs8pACrVpESui8I+v6jdH814lOxpDwNH
+bPrxfOxhIxfFiVttCl3AQZBLJM6M0ty6/Q7bYsdNT23jKMl0AmDhj9qn/7dzYcVi
+vI0XKaaJl4ov3IDbuMe0oZWhoLwzPuWxxkWDjTb8ngDnWZT1o5dAR9fltr38m42N
+uA/SkxghiAMmvkC8nhEJ7yT2hme+rozPZSp1SSEDViDkA4KnnQpMcNiotCQpNOe7
+YfA9uSnjHjZloRTPUgtkKQ3u8ZZprFQlS2jDE18BRGdh24V5OsCbMvFPtrEsjG4H
+5xvkiIV0FpbMk4Gj8I4Hbw==
 -----END CERTIFICATE-----
 ```
 
@@ -106,6 +137,16 @@ The meaning of the various keys is described in the above section.
 ## Possible conclusions
 
 If it is possible for users to use the Signal messenger software
+
+## Data analysis considerations
+
+All data collected with `test_version` `0.2.0` after 2022-10-19 should be
+treated with extra care, as the values of `signal_backend_failure` and
+`signal_backend_status` cannot be trusted.`
+This is a result of signal having changed the root CA for at least one of their
+endpoints (`sfu.voip.signal.org`) resulting in TLS validation errors.
+
+For more information see: https://github.com/ooni/probe/issues/2344
 
 ## Example output sample
 
