@@ -1,6 +1,6 @@
 # Specification version number
 
-2020-06-16-001
+2022-06-13-001
 
 * _status_: current
 
@@ -245,7 +245,104 @@ better understand the reason for failure.
 A future version of this specification will investigate into how
 to more precisely classify possible `obfs4` failures.
 
-## Example output sample
+# Privacy considerations
+
+This nettest does not provide anonymity. An adversary can observe that
+the user is connecting to Tor servers and using obfs4.
+
+Whenever a target refers to a private bridge, the implementation MUST scrub
+the target address from the measurement and from the logs.
+
+For example, the following:
+
+```JSON
+{
+	"tcp_connect": [
+	  {
+		"ip": "85.31.186.98",
+		"port": 443,
+		"status": {
+		  "failure": null,
+		  "success": true
+		},
+		"t": 8.639313
+	  }
+	]
+}
+```
+
+MUST be scrubbed as:
+
+```JSON
+{
+	"tcp_connect": [
+	  {
+		"ip": "[scrubbed]",
+		"port": 443,
+		"status": {
+		  "failure": null,
+		  "success": true
+		},
+		"t": 8.639313
+	  }
+	]
+}
+```
+
+When the IP address appears along with a port, the implementation MAY choose
+to also scrub the port if this is more convenient. For example, the following:
+
+```JSON
+{
+	"target_address": "85.31.186.98:443",
+}
+```
+
+MUST become either:
+
+```JSON
+{
+	"target_address": "[scrubbed]:443",
+}
+```
+
+or:
+
+```JSON
+{
+	"target_address": "[scrubbed]",
+}
+```
+
+The scrubbing procedure SHOULD only be applied to the specific
+results referring to private bridges. It SHOULD NOT be applied to
+other results referring to non-private bridges.
+
+# Data analysis considerations
+
+## Bridge ID changes
+
+Since ~2022-05-18 the id of the bridge 51.222.13.177:80 changed from
+`fa69b2ee7a7c8975af2452ecd566f67a6459d397a4cefc30be86a670675cdc23` to
+`662218447d396b9d4f01b585457d267735601fedbeb9a19b86b942f238fe4e7b`.
+
+When analysing data you might want to consider results for these two distinct
+bridge IDs as the same.
+
+See: https://github.com/ooni/sysadmin/pull/495
+
+## Ntor AUTH mismatch
+
+Between around January 2022 and June 2022, issues with the obfs4 handshake
+may have caused some bridges to fail with this error:
+
+```
+ntor AUTH mismatch
+```
+
+See https://github.com/ooni/probe/issues/1986 for more info.
+
+# Example output sample
 
 ```JSON
 {
@@ -3454,86 +3551,3 @@ to more precisely classify possible `obfs4` failures.
 }
 ```
 
-# Privacy considerations
-
-This nettest does not provide anonymity. An adversary can observe that
-the user is connecting to Tor servers and using obfs4.
-
-Whenever a target refers to a private bridge, the implementation MUST scrub
-the target address from the measurement and from the logs.
-
-For example, the following:
-
-```JSON
-{
-	"tcp_connect": [
-	  {
-		"ip": "85.31.186.98",
-		"port": 443,
-		"status": {
-		  "failure": null,
-		  "success": true
-		},
-		"t": 8.639313
-	  }
-	]
-}
-```
-
-MUST be scrubbed as:
-
-```JSON
-{
-	"tcp_connect": [
-	  {
-		"ip": "[scrubbed]",
-		"port": 443,
-		"status": {
-		  "failure": null,
-		  "success": true
-		},
-		"t": 8.639313
-	  }
-	]
-}
-```
-
-When the IP address appears along with a port, the implementation MAY choose
-to also scrub the port if this is more convenient. For example, the following:
-
-```JSON
-{
-	"target_address": "85.31.186.98:443",
-}
-```
-
-MUST become either:
-
-```JSON
-{
-	"target_address": "[scrubbed]:443",
-}
-```
-
-or:
-
-```JSON
-{
-	"target_address": "[scrubbed]",
-}
-```
-
-The scrubbing procedure SHOULD only be applied to the specific
-results referring to private bridges. It SHOULD NOT be applied to
-other results referring to non-private bridges.
-
-# Data analysis considerations
-
-Since ~2022-05-18 the id of the bridge 51.222.13.177:80 changed from
-`fa69b2ee7a7c8975af2452ecd566f67a6459d397a4cefc30be86a670675cdc23` to
-`662218447d396b9d4f01b585457d267735601fedbeb9a19b86b942f238fe4e7b`.
-
-When analysing data you might want to consider results for these two distinct
-bridge IDs as the same.
-
-See: https://github.com/ooni/sysadmin/pull/495
