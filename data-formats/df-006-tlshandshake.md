@@ -31,6 +31,7 @@ code. See this directory's [README](README.md) for the basic concepts.
     "negotiated_protocol": "",
     "no_tls_verify": false,
     "peer_certificates": [],
+    "server_name": "example.com",
     "t0": 1.001,
     "t": 1.11,
     "tags": [],
@@ -66,6 +67,8 @@ the TLS handshake.
 - `peer_certificates`: (`[]BinaryData`): list of peer certificates in ASN.1
 DER format represented using the `BinaryData` object described
 in `df-001-httpt.md`.
+
+- `server_name`: (`string`; optional): server_name used as part of the TLS handshake.
 
 - `t0` (`float`): number of seconds elapsed since `measurement_start_time`
 measured in the moment in which we started the operation (`t - t0` gives you
