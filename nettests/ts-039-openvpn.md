@@ -148,7 +148,7 @@ abbreviated for clarity):
     },
     "failure": null,
     "error": null,
-    "pings": [
+    "icmp_pings": [
       {
         "target": "8.8.8.8",
         "sequence": [
@@ -256,22 +256,30 @@ where:
   provider known to OONI, it should be marked as "unknown".
 - `vpn_protocol` (`string`): should be `openvpn`.
 - `transport` (`string`): underlying transport used by OpenVPN, one of `tcp|udp`,
-- `remote` (`string`): IP address and port for the remote endpoint (`ip:port`).
-- obfuscation": "none",
+- `remote` (`string`): IP address and port for the remote endpoint (`ipaddr:port`).
+- `obfuscation` (`string`): type of obfuscation in use. Currently known
+  obfuscation schemes include `none` and `obfs4`,
 - `bootstrap_time` (`float`) is the time, in seconds, to bootstrap a VPN connection,
 - `success` (`bool`) whether all the stages in the experiment were successful,
+- `success_handshake` (`bool`) signals a successful openvpn handshake.
+- `success_icmp` (`bool`) signals that all of the first two icmp pings replies returned
+  "viable" responses (meaning, arbitrarily, < 50% packet loss).
+- `success_urlgrab` (`bool`) signals that we got at least one successful url
+  grab in the web-fetching part of the experiment;
 - `minivpn_version` (`string`) contains the version of the `minivpn` library
   that is used in the ooni probe build used for the experiment,
 - `obfs4_version` (`string`) contains the version of the `obfs4` library
   that is used in the ooni probe build used for the experiment,
 - `failure` (`string`; nullable) conforms to `df-007-errors`,
-- `error` (`string`; nullable) raw error message, conforms to `df-007-errors`,
-- `stages` is an array containing timing for different bootstrap stages:
-    - `op_id` (`int`): sequential integer for the operation.
+- `network_events` is an array containing timing for different stages of the
+  OpenVPN handshake, conforming to `df-008-netevents`:
+    - `transaction_id` (`int`): sequential integer for the operation.
     - `operation` (`string`): the name for the operation.
     - `t` (`float`): time, in seconds, for the event marking this operation.
+- `last_handshake_transaction_id` (`int`) integer that corresponds to the
+  transaction id of the last received OpenVPN handshake event.
 - `tcp_connect`: info about the TCP handshake (only when `transport` == `tcp`). Conforms to `df-005-tcpconnect`.
-- `pings` is an array containing the result for a series of `icmp` pings through the tunnel:
+- `icmp_pings` is an array containing the result for a series of `icmp` pings through the tunnel:
     - `target` (`string`): the IP the ICMP trains were targeting,
     - `sequence` is an aray with the ping responses:
         - `seq` (`int`): the sequence number for this response packet,
@@ -279,11 +287,11 @@ where:
         - `ttls`: (`int`): raw ttl value,
     - `pkt_rcv` (`int`): how many packets were received,
     - `pkt_snt` (`int`): how many packets were sent,
-    - `min_rtt` (`float`): the min value for all the pings,
-    - `max_rtt` (`float`): the max value for all the pings,
-    - `avg_rtt` (`float`): the avg value for all the pings,
-    - `std_rtt` (`float`): the std value for all the pings,
-    - `error` (`string`; nullable): any error during the ping operation. Conforms to `df-007-errors`.
+    - `min_rtt` (`float`): the minimum value for all the pings towards this target,
+    - `max_rtt` (`float`): the maximum value for all the pings towards this target,
+    - `avg_rtt` (`float`): the average of the rtt for all the pings towards this target,
+    - `std_rtt` (`float`): the standard deviation of the rtt for all the pings towards this target,
+    - `failure` (`string`; nullable): any error during the ping operation. Conforms to `df-007-errors`.
 - `requests` is an array containing the request and response for a given
   `urlgrabber` operation through the tunnel. Conforms to `df-001-httpt`.
  
@@ -339,48 +347,49 @@ where:
     "remote": "51.158.144.32:80",
     "obfuscation": "none",
     "bootstrap_time": 0.37221659,
-    "stages": [
+    "network_events": [
       {
-        "op_id": 0,
+        "transaction_id": 0,
         "operation": "ready",
         "t": 0.145
       },
       {
-        "op_id": 1,
+        "transaction_id": 1,
         "operation": "dial_done",
         "t": 45.381
       },
       {
-        "op_id": 3,
+        "transaction_id": 3,
         "operation": "reset",
         "t": 45.545
       },
       {
-        "op_id": 4,
+        "transaction_id": 4,
         "operation": "tls_conn",
         "t": 100.436
       },
       {
-        "op_id": 5,
+        "transaction_id": 5,
         "operation": "tls_handshake",
         "t": 100.437
       },
       {
-        "op_id": 6,
+        "transaction_id": 6,
         "operation": "tls_handshake_done",
         "t": 155.885
       },
       {
-        "op_id": 7,
+        "transaction_id": 7,
         "operation": "data_init",
         "t": 372.136
       },
       {
-        "op_id": 8,
+        "transaction_id": 8,
         "operation": "vpn_handshake_done",
         "t": 372.14
       }
     ],
+    "last_handshake_transaction_id": 8,
     "tcp_connect": {
       "ip": "51.158.144.32",
       "port": 80,
@@ -393,8 +402,7 @@ where:
       "transaction_id": 1
     },
     "failure": null,
-    "error": null,
-    "pings": [
+    "icmp_pings": [
       {
         "target": "8.8.8.8",
         "sequence": [
@@ -455,7 +463,7 @@ where:
         "max_rtt": 67.85,
         "avg_rtt": 60.926,
         "std_rtt": 3.717,
-        "error": null
+        "failure": null
       },
       {
         "target": "10.41.0.1",
@@ -517,7 +525,7 @@ where:
         "max_rtt": 107.01,
         "avg_rtt": 58.518,
         "std_rtt": 16.43,
-        "error": null
+        "failure": null
       },
       {
         "target": "163.7.134.112",
@@ -579,7 +587,7 @@ where:
         "max_rtt": 379.311,
         "avg_rtt": 338.438,
         "std_rtt": 14.347,
-        "error": null
+        "failure": null
       }
     ],
     "requests": [
@@ -659,13 +667,16 @@ where:
       }
     ],
     "minivpn_version": "(devel)",
-    "obfs4_version": "",
+    "obfs4_version": "v0.0.0-20220904064028-336a71d6e4cf",
+    "success_handshake": true,
+    "success_icmp": true,
+    "success_urlgrab": true,
     "success": true
   },
   "test_name": "openvpn",
   "test_runtime": 32.003161366,
   "test_start_time": "2022-10-21 09:11:46",
-  "test_version": "0.0.12"
+  "test_version": "0.0.13"
 }
 ```
 
@@ -677,7 +688,7 @@ users location.
 
 Besides this, the [https://github.com/ooni/minivpn](openvpn implementation used in this experiment)
 is known to have several minor distinguisher features in
-comparison to the reference openvpn implementation. While work is being done to
+comparison to the reference OpenVPN implementation. While work is being done to
 close the gap between the two implementations, a motivated adversary can in
 theory infer the usage of probing activity by means of implementation quirks.
 However, probing activity is already evident because of the traffic patterns
@@ -686,6 +697,7 @@ and timing, so this should not be a high-impact concern in practice.
 # Packet capture considerations
 
 This test does not capture packets by default.
+
 
 # Status and future directions
 
@@ -707,4 +719,3 @@ openvpn experiment (the only bridge we are aware of right now is obfs4). The
 obfuscated vpn tunnel could be a different experiment, but it would make sense
 to simply treat it as a different input variable so to be able to easily perform
 comparisons.
-
