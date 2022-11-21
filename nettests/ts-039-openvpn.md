@@ -25,7 +25,7 @@ options.
 Altogether, they constitute a basic subset of the valid configuration
 parameters for the reference openvpn implementation (`man 8 openvpn`).
 
-The `URI` encodes information for the protocol (`openvpn`, in this case),
+The input `URI` encodes information for the protocol (`openvpn`, in this case),
 provider, transport, obfuscation and the remote address.
 
 ```
@@ -48,6 +48,12 @@ Other valid options, that will be passed to the openvpn invocation, are:
 
 - `cipher` (one of: `AES-256-GCM`, `AES-128-GCM`, `AES-256-CBC`, `AES-128-CBC`).
 - `auth` (one of: `SHA1`, `SHA512`).
+
+Additionally, the user can specify any amount of comma-separated urls that
+wants to be fetched through the tunnel. 
+
+- `URLs` (`string`, optional).
+
 
 # Test description
 
