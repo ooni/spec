@@ -113,137 +113,95 @@ abbreviated for clarity):
 
 ```JSON
 {
-  "test_keys": {
     "provider": "riseup",
     "vpn_protocol": "openvpn",
     "transport": "tcp",
-    "remote": "51.158.144.32:80",
-    "obfuscation": "none",
-    "bootstrap_time": 0.37221659,
-    "minivpn_version": "(devel)",
-    "obfs4_version": "",
-    "success": true
-    "stages": [
+    "remote": "198.252.153.109:443",
+    "obfuscation": "obfs4",
+    "bootstrap_time": 1.5671859910000001,
+    "network_events": [
       {
-        "op_id": 0
+        "transaction_id": 0,
         "operation": "ready",
-        "t": 0.145
+        "t": 0.12
       },
       {
-        "op_id": 8,
+        "transaction_id": 1,
+        "operation": "dial_done",
+        "t": 515.117
+      },
+      {
+        "transaction_id": 2,
+        "operation": "vpn_handshake_start",
+        "t": 515.118
+      },
+      {
+        "transaction_id": 3,
+        "operation": "reset",
+        "t": 515.119
+      },
+      {
+        "transaction_id": 5,
+        "operation": "tls_handshake_start",
+        "t": 771.98
+      },
+      {
+        "transaction_id": 6,
+        "operation": "tls_handshake_done",
+        "t": 1041.248
+      },
+      {
+        "transaction_id": 7,
+        "operation": "data_init",
+        "t": 1567.111
+      },
+      {
+        "transaction_id": 8,
         "operation": "vpn_handshake_done",
-        "t": 372.14
+        "t": 1567.114
       }
     ],
+    "last_handshake_transaction_id": 8,
     "tcp_connect": {
-      "ip": "51.158.144.32",
-      "port": 80,
+      "ip": "198.252.153.109",
+      "port": 443,
       "status": {
         "failure": null,
         "success": true
       },
-      "t0": 0.000239501,
-      "t": 0.045310671,
-      "transaction_id": 1
+      "t0": 0.000424974,
+      "t": 0.258504018
     },
     "failure": null,
-    "error": null,
     "icmp_pings": [
       {
         "target": "8.8.8.8",
         "sequence": [
           {
-            "seq": 9,
-            "ttl": 113,
-            "rtt": 60.208
-          },
-          {
-            "seq": 10,
-            "ttl": 113,
-            "rtt": 57.909
+            "seq": 1,
+            "ttl": 121,
+            "rtt": 255.168
           }
         ],
-        "pkt_rcv": 10,
-        "pkt_snt": 10,
-        "min_rtt": 56.477,
-        "max_rtt": 67.85,
-        "avg_rtt": 60.926,
-        "std_rtt": 3.717,
-        "error": null
-      },
-      {
-        "target": "10.41.0.1",
-        "sequence": [
-          {
-            "seq": 10,
-            "ttl": 64,
-            "rtt": 107.01
-          }
-        ],
-        "pkt_rcv": 10,
-        "pkt_snt": 10,
-        "min_rtt": 48.734,
-        "max_rtt": 107.01,
-        "avg_rtt": 58.518,
-        "std_rtt": 16.43,
-        "error": null
-      },
-      {
-        "target": "163.7.134.112",
-        "sequence": [
-          {
-            "seq": 10,
-            "ttl": 54,
-            "rtt": 334.934
-          }
-        ],
-        "pkt_rcv": 10,
-        "pkt_snt": 10,
-        "min_rtt": 327.153,
-        "max_rtt": 379.311,
-        "avg_rtt": 338.438,
-        "std_rtt": 14.347,
-        "error": null
+        "pkt_rcv": 1,
+        "pkt_snt": 1,
+        "min_rtt": 255.168,
+        "max_rtt": 255.168,
+        "avg_rtt": 255.168,
+        "std_rtt": 0,
+        "failure": null
       }
     ],
     "requests": [
-      {
-        "failure": null,
-        "request": {
-          "method": "GET",
-          "url": "https://api.ipify.org/?format=json",
-          "headers": {
-            "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-            "accept-language": "en-US,en;q=0.9",
-            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36"
-          }
-        },
-        "response": {
-          "code": 200,
-          "headers": {
-            "connection": "keep-alive",
-            "content-length": "23",
-            "content-type": "application/json",
-            "date": "Fri, 21 Oct 2022 09:12:18 GMT",
-            "server": "Cowboy",
-            "vary": "Origin",
-            "via": "1.1 vegur"
-          },
-          "body": {
-            "data": "eyJpcCI6IjIxMi44My4xODIuMTI3In0=",
-            "format": "base64"
-          },
-          "body_is_truncated": false,
-          "x_body_length": 23,
-          "x_body_is_utf8": true
-        },
-        "t": 0.558008438,
-        "started": 8.3589e-05,
-        "oddity": ""
-      }
-    ]
-  }
-}
+    // ...
+    ],
+    "minivpn_version": "(devel)",
+    "obfs4_version": "(devel)",
+    "success_handshake": true,
+    "success_icmp": true,
+    "success_urlgrab": true,
+    "success": true
+},
 ```
 
 where:
@@ -253,7 +211,8 @@ where:
   should match). However, the authoritative source is the entry in the
   test-keys.
 - `provider` (`string`) is the entity that manages the endpoints. If it's not a
-  provider known to OONI, it should be marked as "unknown".
+  provider known to OONI, it should be marked with a prefix starting with
+  "unknown".
 - `vpn_protocol` (`string`): should be `openvpn`.
 - `transport` (`string`): underlying transport used by OpenVPN, one of `tcp|udp`,
 - `remote` (`string`): IP address and port for the remote endpoint (`ipaddr:port`).
@@ -276,7 +235,7 @@ where:
     - `transaction_id` (`int`): sequential integer for the operation.
     - `operation` (`string`): the name for the operation.
     - `t` (`float`): time, in seconds, for the event marking this operation.
-- `last_handshake_transaction_id` (`int`) integer that corresponds to the
+- `last_handshake_transaction_id` (`uint8`) integer that corresponds to the
   transaction id of the last received OpenVPN handshake event.
 - `tcp_connect`: info about the TCP handshake (only when `transport` == `tcp`). Conforms to `df-005-tcpconnect`.
 - `icmp_pings` is an array containing the result for a series of `icmp` pings through the tunnel:
@@ -292,7 +251,7 @@ where:
     - `avg_rtt` (`float`): the average of the rtt for all the pings towards this target,
     - `std_rtt` (`float`): the standard deviation of the rtt for all the pings towards this target,
     - `failure` (`string`; nullable): any error during the ping operation. Conforms to `df-007-errors`.
-- `requests` is an array containing the request and response for a given
+- `requests` is an array of results containing the request and response for a given
   `urlgrabber` operation through the tunnel. Conforms to `df-001-httpt`.
  
 
@@ -322,84 +281,86 @@ where:
     "platform": "linux"
   },
   "data_format_version": "0.2.0",
-  "input": "vpn://openvpn.riseup/?addr=51.158.144.32:80&transport=tcp&obfs=none",
-  "measurement_start_time": "2022-10-21 09:12:18",
+  "extensions": {
+    "httpt": 0
+  },
+  "input": "vpn://openvpn.riseup/?addr=198.252.153.109:443&transport=tcp&obfs=obfs4",
+  "measurement_start_time": "2022-11-21 17:22:49",
   "options": [
-    "Obfuscation=none",
     "Cipher=AES-256-GCM",
     "Auth=SHA512",
-    "Compress="
+    "Compress=",
+    "Obfuscation=obfs4"
   ],
-  "probe_asn": "AS9105",
-  "probe_cc": "GB",
+  "probe_asn": "AS9009",
+  "probe_cc": "RO",
   "probe_ip": "127.0.0.1",
-  "probe_network_name": "UltraLettuce Networks Limited",
-  "report_id": "20221109T121906Z_openvpn_GB_9105_n1_QRVthZY6Pi9lYS7j",
-  "resolver_asn": "AS9105",
-  "resolver_ip": "81.1.72.35",
-  "resolver_network_name": "TalkTalk Communications Limited",
+  "probe_network_name": "M247 Ltd",
+  "report_id": "",
+  "resolver_asn": "AS9009",
+  "resolver_ip": "185.45.15.210",
+  "resolver_network_name": "M247 Ltd",
   "software_name": "miniooni",
   "software_version": "3.17.0-alpha",
   "test_keys": {
     "provider": "riseup",
     "vpn_protocol": "openvpn",
     "transport": "tcp",
-    "remote": "51.158.144.32:80",
-    "obfuscation": "none",
-    "bootstrap_time": 0.37221659,
+    "remote": "198.252.153.109:443",
+    "obfuscation": "obfs4",
+    "bootstrap_time": 1.5671859910000001,
     "network_events": [
       {
         "transaction_id": 0,
         "operation": "ready",
-        "t": 0.145
+        "t": 0.12
       },
       {
         "transaction_id": 1,
         "operation": "dial_done",
-        "t": 45.381
+        "t": 515.117
+      },
+      {
+        "transaction_id": 2,
+        "operation": "vpn_handshake_start",
+        "t": 515.118
       },
       {
         "transaction_id": 3,
         "operation": "reset",
-        "t": 45.545
-      },
-      {
-        "transaction_id": 4,
-        "operation": "tls_conn",
-        "t": 100.436
+        "t": 515.119
       },
       {
         "transaction_id": 5,
-        "operation": "tls_handshake",
-        "t": 100.437
+        "operation": "tls_handshake_start",
+        "t": 771.98
       },
       {
         "transaction_id": 6,
         "operation": "tls_handshake_done",
-        "t": 155.885
+        "t": 1041.248
       },
       {
         "transaction_id": 7,
         "operation": "data_init",
-        "t": 372.136
+        "t": 1567.111
       },
       {
         "transaction_id": 8,
         "operation": "vpn_handshake_done",
-        "t": 372.14
+        "t": 1567.114
       }
     ],
     "last_handshake_transaction_id": 8,
     "tcp_connect": {
-      "ip": "51.158.144.32",
-      "port": 80,
+      "ip": "198.252.153.109",
+      "port": 443,
       "status": {
         "failure": null,
         "success": true
       },
-      "t0": 0.000239501,
-      "t": 0.045310671,
-      "transaction_id": 1
+      "t0": 0.000424974,
+      "t": 0.258504018
     },
     "failure": null,
     "icmp_pings": [
@@ -408,123 +369,113 @@ where:
         "sequence": [
           {
             "seq": 1,
-            "ttl": 113,
-            "rtt": 62.61
+            "ttl": 121,
+            "rtt": 255.168
           },
           {
             "seq": 2,
-            "ttl": 113,
-            "rtt": 56.555
-          },
-          {
-            "seq": 3,
-            "ttl": 113,
-            "rtt": 57.764
+            "ttl": 121,
+            "rtt": 257.614
           },
           {
             "seq": 4,
-            "ttl": 113,
-            "rtt": 67.85
+            "ttl": 121,
+            "rtt": 256.957
           },
           {
             "seq": 5,
-            "ttl": 113,
-            "rtt": 64.811
+            "ttl": 121,
+            "rtt": 257.894
           },
           {
             "seq": 6,
-            "ttl": 113,
-            "rtt": 60.47
+            "ttl": 121,
+            "rtt": 1952.461
           },
           {
             "seq": 7,
-            "ttl": 113,
-            "rtt": 64.607
+            "ttl": 121,
+            "rtt": 1382.493
           },
           {
             "seq": 8,
-            "ttl": 113,
-            "rtt": 56.477
+            "ttl": 121,
+            "rtt": 429.14
           },
           {
             "seq": 9,
-            "ttl": 113,
-            "rtt": 60.208
+            "ttl": 121,
+            "rtt": 433.099
           },
           {
             "seq": 10,
-            "ttl": 113,
-            "rtt": 57.909
+            "ttl": 121,
+            "rtt": 1175.273
           }
         ],
-        "pkt_rcv": 10,
+        "pkt_rcv": 9,
         "pkt_snt": 10,
-        "min_rtt": 56.477,
-        "max_rtt": 67.85,
-        "avg_rtt": 60.926,
-        "std_rtt": 3.717,
+        "min_rtt": 255.168,
+        "max_rtt": 1952.461,
+        "avg_rtt": 711.122,
+        "std_rtt": 595.274,
         "failure": null
       },
       {
         "target": "10.41.0.1",
         "sequence": [
           {
-            "seq": 1,
-            "ttl": 64,
-            "rtt": 51.771
-          },
-          {
             "seq": 2,
             "ttl": 64,
-            "rtt": 51.983
+            "rtt": 434.066
           },
           {
             "seq": 3,
             "ttl": 64,
-            "rtt": 56.588
+            "rtt": 431.661
           },
           {
             "seq": 4,
             "ttl": 64,
-            "rtt": 60.096
+            "rtt": 432.937
           },
           {
             "seq": 5,
             "ttl": 64,
-            "rtt": 51.718
+            "rtt": 428.673
           },
           {
             "seq": 6,
             "ttl": 64,
-            "rtt": 48.734
+            "rtt": 429.713
           },
           {
             "seq": 7,
             "ttl": 64,
-            "rtt": 52.531
+            "rtt": 426.291
           },
           {
             "seq": 8,
             "ttl": 64,
-            "rtt": 52.642
+            "rtt": 424.651
           },
           {
             "seq": 9,
             "ttl": 64,
-            "rtt": 52.106
+            "rtt": 1091.933
           },
           {
             "seq": 10,
             "ttl": 64,
-            "rtt": 107.01
+            "rtt": 421.675
           }
         ],
-        "pkt_rcv": 10,
+        "pkt_rcv": 9,
         "pkt_snt": 10,
-        "min_rtt": 48.734,
-        "max_rtt": 107.01,
-        "avg_rtt": 58.518,
-        "std_rtt": 16.43,
+        "min_rtt": 421.675,
+        "max_rtt": 1091.933,
+        "avg_rtt": 502.4,
+        "std_rtt": 208.466,
         "failure": null
       },
       {
@@ -532,61 +483,61 @@ where:
         "sequence": [
           {
             "seq": 1,
-            "ttl": 54,
-            "rtt": 329.409
+            "ttl": 56,
+            "rtt": 562.198
           },
           {
             "seq": 2,
-            "ttl": 54,
-            "rtt": 333.689
+            "ttl": 56,
+            "rtt": 557.722
           },
           {
             "seq": 3,
-            "ttl": 54,
-            "rtt": 340.251
+            "ttl": 56,
+            "rtt": 557.061
           },
           {
             "seq": 4,
-            "ttl": 54,
-            "rtt": 379.311
+            "ttl": 56,
+            "rtt": 539.17
           },
           {
             "seq": 5,
-            "ttl": 54,
-            "rtt": 327.153
+            "ttl": 56,
+            "rtt": 541.216
           },
           {
             "seq": 6,
-            "ttl": 54,
-            "rtt": 331.392
+            "ttl": 56,
+            "rtt": 526.353
           },
           {
             "seq": 7,
-            "ttl": 54,
-            "rtt": 330.347
+            "ttl": 56,
+            "rtt": 523.954
           },
           {
             "seq": 8,
-            "ttl": 54,
-            "rtt": 335.409
+            "ttl": 56,
+            "rtt": 515.543
           },
           {
             "seq": 9,
-            "ttl": 54,
-            "rtt": 342.488
+            "ttl": 56,
+            "rtt": 512.221
           },
           {
             "seq": 10,
-            "ttl": 54,
-            "rtt": 334.934
+            "ttl": 56,
+            "rtt": 528.066
           }
         ],
         "pkt_rcv": 10,
         "pkt_snt": 10,
-        "min_rtt": 327.153,
-        "max_rtt": 379.311,
-        "avg_rtt": 338.438,
-        "std_rtt": 14.347,
+        "min_rtt": 512.221,
+        "max_rtt": 562.198,
+        "avg_rtt": 536.35,
+        "std_rtt": 17.096,
         "failure": null
       }
     ],
@@ -594,89 +545,99 @@ where:
       {
         "failure": null,
         "request": {
-          "method": "GET",
-          "url": "https://api.ipify.org/?format=json",
-          "headers": {
-            "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-            "accept-language": "en-US,en;q=0.9",
-            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36"
-          }
-        },
-        "response": {
-          "code": 200,
-          "headers": {
-            "connection": "keep-alive",
-            "content-length": "23",
-            "content-type": "application/json",
-            "date": "Fri, 21 Oct 2022 09:12:18 GMT",
-            "server": "Cowboy",
-            "vary": "Origin",
-            "via": "1.1 vegur"
-          },
-          "body": {
-            "data": "eyJpcCI6IjIxMi44My4xODIuMTI3In0=",
-            "format": "base64"
-          },
+          "body": "",
           "body_is_truncated": false,
-          "x_body_length": 23,
-          "x_body_is_utf8": true
-        },
-        "t": 0.558008438,
-        "started": 8.3589e-05,
-        "oddity": ""
-      },
-      {
-        "failure": null,
-        "request": {
-          "method": "GET",
-          "url": "https://www.google.com/",
+          "headers_list": [
+            [
+              "Accept",
+              "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+            ],
+            [
+              "Accept-Language",
+              "en-US,en;q=0.9"
+            ],
+            [
+              "Host",
+              "api.ipify.org"
+            ],
+            [
+              "User-Agent",
+              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36"
+            ]
+          ],
           "headers": {
-            "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-            "accept-language": "en-US,en;q=0.9",
-            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36"
-          }
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Accept-Language": "en-US,en;q=0.9",
+            "Host": "api.ipify.org",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36"
+          },
+          "method": "GET",
+          "tor": {
+            "exit_ip": null,
+            "exit_name": null,
+            "is_tor": false
+          },
+          "x_transport": "tcp",
+          "url": "https://api.ipify.org/?format=json"
         },
         "response": {
+          "body": "{\"ip\":\"198.252.153.28\"}",
+          "body_is_truncated": false,
           "code": 200,
+          "headers_list": [
+            [
+              "Connection",
+              "keep-alive"
+            ],
+            [
+              "Content-Length",
+              "23"
+            ],
+            [
+              "Content-Type",
+              "application/json"
+            ],
+            [
+              "Date",
+              "Mon, 21 Nov 2022 17:22:49 GMT"
+            ],
+            [
+              "Server",
+              "Cowboy"
+            ],
+            [
+              "Vary",
+              "Origin"
+            ],
+            [
+              "Via",
+              "1.1 vegur"
+            ]
+          ],
           "headers": {
-            "accept-ch": "Sec-CH-UA-Platform",
-            "alt-svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"",
-            "bfcache-opt-in": "unload",
-            "cache-control": "private, max-age=0",
-            "content-type": "text/html; charset=UTF-8",
-            "date": "Fri, 21 Oct 2022 09:12:18 GMT",
-            "expires": "-1",
-            "p3p": "CP=\"This is not a P3P policy! See g.co/p3phelp for more info.\"",
-            "server": "gws",
-            "set-cookie": "AEC=AakniGMtY-ydpeSb5yT257GdEdNMWQOR4oobqcvRp4OtODlkSKzyPqeTkg; expires=Wed, 19-Apr-2023 09:12:18 GMT; path=/; domain=.google.com; Secure; HttpOnly; SameSite=lax",
-            "strict-transport-security": "max-age=31536000",
-            "x-frame-options": "SAMEORIGIN",
-            "x-xss-protection": "0"
-          },
-          "body": {
-            "data": "PCFkb2N0eXBlIGh0bWw+PGh0bWwgaXRlbXNjb3BlPSIiIGl0ZW10eXBlPSJodHRwOi8vc2NoZW1hLm9yZy9XZWJQYWdlIiBsYW5nPSJmciI+PGhlYWQ+PG1ldGEgY2hhcnNldA==",
-            "format": "base64"
-          },
-          "body_is_truncated": true,
-          "x_body_length": 100,
-          "x_body_is_utf8": true
+            "Connection": "keep-alive",
+            "Content-Length": "23",
+            "Content-Type": "application/json",
+            "Date": "Mon, 21 Nov 2022 17:22:49 GMT",
+            "Server": "Cowboy",
+            "Vary": "Origin",
+            "Via": "1.1 vegur"
+          }
         },
-        "t": 0.946926271,
-        "started": 0.558104205,
-        "oddity": ""
+        "t": 1.742338739
       }
     ],
     "minivpn_version": "(devel)",
-    "obfs4_version": "v0.0.0-20220904064028-336a71d6e4cf",
+    "obfs4_version": "(devel)",
     "success_handshake": true,
     "success_icmp": true,
     "success_urlgrab": true,
     "success": true
   },
   "test_name": "openvpn",
-  "test_runtime": 32.003161366,
-  "test_start_time": "2022-10-21 09:11:46",
-  "test_version": "0.0.13"
+  "test_runtime": 37.975210163,
+  "test_start_time": "2022-11-21 17:22:11",
+  "test_version": "0.0.16"
 }
 ```
 
