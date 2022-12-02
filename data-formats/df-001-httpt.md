@@ -122,6 +122,10 @@ are multiple values for the same header key. See below the definition of
 - `tor` (`TorInfo`): this is an object containing information on the
 instance of `tor` that we may be using for measuring.
 
+- `vpn` (`VPNInfo`): similarly to `tor`, this is an object containing
+  information on any `vpn` instance that we may be using for
+  measuring.
+
 - `x_transport` (`string`; deprecated): indicates what transports was used for
 issuing the request. Typically `"tcp"` or `"udp"`. Until 2022-09-08, we used
 `"tcp"` or `"quic"` but we realized that using `"udp"` instead of `"quic"` would
@@ -222,6 +226,24 @@ if we're not using tor or this information is not available.
 if we're not using tor or this information is not available.
 
 - `is_tor` (`bool`): true if we're using tor, false otherwise.
+ 
+## VPNInfo
+
+```JSON
+{
+    "exit_ip": null,
+    "provider": null,
+    "is_vpn": false
+}
+
+- `exit_ip` (`string`; nullable): the egress IP for the VPN gateway, or `null`
+  if we're not using a VPN or this information is not available.
+
+- `provider` (`string`; nullable): the name of the provider to which this VPN
+  gateway belongs to, or `null` if we're not using a VPN or this information is
+  not available.
+
+- `is_vpn` (`bool`): true if we're using a VPN, false otherwise.
 
 ## Example
 
@@ -271,6 +293,11 @@ not relevant to the HTTP data format:
       "exit_ip": null,
       "exit_name": null,
       "is_tor": false
+    },
+    "vpn": {
+      "exit_ip": null,
+      "provider": null,
+      "is_vpn": false
     },
     "x_transport": "tcp",
     "url": "https://example.com"
