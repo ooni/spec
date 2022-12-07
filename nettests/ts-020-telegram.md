@@ -52,7 +52,7 @@ to indicate if we believe telegram to be blocked at the TCP level.
 
 If at least an HTTP request returns back a response, we consider Telegram to
 be working as intended. The key `telegram_http_blocking` is used to indicate if we believe
-telegram to be blocked at the HTTP level.
+telegram DCs are blocked at the HTTP level.
 
 ## Telegram web version test
 
