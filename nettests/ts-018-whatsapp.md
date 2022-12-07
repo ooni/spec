@@ -1,6 +1,6 @@
 # Specification version number
 
-2020-07-09-002
+2022-12-07-001
 
 * _status_: current
 
@@ -118,7 +118,8 @@ We always additionally write into the report:
 The `whatsapp_endpoints_dns_inconsistent` key is a legacy key that we
 used to compute whether an endpoint was part of the WhatsApp address
 space, but this check has been broken since at least 2020-02-17, so we
-first disabled the check and then updated the spec to not mention it.
+first disabled the check and then updated the spec to sync up with
+the actual implementation of the experiment.
 
 ## Registration service check
 
@@ -126,7 +127,7 @@ The registration service is used by WhatsApp to register a number to a
 whatsapp account. As such blocking the registration service inhibits new
 account creations.
 
-The registration service is a `HTTPS` service at the following URL:
+The registration service is a `https` service at the following URL:
 https://v.whatsapp.net/v2/register.
 
 To check if it is working properly we do a HTTP GET request to
@@ -150,7 +151,7 @@ When it fails we write:
 ```json
 {
     "registration_server_status": "blocked",
-    "registration_server_failure": "FAILURE STRING" 
+    "registration_server_failure": "FAILURE STRING"
 }
 ```
 
@@ -170,17 +171,16 @@ to the following URLs:
 
 * https://web.whatsapp.com/
 
-* http://web.whatsapp.com/
-
 We consider the GET for the HTTPS URL successful if we do not see any
 DNS, TCP connect, TLS, or I/O errors when fetching the URL. WhatsApp may
 return an 400 Bad Request response if the User-Agent header we use does
 not seem to be consistent with our ClientHello.
 
-The GET for the HTTP URL should not follow redirects. We consider it
-successful if the response redirects us to the HTTPS URL.
+Until 2022-12-07, we also checked for http://web.whatsapp.com. Afterwards,
+we dropped this check with [ooni/probe-cli#998](https://github.com/ooni/probe-cli/pull/998)
+to address [ooni/ooni.org#1317](https://github.com/ooni/ooni.org/issues/1317).
 
-If either one of the HTTP or HTTPS endpoints are blocked then we write
+If the HTTPS endpoints is blocked then we write
 in the report:
 
 ```json
@@ -190,7 +190,7 @@ in the report:
 }
 ```
 
-If none of the endpoints are blocked then we write:
+If it is not blocked then we write:
 
 ```json
 {
@@ -212,8 +212,6 @@ If none of the endpoints are blocked then we write:
 * df-006-tlshandshake
 
 * df-008-netevents
-
-* df-009-tunnel
 
 ## Semantics
 
@@ -270,18 +268,18 @@ accessing the WhatsApp web interface (see `df-007-errors.md`);
 
 * If it is possible for users to create new accounts via WhatsApp
 
-* If it is possible for users to use whatsapp web
+* If it is possible for users to use WhatsApp Web
 
 * If it is possible for users to use the WhatsApp software
 
 ## Example output sample
 
-```json
+```JSON
 {
   "annotations": {
-    "assets_version": "20200619115947",
+    "architecture": "arm64",
     "engine_name": "ooniprobe-engine",
-    "engine_version": "0.14.0",
+    "engine_version": "3.17.0-alpha",
     "platform": "macos"
   },
   "data_format_version": "0.2.0",
@@ -289,21 +287,22 @@ accessing the WhatsApp web interface (see `df-007-errors.md`);
     "dnst": 0,
     "httpt": 0,
     "netevents": 0,
+    "tcpconnect": 0,
     "tlshandshake": 0,
     "tunnel": 0
   },
   "input": null,
-  "measurement_start_time": "2020-07-09 11:02:41",
+  "measurement_start_time": "2022-12-07 09:52:48",
   "probe_asn": "AS30722",
   "probe_cc": "IT",
   "probe_ip": "127.0.0.1",
   "probe_network_name": "Vodafone Italia S.p.A.",
-  "report_id": "20200709T110241Z_AS30722_CIaQmE3CBdzrf1oIh7F3DwALQtjl4PrTaQxXlsNP7C011453ea",
+  "report_id": "20221207T095248Z_whatsapp_IT_30722_n1_jwFo3mIUDj120GFH",
   "resolver_asn": "AS30722",
-  "resolver_ip": "91.80.36.84",
+  "resolver_ip": "91.80.36.88",
   "resolver_network_name": "Vodafone Italia S.p.A.",
   "software_name": "miniooni",
-  "software_version": "0.14.0",
+  "software_version": "3.17.0-alpha",
   "test_keys": {
     "agent": "redirect",
     "failed_operation": null,
@@ -311,389 +310,1293 @@ accessing the WhatsApp web interface (see `df-007-errors.md`);
     "network_events": [
       {
         "failure": null,
-        "operation": "http_transaction_start",
-        "t": 0.001153697
-      },
-      {
-        "failure": null,
-        "operation": "http_request_metadata",
-        "t": 0.001157765
-      },
-      {
-        "failure": null,
         "operation": "resolve_start",
-        "t": 0.001227361
+        "t": 0.000478042
       },
       {
         "failure": null,
         "operation": "resolve_done",
-        "t": 0.055199778
+        "t": 0.021444625
       },
       {
-        "address": "69.171.250.60:443",
+        "address": "3.33.252.61:443",
         "failure": null,
         "operation": "connect",
         "proto": "tcp",
-        "t": 0.079603245
+        "t": 0.038953792
+      },
+      {
+        "failure": null,
+        "operation": "resolve_start",
+        "t": 0.000449417
+      },
+      {
+        "failure": null,
+        "operation": "resolve_done",
+        "t": 0.022710292
+      },
+      {
+        "address": "3.33.252.61:443",
+        "failure": null,
+        "operation": "connect",
+        "proto": "tcp",
+        "t": 0.039018709
+      },
+      {
+        "failure": null,
+        "operation": "resolve_start",
+        "t": 0.000431709
+      },
+      {
+        "failure": null,
+        "operation": "resolve_done",
+        "t": 0.022696625
+      },
+      {
+        "address": "3.33.221.48:5222",
+        "failure": null,
+        "operation": "connect",
+        "proto": "tcp",
+        "t": 0.03902025
+      },
+      {
+        "failure": null,
+        "operation": "resolve_start",
+        "t": 0.03934675
+      },
+      {
+        "failure": null,
+        "operation": "resolve_done",
+        "t": 0.05877325
+      },
+      {
+        "address": "3.33.252.61:443",
+        "failure": null,
+        "operation": "connect",
+        "proto": "tcp",
+        "t": 0.073610834
+      },
+      {
+        "failure": null,
+        "operation": "resolve_start",
+        "t": 0.039493834
+      },
+      {
+        "failure": null,
+        "operation": "resolve_done",
+        "t": 0.061327167
+      },
+      {
+        "address": "15.197.210.208:443",
+        "failure": null,
+        "operation": "connect",
+        "proto": "tcp",
+        "t": 0.075890875
+      },
+      {
+        "failure": null,
+        "operation": "resolve_start",
+        "t": 0.0396
+      },
+      {
+        "failure": null,
+        "operation": "resolve_done",
+        "t": 0.064785709
+      },
+      {
+        "address": "15.197.206.217:443",
+        "failure": null,
+        "operation": "connect",
+        "proto": "tcp",
+        "t": 0.082615
+      },
+      {
+        "failure": null,
+        "operation": "resolve_start",
+        "t": 0.073848042
+      },
+      {
+        "failure": null,
+        "operation": "resolve_done",
+        "t": 0.093433667
+      },
+      {
+        "address": "3.33.221.48:443",
+        "failure": null,
+        "operation": "connect",
+        "proto": "tcp",
+        "t": 0.109965334
+      },
+      {
+        "failure": null,
+        "operation": "resolve_start",
+        "t": 0.076044167
+      },
+      {
+        "failure": null,
+        "operation": "resolve_done",
+        "t": 0.094401917
+      },
+      {
+        "address": "15.197.210.208:5222",
+        "failure": null,
+        "operation": "connect",
+        "proto": "tcp",
+        "t": 0.111479792
+      },
+      {
+        "failure": null,
+        "operation": "resolve_start",
+        "t": 0.111564
+      },
+      {
+        "failure": null,
+        "operation": "resolve_done",
+        "t": 0.12930825
+      },
+      {
+        "address": "15.197.210.208:443",
+        "failure": null,
+        "operation": "connect",
+        "proto": "tcp",
+        "t": 0.144534042
+      },
+      {
+        "failure": null,
+        "operation": "resolve_start",
+        "t": 0.110089542
+      },
+      {
+        "failure": null,
+        "operation": "resolve_done",
+        "t": 0.128412625
+      },
+      {
+        "address": "3.33.221.48:443",
+        "failure": null,
+        "operation": "connect",
+        "proto": "tcp",
+        "t": 0.144595959
+      },
+      {
+        "failure": null,
+        "operation": "resolve_start",
+        "t": 0.144663417
+      },
+      {
+        "failure": null,
+        "operation": "resolve_done",
+        "t": 0.146710875
+      },
+      {
+        "address": "15.197.206.217:5222",
+        "failure": null,
+        "operation": "connect",
+        "proto": "tcp",
+        "t": 0.163556292
+      },
+      {
+        "failure": null,
+        "operation": "resolve_start",
+        "t": 0.163757792
+      },
+      {
+        "failure": null,
+        "operation": "resolve_done",
+        "t": 0.164956042
+      },
+      {
+        "address": "15.197.210.208:443",
+        "failure": null,
+        "operation": "connect",
+        "proto": "tcp",
+        "t": 0.1809045
+      },
+      {
+        "failure": null,
+        "operation": "resolve_start",
+        "t": 0.144713167
+      },
+      {
+        "failure": null,
+        "operation": "resolve_done",
+        "t": 0.164855417
+      },
+      {
+        "address": "3.33.252.61:5222",
+        "failure": null,
+        "operation": "connect",
+        "proto": "tcp",
+        "t": 0.182005834
+      },
+      {
+        "failure": null,
+        "operation": "http_transaction_start",
+        "t": 0.082829125
+      },
+      {
+        "failure": null,
+        "operation": "resolve_start",
+        "t": 0.082947
+      },
+      {
+        "failure": null,
+        "operation": "resolve_done",
+        "t": 0.103592209
+      },
+      {
+        "address": "31.13.86.51:443",
+        "failure": null,
+        "operation": "connect",
+        "proto": "tcp",
+        "t": 0.117675834
       },
       {
         "failure": null,
         "operation": "tls_handshake_start",
-        "t": 0.079654268
-      },
-      {
-        "failure": null,
-        "num_bytes": 286,
-        "operation": "write",
-        "t": 0.079957156
-      },
-      {
-        "failure": null,
-        "num_bytes": 517,
-        "operation": "read",
-        "t": 0.104859831
-      },
-      {
-        "failure": null,
-        "num_bytes": 1800,
-        "operation": "read",
-        "t": 0.105431746
-      },
-      {
-        "failure": null,
-        "num_bytes": 747,
-        "operation": "read",
-        "t": 0.105475141
-      },
-      {
-        "failure": null,
-        "num_bytes": 64,
-        "operation": "write",
-        "t": 0.107882362
-      },
-      {
-        "failure": null,
-        "operation": "tls_handshake_done",
-        "t": 0.107907192
-      },
-      {
-        "failure": null,
-        "num_bytes": 86,
-        "operation": "write",
-        "t": 0.108139396
-      },
-      {
-        "failure": null,
-        "num_bytes": 206,
-        "operation": "write",
-        "t": 0.109137636
-      },
-      {
-        "failure": null,
-        "operation": "http_wrote_headers",
-        "t": 0.109141745
-      },
-      {
-        "failure": null,
-        "operation": "http_wrote_request",
-        "t": 0.109142604
-      },
-      {
-        "failure": null,
-        "num_bytes": 74,
-        "operation": "read",
-        "t": 0.131422583
-      },
-      {
-        "failure": null,
-        "num_bytes": 31,
-        "operation": "write",
-        "t": 0.131530094
-      },
-      {
-        "failure": null,
-        "num_bytes": 31,
-        "operation": "read",
-        "t": 0.132357428
-      },
-      {
-        "failure": null,
-        "num_bytes": 35,
-        "operation": "read",
-        "t": 0.134856016
-      },
-      {
-        "failure": null,
-        "num_bytes": 1388,
-        "operation": "read",
-        "t": 0.178145709
-      },
-      {
-        "failure": null,
-        "num_bytes": 383,
-        "operation": "read",
-        "t": 0.178193064
-      },
-      {
-        "failure": null,
-        "operation": "http_first_response_byte",
-        "t": 0.178348521
-      },
-      {
-        "failure": null,
-        "operation": "http_response_metadata",
-        "t": 0.178471921
-      },
-      {
-        "failure": null,
-        "operation": "http_response_body_snapshot",
-        "t": 0.178485775
-      },
-      {
-        "failure": null,
-        "operation": "http_transaction_done",
-        "t": 0.178486692
-      },
-      {
-        "failure": null,
-        "num_bytes": 24,
-        "operation": "write",
-        "t": 0.178593354
-      },
-      {
-        "failure": null,
-        "operation": "resolve_start",
-        "t": 0.001173242
-      },
-      {
-        "failure": null,
-        "operation": "resolve_done",
-        "t": 0.093193011
-      },
-      {
-        "address": "34.194.71.217:443",
-        "failure": null,
-        "operation": "connect",
-        "proto": "tcp",
-        "t": 0.207018418
-      },
-      {
-        "failure": null,
-        "operation": "http_transaction_start",
-        "t": 0.179558692
-      },
-      {
-        "failure": null,
-        "operation": "http_request_metadata",
-        "t": 0.179570108
-      },
-      {
-        "failure": null,
-        "operation": "resolve_start",
-        "t": 0.180708632
-      },
-      {
-        "failure": null,
-        "operation": "resolve_done",
-        "t": 0.182215501
-      },
-      {
-        "address": "69.171.250.60:80",
-        "failure": null,
-        "operation": "connect",
-        "proto": "tcp",
-        "t": 0.207763367
-      },
-      {
-        "failure": null,
-        "operation": "http_wrote_headers",
-        "t": 0.208031246
-      },
-      {
-        "failure": null,
-        "operation": "http_wrote_request",
-        "t": 0.208033326
+        "t": 0.117684875
       },
       {
         "failure": null,
         "num_bytes": 282,
         "operation": "write",
-        "t": 0.208117192
-      },
-      {
-        "failure": null,
-        "num_bytes": 242,
-        "operation": "read",
-        "t": 0.232560865
-      },
-      {
-        "failure": null,
-        "operation": "http_first_response_byte",
-        "t": 0.232572517
-      },
-      {
-        "failure": null,
-        "operation": "http_response_metadata",
-        "t": 0.232644304
-      },
-      {
-        "failure": null,
-        "operation": "http_response_body_snapshot",
-        "t": 0.23266589
-      },
-      {
-        "failure": null,
-        "operation": "http_transaction_done",
-        "t": 0.232666803
-      },
-      {
-        "failure": null,
-        "operation": "http_transaction_start",
-        "t": 0.001150339
-      },
-      {
-        "failure": null,
-        "operation": "http_request_metadata",
-        "t": 0.00115765
-      },
-      {
-        "failure": null,
-        "operation": "resolve_start",
-        "t": 0.001227368
-      },
-      {
-        "failure": null,
-        "operation": "resolve_done",
-        "t": 0.071238074
-      },
-      {
-        "address": "69.171.250.60:443",
-        "failure": null,
-        "operation": "connect",
-        "proto": "tcp",
-        "t": 0.096787583
-      },
-      {
-        "failure": null,
-        "operation": "tls_handshake_start",
-        "t": 0.096826301
-      },
-      {
-        "failure": null,
-        "num_bytes": 284,
-        "operation": "write",
-        "t": 0.097124463
+        "t": 0.118151209
       },
       {
         "failure": null,
         "num_bytes": 517,
         "operation": "read",
-        "t": 0.122612789
+        "t": 0.133623625
       },
       {
         "failure": null,
-        "num_bytes": 1800,
+        "num_bytes": 863,
         "operation": "read",
-        "t": 0.122967996
+        "t": 0.13415775
       },
       {
         "failure": null,
-        "num_bytes": 747,
+        "num_bytes": 1788,
         "operation": "read",
-        "t": 0.12299006
+        "t": 0.134639542
       },
       {
         "failure": null,
         "num_bytes": 64,
         "operation": "write",
-        "t": 0.124585528
+        "t": 0.135941125
       },
       {
         "failure": null,
         "operation": "tls_handshake_done",
-        "t": 0.124645709
+        "t": 0.13597625
       },
       {
         "failure": null,
         "num_bytes": 86,
         "operation": "write",
-        "t": 0.124800198
+        "t": 0.13605525
       },
       {
         "failure": null,
-        "num_bytes": 214,
+        "num_bytes": 198,
         "operation": "write",
-        "t": 0.125082793
+        "t": 0.136145459
       },
       {
         "failure": null,
-        "operation": "http_wrote_headers",
-        "t": 0.125085502
-      },
-      {
-        "failure": null,
-        "operation": "http_wrote_request",
-        "t": 0.125086283
-      },
-      {
-        "failure": null,
-        "num_bytes": 74,
+        "num_bytes": 140,
         "operation": "read",
-        "t": 0.14885878
+        "t": 0.151334959
       },
       {
         "failure": null,
         "num_bytes": 31,
         "operation": "write",
-        "t": 0.148993236
+        "t": 0.151386042
       },
       {
         "failure": null,
-        "num_bytes": 44,
+        "num_bytes": 1897,
         "operation": "read",
-        "t": 0.1490235
-      },
-      {
-        "failure": null,
-        "num_bytes": 161,
-        "operation": "read",
-        "t": 0.630222125
-      },
-      {
-        "failure": null,
-        "operation": "http_first_response_byte",
-        "t": 0.630348977
-      },
-      {
-        "failure": null,
-        "operation": "http_response_metadata",
-        "t": 0.63050614
-      },
-      {
-        "failure": null,
-        "operation": "http_response_body_snapshot",
-        "t": 0.630518627
+        "t": 0.189129209
       },
       {
         "failure": null,
         "operation": "http_transaction_done",
-        "t": 0.630519479
+        "t": 0.189301417
       },
       {
         "failure": null,
         "num_bytes": 24,
         "operation": "write",
-        "t": 0.630606143
+        "t": 0.1894065
+      },
+      {
+        "failure": "connection_already_closed",
+        "operation": "read",
+        "t": 0.189455125
+      },
+      {
+        "failure": null,
+        "operation": "resolve_start",
+        "t": 0.182216959
+      },
+      {
+        "failure": null,
+        "operation": "resolve_done",
+        "t": 0.184475959
+      },
+      {
+        "address": "3.33.252.61:5222",
+        "failure": null,
+        "operation": "connect",
+        "proto": "tcp",
+        "t": 0.200444875
+      },
+      {
+        "failure": null,
+        "operation": "resolve_start",
+        "t": 0.18116825
+      },
+      {
+        "failure": null,
+        "operation": "resolve_done",
+        "t": 0.198820584
+      },
+      {
+        "address": "15.197.206.217:5222",
+        "failure": null,
+        "operation": "connect",
+        "proto": "tcp",
+        "t": 0.215879542
+      },
+      {
+        "failure": null,
+        "operation": "resolve_start",
+        "t": 0.200522917
+      },
+      {
+        "failure": null,
+        "operation": "resolve_done",
+        "t": 0.209702125
+      },
+      {
+        "address": "3.33.221.48:443",
+        "failure": null,
+        "operation": "connect",
+        "proto": "tcp",
+        "t": 0.227087375
+      },
+      {
+        "failure": null,
+        "operation": "resolve_start",
+        "t": 0.189874834
+      },
+      {
+        "failure": null,
+        "operation": "resolve_done",
+        "t": 0.209710709
+      },
+      {
+        "address": "3.33.221.48:5222",
+        "failure": null,
+        "operation": "connect",
+        "proto": "tcp",
+        "t": 0.227118875
+      },
+      {
+        "failure": null,
+        "operation": "resolve_start",
+        "t": 0.227215875
+      },
+      {
+        "failure": null,
+        "operation": "resolve_done",
+        "t": 0.228273459
+      },
+      {
+        "address": "3.33.221.48:5222",
+        "failure": null,
+        "operation": "connect",
+        "proto": "tcp",
+        "t": 0.247043084
+      },
+      {
+        "failure": null,
+        "operation": "resolve_start",
+        "t": 0.216049417
+      },
+      {
+        "failure": null,
+        "operation": "resolve_done",
+        "t": 0.236456625
+      },
+      {
+        "address": "15.197.210.208:443",
+        "failure": null,
+        "operation": "connect",
+        "proto": "tcp",
+        "t": 0.250968459
+      },
+      {
+        "failure": null,
+        "operation": "resolve_start",
+        "t": 0.22725675
+      },
+      {
+        "failure": null,
+        "operation": "resolve_done",
+        "t": 0.248662917
+      },
+      {
+        "address": "15.197.210.208:5222",
+        "failure": null,
+        "operation": "connect",
+        "proto": "tcp",
+        "t": 0.266117875
+      },
+      {
+        "failure": null,
+        "operation": "resolve_start",
+        "t": 0.247174459
+      },
+      {
+        "failure": null,
+        "operation": "resolve_done",
+        "t": 0.248173292
+      },
+      {
+        "address": "3.33.252.61:5222",
+        "failure": null,
+        "operation": "connect",
+        "proto": "tcp",
+        "t": 0.266169084
+      },
+      {
+        "failure": null,
+        "operation": "resolve_start",
+        "t": 0.266215709
+      },
+      {
+        "failure": null,
+        "operation": "resolve_done",
+        "t": 0.267222834
+      },
+      {
+        "address": "15.197.206.217:443",
+        "failure": null,
+        "operation": "connect",
+        "proto": "tcp",
+        "t": 0.283247042
+      },
+      {
+        "failure": null,
+        "operation": "resolve_start",
+        "t": 0.266291542
+      },
+      {
+        "failure": null,
+        "operation": "resolve_done",
+        "t": 0.267509625
+      },
+      {
+        "address": "3.33.221.48:443",
+        "failure": null,
+        "operation": "connect",
+        "proto": "tcp",
+        "t": 0.284150625
+      },
+      {
+        "failure": null,
+        "operation": "resolve_start",
+        "t": 0.251029042
+      },
+      {
+        "failure": null,
+        "operation": "resolve_done",
+        "t": 0.271013417
+      },
+      {
+        "address": "3.33.221.48:5222",
+        "failure": null,
+        "operation": "connect",
+        "proto": "tcp",
+        "t": 0.289730209
+      },
+      {
+        "failure": null,
+        "operation": "resolve_start",
+        "t": 0.283427334
+      },
+      {
+        "failure": null,
+        "operation": "resolve_done",
+        "t": 0.284613084
+      },
+      {
+        "address": "3.33.221.48:443",
+        "failure": null,
+        "operation": "connect",
+        "proto": "tcp",
+        "t": 0.29997075
+      },
+      {
+        "failure": null,
+        "operation": "resolve_start",
+        "t": 0.28425975
+      },
+      {
+        "failure": null,
+        "operation": "resolve_done",
+        "t": 0.285060167
+      },
+      {
+        "address": "3.33.221.48:5222",
+        "failure": null,
+        "operation": "connect",
+        "proto": "tcp",
+        "t": 0.300009084
+      },
+      {
+        "failure": null,
+        "operation": "resolve_start",
+        "t": 0.289827875
+      },
+      {
+        "failure": null,
+        "operation": "resolve_done",
+        "t": 0.290794917
+      },
+      {
+        "address": "15.197.210.208:5222",
+        "failure": null,
+        "operation": "connect",
+        "proto": "tcp",
+        "t": 0.30852475
+      },
+      {
+        "failure": null,
+        "operation": "resolve_start",
+        "t": 0.300104709
+      },
+      {
+        "failure": null,
+        "operation": "resolve_done",
+        "t": 0.301412167
+      },
+      {
+        "address": "15.197.210.208:5222",
+        "failure": null,
+        "operation": "connect",
+        "proto": "tcp",
+        "t": 0.318773292
+      },
+      {
+        "failure": null,
+        "operation": "resolve_start",
+        "t": 0.308634875
+      },
+      {
+        "failure": null,
+        "operation": "resolve_done",
+        "t": 0.309714084
+      },
+      {
+        "address": "15.197.210.208:443",
+        "failure": null,
+        "operation": "connect",
+        "proto": "tcp",
+        "t": 0.326225
+      },
+      {
+        "failure": null,
+        "operation": "resolve_start",
+        "t": 0.318950917
+      },
+      {
+        "failure": null,
+        "operation": "resolve_done",
+        "t": 0.321179042
+      },
+      {
+        "address": "3.33.252.61:443",
+        "failure": null,
+        "operation": "connect",
+        "proto": "tcp",
+        "t": 0.336746667
+      },
+      {
+        "failure": null,
+        "operation": "resolve_start",
+        "t": 0.326380375
+      },
+      {
+        "failure": null,
+        "operation": "resolve_done",
+        "t": 0.327117875
+      },
+      {
+        "address": "3.33.252.61:5222",
+        "failure": null,
+        "operation": "connect",
+        "proto": "tcp",
+        "t": 0.342397167
+      },
+      {
+        "failure": null,
+        "operation": "resolve_start",
+        "t": 0.336840584
+      },
+      {
+        "failure": null,
+        "operation": "resolve_done",
+        "t": 0.337729667
+      },
+      {
+        "address": "15.197.210.208:5222",
+        "failure": null,
+        "operation": "connect",
+        "proto": "tcp",
+        "t": 0.352054625
+      },
+      {
+        "failure": null,
+        "operation": "http_transaction_start",
+        "t": 0.300085459
+      },
+      {
+        "failure": null,
+        "operation": "resolve_start",
+        "t": 0.3001635
+      },
+      {
+        "failure": null,
+        "operation": "resolve_done",
+        "t": 0.321002042
+      },
+      {
+        "address": "31.13.86.51:443",
+        "failure": null,
+        "operation": "connect",
+        "proto": "tcp",
+        "t": 0.335926709
+      },
+      {
+        "failure": null,
+        "operation": "tls_handshake_start",
+        "t": 0.335937584
+      },
+      {
+        "failure": null,
+        "num_bytes": 280,
+        "operation": "write",
+        "t": 0.336195042
+      },
+      {
+        "failure": null,
+        "num_bytes": 517,
+        "operation": "read",
+        "t": 0.353721334
+      },
+      {
+        "failure": null,
+        "num_bytes": 1800,
+        "operation": "read",
+        "t": 0.353978417
+      },
+      {
+        "failure": null,
+        "num_bytes": 850,
+        "operation": "read",
+        "t": 0.354016084
+      },
+      {
+        "failure": null,
+        "num_bytes": 64,
+        "operation": "write",
+        "t": 0.354682584
+      },
+      {
+        "failure": null,
+        "operation": "tls_handshake_done",
+        "t": 0.354731125
+      },
+      {
+        "failure": null,
+        "num_bytes": 86,
+        "operation": "write",
+        "t": 0.354832417
+      },
+      {
+        "failure": null,
+        "num_bytes": 206,
+        "operation": "write",
+        "t": 0.354974334
+      },
+      {
+        "failure": null,
+        "num_bytes": 118,
+        "operation": "read",
+        "t": 0.369096292
+      },
+      {
+        "failure": null,
+        "num_bytes": 31,
+        "operation": "write",
+        "t": 0.36922525
+      },
+      {
+        "failure": null,
+        "num_bytes": 181,
+        "operation": "read",
+        "t": 0.477104959
+      },
+      {
+        "failure": null,
+        "operation": "http_transaction_done",
+        "t": 0.477391917
+      },
+      {
+        "failure": null,
+        "num_bytes": 24,
+        "operation": "write",
+        "t": 0.477605667
+      },
+      {
+        "failure": "connection_already_closed",
+        "operation": "read",
+        "t": 0.477723875
       }
     ],
     "queries": [
       {
         "answers": [
           {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.252.61",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.210.208",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.221.48",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.206.217",
+            "ttl": null
+          }
+        ],
+        "engine": "system",
+        "failure": null,
+        "hostname": "e5.whatsapp.net",
+        "query_type": "A",
+        "resolver_hostname": null,
+        "resolver_port": null,
+        "resolver_address": "",
+        "t": 0.021444625
+      },
+      {
+        "answers": [
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.252.61",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.210.208",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.221.48",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.206.217",
+            "ttl": null
+          }
+        ],
+        "engine": "system",
+        "failure": null,
+        "hostname": "e1.whatsapp.net",
+        "query_type": "A",
+        "resolver_hostname": null,
+        "resolver_port": null,
+        "resolver_address": "",
+        "t": 0.022710292
+      },
+      {
+        "answers": [
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.221.48",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.206.217",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.210.208",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.252.61",
+            "ttl": null
+          }
+        ],
+        "engine": "system",
+        "failure": null,
+        "hostname": "e10.whatsapp.net",
+        "query_type": "A",
+        "resolver_hostname": null,
+        "resolver_port": null,
+        "resolver_address": "",
+        "t": 0.022696625
+      },
+      {
+        "answers": [
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.252.61",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.206.217",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.221.48",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.210.208",
+            "ttl": null
+          }
+        ],
+        "engine": "system",
+        "failure": null,
+        "hostname": "e11.whatsapp.net",
+        "query_type": "A",
+        "resolver_hostname": null,
+        "resolver_port": null,
+        "resolver_address": "",
+        "t": 0.05877325
+      },
+      {
+        "answers": [
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.210.208",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.221.48",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.252.61",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.206.217",
+            "ttl": null
+          }
+        ],
+        "engine": "system",
+        "failure": null,
+        "hostname": "e8.whatsapp.net",
+        "query_type": "A",
+        "resolver_hostname": null,
+        "resolver_port": null,
+        "resolver_address": "",
+        "t": 0.061327167
+      },
+      {
+        "answers": [
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.206.217",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.210.208",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.252.61",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.221.48",
+            "ttl": null
+          }
+        ],
+        "engine": "system",
+        "failure": null,
+        "hostname": "e6.whatsapp.net",
+        "query_type": "A",
+        "resolver_hostname": null,
+        "resolver_port": null,
+        "resolver_address": "",
+        "t": 0.064785709
+      },
+      {
+        "answers": [
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.221.48",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.210.208",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.252.61",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.206.217",
+            "ttl": null
+          }
+        ],
+        "engine": "system",
+        "failure": null,
+        "hostname": "e2.whatsapp.net",
+        "query_type": "A",
+        "resolver_hostname": null,
+        "resolver_port": null,
+        "resolver_address": "",
+        "t": 0.093433667
+      },
+      {
+        "answers": [
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.210.208",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.252.61",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.206.217",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.221.48",
+            "ttl": null
+          }
+        ],
+        "engine": "system",
+        "failure": null,
+        "hostname": "e12.whatsapp.net",
+        "query_type": "A",
+        "resolver_hostname": null,
+        "resolver_port": null,
+        "resolver_address": "",
+        "t": 0.094401917
+      },
+      {
+        "answers": [
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.210.208",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.206.217",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.221.48",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.252.61",
+            "ttl": null
+          }
+        ],
+        "engine": "system",
+        "failure": null,
+        "hostname": "e4.whatsapp.net",
+        "query_type": "A",
+        "resolver_hostname": null,
+        "resolver_port": null,
+        "resolver_address": "",
+        "t": 0.12930825
+      },
+      {
+        "answers": [
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.221.48",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.252.61",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.206.217",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.210.208",
+            "ttl": null
+          }
+        ],
+        "engine": "system",
+        "failure": null,
+        "hostname": "e14.whatsapp.net",
+        "query_type": "A",
+        "resolver_hostname": null,
+        "resolver_port": null,
+        "resolver_address": "",
+        "t": 0.128412625
+      },
+      {
+        "answers": [
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.206.217",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.210.208",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.252.61",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.221.48",
+            "ttl": null
+          }
+        ],
+        "engine": "system",
+        "failure": null,
+        "hostname": "e6.whatsapp.net",
+        "query_type": "A",
+        "resolver_hostname": null,
+        "resolver_port": null,
+        "resolver_address": "",
+        "t": 0.146710875
+      },
+      {
+        "answers": [
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.210.208",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.252.61",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.206.217",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.221.48",
+            "ttl": null
+          }
+        ],
+        "engine": "system",
+        "failure": null,
+        "hostname": "e12.whatsapp.net",
+        "query_type": "A",
+        "resolver_hostname": null,
+        "resolver_port": null,
+        "resolver_address": "",
+        "t": 0.164956042
+      },
+      {
+        "answers": [
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.252.61",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.210.208",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.221.48",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.206.217",
+            "ttl": null
+          }
+        ],
+        "engine": "system",
+        "failure": null,
+        "hostname": "e16.whatsapp.net",
+        "query_type": "A",
+        "resolver_hostname": null,
+        "resolver_port": null,
+        "resolver_address": "",
+        "t": 0.164855417
+      },
+      {
+        "answers": [
+          {
             "asn": 32934,
             "as_org_name": "Facebook, Inc.",
             "answer_type": "A",
-            "ipv4": "69.171.250.60",
+            "ipv4": "31.13.86.51",
             "ttl": null
           }
         ],
@@ -704,7 +1607,7 @@ accessing the WhatsApp web interface (see `df-007-errors.md`);
         "resolver_hostname": null,
         "resolver_port": null,
         "resolver_address": "",
-        "t": 0.055199778
+        "t": 0.103592209
       },
       {
         "answers": [
@@ -712,7 +1615,7 @@ accessing the WhatsApp web interface (see `df-007-errors.md`);
             "asn": 32934,
             "as_org_name": "Facebook, Inc.",
             "answer_type": "AAAA",
-            "ipv6": "2a03:2880:f2ff:c0:face:b00c:0:167",
+            "ipv6": "2a03:2880:f208:c5:face:b00c:0:167",
             "ttl": null
           }
         ],
@@ -723,36 +1626,116 @@ accessing the WhatsApp web interface (see `df-007-errors.md`);
         "resolver_hostname": null,
         "resolver_port": null,
         "resolver_address": "",
-        "t": 0.055199778
+        "t": 0.103592209
       },
       {
         "answers": [
           {
-            "asn": 14618,
+            "asn": 16509,
             "as_org_name": "Amazon.com, Inc.",
             "answer_type": "A",
-            "ipv4": "34.194.71.217",
+            "ipv4": "3.33.252.61",
             "ttl": null
           },
           {
-            "asn": 14618,
+            "asn": 16509,
             "as_org_name": "Amazon.com, Inc.",
             "answer_type": "A",
-            "ipv4": "34.192.181.12",
+            "ipv4": "15.197.210.208",
             "ttl": null
           },
           {
-            "asn": 14618,
+            "asn": 16509,
             "as_org_name": "Amazon.com, Inc.",
             "answer_type": "A",
-            "ipv4": "34.194.255.230",
+            "ipv4": "3.33.221.48",
             "ttl": null
           },
           {
-            "asn": 14618,
+            "asn": 16509,
             "as_org_name": "Amazon.com, Inc.",
             "answer_type": "A",
-            "ipv4": "34.193.38.112",
+            "ipv4": "15.197.206.217",
+            "ttl": null
+          }
+        ],
+        "engine": "system",
+        "failure": null,
+        "hostname": "e5.whatsapp.net",
+        "query_type": "A",
+        "resolver_hostname": null,
+        "resolver_port": null,
+        "resolver_address": "",
+        "t": 0.184475959
+      },
+      {
+        "answers": [
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.206.217",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.221.48",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.252.61",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.210.208",
+            "ttl": null
+          }
+        ],
+        "engine": "system",
+        "failure": null,
+        "hostname": "e7.whatsapp.net",
+        "query_type": "A",
+        "resolver_hostname": null,
+        "resolver_port": null,
+        "resolver_address": "",
+        "t": 0.198820584
+      },
+      {
+        "answers": [
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.221.48",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.210.208",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.206.217",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.252.61",
             "ttl": null
           }
         ],
@@ -763,45 +1746,647 @@ accessing the WhatsApp web interface (see `df-007-errors.md`);
         "resolver_hostname": null,
         "resolver_port": null,
         "resolver_address": "",
-        "t": 0.093193011
+        "t": 0.209702125
       },
       {
         "answers": [
           {
-            "asn": 32934,
-            "as_org_name": "Facebook, Inc.",
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
             "answer_type": "A",
-            "ipv4": "69.171.250.60",
+            "ipv4": "3.33.221.48",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.210.208",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.206.217",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.252.61",
             "ttl": null
           }
         ],
         "engine": "system",
         "failure": null,
-        "hostname": "web.whatsapp.com",
+        "hostname": "e3.whatsapp.net",
         "query_type": "A",
         "resolver_hostname": null,
         "resolver_port": null,
         "resolver_address": "",
-        "t": 0.182215501
+        "t": 0.209710709
       },
       {
         "answers": [
           {
-            "asn": 32934,
-            "as_org_name": "Facebook, Inc.",
-            "answer_type": "AAAA",
-            "ipv6": "2a03:2880:f2ff:c0:face:b00c:0:167",
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.221.48",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.210.208",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.252.61",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.206.217",
             "ttl": null
           }
         ],
         "engine": "system",
         "failure": null,
-        "hostname": "web.whatsapp.com",
-        "query_type": "AAAA",
+        "hostname": "e2.whatsapp.net",
+        "query_type": "A",
         "resolver_hostname": null,
         "resolver_port": null,
         "resolver_address": "",
-        "t": 0.182215501
+        "t": 0.228273459
+      },
+      {
+        "answers": [
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.210.208",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.252.61",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.206.217",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.221.48",
+            "ttl": null
+          }
+        ],
+        "engine": "system",
+        "failure": null,
+        "hostname": "e15.whatsapp.net",
+        "query_type": "A",
+        "resolver_hostname": null,
+        "resolver_port": null,
+        "resolver_address": "",
+        "t": 0.236456625
+      },
+      {
+        "answers": [
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.210.208",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.221.48",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.252.61",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.206.217",
+            "ttl": null
+          }
+        ],
+        "engine": "system",
+        "failure": null,
+        "hostname": "e13.whatsapp.net",
+        "query_type": "A",
+        "resolver_hostname": null,
+        "resolver_port": null,
+        "resolver_address": "",
+        "t": 0.248662917
+      },
+      {
+        "answers": [
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.252.61",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.210.208",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.221.48",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.206.217",
+            "ttl": null
+          }
+        ],
+        "engine": "system",
+        "failure": null,
+        "hostname": "e1.whatsapp.net",
+        "query_type": "A",
+        "resolver_hostname": null,
+        "resolver_port": null,
+        "resolver_address": "",
+        "t": 0.248173292
+      },
+      {
+        "answers": [
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.206.217",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.221.48",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.252.61",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.210.208",
+            "ttl": null
+          }
+        ],
+        "engine": "system",
+        "failure": null,
+        "hostname": "e7.whatsapp.net",
+        "query_type": "A",
+        "resolver_hostname": null,
+        "resolver_port": null,
+        "resolver_address": "",
+        "t": 0.267222834
+      },
+      {
+        "answers": [
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.221.48",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.206.217",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.210.208",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.252.61",
+            "ttl": null
+          }
+        ],
+        "engine": "system",
+        "failure": null,
+        "hostname": "e10.whatsapp.net",
+        "query_type": "A",
+        "resolver_hostname": null,
+        "resolver_port": null,
+        "resolver_address": "",
+        "t": 0.267509625
+      },
+      {
+        "answers": [
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.221.48",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.210.208",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.206.217",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.252.61",
+            "ttl": null
+          }
+        ],
+        "engine": "system",
+        "failure": null,
+        "hostname": "e9.whatsapp.net",
+        "query_type": "A",
+        "resolver_hostname": null,
+        "resolver_port": null,
+        "resolver_address": "",
+        "t": 0.271013417
+      },
+      {
+        "answers": [
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.221.48",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.210.208",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.206.217",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.252.61",
+            "ttl": null
+          }
+        ],
+        "engine": "system",
+        "failure": null,
+        "hostname": "e9.whatsapp.net",
+        "query_type": "A",
+        "resolver_hostname": null,
+        "resolver_port": null,
+        "resolver_address": "",
+        "t": 0.284613084
+      },
+      {
+        "answers": [
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.221.48",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.252.61",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.206.217",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.210.208",
+            "ttl": null
+          }
+        ],
+        "engine": "system",
+        "failure": null,
+        "hostname": "e14.whatsapp.net",
+        "query_type": "A",
+        "resolver_hostname": null,
+        "resolver_port": null,
+        "resolver_address": "",
+        "t": 0.285060167
+      },
+      {
+        "answers": [
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.210.208",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.206.217",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.221.48",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.252.61",
+            "ttl": null
+          }
+        ],
+        "engine": "system",
+        "failure": null,
+        "hostname": "e4.whatsapp.net",
+        "query_type": "A",
+        "resolver_hostname": null,
+        "resolver_port": null,
+        "resolver_address": "",
+        "t": 0.290794917
+      },
+      {
+        "answers": [
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.210.208",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.221.48",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.252.61",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.206.217",
+            "ttl": null
+          }
+        ],
+        "engine": "system",
+        "failure": null,
+        "hostname": "e8.whatsapp.net",
+        "query_type": "A",
+        "resolver_hostname": null,
+        "resolver_port": null,
+        "resolver_address": "",
+        "t": 0.301412167
+      },
+      {
+        "answers": [
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.210.208",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.221.48",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.252.61",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.206.217",
+            "ttl": null
+          }
+        ],
+        "engine": "system",
+        "failure": null,
+        "hostname": "e13.whatsapp.net",
+        "query_type": "A",
+        "resolver_hostname": null,
+        "resolver_port": null,
+        "resolver_address": "",
+        "t": 0.309714084
+      },
+      {
+        "answers": [
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.252.61",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.210.208",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.221.48",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.206.217",
+            "ttl": null
+          }
+        ],
+        "engine": "system",
+        "failure": null,
+        "hostname": "e16.whatsapp.net",
+        "query_type": "A",
+        "resolver_hostname": null,
+        "resolver_port": null,
+        "resolver_address": "",
+        "t": 0.321179042
+      },
+      {
+        "answers": [
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.252.61",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.206.217",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.221.48",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.210.208",
+            "ttl": null
+          }
+        ],
+        "engine": "system",
+        "failure": null,
+        "hostname": "e11.whatsapp.net",
+        "query_type": "A",
+        "resolver_hostname": null,
+        "resolver_port": null,
+        "resolver_address": "",
+        "t": 0.327117875
+      },
+      {
+        "answers": [
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.210.208",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.252.61",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "15.197.206.217",
+            "ttl": null
+          },
+          {
+            "asn": 16509,
+            "as_org_name": "Amazon.com, Inc.",
+            "answer_type": "A",
+            "ipv4": "3.33.221.48",
+            "ttl": null
+          }
+        ],
+        "engine": "system",
+        "failure": null,
+        "hostname": "e15.whatsapp.net",
+        "query_type": "A",
+        "resolver_hostname": null,
+        "resolver_port": null,
+        "resolver_address": "",
+        "t": 0.337729667
       },
       {
         "answers": [
@@ -809,7 +2394,7 @@ accessing the WhatsApp web interface (see `df-007-errors.md`);
             "asn": 32934,
             "as_org_name": "Facebook, Inc.",
             "answer_type": "A",
-            "ipv4": "69.171.250.60",
+            "ipv4": "31.13.86.51",
             "ttl": null
           }
         ],
@@ -820,7 +2405,7 @@ accessing the WhatsApp web interface (see `df-007-errors.md`);
         "resolver_hostname": null,
         "resolver_port": null,
         "resolver_address": "",
-        "t": 0.071238074
+        "t": 0.321002042
       },
       {
         "answers": [
@@ -828,7 +2413,7 @@ accessing the WhatsApp web interface (see `df-007-errors.md`);
             "asn": 32934,
             "as_org_name": "Facebook, Inc.",
             "answer_type": "AAAA",
-            "ipv6": "2a03:2880:f2ff:c0:face:b00c:0:167",
+            "ipv6": "2a03:2880:f208:c5:face:b00c:0:167",
             "ttl": null
           }
         ],
@@ -839,7 +2424,7 @@ accessing the WhatsApp web interface (see `df-007-errors.md`);
         "resolver_hostname": null,
         "resolver_port": null,
         "resolver_address": "",
-        "t": 0.071238074
+        "t": 0.321002042
       }
     ],
     "requests": [
@@ -855,22 +2440,22 @@ accessing the WhatsApp web interface (see `df-007-errors.md`);
             ],
             [
               "Accept-Language",
-              "en-US;q=0.8,en;q=0.5"
-            ],
-            [
-              "User-Agent",
-              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36"
+              "en-US,en;q=0.9"
             ],
             [
               "Host",
               "web.whatsapp.com"
+            ],
+            [
+              "User-Agent",
+              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36"
             ]
           ],
           "headers": {
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-            "Accept-Language": "en-US;q=0.8,en;q=0.5",
+            "Accept-Language": "en-US,en;q=0.9",
             "Host": "web.whatsapp.com",
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36"
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36"
           },
           "method": "GET",
           "tor": {
@@ -878,53 +2463,73 @@ accessing the WhatsApp web interface (see `df-007-errors.md`);
             "exit_name": null,
             "is_tor": false
           },
+          "x_transport": "tcp",
           "url": "https://web.whatsapp.com/"
         },
         "response": {
-          "body": "<!DOCTYPE html><html lang=\"en\" id=\"facebook\"><head><title>Error</title><meta charset=\"utf-8\" /><meta http-equiv=\"Cache-Control\" content=\"no-cache\" /><meta name=\"robots\" content=\"noindex,nofollow\" /><style nonce=\"vfG4CTtZ\">html, body { color: #333; font-family: 'Lucida Grande', 'Tahoma', 'Verdana', 'Arial', sans-serif; margin: 0; padding: 0; text-align: center;}\n#header { height: 30px; padding-bottom: 10px; padding-top: 10px; text-align: center;}\n#icon { width: 30px;}\n.core { margin: auto; padding: 1em 0; text-align: left; width: 904px;}\nh1 { font-size: 18px;}\np { font-size: 13px;}\n.footer { border-top: 1px solid #ddd; color: #777; float: left; font-size: 11px; padding: 5px 8px 6px 0; width: 904px;}</style></head><body><div id=\"header\"><a href=\"//www.facebook.com/\"><img id=\"icon\" src=\"//static.facebook.com/images/logos/facebook_2x.png\" /></a></div><div class=\"core\"><h1>Sorry, something went wrong.</h1><p>We&#039;re working on getting this fixed as soon as we can.</p><p><a id=\"back\" href=\"//www.facebook.com/\">Go Back</a></p><div class=\"footer\"> Facebook &#169; 2020 &#183; <a href=\"//www.facebook.com/help/\">Help</a></div></div><script nonce=\"vfG4CTtZ\">\n              document.getElementById(\"back\").onclick = function() {\n                if (history.length > 1) {\n                  history.back();\n                  return false;\n                }\n              };\n            </script></body></html><!-- @generated SignedSource<<2baec119ad3d09b22a5215de1d307cd9>> -->",
+          "body": "<!DOCTYPE html><html lang=\"en\" id=\"facebook\"><head><title>Error</title><meta charset=\"utf-8\" /><meta http-equiv=\"Cache-Control\" content=\"no-cache\" /><meta name=\"robots\" content=\"noindex,nofollow\" /><style nonce=\"wfWasHre\">html, body { color: #333; font-family: 'Lucida Grande', 'Tahoma', 'Verdana', 'Arial', sans-serif; margin: 0; padding: 0; text-align: center;}\n#header { height: 30px; padding-bottom: 10px; padding-top: 10px; text-align: center;}\n#icon { width: 30px;}\n.core { margin: auto; padding: 1em 0; text-align: left; width: 904px;}\nh1 { font-size: 18px;}\np { font-size: 13px;}\n.footer { border-top: 1px solid #ddd; color: #777; float: left; font-size: 11px; padding: 5px 8px 6px 0; width: 904px;}</style></head><body><div id=\"header\"><a href=\"//www.facebook.com/\"><img id=\"icon\" src=\"//static.facebook.com/images/logos/facebook_2x.png\" /></a></div><div class=\"core\"><h1>Sorry, something went wrong.</h1><p>We&#039;re working on getting this fixed as soon as we can.</p><p><a id=\"back\" href=\"//www.facebook.com/\">Go Back</a></p><div class=\"footer\"> Meta &#169; 2022 &#183; <a href=\"//www.facebook.com/help/?ref=href052\">Help</a></div></div><script nonce=\"wfWasHre\">\n              document.getElementById(\"back\").onclick = function() {\n                if (history.length > 1) {\n                  history.back();\n                  return false;\n                }\n              };\n            </script></body></html><!-- @codegen-command : phps GenerateErrorPages --><!-- @generated SignedSource<<aa30090ace0190809cb1ff902c2ba23b>> -->",
           "body_is_truncated": false,
           "code": 400,
           "headers_list": [
             [
-              "Vary",
-              "Accept-Encoding"
+              "Alt-Svc",
+              "h3=\":443\"; ma=86400"
             ],
             [
-              "Strict-Transport-Security",
-              "max-age=31536000; preload; includeSubDomains"
+              "Content-Length",
+              "1542"
             ],
             [
               "Content-Type",
               "text/html; charset=\"utf-8\""
             ],
             [
-              "X-Fb-Debug",
-              "z3AxVIx+0nZtvAcEP3QZkA1QTPOskCJ1GgdHzsMWzfE6l5KOFww4dfZCcEwn9dWXMjVHu6sTcNZwFI0zBsRt5Q=="
-            ],
-            [
-              "Content-Length",
-              "1483"
+              "Cross-Origin-Opener-Policy",
+              "unsafe-none"
             ],
             [
               "Date",
-              "Thu, 09 Jul 2020 11:02:41 GMT"
+              "Wed, 07 Dec 2022 09:52:48 GMT"
             ],
             [
-              "Alt-Svc",
-              "h3-29=\":443\"; ma=3600,h3-27=\":443\"; ma=3600"
+              "Priority",
+              "u=3,i"
+            ],
+            [
+              "Strict-Transport-Security",
+              "max-age=31536000; preload; includeSubDomains"
+            ],
+            [
+              "Vary",
+              "Sec-Fetch-Site, Sec-Fetch-Mode"
+            ],
+            [
+              "Vary",
+              "Accept-Encoding"
+            ],
+            [
+              "X-Fb-Debug",
+              "S/9ZQqkYmYlncywQTI+5YcnE9XKvk/jd9mllbVKqFePTAlfEotY2wXnj9LTLTElZU5aoXtmYLk6FhcHpsGyn1Q=="
+            ],
+            [
+              "X-Fb-Trip-Id",
+              "1679558926"
             ]
           ],
           "headers": {
-            "Alt-Svc": "h3-29=\":443\"; ma=3600,h3-27=\":443\"; ma=3600",
-            "Content-Length": "1483",
+            "Alt-Svc": "h3=\":443\"; ma=86400",
+            "Content-Length": "1542",
             "Content-Type": "text/html; charset=\"utf-8\"",
-            "Date": "Thu, 09 Jul 2020 11:02:41 GMT",
+            "Cross-Origin-Opener-Policy": "unsafe-none",
+            "Date": "Wed, 07 Dec 2022 09:52:48 GMT",
+            "Priority": "u=3,i",
             "Strict-Transport-Security": "max-age=31536000; preload; includeSubDomains",
-            "Vary": "Accept-Encoding",
-            "X-Fb-Debug": "z3AxVIx+0nZtvAcEP3QZkA1QTPOskCJ1GgdHzsMWzfE6l5KOFww4dfZCcEwn9dWXMjVHu6sTcNZwFI0zBsRt5Q=="
+            "Vary": "Sec-Fetch-Site, Sec-Fetch-Mode",
+            "X-Fb-Debug": "S/9ZQqkYmYlncywQTI+5YcnE9XKvk/jd9mllbVKqFePTAlfEotY2wXnj9LTLTElZU5aoXtmYLk6FhcHpsGyn1Q==",
+            "X-Fb-Trip-Id": "1679558926"
           }
         },
-        "t": 0.001153697
+        "t": 0.189301417
       },
       {
         "failure": null,
@@ -938,105 +2543,22 @@ accessing the WhatsApp web interface (see `df-007-errors.md`);
             ],
             [
               "Accept-Language",
-              "en-US;q=0.8,en;q=0.5"
-            ],
-            [
-              "User-Agent",
-              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36"
-            ],
-            [
-              "Host",
-              "web.whatsapp.com"
-            ]
-          ],
-          "headers": {
-            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-            "Accept-Language": "en-US;q=0.8,en;q=0.5",
-            "Host": "web.whatsapp.com",
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36"
-          },
-          "method": "GET",
-          "tor": {
-            "exit_ip": null,
-            "exit_name": null,
-            "is_tor": false
-          },
-          "url": "http://web.whatsapp.com/"
-        },
-        "response": {
-          "body": "",
-          "body_is_truncated": false,
-          "code": 302,
-          "headers_list": [
-            [
-              "Location",
-              "https://web.whatsapp.com/"
-            ],
-            [
-              "Content-Type",
-              "text/plain"
-            ],
-            [
-              "Server",
-              "proxygen-bolt"
-            ],
-            [
-              "Date",
-              "Thu, 09 Jul 2020 11:02:41 GMT"
-            ],
-            [
-              "Alt-Svc",
-              "h3-29=\":443\"; ma=3600,h3-27=\":443\"; ma=3600"
-            ],
-            [
-              "Connection",
-              "keep-alive"
-            ],
-            [
-              "Content-Length",
-              "0"
-            ]
-          ],
-          "headers": {
-            "Alt-Svc": "h3-29=\":443\"; ma=3600,h3-27=\":443\"; ma=3600",
-            "Connection": "keep-alive",
-            "Content-Length": "0",
-            "Content-Type": "text/plain",
-            "Date": "Thu, 09 Jul 2020 11:02:41 GMT",
-            "Location": "https://web.whatsapp.com/",
-            "Server": "proxygen-bolt"
-          }
-        },
-        "t": 0.179558692
-      },
-      {
-        "failure": null,
-        "request": {
-          "body": "",
-          "body_is_truncated": false,
-          "headers_list": [
-            [
-              "User-Agent",
-              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36"
+              "en-US,en;q=0.9"
             ],
             [
               "Host",
               "v.whatsapp.net"
             ],
             [
-              "Accept",
-              "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
-            ],
-            [
-              "Accept-Language",
-              "en-US;q=0.8,en;q=0.5"
+              "User-Agent",
+              "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36"
             ]
           ],
           "headers": {
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-            "Accept-Language": "en-US;q=0.8,en;q=0.5",
+            "Accept-Language": "en-US,en;q=0.9",
             "Host": "v.whatsapp.net",
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36"
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36"
           },
           "method": "GET",
           "tor": {
@@ -1044,21 +2566,14 @@ accessing the WhatsApp web interface (see `df-007-errors.md`);
             "exit_name": null,
             "is_tor": false
           },
+          "x_transport": "tcp",
           "url": "https://v.whatsapp.net/v2/register"
         },
         "response": {
-          "body": "{\"status\":\"fail\",\"reason\":\"missing_param\",\"param\":\"authkey\"}\n",
+          "body": "{\"param\":\"authkey\",\"reason\":\"missing_param\",\"status\":\"fail\"}\n",
           "body_is_truncated": false,
           "code": 200,
           "headers_list": [
-            [
-              "Server",
-              "Yaws 2.0.6"
-            ],
-            [
-              "Date",
-              "Thu, 09 Jul 2020 11:02:41 GMT"
-            ],
             [
               "Content-Length",
               "61"
@@ -1066,65 +2581,350 @@ accessing the WhatsApp web interface (see `df-007-errors.md`);
             [
               "Content-Type",
               "text/json ; charset=utf-8"
+            ],
+            [
+              "Date",
+              "Wed, 07 Dec 2022 09:52:48 GMT"
+            ],
+            [
+              "Server",
+              "Yaws 2.0.9"
+            ],
+            [
+              "X-Fb-Trip-Id",
+              "1679558926"
             ]
           ],
           "headers": {
             "Content-Length": "61",
             "Content-Type": "text/json ; charset=utf-8",
-            "Date": "Thu, 09 Jul 2020 11:02:41 GMT",
-            "Server": "Yaws 2.0.6"
+            "Date": "Wed, 07 Dec 2022 09:52:48 GMT",
+            "Server": "Yaws 2.0.9",
+            "X-Fb-Trip-Id": "1679558926"
           }
         },
-        "t": 0.001150339
+        "t": 0.477391917
       }
     ],
     "tcp_connect": [
       {
-        "ip": "69.171.250.60",
+        "ip": "3.33.252.61",
         "port": 443,
         "status": {
           "failure": null,
           "success": true
         },
-        "t": 0.079603245
+        "t": 0.038953792
       },
       {
-        "ip": "34.194.71.217",
+        "ip": "3.33.252.61",
         "port": 443,
         "status": {
           "failure": null,
           "success": true
         },
-        "t": 0.207018418
+        "t": 0.039018709
       },
       {
-        "ip": "69.171.250.60",
-        "port": 80,
+        "ip": "3.33.221.48",
+        "port": 5222,
         "status": {
           "failure": null,
           "success": true
         },
-        "t": 0.207763367
+        "t": 0.03902025
       },
       {
-        "ip": "69.171.250.60",
+        "ip": "3.33.252.61",
         "port": 443,
         "status": {
           "failure": null,
           "success": true
         },
-        "t": 0.096787583
+        "t": 0.073610834
+      },
+      {
+        "ip": "15.197.210.208",
+        "port": 443,
+        "status": {
+          "failure": null,
+          "success": true
+        },
+        "t": 0.075890875
+      },
+      {
+        "ip": "15.197.206.217",
+        "port": 443,
+        "status": {
+          "failure": null,
+          "success": true
+        },
+        "t": 0.082615
+      },
+      {
+        "ip": "3.33.221.48",
+        "port": 443,
+        "status": {
+          "failure": null,
+          "success": true
+        },
+        "t": 0.109965334
+      },
+      {
+        "ip": "15.197.210.208",
+        "port": 5222,
+        "status": {
+          "failure": null,
+          "success": true
+        },
+        "t": 0.111479792
+      },
+      {
+        "ip": "15.197.210.208",
+        "port": 443,
+        "status": {
+          "failure": null,
+          "success": true
+        },
+        "t": 0.144534042
+      },
+      {
+        "ip": "3.33.221.48",
+        "port": 443,
+        "status": {
+          "failure": null,
+          "success": true
+        },
+        "t": 0.144595959
+      },
+      {
+        "ip": "15.197.206.217",
+        "port": 5222,
+        "status": {
+          "failure": null,
+          "success": true
+        },
+        "t": 0.163556292
+      },
+      {
+        "ip": "15.197.210.208",
+        "port": 443,
+        "status": {
+          "failure": null,
+          "success": true
+        },
+        "t": 0.1809045
+      },
+      {
+        "ip": "3.33.252.61",
+        "port": 5222,
+        "status": {
+          "failure": null,
+          "success": true
+        },
+        "t": 0.182005834
+      },
+      {
+        "ip": "31.13.86.51",
+        "port": 443,
+        "status": {
+          "failure": null,
+          "success": true
+        },
+        "t": 0.117675834
+      },
+      {
+        "ip": "3.33.252.61",
+        "port": 5222,
+        "status": {
+          "failure": null,
+          "success": true
+        },
+        "t": 0.200444875
+      },
+      {
+        "ip": "15.197.206.217",
+        "port": 5222,
+        "status": {
+          "failure": null,
+          "success": true
+        },
+        "t": 0.215879542
+      },
+      {
+        "ip": "3.33.221.48",
+        "port": 443,
+        "status": {
+          "failure": null,
+          "success": true
+        },
+        "t": 0.227087375
+      },
+      {
+        "ip": "3.33.221.48",
+        "port": 5222,
+        "status": {
+          "failure": null,
+          "success": true
+        },
+        "t": 0.227118875
+      },
+      {
+        "ip": "3.33.221.48",
+        "port": 5222,
+        "status": {
+          "failure": null,
+          "success": true
+        },
+        "t": 0.247043084
+      },
+      {
+        "ip": "15.197.210.208",
+        "port": 443,
+        "status": {
+          "failure": null,
+          "success": true
+        },
+        "t": 0.250968459
+      },
+      {
+        "ip": "15.197.210.208",
+        "port": 5222,
+        "status": {
+          "failure": null,
+          "success": true
+        },
+        "t": 0.266117875
+      },
+      {
+        "ip": "3.33.252.61",
+        "port": 5222,
+        "status": {
+          "failure": null,
+          "success": true
+        },
+        "t": 0.266169084
+      },
+      {
+        "ip": "15.197.206.217",
+        "port": 443,
+        "status": {
+          "failure": null,
+          "success": true
+        },
+        "t": 0.283247042
+      },
+      {
+        "ip": "3.33.221.48",
+        "port": 443,
+        "status": {
+          "failure": null,
+          "success": true
+        },
+        "t": 0.284150625
+      },
+      {
+        "ip": "3.33.221.48",
+        "port": 5222,
+        "status": {
+          "failure": null,
+          "success": true
+        },
+        "t": 0.289730209
+      },
+      {
+        "ip": "3.33.221.48",
+        "port": 443,
+        "status": {
+          "failure": null,
+          "success": true
+        },
+        "t": 0.29997075
+      },
+      {
+        "ip": "3.33.221.48",
+        "port": 5222,
+        "status": {
+          "failure": null,
+          "success": true
+        },
+        "t": 0.300009084
+      },
+      {
+        "ip": "15.197.210.208",
+        "port": 5222,
+        "status": {
+          "failure": null,
+          "success": true
+        },
+        "t": 0.30852475
+      },
+      {
+        "ip": "15.197.210.208",
+        "port": 5222,
+        "status": {
+          "failure": null,
+          "success": true
+        },
+        "t": 0.318773292
+      },
+      {
+        "ip": "15.197.210.208",
+        "port": 443,
+        "status": {
+          "failure": null,
+          "success": true
+        },
+        "t": 0.326225
+      },
+      {
+        "ip": "3.33.252.61",
+        "port": 443,
+        "status": {
+          "failure": null,
+          "success": true
+        },
+        "t": 0.336746667
+      },
+      {
+        "ip": "3.33.252.61",
+        "port": 5222,
+        "status": {
+          "failure": null,
+          "success": true
+        },
+        "t": 0.342397167
+      },
+      {
+        "ip": "15.197.210.208",
+        "port": 5222,
+        "status": {
+          "failure": null,
+          "success": true
+        },
+        "t": 0.352054625
+      },
+      {
+        "ip": "31.13.86.51",
+        "port": 443,
+        "status": {
+          "failure": null,
+          "success": true
+        },
+        "t": 0.335926709
       }
     ],
     "tls_handshakes": [
       {
+        "network": "",
+        "address": "31.13.86.51:443",
         "cipher_suite": "TLS_AES_128_GCM_SHA256",
         "failure": null,
         "negotiated_protocol": "h2",
         "no_tls_verify": false,
         "peer_certificates": [
           {
-            "data": "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",
+            "data": "MIIGTDCCBTSgAwIBAgIQAlDE7YeE72bnVY7ikCXuXTANBgkqhkiG9w0BAQsFADBwMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3d3cuZGlnaWNlcnQuY29tMS8wLQYDVQQDEyZEaWdpQ2VydCBTSEEyIEhpZ2ggQXNzdXJhbmNlIFNlcnZlciBDQTAeFw0yMjA5MTUwMDAwMDBaFw0yMjEyMTQyMzU5NTlaMGkxCzAJBgNVBAYTAlVTMRMwEQYDVQQIEwpDYWxpZm9ybmlhMRMwEQYDVQQHEwpNZW5sbyBQYXJrMRcwFQYDVQQKEw5GYWNlYm9vaywgSW5jLjEXMBUGA1UEAwwOKi53aGF0c2FwcC5uZXQwWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAARp1nBRFDuqbY/b5Z262+ZL7dYz+FbkHp6zqHkAhZn665EGj3Zss6djbl/JorZdnAxfdpgHnzdl42KrPHaaY8v/o4IDsjCCA64wHwYDVR0jBBgwFoAUUWj/kK8CB3U8zNllZGKiErhZcjswHQYDVR0OBBYEFOkcdvtfGMrATdcfEs2oslrm9tZyMHQGA1UdEQRtMGuCDioud2hhdHNhcHAubmV0ghIqLmNkbi53aGF0c2FwcC5uZXSCEiouc25yLndoYXRzYXBwLm5ldIIOKi53aGF0c2FwcC5jb22CBXdhLm1lggx3aGF0c2FwcC5jb22CDHdoYXRzYXBwLm5ldDAOBgNVHQ8BAf8EBAMCB4AwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMHUGA1UdHwRuMGwwNKAyoDCGLmh0dHA6Ly9jcmwzLmRpZ2ljZXJ0LmNvbS9zaGEyLWhhLXNlcnZlci1nNi5jcmwwNKAyoDCGLmh0dHA6Ly9jcmw0LmRpZ2ljZXJ0LmNvbS9zaGEyLWhhLXNlcnZlci1nNi5jcmwwPgYDVR0gBDcwNTAzBgZngQwBAgIwKTAnBggrBgEFBQcCARYbaHR0cDovL3d3dy5kaWdpY2VydC5jb20vQ1BTMIGDBggrBgEFBQcBAQR3MHUwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBNBggrBgEFBQcwAoZBaHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0U0hBMkhpZ2hBc3N1cmFuY2VTZXJ2ZXJDQS5jcnQwCQYDVR0TBAIwADCCAX0GCisGAQQB1nkCBAIEggFtBIIBaQFnAHYARqVV63X6kSAwtaKJafTzfREsQXS+/Um4havy/HD+bUcAAAGDPs+tVgAABAMARzBFAiB/HgYx59/0VqE6jzhPq7MJVHsT183JzplDhCYkBR9CBQIhAJDjhgLp+B84q/mR7e3QuOdc4kfEumf5+mvsTF+5gSZiAHUAUaOw9f0BeZxWbbg3eI8MpHrMGyfL956IQpoN/tSLBeUAAAGDPs+tfwAABAMARjBEAiBJbcxgyMe6j/SdPY8ROYrCSHL/+JPDT1jwsp1F/wPP1AIgFc4N7tEbiYniTTVDl73N4owHxJTV8g8h9QE0IftVL8wAdgBByMqx3yJGShDGoToJQodeTjGLGwPr60vHaPCQYpYG9gAAAYM+z61HAAAEAwBHMEUCIQDAXYXY1onAei8R1zT6pTYh/TO1f1rXWpvVP8qiCwfnMQIgPrG8DcYrP7gERzNp5G+oZaUg0yY33C86yF+QMWL/NDgwDQYJKoZIhvcNAQELBQADggEBAIOG5Ow5rmiO7LajtH4Y1GtEPvZ2b13I5BrEkN3mTmLFPF/4wnUClIcbd2gFRPZA2l4igczLn/+A1xNEAjgqTwi+qKDyVvfym5KhDMI/gFJr0UKHqgGqNZvUivluh+TIHB1j3PsP82jrGiMA+Zv6pMOF0PEEVgOM5BI0D0GPBnNM19ZXZdrQOU+MQeEkpuOA7ik/n/NCk60pJBHysK8L0aUDyBrpJYDQl33nuZUCYIvAlvCDykO2YmGtrlXoZ7KgjZFeYKDfIe8mAPdwXeo8OPlFbAQxhEDcqJ4LhC7DSLqMUWKMnfL3hh1kWt+YVAVTMBIgWS7+jqLgYlLTs0AyUIo=",
             "format": "base64"
           },
           {
@@ -1133,17 +2933,20 @@ accessing the WhatsApp web interface (see `df-007-errors.md`);
           }
         ],
         "server_name": "web.whatsapp.com",
-        "t": 0.107907192,
+        "t": 0.13597625,
+        "tags": null,
         "tls_version": "TLSv1.3"
       },
       {
+        "network": "",
+        "address": "31.13.86.51:443",
         "cipher_suite": "TLS_AES_128_GCM_SHA256",
         "failure": null,
         "negotiated_protocol": "h2",
         "no_tls_verify": false,
         "peer_certificates": [
           {
-            "data": "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",
+            "data": "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",
             "format": "base64"
           },
           {
@@ -1152,7 +2955,8 @@ accessing the WhatsApp web interface (see `df-007-errors.md`);
           }
         ],
         "server_name": "v.whatsapp.net",
-        "t": 0.124645709,
+        "t": 0.354731125,
+        "tags": null,
         "tls_version": "TLSv1.3"
       }
     ],
@@ -1161,13 +2965,13 @@ accessing the WhatsApp web interface (see `df-007-errors.md`);
     "whatsapp_endpoints_blocked": [],
     "whatsapp_endpoints_dns_inconsistent": [],
     "whatsapp_endpoints_status": "ok",
-    "whatsapp_web_status": "ok",
-    "whatsapp_web_failure": null
+    "whatsapp_web_failure": null,
+    "whatsapp_web_status": "ok"
   },
   "test_name": "whatsapp",
-  "test_runtime": 0.631774013,
-  "test_start_time": "2020-07-09 11:02:41",
-  "test_version": "0.8.0"
+  "test_runtime": 0.478158125,
+  "test_start_time": "2022-12-07 09:52:47",
+  "test_version": "0.10.0"
 }
 ```
 
@@ -1182,3 +2986,6 @@ ooni/probe-legacy <= 2.3.0, ooni/probe-ios <= 2.2.0, ooni/probe-android
 for the mobile apps. Since Measurement Kit 0.10.10 (`test_version`
 0.7.0) we will completely disable such check. Since 2020-07-09 the spec
 does not mention anymore the CIDR check.
+
+Since 2022-12-07, we don't check `http://web.whatsapp.com`, for
+reasons explained more in detail above.
