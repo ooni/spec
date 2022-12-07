@@ -44,7 +44,7 @@ These access points have the following IP addresses:
 * 149.154.171.5
 
 The test establishes TCP connection to all the access point IP addresses and
-then attempts to issue a POST request to each of them.
+then attempts to issue a POST HTTP request to each of them.
 
 If all TCP connections on ports 80 and 443 to Telegram’s access point IPs fail
 we consider Telegram to be blocked. The key `telegram_tcp_blocking` is used
