@@ -30,48 +30,71 @@ The main goal of the test is to inform the user (and the community) whether or n
 
 # Expected output
 
-## Parent data format
-
-This is the base data format(s) that this test will adhere to (it is
-implicit that it will follow df-000-base).
-
 ## Required output data
 
-This is data that should be part of the base dataformat without which the
-test cannot properly be interpreted.
-
-## Data specification version number
-
-Question: Isn't this implicit in the test specification number, is there a reason
-why we should have two versions one for the data format and one for the
-test specification? Would changing the dataformat not imply changing the
-test version number?
+* The result of the test, 'success' or failure type
+* Whether or not the censorship was detected
 
 ## Semantics
 
-List the extra keys that will be part of the report that are not part of
-the parent data format. Be sure not to have keys that clash with the
-parent data format.
+* Success: True if all 20 connections and control test succeeded
+* ConnectionCount: Number of successful connections
+* FinalPopcount: The popcount of the triggering packet
+* FirstSix: True if first six bytes of the final payload are printable
+* TwentyContig: True if there exist twenty contiguous bytes of printable ASCII in the final payload
+* HalfPrintable: True if at least half of the final payload is made up of printable ASCII
+* PopcountRange: True if final popcount is less than 3.4 or greater than 4.6
+* MatchesHTTP: True if fingerprinted as HTTP
+* MatchesTLS: True if fingerprinted as TLS
+* Payload: Payload of final packet
+* Censorship: True if all 20 connections succeeded
+* Error: String of error
 
 ## Possible conclusions
 
-Based on the ouput data what conclusions can you draw?
+Ability to determine if the user is in a location where they are experiencing censorship on fully encrypted traffic and what packet triggered the censorship.
 
 ## Example output sample
 
-## Expected Post-processing efforts
+```JSON
+{
+    "annotations":{
+        "architecture":"amd64",
+        "engine_name":"ooniprobe-engine",
+        "engine_version":"3.16.0-alpha",
+        "platform":"macos"
+    },
+    "data_format_version":"0.2.0",
+    "input":null,
+    "measurement_start_time":"2023-01-03 06:53:40",
+    "probe_asn":"AS6128",
+    "probe_cc":"US",
+    "probe_ip":"127.0.0.1",
+    "probe_network_name":"Cablevision Systems Corp.",
+    "report_id":"",
+    "resolver_asn":"AS6128",
+    "resolver_ip":"167.206.251.142",
+    "resolver_network_name":"Cablevision Systems Corp.",
+    "software_name":"miniooni",
+    "software_version":"3.16.0-alpha",
+    "test_keys":{
+        "success":true,
+        "connection_count":19,
+        "final_popcount":4.074525745257453,
+        "first_six":false,
+        "twenty_contig":false,
+        "half_printable":false,
+        "popcount_range":false,
+        "matches_http":false,
+        "matches_tls":false,
+        "payload":"KLpodhNrDfHPs6cEYBe096yVZdxqZ3udlhcs/ziiC11KHXcs2LUfa/CpiiLyo2NfguJ99k+k23XWE59+lw723HpsGJUKJnHop2BLXUCVUJDektT6Hm9rYTeBtAvqPZP+LVQ+WmqpoU7OFpeM3m7mVTut2AfSaH8TPhaDG377uYXz2tvZy+Oa7d/AsLzl4DKc707x+tITtFj4V/Gg2RfaHZe4C9tH9Wujw/62PiM6IgT3IK9fXT2QB0O9ZinY9+KxwVs7AYbXhoYdMoF9+s1wIL1f1NNx/Khgx6eYovROsj4768niLIPy6ketR0jZAA1CLidDAaWOvEDc/Tgv5vHcenUR0VawQFhGTfu+J6z4GEoQoi6e+N1HqvRoLXCd/OWdgybHVBlpPc8Wr7K8xrvdMwGIGKN+rpClGiFwxLJQkptr5kr9oZmM3T9cBy2ViZjdRM7HW3c8YmrGmw0jyVDszHcl4kBHeANgOEGtAudqvoxKPbLZYxvke64wu5RGr3CUEpwAnJW4GgPvl1KSWt9n5HSC0+Lhtbrcd7iUtlufoRjHrw3IGDt+n+S4F1tvV+4cslBRcv+wlJx4zFL+We+gJSg2CUFVLqOdRgpB73lBTe1Sb2vBB1RSZ3Cn0WTwhpbFVASpDS8nnJsD+CSVmXVpOy0PxvrYLA/UY6mE0kFBfqH9oVC8A+TN0IA3/vkzwZ/P9Xs8HRP5xm6shPvpy19MD9YWSK0Co3EXUpQrt4TW4kPeMbt/Dgpxe72zcuh6N9pjp3oR1fz1ioMOIp+1yalhB3XqgYAALUzpYI1Ya2A4if9qQq9nvVdLqDKFTehxKW1+mgJ+3/I7EG+6yprd7UGuQSpc49Yg/LhBchiXhIqTcgpNNNNClnjh31UTQwYT2NjYWuWK0ijGQfDjwP9bgYOPGaUOyzjkZTnWL1ejAaa5saA3q9TzKdZoY5Pw3BbO0WXP6SH2H1hhS/dB8XQPPLnq9jHj",
+        "censorship":false,
+        "error":null
+    },
+    "test_name":"shadowsocks",
+    "test_runtime":6.178643611,
+    "test_start_time":"2023-01-03 06:53:34",
+    "test_version":"0.1.0"
+}
 
-Question: What exactly is meant by this? Is this meaning the possible
-difficulties that a person doing post-processing may encouter?
-
-# Privacy considerations
-
-There are a few!
-
-# Packet capture considerations
-
-We capture all packets on the interface foo for bar units of time.
-
-# Other notes
-
-Bikesh{r}ed!
+```
