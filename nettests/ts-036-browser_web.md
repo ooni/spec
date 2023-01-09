@@ -67,6 +67,7 @@ fail and appear to be a result of blocking.
 Firefox users should be asked, if they have strict enhanced tracking protection
 enabled, to add a whitelist rule for the website hosting the experiment,
 however this is not a guarantee that they will run the test with it on.
+If a site is deemed inaccessible as a result of specific settings the user has in their browser, the `load_time_ms` will generally be < `10`. When interpreting the data this should be taken into account.
 
 # Expected output
 
@@ -89,6 +90,7 @@ where:
   while it will be `error` in the case of a failure;
 * `load_time_ms` (`float`) indicates the number of milliseconds it took to load
   the requested resource.
+ * `browser` (`string`) indicates the name of the browser used to run the experiment (ex. `firefox` or `chrome`)
 
 ## Possible conclusions
 
@@ -114,7 +116,8 @@ user.
   "test_runtime": 0.4044000000059605,
   "test_keys": {
       "result": "ok",
-      "load_time_ms": 404.40000000596046
+      "load_time_ms": 404.40000000596046,
+      "browser": "chrome"
   }
 }
 ```
