@@ -4,7 +4,7 @@
 
 # Specification name
 
-Shadowsocks
+Random Traffic
 
 # Test preconditions
 
@@ -12,7 +12,11 @@ An internet connection
 
 # Expected impact
 
-Ability to detect the censorship of fully-encrypted protocols, specifically Shadowsocks
+Ability to detect the censorship of fully-encrypted protocols which encrypt every byte of traffic in an attempt to appear completely random.
+
+```
+Note: This does not include TLS as TLS has a standard handshake to begin with.
+```
 
 # Expected inputs
 
@@ -22,8 +26,8 @@ None
 
 The main goal of the test is to inform the user (and the community) whether or not they are experiencing censorship on connections that send fully encrypted packets that appear random, as well as to record information about censored packets in order to better understand the censorship algorithm. The test seeks to accomplish these goals by doing the following:
 
-1. If no IP is given by the user, select an IP from the list of IP addressed in the affected range
-2. Complete a TCP handshake with the IP address and send a stream of zero bytes as a control test. If this control test succeeds then proceed with the test, otherwise end the test and return the error
+1. If no IP address is given by the user, select an IP address from the list of IP addresses in the affected range
+2. Complete a TCP handshake with the IP address and send a stream of null bytes as a control test. If this control test succeeds then proceed with the experiment, otherwise attempt the control test with a new IP address two more times or until the control test is successful. If no control test succeeds end the test and return the error.
 3. Complete a TCP handshake with the IP address and send a stream of random bytes. If this connection times out, we attempt to connect once more to check for residual censorship. If the residual censorship test results in a timeout, we end the test, record information about the blocked packet, and inform the user they are experiencing censorship. Otherwise we continue with the test
 4. Step 3 is repeated 19 more times to account for the blocking rate
 5. If no errors occurred and the test was completed, all connections are then closed and the test informs the user they are not experiencing censorship.
@@ -37,7 +41,7 @@ The main goal of the test is to inform the user (and the community) whether or n
 
 ## Semantics
 
-* Success: True if all 20 connections and control test succeeded
+* Success: True if no errors occurred
 * ConnectionCount: Number of successful connections
 * FinalPopcount: The popcount of the triggering packet
 * FirstSix: True if first six bytes of the final payload are printable
@@ -47,12 +51,12 @@ The main goal of the test is to inform the user (and the community) whether or n
 * MatchesHTTP: True if fingerprinted as HTTP
 * MatchesTLS: True if fingerprinted as TLS
 * Payload: Payload of final packet
-* Censorship: True if all 20 connections succeeded
+* Censorship: False if all 20 connections succeeded
 * Error: String of error
 
 ## Possible conclusions
 
-Ability to determine if the user is in a location where they are experiencing censorship on fully encrypted traffic and what packet triggered the censorship.
+Ability to determine if the user is experiencing censorship on fully-encrypted traffic and what packet triggered the censorship.
 
 ## Example output sample
 
