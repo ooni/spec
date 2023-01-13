@@ -1,6 +1,6 @@
 # Specification version number
 
-2022-12-23-000
+2023-01-13-000
 
 # Specification name
 
