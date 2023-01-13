@@ -24,7 +24,7 @@ None
 
 # Test description
 
-The main goal of the test is to inform the user (and the community) whether or not they are experiencing censorship on connections that send fully encrypted packets that appear random, as well as to record information about censored packets in order to better understand the censorship algorithm. The test seeks to accomplish these goals by doing the following:
+The main goal of the test is to inform the user whether or not they are experiencing censorship on connections that send fully encrypted packets that appear random, as well as to record information about censored packets in order to better understand the censorship algorithm. The test seeks to accomplish these goals by doing the following:
 
 1. If no IP address is given by the user, select an IP address from the list of IP addresses in the affected range
 2. Complete a TCP handshake with the IP address and send a stream of null bytes as a control test. If this control test succeeds then proceed with the experiment, otherwise attempt the control test with a new IP address two more times or until the control test is successful. If no control test succeeds end the test and return the error.
