@@ -67,7 +67,7 @@ fail and appear to be a result of blocking.
 Firefox users should be asked, if they have strict enhanced tracking protection
 enabled, to add a whitelist rule for the website hosting the experiment,
 however this is not a guarantee that they will run the test with it on.
-If a site is deemed inaccessible as a result of specific settings the user has in their browser, the `load_time_ms` will generally be < `10`. When interpreting the data this should be taken into account.
+If a site is deemed inaccessible as a result of specific settings the user has in their browser, the `load_time_ms` will generally be significantly lower than a truly blocked website. When interpreting the data this should be taken into account.
 
 # Expected output
 
