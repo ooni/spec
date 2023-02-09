@@ -305,8 +305,11 @@ dashboard as follows.
 # 4.0 API
 
 In order to support the above workflow the OONI API needs to support the following operations:
+
 * CREATE a new OONI Run link, returning the OONI Run link ID (see 4.1)
+
 * UPDATE an existing OONI Run link (see 4.2)
+
 * GET the OONI Run descriptor, provided an ID (4.3)
 
 In the following sections we will specify how these operations should be done.
