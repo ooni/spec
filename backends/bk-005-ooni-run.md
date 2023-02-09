@@ -93,7 +93,8 @@ present inside of the OONI Probe app. As such we will be having a set of default
 OONI Run links that apps will ship with.
 
 An OONI Run link descriptor is a JSON file with the following semantics:
-```json
+
+```JavaScript
 {
 "name": "(required) `string` is the display name for the OONI Run link",
 // (optional) `map` of translations to language codes for the name
