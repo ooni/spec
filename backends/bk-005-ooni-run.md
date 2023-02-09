@@ -334,7 +334,7 @@ request conforming to the following:
 
 `POST /api/v1/ooni_run`
 
-```json
+```JavaScript
 {
 "name":
    (required) `string` is the display name for the OONI Run link
@@ -385,7 +385,7 @@ In case of failure, the OONI Run Service MUST return a JSON object formatted as
 In case of success (i.e. `200` response), the OONI Run Service MUST return the
 following JSON body:
 
-```json
+```JavaScript
 {
 "ooni_run_link_id":
    `string` OONI Run link identifier.
@@ -423,7 +423,7 @@ To update an OONI Run Link, the client issues a request compliant with:
 
 `PUT /api/v1/ooni_run/{ooni_run_link_id}`
 
-```json
+```JavaScript
 {
 "name":
    (required) `string` is the display name for the OONI Run link
@@ -576,11 +576,16 @@ on the web page itself, in the event that the app did not handle the deep link,
 have a link to the custom prefix approach to "force" the opening of the app.
 
 As such we recommend using the following addresses for OONI Run link and OONI Run descriptor URLs:
+
 * `https://run.ooni.io/{ooni_run_link_id}`, where `{ooni_run_link_id}` is a number
+
 * `ooni://runv2/{ooni_run_link_id}`
+
 * `https://api.ooni.io/api/v1/ooni_run/{ooni_run_link_id}`
 
 Moreover, we could at some point host these links on s3 or github and have them
 be accessible via URLs in the form:
+
 * `https://raw.githubusercontent.com/ooni/run-links/master/data/{ooni_run_link_id}.json`
+
 * `https://s3.amazonaws.com/ooni-data/ooni-run-links/{ooni_run_link_id}.json`
