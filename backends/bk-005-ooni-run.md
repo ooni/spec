@@ -8,7 +8,7 @@ This document provides a functional specification for OONI Run.
 
 # 1.0 System overview
 
-OONI Run links allow users to coordinate measurement campagins with
+OONI Run links allow users to coordinate measurement campaigns with
 volunteers by sharing a mobile deep link that will instrument the OONI Probe
 application to run a set of nettests (or experiments) configured in a certain
 way.
