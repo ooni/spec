@@ -15,16 +15,16 @@ way.
 
 Below are definitions for important components of the system:
 
-* OONI Run link, is a mobile deep link that when clicked or tapped on a system
+* **OONI Run link** is a mobile deep link that when clicked or tapped on a system
   with the OONI Probe app installed allows the user to instrument their probe to
   run the nettests configured by the link creator. If the OONI Probe app is not
   installed, it will display a web page asking them to download the app.
   
-* OONI Run descriptor, contains the metadata for a specific OONI Run link and
+* **OONI Run descriptor** contains the metadata for a specific OONI Run link and
   the nettest definitions: what nettests should be run and how they should be
   configured (ex. what URLs should be tested)
 
-* OONI Run descriptor URL, is the web resource from which the descriptor is
+* **OONI Run descriptor URL** is the web resource from which the descriptor is
   retrieved.
 
 The high level workflow looks something like the following:
