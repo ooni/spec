@@ -223,7 +223,7 @@ dashboard as follows.
 }
 ```
 
-### Instant Messaging
+### Circumvention
 
 ```json
 {
