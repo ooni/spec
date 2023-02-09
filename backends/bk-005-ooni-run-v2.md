@@ -1,4 +1,4 @@
-# OONI Run specification
+# OONI Run v2 specification
 
 * author: Norbel Ambanumben, Arturo Filastò
 * version: 2023.02.09
