@@ -235,6 +235,7 @@ if we're not using tor or this information is not available.
     "provider": null,
     "is_vpn": false
 }
+```
 
 - `exit_ip` (`string`; nullable): the egress IP for the VPN gateway, or `null`
   if we're not using a VPN or this information is not available.
