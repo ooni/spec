@@ -27,7 +27,8 @@ Below are definitions for important components of the system:
 * **OONI Run descriptor URL** is the web resource from which the descriptor is
   retrieved.
 
-The high level workflow looks something like the following:
+The high level workflow looks like the following:
+
 ```mermaid
 sequenceDiagram
     actor CampaignOrganizer as Campagin Organizer
