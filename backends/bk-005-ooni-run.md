@@ -160,7 +160,7 @@ An OONI Run link descriptor is a JSON file with the following semantics:
 ```
 
 Based on the above specification it would be possible to re-implement the cards for the OONI Probe
-dashboard as follows:
+dashboard as follows.
 
 ### Websites
 
