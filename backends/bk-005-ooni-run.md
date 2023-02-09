@@ -96,56 +96,66 @@ An OONI Run link descriptor is a JSON file with the following semantics:
 
 ```JavaScript
 {
-"name": "(required) `string` is the display name for the OONI Run link",
-// (optional) `map` of translations to language codes for the name
-"name_intl": {
-   "it": "Il nome del test in italiano",
-},
-// TODO: recommend a maximum length for this field
-"short_description": "(optional) `string` short_description for the OONI Run link.",
-// (optional) `map` of translations to language codes for the short_description
-"short_description_intl": {},
-"description": "(optional) `string` full description for this OONI Run link. This goes into the details of the card. Markdown is supported.",
-// (optional) `map` of translations to language codes for the description
-"description_intl": {
-   "it": "La descrizione del test in italiano"
-},
-"icon": "(optional) `string` the ID of any icon part of the OONI icon set",
-"author": "(optional) `string` name of the creator of this OONI Run link",
-// `array` provides a JSON array of tests to be run.
-"nettests":
-   [
-      {
-         // (optional) `array` provides a JSON array of tests to be run.
-         "inputs": [
-            "https://example.com/",
-            "https://ooni.org/"
-         ],
-         // (optional) `map` options arguments provided to the specified test_name
-         "options": {
-            "HTTP3Enabled": true,
-         },
-         // (optional) `map` settings which are sent to probe_services for retrieving the inputs vector
-         // It's possible to reference user configured settings by using accessing the 
-         // $settings special variable.
-         // In particular the content of the test_settings will be sent to the /api/v1/check-in call nested 
-         // under the relative test_name.
-         "test_settings": {
-            "category_codes": "$settings.category_codes"
-         },
-         // (optional) `bool` indicates if this test should be run as part of autoruns. Defaults to true.
-         "is_background_run_enabled": true,
-         // (optional) `bool` indicates if this test should be run as part of manual runs. Defaults to true.
-         "is_manual_run_enabled": true,
-         "test_name": "web_connectivity"
-      },
-      {
-         "test_name": "openvpn",
-         "test_settings": {
-            "provider": "riseupvpn"
-         },
-      }
-   ],
+  "name": "(required) `string` is the display name for the OONI Run link",
+
+  // (optional) `map` of translations to language codes for the name
+  "name_intl": {
+    "it": "Il nome del test in italiano",
+  },
+  
+  // TODO: recommend a maximum length for this field
+  "short_description": "(optional) `string` short_description for the OONI Run link.",
+
+  // (optional) `map` of translations to language codes for the short_description
+  "short_description_intl": {},
+
+  "description": "(optional) `string` full description for this OONI Run link. This goes into the details of the card. Markdown is supported.",
+
+  // (optional) `map` of translations to language codes for the description
+  "description_intl": {
+    "it": "La descrizione del test in italiano"
+  },
+  
+  "icon": "(optional) `string` the ID of any icon part of the OONI icon set",
+
+  "author": "(optional) `string` name of the creator of this OONI Run link",
+
+  // `array` provides a JSON array of tests to be run.
+  "nettests":[{
+  
+    // (optional) `array` provides a JSON array of tests to be run.
+    "inputs": [
+      "https://example.com/",
+      "https://ooni.org/"
+    ],
+    
+    // (optional) `map` options arguments provided to the specified test_name
+    "options": {
+      "HTTP3Enabled": true
+    },
+
+    // (optional) `map` settings which are sent to probe_services for retrieving the inputs vector
+    // It's possible to reference user configured settings by using accessing the 
+    // $settings special variable.
+    // In particular the content of the test_settings will be sent to the /api/v1/check-in call nested 
+    // under the relative test_name.
+    "test_settings": {
+      "category_codes": "$settings.category_codes"
+    },
+
+    // (optional) `bool` indicates if this test should be run as part of autoruns. Defaults to true.
+    "is_background_run_enabled": true,
+ 
+    // (optional) `bool` indicates if this test should be run as part of manual runs. Defaults to true.
+    "is_manual_run_enabled": true,
+
+    "test_name": "web_connectivity"
+  }, {
+    "test_name": "openvpn",
+    "test_settings": {
+       "provider": "riseupvpn"
+    },
+  }]
 }
 ```
 
