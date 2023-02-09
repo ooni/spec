@@ -425,19 +425,15 @@ To update an OONI Run Link, the client issues a request compliant with:
 
 ```JavaScript
 {
-"name":
-   (required) `string` is the display name for the OONI Run link
+"name": "", // (required) `string` is the display name for the OONI Run link
 
-"description":
-   (optional) `string` describing the scope of this OONI Run link system
+"description": "", // (optional) `string` describing the scope of this OONI Run link system
 
-"icon":
-   (optional) `string` the ID of any icon part of the OONI icon set
+"icon": "", // (optional) `string` the ID of any icon part of the OONI icon set
 
-"author":
-   (optional) `string` name of the creator of this OONI Run link
+"author": "", // (optional) `string` name of the creator of this OONI Run link
 
-"nettests": `array` provides a JSON array of tests to be run.
+"nettests": // `array` provides a JSON array of tests to be run.
    [
       {
          "inputs": [
@@ -477,10 +473,9 @@ In case of failure, the OONI Run Service MUST return a JSON object formatted as
 In case of success (i.e. `200` response), the OONI Run Service MUST return the
 following JSON body:
 
-```json
+```JavaScript
 {
-"ooni_run_link_id":
-   `string` OONI Run link identifier.
+"ooni_run_link_id": "", // `string` OONI Run link identifier.
 
 "title": "",
 
@@ -488,7 +483,7 @@ following JSON body:
 
 "author": "",
 
-[... rest of the OONI Run link payload]
+// [... rest of the OONI Run link payload]
 
 }
 ```
@@ -520,24 +515,19 @@ Upon receiving this request, the OONI Run backend:
 In case of success (i.e. `200` response), the OONI Run Service MUST return the
 following JSON body:
 
-```json
+```JavaScript
 {
-"ooni_run_link_id":
-   `string` OONI Run link identifier.
+"ooni_run_link_id": "", // `string` OONI Run link identifier.
 
-"name":
-   (required) `string` is the display name for the OONI Run link
+"name": "", // (required) `string` is the display name for the OONI Run link
 
-"description":
-   (optional) `string` describing the scope of this OONI Run link system
+"description": "", // (optional) `string` describing the scope of this OONI Run link system
 
-"icon":
-   (optional) `string` the ID of any icon part of the OONI icon set
+"icon": "", // (optional) `string` the ID of any icon part of the OONI icon set
 
-"author":
-   (optional) `string` name of the creator of this OONI Run link
+"author": "", // (optional) `string` name of the creator of this OONI Run link
 
-"nettests": `array` provides a JSON array of tests to be run.
+"nettests": // `array` provides a JSON array of tests to be run.
    [
       {
          "inputs": [
