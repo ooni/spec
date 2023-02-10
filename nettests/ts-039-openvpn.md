@@ -1,6 +1,6 @@
 # Specification version number
 
-2022-10-20
+2023-02-10
 
 * _status_: experimental.
 
@@ -25,6 +25,8 @@ options.
 Altogether, they constitute a basic subset of the valid configuration
 parameters for the reference openvpn implementation (`man 8 openvpn`).
 
+## Input URI
+
 The input `URI` encodes information for the protocol (`openvpn`, in this case),
 provider, transport, obfuscation and the remote address.
 
@@ -32,10 +34,26 @@ provider, transport, obfuscation and the remote address.
 vpn://{provider_name}.{protocol}/?transport=tcp&obfuscation=obfs4&address={ip}:{port}
 ```
 
-The credentials to authenticate against such endpoint need to be passed as
-options to the experiment, encoded as a base64 string. We use the `Safe` prefix
-to signal to the engine that we don't want those options to be exported and
-indexed by the OONI backend:
+Where:
+
+- `provider` (`string`) is the entity that manages the endpoints. If it's not a
+  provider known to OONI, it should be marked with a prefix starting with
+  "unknown".
+- `vpn_protocol` (`string`): should be `openvpn`.
+- `transport` (`string`): underlying transport used by OpenVPN, one of `tcp|udp`.
+- `remote` (`string`): IP address and port for the remote endpoint (`ipaddr:port`).
+- `obfuscation` (`string`): type of obfuscation in use. Currently known
+  obfuscation schemes include `none` and `obfs4`.
+
+
+## Inline credentials (certificate-based)
+
+For certificate-based authentication, the credentials to authenticate against
+the tunnel endpoint need to be passed as an `options` object that will be
+passed to the experiment, encoded as a base64 string.
+
+For credentials, we use the `Safe` prefix to signal to the engine that we don't want those
+options to be exported and indexed by the OONI backend:
 
 ```
 "SafeCa": "base64:deadbeef",
@@ -43,45 +61,117 @@ indexed by the OONI backend:
 "SafeKey": "base64:deadbeef",
 ```
 
+Example:
 
-Other valid options, that will be passed to the openvpn invocation, are:
+```
+{
+   "test_name": "openvpn",
+   "inputs": [
+     "vpn://openvpn.unknown-gazel/?addr=1.1.1.1:1194&transport=tcp&obfs=none",
+   ],
+   "options": {
+     "Cipher": "AES-256-GCM",
+     "Auth": "SHA256",
+     "Compress": "comp-lzo-no",
+     "Obfuscation": "none",
+     "SafeCert": "base64:<base64-encoded-pem-encoded-ca>",
+     "SafeCert": "base64:<base64-encoded-pem-encoded-cert>",
+     "SafeKey": "base64:<base64-encoded-pem-encoded-key>",
+  }
+}
+```
 
-- `cipher` (one of: `AES-256-GCM`, `AES-128-GCM`, `AES-256-CBC`, `AES-128-CBC`).
-- `auth` (one of: `SHA1`, `SHA512`).
+### Authentication with username and password stored locally
+
+Instead of `SafeCert` and `SafeKey`, if the option `SafeLocalCreds` is set to
+`true`, the credentials will be looked up in a path relative to `$HOME`.
+Specifically, this path is constructed from the name of the provider:
+`$MINIOONI_HOME/.vpn/<provider>.txt`. This file is expected to contain username
+and password in cleartext, in two separated lines ended by a line return.
+
+
+
+## Other options
+
+
+### OpenVPN configuration parameters
+
+Other valid options, that will be passed to the minivpn invocation, are:
+
+- `Cipher` (one of: `AES-256-GCM`, `AES-128-GCM`, `AES-256-CBC`,
+  `AES-128-CBC`). The cipher to use for encrypting the data channel. Used to
+select the cipher to be configured on the data channel. This is equivalent to
+the old `--cipher` option in `openvpn`. Be aware the the underlying
+implementation, on the contrary than the reference openvpn one, does not
+support automatic cipher negotiation: you must configure the cipher
+explicitely.
+- `Auth` (one of: `SHA1`, `SHA512`). The message digest algorithm used to
+  authenticate the data channel packets. If an AEAD cipher mode (e.g. GCM) is
+selected, then the specified auth algorithm is ignored for the data channel. Be
+aware that `tls-auth` is not yet supported.
+
+### Obfuscation options
+
+In case some type of obfuscation is used, the obfuscating proxy might
+further authentication parameters. These can be passed using the `SafeProxyURI`
+parameter.
+
+Example:
+
+```
+{
+  "test_name": "openvpn",
+  "inputs": [
+    "vpn://openvpn.unknown-onyx/?addr=2.2.2.2:443&transport=tcp&obfs=obfs4"
+  ],
+  "options": {
+    "Cipher": "AES-256-GCM",
+    "Auth": "SHA512",
+    "Compress": "",
+    "Obfuscation": "obfs4",
+    "SafeProxyURI": "obfs4://2.2.2.2:443/?cert=8nuAbPJwFrKc%2F29KcCfL5LBuEWxQrjBASYXdUbwcm9d9pKseGK4r2Tg47e23%2Bt6WghxGGw&iat-mode=0"
+  }
+}
+```
+
+### Target URLs
 
 Additionally, the user can specify any amount of comma-separated urls that
 wants to be fetched through the tunnel. 
 
 - `URLs` (`string`, optional).
 
-
 # Test description
 
 There are, at the moment, three distinct stages in the OpenVPN experiments:
-`tunnel initialization`, `icmp-ping`, and `urlgrabber`.
+`tunnel initialization`, `icmp ping`, and `urlgrabber`.
 
 ## 1. Tunnel initialization
 
 An OpenVPN connection tries, sequentially, the following steps:
 
 1. Initializes cryptographic material (local only, not expected to fail).
+
 2. Creates an UDP or TCP socket and initializes the control channel (no network
    communication in the case of UDP)
+
 3. Sends a client `hard-reset` packet, and waits for a `hard-reset` reset
    packet from the server.
+
 4. Performs the TLS handshake over the control channel (can return a handshake
    error, including a timeout if a reply is not received after a reasonable
    amount of time).
+
 5. Data channel initialization: client sends a control packet (expects a server
-  ACK), and a request for the server to push options. Upon receiving options
-  from the server, the data channel is initialized and ready to use.
+   ACK), and a request for the server to push options. Upon receiving options
+   from the server, the data channel is initialized and ready to use.
 
 Each of the steps above can fail (a timeout is considered a failure on each
 step). Upon finishing the data channel initialization, we consider the initial
 handshake to be finished and the tunnel ready to be used.
 
 
-## 2. ICMP-Pings
+## 2. ICMP Pings
 
 When we reach the data-chanel-done stage, we inject a number `n` of ICMP Echo
 Request packets to different targets, and wait for their responses.
@@ -93,12 +183,14 @@ By default, this experiment uses `n=10`.
 As reference targets, we measure one cloud provider, the tunnel gateway itself,
 and a box in a known geolocation.
 
-## 3. urlgrabber
+## 3. URLGrabber
 
 At the moment, the experiment is fetching a small payload from a
-geolocation service via an http `GET` that retrieves a json payload. We also
-fetch a truncated payload from a well-known website that should be enough to
-capture the language code in the html document.
+geolocation service via an http `GET` that retrieves a json payload.
+
+If there are additional `URLs` specified via the `URLs` option, they will also be
+fetched through the tunnel.
+
 
 # Expected output
 
@@ -106,10 +198,13 @@ capture the language code in the html document.
 
 We include data from the following parent formats:
 
-
 - `df-000-base`: top-level keys.
+
 - `df-001-httpt`: http data format, archived within the `requests` array.
+
 - `df-005-tcpconnect`: for the `tcp_connect` key.
+
+- `df-008-netevents`: for the `network_events` array.
 
 ## Semantics
 
@@ -117,7 +212,7 @@ These are the expected `test_keys` in the output measurement (arrays have been
 abbreviated for clarity):
 
 
-```JSON
+```JavaScript
 {
     "provider": "riseup",
     "vpn_protocol": "openvpn",
@@ -127,47 +222,47 @@ abbreviated for clarity):
     "bootstrap_time": 1.5671859910000001,
     "network_events": [
       {
-        "transaction_id": 0,
+        "x_operation_id": 0,
         "operation": "ready",
         "t": 0.12
       },
       {
-        "transaction_id": 1,
+        "x_operation_id": 1,
         "operation": "dial_done",
         "t": 515.117
       },
       {
-        "transaction_id": 2,
+        "x_operation_id": 2,
         "operation": "vpn_handshake_start",
         "t": 515.118
       },
       {
-        "transaction_id": 3,
+        "x_operation_id": 3,
         "operation": "reset",
         "t": 515.119
       },
       {
-        "transaction_id": 5,
+        "x_operation_id": 5,
         "operation": "tls_handshake_start",
         "t": 771.98
       },
       {
-        "transaction_id": 6,
+        "x_operation_id": 6,
         "operation": "tls_handshake_done",
         "t": 1041.248
       },
       {
-        "transaction_id": 7,
+        "x_operation_id": 7,
         "operation": "data_init",
         "t": 1567.111
       },
       {
-        "transaction_id": 8,
+        "x_operation_id": 8,
         "operation": "vpn_handshake_done",
         "t": 1567.114
       }
     ],
-    "last_handshake_transaction_id": 8,
+    "last_handshake_x_operation_id": 8,
     "tcp_connect": {
       "ip": "198.252.153.109",
       "port": 443,
@@ -188,6 +283,7 @@ abbreviated for clarity):
             "ttl": 121,
             "rtt": 255.168
           }
+          // ... snip ...
         ],
         "pkt_rcv": 1,
         "pkt_snt": 1,
@@ -199,7 +295,7 @@ abbreviated for clarity):
       }
     ],
     "requests": [
-    // ...
+      // ... snip ...
     ],
     "minivpn_version": "(devel)",
     "obfs4_version": "(devel)",
@@ -216,47 +312,80 @@ where:
   parameters extracted by the probe from the input `URI` (and as such, they
   should match). However, the authoritative source is the entry in the
   test-keys.
+
 - `provider` (`string`) is the entity that manages the endpoints. If it's not a
   provider known to OONI, it should be marked with a prefix starting with
   "unknown".
+
 - `vpn_protocol` (`string`): should be `openvpn`.
-- `transport` (`string`): underlying transport used by OpenVPN, one of `tcp|udp`,
+
+- `transport` (`string`): underlying transport used by OpenVPN, one of `tcp|udp`.
+
 - `remote` (`string`): IP address and port for the remote endpoint (`ipaddr:port`).
+
 - `obfuscation` (`string`): type of obfuscation in use. Currently known
-  obfuscation schemes include `none` and `obfs4`,
+  obfuscation schemes include `none` and `obfs4`.
+
 - `bootstrap_time` (`float`) is the time, in seconds, to bootstrap a VPN connection,
-- `success` (`bool`) whether all the stages in the experiment were successful,
+
+- `success` (`bool`) whether all the stages in the experiment were successful.
+
 - `success_handshake` (`bool`) signals a successful openvpn handshake.
+
 - `success_icmp` (`bool`) signals that all of the first two icmp pings replies returned
   "viable" responses (meaning, arbitrarily, < 50% packet loss).
+
 - `success_urlgrab` (`bool`) signals that we got at least one successful url
-  grab in the web-fetching part of the experiment;
+  grab in the web-fetching part of the experiment.
+
 - `minivpn_version` (`string`) contains the version of the `minivpn` library
-  that is used in the ooni probe build used for the experiment,
+  that is used in the ooni probe build used for the experiment.
+
 - `obfs4_version` (`string`) contains the version of the `obfs4` library
-  that is used in the ooni probe build used for the experiment,
-- `failure` (`string`; nullable) conforms to `df-007-errors`,
+  that is used in the ooni probe build used for the experiment.
+
+- `failure` (`string`; nullable) conforms to `df-007-errors`.
+
 - `network_events` is an array containing timing for different stages of the
   OpenVPN handshake, conforming to `df-008-netevents`:
+
     - `transaction_id` (`int`): sequential integer for the operation.
+
     - `operation` (`string`): the name for the operation.
+
     - `t` (`float`): time, in seconds, for the event marking this operation.
+
 - `last_handshake_transaction_id` (`uint8`) integer that corresponds to the
   transaction id of the last received OpenVPN handshake event.
+
 - `tcp_connect`: info about the TCP handshake (only when `transport` == `tcp`). Conforms to `df-005-tcpconnect`.
+
 - `icmp_pings` is an array containing the result for a series of `icmp` pings through the tunnel:
+
     - `target` (`string`): the IP the ICMP trains were targeting,
-    - `sequence` is an aray with the ping responses:
-        - `seq` (`int`): the sequence number for this response packet,
-        - `rtts`: (`float`): raw rtt value,
-        - `ttls`: (`int`): raw ttl value,
-    - `pkt_rcv` (`int`): how many packets were received,
-    - `pkt_snt` (`int`): how many packets were sent,
-    - `min_rtt` (`float`): the minimum value for all the pings towards this target,
-    - `max_rtt` (`float`): the maximum value for all the pings towards this target,
-    - `avg_rtt` (`float`): the average of the rtt for all the pings towards this target,
-    - `std_rtt` (`float`): the standard deviation of the rtt for all the pings towards this target,
+
+    - `sequence` is an array with the ping responses:
+
+        - `seq` (`int`): the sequence number for this response packet.
+
+        - `rtts`: (`float`): raw rtt value.
+
+        - `ttls`: (`int`): raw ttl value.
+
+    - `pkt_rcv` (`int`): how many packets were received.
+
+    - `pkt_snt` (`int`): how many packets were sent.
+
+    - `min_rtt` (`float`): the minimum value for all the pings towards this target.
+
+    - `max_rtt` (`float`): the maximum value for all the pings towards this target.
+
+    - `avg_rtt` (`float`): the average of the rtt for all the pings towards this target.
+
+    - `std_rtt` (`float`): the standard deviation of the rtt for all the pings towards this target.
+
     - `failure` (`string`; nullable): any error during the ping operation. Conforms to `df-007-errors`.
+
 - `requests` is an array of results containing the request and response for a given
   `urlgrabber` operation through the tunnel. Conforms to `df-001-httpt`.
  
@@ -643,7 +772,7 @@ where:
   "test_name": "openvpn",
   "test_runtime": 37.975210163,
   "test_start_time": "2022-11-21 17:22:11",
-  "test_version": "0.0.16"
+  "test_version": "0.0.19"
 }
 ```
 
@@ -653,8 +782,8 @@ OpenVPN does not seek to provide anonymity. An adversary can observe that a
 user is connecting to OpenVPN servers. OpenVPN servers can also determine the
 users location.
 
-Besides this, the [https://github.com/ooni/minivpn](openvpn implementation used in this experiment)
-is known to have several minor distinguisher features in
+Besides this, the [https://github.com/ooni/minivpn](openvpn implementation used
+in this experiment) is known to have several minor distinguisher features in
 comparison to the reference OpenVPN implementation. While work is being done to
 close the gap between the two implementations, a motivated adversary can in
 theory infer the usage of probing activity by means of implementation quirks.
@@ -664,7 +793,6 @@ and timing, so this should not be a high-impact concern in practice.
 # Packet capture considerations
 
 This test does not capture packets by default.
-
 
 # Status and future directions
 
