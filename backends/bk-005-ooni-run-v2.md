@@ -581,7 +581,9 @@ As such we recommend using the following addresses for OONI Run link and OONI Ru
 
 * `https://api.ooni.io/api/v1/ooni_run/{ooni_run_link_id}`
 
-Moreover, we could at some point host these links on s3 or github and have them
+# 6.0 Future work
+
+We could at some point host these links on s3 or github and have them
 be accessible via URLs in the form:
 
 * `https://raw.githubusercontent.com/ooni/run-links/master/data/{ooni_run_link_id}.json`
