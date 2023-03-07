@@ -120,6 +120,8 @@ An OONI Run link descriptor is a JSON file with the following semantics:
 
   "author": "(optional) `string` name of the creator of this OONI Run link",
 
+  "is_archived": "(optional) `bool` a boolean flag used to indicate if this OONI Run link is archived. When an OONI Run link is archived, it does not run",
+
   // `array` provides a JSON array of tests to be run.
   "nettests":[{
 
@@ -325,9 +327,9 @@ In the following sections we will specify how these operations should be done.
 By design, we don't specify a delete operation. This is because we want to
 ensure there is a permanent record of all OONI Run links that ever existed.
 
-We might however add support for rendering certain OONI Run links ineffective
-from the perspective of the application (i.e. making them not trigger any test
-runs).
+A certain OONI Run link can rendered ineffective by setting the `is_archived`
+flag to true. In this case the OONI Run link still remains available, but it
+will not lead to tests being initiated.
 
 ## 4.1 CREATE a new OONI Run link
 
