@@ -102,7 +102,7 @@ An OONI Run link descriptor is a JSON file with the following semantics:
   "name_intl": {
     "it": "Il nome del test in italiano",
   },
-  
+
   // TODO: recommend a maximum length for this field
   "short_description": "(optional) `string` short_description for the OONI Run link.",
 
@@ -115,20 +115,20 @@ An OONI Run link descriptor is a JSON file with the following semantics:
   "description_intl": {
     "it": "La descrizione del test in italiano"
   },
-  
+
   "icon": "(optional) `string` the ID of any icon part of the OONI icon set",
 
   "author": "(optional) `string` name of the creator of this OONI Run link",
 
   // `array` provides a JSON array of tests to be run.
   "nettests":[{
-  
+
     // (optional) `array` provides a JSON array of tests to be run.
     "inputs": [
       "https://example.com/",
       "https://ooni.org/"
     ],
-    
+
     // (optional) `map` options arguments provided to the specified test_name
     "options": {
       "HTTP3Enabled": true
@@ -137,27 +137,35 @@ An OONI Run link descriptor is a JSON file with the following semantics:
     // (optional) `map` settings which are sent to probe_services for retrieving the inputs vector
     // It's possible to reference user configured settings by using accessing the 
     // $settings special variable.
-    // In particular the content of the test_settings will be sent to the /api/v1/check-in call nested 
+    // In particular the content of the backend_options will be sent to the /api/v1/check-in call nested 
     // under the relative test_name.
-    "test_settings": {
+    "backend_options": {
       "category_codes": "$settings.category_codes"
     },
 
     // (optional) `bool` indicates if this test should be run as part of autoruns. Defaults to true.
     "is_background_run_enabled": true,
- 
+
     // (optional) `bool` indicates if this test should be run as part of manual runs. Defaults to true.
     "is_manual_run_enabled": true,
 
     "test_name": "web_connectivity"
   }, {
     "test_name": "openvpn",
-    "test_settings": {
+    "backend_options": {
        "provider": "riseupvpn"
     },
   }]
 }
 ```
+
+In particular values starting with the `$settings` prefix should be mapped
+based on user-configured preferences in the app.
+
+Currently the following `$settings` are defined:
+
+* `$settings.category_codes` should be replaced with the list of category codes
+  the user has enabled (ex. `["HUMR", "NEWS"]`.
 
 Based on the above specification it would be possible to re-implement the cards for the OONI Probe
 dashboard as follows.
@@ -314,10 +322,12 @@ In order to support the above workflow the OONI API needs to support the followi
 
 In the following sections we will specify how these operations should be done.
 
-TODO(discuss): Do we want to support a delete operation? I would say we probably
-do not, since a user should always have access to the OONI Run link which they
-have configured on their device, if we do support deleting them, they might be
-surprised to see it disappear from their device in the future.
+By design, we don't specify a delete operation. This is because we want to
+ensure there is a permanent record of all OONI Run links that ever existed.
+
+We might however add support for rendering certain OONI Run links ineffective
+from the perspective of the application (i.e. making them not trigger any test
+runs).
 
 ## 4.1 CREATE a new OONI Run link
 
@@ -549,7 +559,9 @@ In particular the format of the OONI Run link should be such that if the URL is
 being truncated, it should be visible to the end, as such it's recommend that we
 restrict the character set of the `ooni_run_link_id` to just numbers. Since we
 might not end up having that many OONI Run link, this also lends itself well to
-allowing users to manually type OONI Run links directly into the app.
+allowing users to manually type OONI Run links directly into the app. When manually
+typing OONI Run links, the OONI Run link might be displayed broken up into
+numbers + spaces or dashes to make it easier to type.
 
 Mobile deep links can be registered using two different methods, one is a custom
 prefix (ex. `ooni://`), the other is a custom URL prefix (ex.
