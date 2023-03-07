@@ -570,7 +570,8 @@ is more reliable, yet it has the tradeoff of not allowing us to display a web
 page when the user does not have the app installed. As such the recommended
 strategy is to encourage users to share the custom URL prefix OONI Run link, but
 on the web page itself, in the event that the app did not handle the deep link,
-have a link to the custom prefix approach to "force" the opening of the app.
+have a link to the custom prefix approach to "force" the opening of the app
+(similar to how OONI Run works now).
 
 As such we recommend using the following addresses for OONI Run link and OONI Run descriptor URLs:
 
