@@ -185,7 +185,7 @@ dashboard as follows.
          "options": {
             "MaxRuntime": "$settings.max_runtime",
          },
-         "test_settings": {
+         "backend_settings": {
             "category_codes": "$settings.category_codes"
          },
          "is_manual_run_enabled": true,
@@ -193,7 +193,7 @@ dashboard as follows.
          "test_name": "web_connectivity"
       },
       {
-         "test_settings": {
+         "backend_settings": {
             "category_codes": "$settings.category_codes"
          },
          "is_manual_run_enabled": false,
