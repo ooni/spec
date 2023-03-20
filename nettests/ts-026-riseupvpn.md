@@ -1,6 +1,6 @@
 # Specification version number
 
-2021-02-15-000
+2023-03-20-000
 
 * _status_: current
 
@@ -20,7 +20,7 @@ The ability to detect both if the RiseupVPN API and its gateways can be reached 
 
 ## Import document or import data format
 
-None. In the next iteration we will allow the user to specify a provider, the default is riseup.net.
+None. We aim to allow the user to specify a provider in a future version, the default is riseup.net.
 
 # Test description
 
@@ -44,17 +44,19 @@ The locations of RiseupVPNs endpoints are:
 
 * https://riseup.net/provider.json fetched with a GET request.
 
-* https://api.black.riseup.net:443/3/config/eip-service.json fetched with GET request, contains gateway addresses, available transports, location, ports, etc.). Versions is 3 here.
+* https://api.black.riseup.net:443/3/config/eip-service.json fetched with GET request, contains gateway addresses, available transports, location, ports, etc.. Versions is 3 here.
 
-* https://api.black.riseup.net:9001/json contains the the client's IP address, geolocation and gives a list of gateways that's the closest and/or under less stress (from other users). This can be different and change.
+* https://api.black.riseup.net:9001/json (hereafter referred to as geo service) contains the the client's IP address, geolocation and gives a list of gateways that's the closest and/or under less stress (from other users). This can be different and change.
 
-We consider RiseupVPN API to be blocked when we can't fetch a valid self-signed x509 certificate or we don't get a valid HTTP response. If fetching a valid certificate failed, the experiment will skip all subsequent tests.
+We consider RiseupVPN API to be blocked when we can't fetch the main configuration json eip-service.json.
+The failure of other API endpoints will be reported in the tests, but might related to server sided misbehavior and therefore cannot be used as an indicator for a blocked API.
+If fetching a valid certificate failed, the experiment continues without TLS verification. If the API was not reachable, a tunnel through Tor and Snowflake is attempted. That circumvention strategy simulates the actual behavior of RiseupVPNs clients. If the API is still unreachable via Tor and Snowflake, the subsequent gateway tests are skipped because the required configuration data to reach them is missing.
 
 Example output if API endpoints couldn't be reached by HTTP GET requests
 
 ```json
 {
-    "api_failure": "FAILURE STRING",
+    "api_failure": ["FAILURE STRING"],
     "api_status": "blocked",
     "ca_cert_status": true,
 }
@@ -72,7 +74,8 @@ If all parts of the API are functional and reachable then we write:
 
 ## RiseupVPN gateways test
 
-If the provider API is reachable, it provides a JSON-file which contains the IP addresses and capabilites of the VPN gateways. The reachability of gateways will be tested depending on their capabilities as described by the provider (ports, OpenVPN, obfs4) by performing TCP handshakes. If a TCP handshake fails we assume the corresponding port and transport of that gateway to be blocked and add it to the list of failing gateways. 
+If the provider API is reachable, it provides a JSON-file which contains the IP addresses and capabilites of the VPN gateways. A subset of max. three gateways will be tested: gateways that are not overloaded (deduced from the geo service) and which are part of the top two locations having most redundancy regarding obfs4 bridges.
+The reachability of gateways will be tested depending on their capabilities as described by the provider (ports, OpenVPN, obfs4) by performing TCP handshakes. If a TCP handshake fails we assume the corresponding port and transport of that gateway to be blocked and add it to the list of failing gateways.
 We consider a transport to be accessible if it was possible to connect at least to one gateway port providing that transport.
 
 Example output for reported blocked gateways:
@@ -110,7 +113,7 @@ If none of the gateways are blocked then we write:
 }
 ```
 
-If for whatever reason one or more gateway servers are overloaded, suffer a network outage or aren't reachable for other reasons, then the corresponding gateway statuses will be still shown as blocked. In order to avoid these false positives the **transport_status should be considered as the main indicator for successful censorship attempts of the VPN**.
+If for whatever reason one or more gateway servers suffer a network outage or aren't reachable for other reasons, then the corresponding gateway statuses will be still shown as blocked. In order to avoid these false positives the **transport_status should be considered as the main indicator for successful censorship attempts of the VPN**.
 
 # Expected output
 
@@ -130,7 +133,7 @@ JSON fields described above.
 
 ```
 {
-    "api_failure": "FAILURE STRING" | null,
+    "api_failure": ["FAILURE STRING"] | null,
     "api_status": "blocked"| "ok",
     "ca_cert_status": true | false,
     "transport_status":{
@@ -147,7 +150,10 @@ JSON fields described above.
 }
 ```
 
-`api_failure` can be any error string flagged with `(PE)` defined in `df-007-errors` or `invalid_ca` in case fetching a valid ca certificate failed.
+`api_failure` can be any error string flagged with `(PE)` defined in `df-007-errors` or: 
+* `invalid_ca` in case the fetched ca certificate is invalid
+* `invalid_eipservice_response` in case the fetched eip-service.json is invalid
+* `invalid_geoservice_response` in case the fetched geo service response is invalid
 
 ## Possible conclusions
 
