@@ -39,7 +39,7 @@ sequenceDiagram
     OONIAPI->>CampaignOrganizer: OONI Run link: https://run.ooni.io/v2/deadbeef
     CampaignOrganizer-->>Volunteer: Hey, can you open the link https://run.ooni.io/v2/deadbeef with OONI Probe?
     Volunteer-)OONIAPI: What is the descriptor for OONI Run link with ID "deadbeef"
-    OONIAPI->>Volunteer: Here is the descriptro for "deadbeef"
+    OONIAPI->>Volunteer: Here is the descriptor for "deadbeef"
 ```
 
 It's important to notice how, in the event that the user has the OONI Probe app
