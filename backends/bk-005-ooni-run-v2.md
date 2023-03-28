@@ -31,7 +31,7 @@ The high level workflow looks like the following:
 
 ```mermaid
 sequenceDiagram
-    actor CampaignOrganizer as Campagin Organizer
+    actor CampaignOrganizer as Campaign Organizer
     participant OONIAPI
     actor Volunteer
 
