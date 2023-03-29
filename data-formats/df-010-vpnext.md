@@ -151,7 +151,7 @@ The keys that differ from the `API` report in the previous section are:
 ### Aggregated reports
 
 VPN Providers of all sizes are welcome to report known failure or success
-rates. For that, providers SHOULD set their own infrastructure as the recipient
+rates. For that, providers MUST set their own infrastructure as the recipient
 of the NEL reports, and periodically submit aggregated reports to the OONI
 Collector.
 
