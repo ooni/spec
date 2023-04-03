@@ -100,7 +100,7 @@ An OONI Run link descriptor is a JSON file with the following semantics:
 
   // (optional) `map` of translations to language codes for the name
   "name_intl": {
-    "it": "Il nome del test in italiano",
+    "it": "Il nome dello OONI Run link in italiano",
   },
 
   // TODO: recommend a maximum length for this field
