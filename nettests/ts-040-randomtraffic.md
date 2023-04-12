@@ -12,7 +12,8 @@ An internet connection
 
 # Expected impact
 
-Ability to detect the censorship of fully-encrypted protocols which encrypt every byte of traffic in an attempt to appear completely random.
+Ability to detect the censorship of fully-encrypted protocols which encrypt every
+byte of traffic in an attempt to appear completely random.
 
 ```
 Note: This does not include TLS as TLS has a standard handshake to begin with.
@@ -24,13 +25,27 @@ None
 
 # Test description
 
-The main goal of the test is to inform the user whether or not they are experiencing censorship on connections that send fully encrypted packets that appear random, as well as to record information about censored packets in order to better understand the censorship algorithm. The test seeks to accomplish these goals by doing the following:
+The main goal of the test is to inform the user whether or not they are experiencing
+censorship on connections that send fully encrypted packets that appear random, as
+well as to record information about censored packets in order to better understand
+the censorship algorithm. The test seeks to accomplish these goals by doing the
+following:
 
-1. If no IP address is given by the user, select an IP address from the list of IP addresses in the affected range
-2. Complete a TCP handshake with the IP address and send a stream of null bytes as a control test. If this control test succeeds then proceed with the experiment, otherwise attempt the control test with a new IP address two more times or until the control test is successful. If no control test succeeds end the test and return the error.
-3. Complete a TCP handshake with the IP address and send a stream of random bytes. If this connection times out, we attempt to connect once more to check for residual censorship. If the residual censorship test results in a timeout, we end the test, record information about the blocked packet, and inform the user they are experiencing censorship. Otherwise we continue with the test
-4. Step 3 is repeated 19 more times to account for the blocking rate
-5. If no errors occurred and the test was completed, all connections are then closed and the test informs the user they are not experiencing censorship.
+1. If no IP address is given by the user, select an IP address from the list of IP 
+   addresses in the affected range
+3. Complete a TCP handshake with the IP address and send a stream of null bytes as
+   a control test. If this control test succeeds then proceed with the experiment, 
+   otherwise attempt the control test with a new IP address two more times or until
+   the control test is successful. If no control test succeeds end the test and
+   return the error.
+5. Complete a TCP handshake with the IP address and send a stream of random bytes.
+   If this connection times out, we attempt to connect once more to check for residual
+   censorship. If the residual censorship test results in a timeout, we end the test,
+   record information about the blocked packet, and inform the user they are experiencing
+   censorship. Otherwise we continue with the test
+7. Step 3 is repeated 19 more times to account for the blocking rate
+8. If no errors occurred and the test was completed, all connections are then closed
+   and the test informs the user they are not experiencing censorship.
 
 # Expected output
 
@@ -45,7 +60,8 @@ The main goal of the test is to inform the user whether or not they are experien
 * ConnectionCount: Number of successful connections
 * FinalPopcount: The popcount of the triggering packet
 * FirstSix: True if first six bytes of the final payload are printable
-* TwentyContig: True if there exist twenty contiguous bytes of printable ASCII in the final payload
+* TwentyContig: True if there exist twenty contiguous bytes of printable ASCII in
+                the final payload
 * HalfPrintable: True if at least half of the final payload is made up of printable ASCII
 * PopcountRange: True if final popcount is less than 3.4 or greater than 4.6
 * MatchesHTTP: True if fingerprinted as HTTP
@@ -56,7 +72,8 @@ The main goal of the test is to inform the user whether or not they are experien
 
 ## Possible conclusions
 
-Ability to determine if the user is experiencing censorship on fully-encrypted traffic and what packet triggered the censorship.
+Ability to determine if the user is experiencing censorship on fully-encrypted
+traffic and what packet triggered the censorship.
 
 ## Example output sample
 
