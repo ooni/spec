@@ -56,19 +56,21 @@ following:
 
 ## Semantics
 
-* Success: True if no errors occurred
-* ConnectionCount: Number of successful connections
-* FinalPopcount: The popcount of the triggering packet
-* FirstSix: True if first six bytes of the final payload are printable
-* TwentyContig: True if there exist twenty contiguous bytes of printable ASCII in
+This experiment generates a "test keys" result object containing the following keys:
+
+* success: True if no errors occurred
+* connection_count: Number of successful connections
+* final_popcount: The popcount of the triggering packet
+* first_six: True if first six bytes of the final payload are printable
+* twenty_contig: True if there exist twenty contiguous bytes of printable ASCII in
                 the final payload
-* HalfPrintable: True if at least half of the final payload is made up of printable ASCII
-* PopcountRange: True if final popcount is less than 3.4 or greater than 4.6
-* MatchesHTTP: True if fingerprinted as HTTP
-* MatchesTLS: True if fingerprinted as TLS
-* Payload: Payload of final packet
-* Censorship: False if all 20 connections succeeded
-* Error: String of error
+* half_printable: True if at least half of the final payload is made up of printable ASCII
+* popcount_range: True if final popcount is less than 3.4 or greater than 4.6
+* matches_http: True if fingerprinted as HTTP
+* matches_tls: True if fingerprinted as TLS
+* payload: Payload of final packet
+* censorship: False if all 20 connections succeeded
+* error: String of error
 
 ## Possible conclusions
 
