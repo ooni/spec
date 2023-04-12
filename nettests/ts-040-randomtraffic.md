@@ -32,19 +32,21 @@ the censorship algorithm. The test seeks to accomplish these goals by doing the
 following:
 
 1. If no IP address is given by the user, select an IP address from the list of IP 
-   addresses in the affected range
-3. Complete a TCP handshake with the IP address and send a stream of null bytes as
+   addresses in the affected range.
+2. Complete a TCP handshake with the IP address and send a stream of null bytes as
    a control test. If this control test succeeds then proceed with the experiment, 
    otherwise attempt the control test with a new IP address two more times or until
    the control test is successful. If no control test succeeds end the test and
    return the error.
-5. Complete a TCP handshake with the IP address and send a stream of random bytes.
-   If this connection times out, we attempt to connect once more to check for residual
-   censorship. If the residual censorship test results in a timeout, we end the test,
-   record information about the blocked packet, and inform the user they are experiencing
-   censorship. Otherwise we continue with the test
-7. Step 3 is repeated 19 more times to account for the blocking rate
-8. If no errors occurred and the test was completed, all connections are then closed
+3. Repeat 20 times
+    1. Complete a TCP handshake with the IP address and send a stream of random bytes.
+       If this connection times out, we attempt to connect once more to check for residual
+       censorship. 
+    2. If the residual censorship test results in a timeout, we end the test,
+       record information about the blocked packet, and inform the user they are experiencing
+       censorship. Otherwise we continue with the test. If any error other than a timeout 
+       occor the test terminates.
+5. If no errors occurred and the test was completed, all connections are then closed
    and the test informs the user they are not experiencing censorship.
 
 # Expected output
