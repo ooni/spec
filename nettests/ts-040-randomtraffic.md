@@ -65,12 +65,13 @@ This experiment generates a "test keys" result object containing the following k
 * final_popcount: The popcount of the triggering packet
 * first_six: True if first six bytes of the final payload are printable
 * twenty_contig: True if there exist twenty contiguous bytes of printable ASCII in
-                the final payload
+                 the final payload
 * half_printable: True if at least half of the final payload is made up of printable ASCII
 * popcount_range: True if final popcount is less than 3.4 or greater than 4.6
 * matches_http: True if fingerprinted as HTTP
 * matches_tls: True if fingerprinted as TLS
-* payload: Payload of final packet
+* payload: Payload of the triggering packet or final successful packet if the censorship 
+           was not triggered 
 * censorship: False if all 20 connections succeeded
 * error: String of error
 
