@@ -29,8 +29,6 @@ offending payload to trigger this form of blocking. The nettest then records the
 characteristics of the generated traffic along with whether it was blocked and 
 what are the characteristics of the payload that eventually triggered blocking.
 
-
-
 # Expected inputs
 
 None
@@ -40,18 +38,18 @@ None
 The main goal of the test is to inform the user whether or not they are experiencing
 censorship on connections that send fully encrypted packets that appear random, as
 well as to record information about censored packets in order to better understand
-the censorship algorithm. The test seeks to accomplish these goals by doing the
-following:
+the censorship algorithm. It should be noted that this experiment contains a set of 
+TCP endpoints known to possibly host circumvention servers. The test seeks to accomplish
+these goals by doing the following:
 
-1. If no IP address is given by the user, select an IP address from the list of IP 
-   addresses in the affected range.
-2. Complete a TCP handshake with the IP address and send a stream of null bytes as
+1. Select a TCP endpoint from the list of TCP endpoints in the affected range at random.
+2. Complete a TCP handshake with the TCP endpoint and send a stream of null bytes as
    a control test. If this control test succeeds then proceed with the experiment, 
-   otherwise attempt the control test with a new IP address two more times or until
+   otherwise attempt the control test with a new TCP endpoint two more times or until
    the control test is successful. If no control test succeeds end the test and
    return the error.
 3. Repeat 20 times
-    1. Complete a TCP handshake with the IP address and send a stream of random bytes.
+    1. Complete a TCP handshake with the TCP endpoint and send a stream of random bytes.
        If this connection times out, we attempt to connect once more to check for residual
        censorship. 
     2. If the residual censorship test results in a timeout, we end the test,
