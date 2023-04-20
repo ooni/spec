@@ -82,7 +82,7 @@ This experiment generates a "test keys" result object containing the following k
 * payload: Payload of the triggering packet or final successful packet if the censorship 
            was not triggered 
 * censorship: False if all 20 connections succeeded
-* error: String of error
+* failure: String of error
 
 ## Possible conclusions
 
@@ -124,7 +124,7 @@ traffic and what packet triggered the censorship.
         "matches_tls":false,
         "payload":"KLpodhNrDfHPs6cEYBe096yVZdxqZ3udlhcs/ziiC11KHXcs2LUfa/CpiiLyo2NfguJ99k+k23XWE59+lw723HpsGJUKJnHop2BLXUCVUJDektT6Hm9rYTeBtAvqPZP+LVQ+WmqpoU7OFpeM3m7mVTut2AfSaH8TPhaDG377uYXz2tvZy+Oa7d/AsLzl4DKc707x+tITtFj4V/Gg2RfaHZe4C9tH9Wujw/62PiM6IgT3IK9fXT2QB0O9ZinY9+KxwVs7AYbXhoYdMoF9+s1wIL1f1NNx/Khgx6eYovROsj4768niLIPy6ketR0jZAA1CLidDAaWOvEDc/Tgv5vHcenUR0VawQFhGTfu+J6z4GEoQoi6e+N1HqvRoLXCd/OWdgybHVBlpPc8Wr7K8xrvdMwGIGKN+rpClGiFwxLJQkptr5kr9oZmM3T9cBy2ViZjdRM7HW3c8YmrGmw0jyVDszHcl4kBHeANgOEGtAudqvoxKPbLZYxvke64wu5RGr3CUEpwAnJW4GgPvl1KSWt9n5HSC0+Lhtbrcd7iUtlufoRjHrw3IGDt+n+S4F1tvV+4cslBRcv+wlJx4zFL+We+gJSg2CUFVLqOdRgpB73lBTe1Sb2vBB1RSZ3Cn0WTwhpbFVASpDS8nnJsD+CSVmXVpOy0PxvrYLA/UY6mE0kFBfqH9oVC8A+TN0IA3/vkzwZ/P9Xs8HRP5xm6shPvpy19MD9YWSK0Co3EXUpQrt4TW4kPeMbt/Dgpxe72zcuh6N9pjp3oR1fz1ioMOIp+1yalhB3XqgYAALUzpYI1Ya2A4if9qQq9nvVdLqDKFTehxKW1+mgJ+3/I7EG+6yprd7UGuQSpc49Yg/LhBchiXhIqTcgpNNNNClnjh31UTQwYT2NjYWuWK0ijGQfDjwP9bgYOPGaUOyzjkZTnWL1ejAaa5saA3q9TzKdZoY5Pw3BbO0WXP6SH2H1hhS/dB8XQPPLnq9jHj",
         "censorship":false,
-        "error":null
+        "failure":null
     },
     "test_name":"shadowsocks",
     "test_runtime":6.178643611,
