@@ -13,11 +13,23 @@ An internet connection
 # Expected impact
 
 Ability to detect the censorship of fully-encrypted protocols which encrypt every
-byte of traffic in an attempt to appear completely random.
+byte of traffic in an attempt to appear completely random. These protocols include
+but are not limited to Shadowsocks, VMess, and Obfs4. This does not include TLS as
+TLS has a standard handshake to begin with. 
 
-```
-Note: This does not include TLS as TLS has a standard handshake to begin with.
-```
+It is important to note that this experiment is based off of the paper "How the 
+Great Firewall of China Detects and Blocks Fully Encrypted Traffic" written by
+Mingshi Wu. The paper investigated and characterized the rules used by the GFW 
+to passively block fully encrypted traffic. The nettest produces traffic which
+will be blocked by the GFW. Blocking in this context means that, once the offending 
+payload has been observed, the GFW installs rules that null-route traffic for 
+the server endpoint for a given amount of time. Blocking is also nondeterministic 
+meaning it can take multiple connections to the same destination endpoint with 
+offending payload to trigger this form of blocking. The nettest then records the 
+characteristics of the generated traffic along with whether it was blocked and 
+what are the characteristics of the payload that eventually triggered blocking.
+
+
 
 # Expected inputs
 
