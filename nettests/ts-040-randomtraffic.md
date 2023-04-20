@@ -43,11 +43,10 @@ TCP endpoints known to possibly host circumvention servers. The test seeks to ac
 these goals by doing the following:
 
 1. Select a TCP endpoint from the list of TCP endpoints in the affected range at random.
-2. Complete a TCP handshake with the TCP endpoint and send a stream of null bytes as
-   a control test. If this control test succeeds then proceed with the experiment, 
-   otherwise attempt the control test with a new TCP endpoint two more times or until
-   the control test is successful. If no control test succeeds end the test and
-   return the error.
+2. Complete a TCP handshake with the TCP endpoint as a control test. If this control test 
+   succeeds then proceed with the experiment, otherwise attempt the control test two more 
+   times with a new TCP endpoint or until the control test is successful. If none of the 
+   three control tests succeed end the test and return the error.
 3. Repeat 20 times
     1. Complete a TCP handshake with the TCP endpoint and send a stream of random bytes.
        If this connection times out, we attempt to connect once more to check for residual
