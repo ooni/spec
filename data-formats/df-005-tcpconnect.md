@@ -29,6 +29,7 @@ basic concepts.
     "status": {},
     "t0": 1.011,
     "t": 1.114,
+    "tags": [],
     "transaction_id": 1,
 
     // deprecated or unused fields
@@ -57,6 +58,9 @@ the amount of time spent performing the operation);
 - `t` (`float`): number of seconds elapsed since `measurement_start_time`
 measured in the moment in which `failure` is determined (`t - t0` gives you
 the amount of time spent performing the operation);
+
+- `tags` (`[]string`; optional): list of tags for this event. This is useful to
+understand what part of a complex measurement generated an event.
 
 - `transaction_id` (`int`; optional; since 2020-01-11): the set of operations
 to which this event belongs to (typically an HTTP transaction or a DNS
