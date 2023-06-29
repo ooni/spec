@@ -54,7 +54,8 @@ a string indicating the error, otherwise it MUST be `null`.
 - `num_bytes` (`int`; optional): number of bytes transferred by
 `read` or `write`.
 
-- `operation` (`string`): one of `connect`, `read`, and `write`.
+- `operation` (`string`): one of `bytes_received_cumulative`, `connect`, `read`,
+`read_from`, `write`, and `write_to`.
 
 - `proto` (`string`; optional): protocol for `connect` (`tcp` or `udp`).
 
@@ -74,7 +75,7 @@ to which this event belongs to (typically an HTTP transaction or a DNS
 round trip). A zero or missing value means we don't know the transaction
 to which this code belongs to.
 
-## Connection ID and Life Cycle (deprecated)
+## Connection ID and Life Cycle (obsolete and unused)
 
 When a connection is created you see a `connect` event with a
 specific `conn_id` and no failure. Subsequently you should see
