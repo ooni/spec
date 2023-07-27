@@ -83,7 +83,8 @@ SHOULD NOT use this field and SHOULD instead use distinct keys to represent
 network observations and the probe's analysis.
 
 - `failure` (`string`; nullable): if there was an error, this field is
-a string indicating the error, otherwise it MUST be `null`.
+a string indicating the error, otherwise it MUST be `null`. Some older versions of OONI Probe
+set this to `false` instead of `null`.
 
 - `success` (`bool`): true if failure is `null`, false otherwise.
 
