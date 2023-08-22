@@ -111,7 +111,7 @@ The `timeout` field changed only in its type and it should be possible to parse 
 using a language such as Python or JavaScript without major issues, since it's still
 a numeric value. Also, the timeout we set is always an integral number of seconds,
 which means that most JSON emitters (including
-Golang's JSON emitter) will emit an integer (i.e., without a serialized
+Golang's JSON emitter) will emit an integer (i.e., a serialized
 number without trailing `.0`).
 
 ## Possible conclusions
