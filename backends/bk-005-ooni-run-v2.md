@@ -1,7 +1,7 @@
 # OONI Run v2 specification
 
 * author: Norbel Ambanumben, Arturo Filastò
-* version: 2023.02.09
+* version: 2023.10.10
 * status: _draft_
 
 This document provides a functional specification for OONI Run.
@@ -137,7 +137,7 @@ An OONI Run link descriptor is a JSON file with the following semantics:
     },
 
     // (optional) `map` settings which are sent to probe_services for retrieving the inputs vector
-    // It's possible to reference user configured settings by using accessing the 
+    // It's possible to reference user configured settings by accessing the 
     // $settings special variable.
     // In particular the content of the backend_options will be sent to the /api/v1/check-in call nested 
     // under the relative test_name.
