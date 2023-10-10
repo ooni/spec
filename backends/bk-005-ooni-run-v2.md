@@ -1,7 +1,7 @@
 # OONI Run v2 specification
 
-* author: Norbel Ambanumben, Arturo Filastò
-* version: 2023.10.18
+* author: Norbel Ambanumben, Arturo Filastò, Federico Ceratto
+* version: 2023.10.25
 * status: _draft_
 
 This document provides a functional specification for OONI Run.
@@ -331,9 +331,11 @@ In order to support the above workflow the OONI API needs to support the followi
 
 * CREATE a new OONI Run link, returning the OONI Run link ID (see 4.1)
 
-* UPDATE an existing OONI Run link (see 4.2)
+* ARCHIVE an existing OONI Run link (see 4.2)
 
 * GET the OONI Run descriptor, provided an ID (4.3)
+
+* LIST/search OONI Run descriptors (4.4)
 
 In the following sections we will specify how these operations should be done.
 
@@ -346,6 +348,18 @@ will not lead to tests being initiated.
 
 ## 4.1 CREATE a new OONI Run link
 
+This creates a new oonirun link or a new version for an existing one.
+
+Then an OONI Run link is first created a new ID is assigned. In order to create
+new versions for an existing OONI Run link the argument `id` must be passed.
+Creating a new version may involve adding or changing translations, adding or
+removing tests, editing targets of existing ones or making changes to the OONI Run
+link metadata.
+
+The web UI should discourage users from making changes to the title, icon and
+descriptions of OONI Run links as to not confused volunteers that have installed
+a link.
+
 This operation will be performed by a logged in user that is interested in
 performing an OONI Run link based measurement campaign.
 
@@ -357,13 +371,19 @@ authentication should be handled.
 When you `CREATE` a new OONI RUN link, the client sends a HTTP `POST`
 request conforming to the following:
 
-`POST /api/v1/ooni_run`
+`POST /api/_/ooni_run/create` with optional `id` argument
 
 ```JavaScript
 {
 "name": "", // (required) `string` is the display name for the OONI Run link
 
+"name_intl": "" // (required) object mapping language to translated name
+
 "description": "", // (optional) `string` describing the scope of this OONI Run link system
+
+"description_intl": "" // (required) object mapping language to translated description
+
+"short_description_intl": "" // (required) object mapping language to translated short description
 
 "icon": "", // (optional) `string` the ID of any icon part of the OONI icon set
 
@@ -408,82 +428,32 @@ following JSON body:
 
 ```JavaScript
 {
-"ooni_run_link_id": "", // `string` OONI Run link identifier.
 
-"title": "",
+"oonirun_id": "", // `string` OONI Run link identifier.
 
-"description": "",
-
-"author": "",
-
-// [... rest of the OONI Run link payload]
+"v": 1,
 
 }
 ```
 
-## 4.2 UPDATE an existing OONI Run link
+## 4.2 ARCHIVE a new OONI Run link
 
-This operation will be performed by a logged in user that is interested in
-performing an OONI Run link based measurement campaign.
+This archives an existing OONI Run link.
 
-It is outside of the scope of this document to specify how registration and
-authentication should be handled.
-
-Updating an OONI Run Link means editing any of the fields of an OONI Run link
-descriptor. This may involve adding or removing tests, editing targets of
-existing ones or making changes to the OONI Run link metadata.
-
-The web UI should discourage users from making changes to the title, icon and
-descriptions of OONI Run links as to not confused volunteers that have installed
-a link.
+This operation will be performed by a logged in user that is either an admin
+or the creator of the OONI Run link.
 
 ### Request
 
-To update an OONI Run Link, the client issues a request compliant with:
+When you `ARCHIVE` a new OONI RUN link, the client sends a HTTP `POST`
+request conforming to the following:
 
-`PUT /api/v1/ooni_run/{ooni_run_link_id}`
-
-```JavaScript
-{
-"name": "", // (required) `string` is the display name for the OONI Run link
-
-"description": "", // (optional) `string` describing the scope of this OONI Run link system
-
-"icon": "", // (optional) `string` the ID of any icon part of the OONI icon set
-
-"author": "", // (optional) `string` name of the creator of this OONI Run link
-
-"nettests": // `array` provides a JSON array of tests to be run.
-   [
-      {
-         "inputs": [
-            "https://example.com/",
-            "https://ooni.org/",
-            "https://torproject.org/"
-         ],
-         "options": {
-            "HTTP3Enabled": true,
-         },
-         "test_name": "web_connectivity"
-      },
-      {
-         "test_name": "dnscheck"
-      }
-   ]
-}
-```
+`POST /api/_/ooni_run/archive/{ooni_run_link_id}`
 
 ### Response status code
 
-Upon receiving this request, the OONI Run backend:
-
-1. SHOULD check whether the `${ooni_run_id}` exists and they have permission to
-   edit it and reject the request with a `4xx` status otherwise.
-
-2. SHOULD reject the request with a `4xx` if the JSON does not
-   parse or the parsed value is not a JSON object.
-
-3. if everything is okay, returns `200` to the client (see below).
+Upon receiving a request to archive a link, the API will respond with `200`.
+The archival can be eventually consistent and performed at a later time in the database.
 
 ### Response body
 
@@ -495,15 +465,8 @@ following JSON body:
 
 ```JavaScript
 {
-"ooni_run_link_id": "", // `string` OONI Run link identifier.
 
-"title": "",
-
-"description": "",
-
-"author": "",
-
-// [... rest of the OONI Run link payload]
+"v": 1,
 
 }
 ```
@@ -519,7 +482,9 @@ As such, this request does not require any authentication.
 
 To retrieve an OONI Run link descriptor, the client issues a request compliant with:
 
-`GET /api/v1/ooni_run/{ooni_run_link_id}`
+`GET /api/_/ooni_run/fetch/{ooni_run_link_id}` with optional creation_time argument
+
+When creation_time is used a specific version will be returned.
 
 ### Response status code
 
@@ -537,32 +502,69 @@ following JSON body:
 
 ```JavaScript
 {
-"ooni_run_link_id": "", // `string` OONI Run link identifier.
+"archived": "<boolean>" // True if the OONI Run link has been archived
 
-"name": "", // (required) `string` is the display name for the OONI Run link
+"descriptor": JSON object containing the link descriptor
 
-"description": "", // (optional) `string` describing the scope of this OONI Run link system
+"descriptor_creation_time": "<string>" // Descriptor creation time
 
-"icon": "", // (optional) `string` the ID of any icon part of the OONI icon set
+"mine": "<boolean" // True if the descriptor belongs to the logged-in user.
 
-"author": "", // (optional) `string` name of the creator of this OONI Run link
+"translation_creation_time": "<string>" // Translation creation time
 
-"nettests": // `array` provides a JSON array of tests to be run.
-   [
-      {
-         "inputs": [
-            "https://example.com/",
-            "https://ooni.org/"
-         ],
-         "options": {
-            "HTTP3Enabled": true,
-         },
-         "test_name": "web_connectivity"
-      },
-      {
-         "test_name": "dnscheck"
-      }
-   ]
+"v": 1 // Response format version
+}
+```
+
+## 4.4 LIST OONI Run descriptors
+
+This operation is performed by OONI Probe clients to list descriptors of
+a certain OONI Run link given the ID.
+
+As such, this request does not require any authentication.
+
+### Request
+
+To retrieve an OONI Run link descriptor, the client issues a request compliant with:
+
+`GET /api/_/ooni_run/list` with optional arguments:
+ - "only_latest": <boolean> // Return only the latest version of each OONI Run link
+ - "include_archived": <boolean> // Include archived links
+ - "only_mine": <boolean> // Show only links owned by the current user
+ - "ids": <string> // Comma-separated OONI Run link ID numbers to filter for
+
+When creation_time is used a specific version will be returned.
+
+### Response status code
+
+Upon receiving this request, the OONI Run backend returns `200`
+
+### Response body
+
+In case of success (i.e. `200` response), the OONI Run Service MUST return the
+following JSON body:
+
+```JavaScript
+{
+"descriptors": // Array of the following JSON objects:
+
+    "author": "<string>" // Author
+
+    "id": "<integer>" // Descriptor ID
+
+    "icon": "<string>" // Icon
+
+    "short_description": "<string>" // Short description
+
+    "archived": "<boolean>" // True if the OONI Run link has been archived
+
+    "descriptor_creation_time": "<string>" // Descriptor creation time
+
+    "mine": "<boolean" // True if the descriptor belongs to the logged-in user
+
+    "translation_creation_time": "<string>" // Translation creation time
+
+"v": 1
 }
 ```
 
