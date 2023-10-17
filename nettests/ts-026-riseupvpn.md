@@ -1,6 +1,6 @@
 # Specification version number
 
-2021-02-15-000
+2023-10-17-000
 
 * _status_: current
 
@@ -20,11 +20,11 @@ The ability to detect both if the RiseupVPN API and its gateways can be reached 
 
 ## Import document or import data format
 
-None. In the next iteration we will allow the user to specify a provider, the default is riseup.net.
+None. We aim to allow the user to specify a provider in a future version, the default is riseup.net.
 
 # Test description
 
-This test will check if a LEAP platform based VPN service like RiseupVPN is working as exepected. The experiment consists of two parts.
+This test will check if a LEAP-platform-based VPN service like RiseupVPN is working as exepected. The experiment consists of two parts.
 
 1. The RiseupVPN API service
 
@@ -40,77 +40,46 @@ Using the self signed certificate, we perform a HTTP GET requests to test the re
 
 The locations of RiseupVPNs endpoints are:
 
-* https://black.riseup.net/ca.crt fetched with a GET request, contains the self-signed x509 certificate used in all subsequent requests.
+* `https://black.riseup.net/ca.crt` fetched with a GET request, contains the self-signed X.509 certificate used in all subsequent requests.
 
-* https://riseup.net/provider.json fetched with a GET request.
+* `https://riseup.net/provider.json` fetched with a GET request.
 
-* https://api.black.riseup.net:443/3/config/eip-service.json fetched with GET request, contains gateway addresses, available transports, location, ports, etc.). Versions is 3 here.
+* `https://api.black.riseup.net:443/3/config/eip-service.json` fetched with GET request, contains gateway addresses, available transports, location, ports, etc. We use version 3 here.
 
-* https://api.black.riseup.net:9001/json contains the the client's IP address, geolocation and gives a list of gateways that's the closest and/or under less stress (from other users). This can be different and change.
+* `https://api.black.riseup.net:9001/json` (hereafter referred to as geo service) contains the the client's IP address, geolocation and gives a list of gateways that's the closest and/or under less stress (from other users). This can be different and change.
 
-We consider RiseupVPN API to be blocked when we can't fetch a valid self-signed x509 certificate or we don't get a valid HTTP response. If fetching a valid certificate failed, the experiment will skip all subsequent tests.
+Since ooniprobe 3.19.0 and version 0.3.0 of the riseupvpn experiment, any failure in accessing any of the above services as well as any failure in using the self-signed X.509 certificate causes the experiment to stop early, without measuring gateways.
 
-Example output if API endpoints couldn't be reached by HTTP GET requests
+Before ooniprobe 3.19.0, the data format was different as documented by [a previous version of this document](https://github.com/ooni/spec/blob/f9bbaa83541484e3e509ffa56dd87b0c5ce8c31a/nettests/ts-026-riseupvpn.md).
 
-```json
+Since ooniprobe 3.19.0, if all parts of the API are functional and reachable then we write:
+
+```JSON
 {
-    "api_failure": "FAILURE STRING",
-    "api_status": "blocked",
+    "api_failures": null,
     "ca_cert_status": true,
 }
 ```
 
-If all parts of the API are functional and reachable then we write:
+In case any API fails, we include its error into the `api_failures` string list, as follows:
 
-```json
+```JSON
 {
-    "api_failure": null,
-    "api_status": "ok",
+    "api_failures": ["failure1", "failure2"],
     "ca_cert_status": true,
 }
 ```
+
+The `ca_cert_status` boolean flag is set to false if we cannot get the self-signed X.509 certificate or the returned bytes are not a valid PEM-encoded certificate.
 
 ## RiseupVPN gateways test
 
-If the provider API is reachable, it provides a JSON-file which contains the IP addresses and capabilites of the VPN gateways. The reachability of gateways will be tested depending on their capabilities as described by the provider (ports, OpenVPN, obfs4) by performing TCP handshakes. If a TCP handshake fails we assume the corresponding port and transport of that gateway to be blocked and add it to the list of failing gateways. 
-We consider a transport to be accessible if it was possible to connect at least to one gateway port providing that transport.
+If the provider API is reachable, it provides a JSON-file which contains the IP addresses and capabilites of the VPN gateways.
+The reachability of gateways will be tested depending on their capabilities as described by the provider (ports, OpenVPN, obfs4) by performing TCP handshakes. If a TCP handshake fails we assume the corresponding port and transport of that gateway to be blocked.
 
-Example output for reported blocked gateways:
+Before ooniprobe 3.19.0, the data format was different as documented by [a previous version of this document](https://github.com/ooni/spec/blob/f9bbaa83541484e3e509ffa56dd87b0c5ce8c31a/nettests/ts-026-riseupvpn.md).
 
-```json
-{
-    "transport_status":{
-        "obfs4":"blocked",
-        "openvpn":"ok"
-    },
-   "failing_gateways":[
-         {
-            "ip":"192.0.2.1",
-            "port":443,
-            "transport_type":"openvpn"
-         },
-         {
-            "ip":"192.0.2.1",
-            "port":23042,
-            "transport_type":"obfs4"
-         }
-    ]
-}
-```
-
-If none of the gateways are blocked then we write:
-
-```json
-{
-    "transport_status":{
-        "obfs4": "ok",
-        "openvpn":"ok"
-    },
-    "failing_gateways": null
-}
-```
-
-If for whatever reason one or more gateway servers are overloaded, suffer a network outage or aren't reachable for other reasons, then the corresponding gateway statuses will be still shown as blocked. In order to avoid these false positives the **transport_status should be considered as the main indicator for successful censorship attempts of the VPN**.
+Since ooniprobe 3.19.0, we do not write any toplevel key associated with riseupvpn gateways.
 
 # Expected output
 
@@ -130,24 +99,16 @@ JSON fields described above.
 
 ```
 {
-    "api_failure": "FAILURE STRING" | null,
-    "api_status": "blocked"| "ok",
+    "api_failures": ["FAILURE STRING"] | null,
     "ca_cert_status": true | false,
-    "transport_status":{
-        "obfs4": "ok" | "blocked",
-        "openvpn":"ok" | "blocked"
-    },
-    "failing_gateways": [
-         {
-            "ip":"IP ADDRESS STRING",
-            "port": 0-65535,
-            "transport_type":"openvpn" | "obfs4"
-         },
-    ] | null
 }
 ```
 
-`api_failure` can be any error string flagged with `(PE)` defined in `df-007-errors` or `invalid_ca` in case fetching a valid ca certificate failed.
+`api_failure` can be any error string flagged with `(PE)` defined in `df-007-errors` or:
+
+* `invalid_ca` in case the fetched ca certificate is invalid
+* `invalid_eipservice_response` in case the fetched eip-service.json is invalid
+* `invalid_geoservice_response` in case the fetched geo service response is invalid
 
 ## Possible conclusions
 
@@ -161,7 +122,7 @@ The providers will be able to learn if, where and which gateways are blocked. De
 
 # Privacy considerations
 
-A network observer will learn that these servers exist and see that you try to use OpenVPN.
+A network observer will learn that these servers exist and see that you are connecting to some IP addresses.
 
 # Status and future directions
 
