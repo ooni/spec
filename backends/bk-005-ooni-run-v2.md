@@ -1,7 +1,7 @@
 # OONI Run v2 specification
 
 * author: Norbel Ambanumben, Arturo Filastò
-* version: 2023.10.10
+* version: 2023.10.18
 * status: _draft_
 
 This document provides a functional specification for OONI Run.
@@ -132,6 +132,9 @@ An OONI Run link descriptor is a JSON file with the following semantics:
     ],
 
     // (optional) `map` options arguments provided to the specified test_name
+    //
+    // Note: this field is currently experimental. A future version of the specification
+    // may modify the field name or its semantics if we discover it needs changes.
     "options": {
       "HTTP3Enabled": true
     },
@@ -141,14 +144,23 @@ An OONI Run link descriptor is a JSON file with the following semantics:
     // $settings special variable.
     // In particular the content of the backend_options will be sent to the /api/v1/check-in call nested 
     // under the relative test_name.
+    //
+    // Note: this field is currently experimental. A future version of the specification
+    // may modify the field name or its semantics if we discover it needs changes.
     "backend_options": {
       "category_codes": "$settings.category_codes"
     },
 
     // (optional) `bool` indicates if this test should be run as part of autoruns. Defaults to true.
+    //
+    // Note: this field is currently experimental. A future version of the specification
+    // may modify the field name or its semantics if we discover it needs changes.
     "is_background_run_enabled": true,
 
     // (optional) `bool` indicates if this test should be run as part of manual runs. Defaults to true.
+    //
+    // Note: this field is currently experimental. A future version of the specification
+    // may modify the field name or its semantics if we discover it needs changes.
     "is_manual_run_enabled": true,
 
     "test_name": "web_connectivity"
@@ -162,7 +174,8 @@ An OONI Run link descriptor is a JSON file with the following semantics:
 ```
 
 In particular values starting with the `$settings` prefix should be mapped
-based on user-configured preferences in the app.
+based on user-configured preferences in the app. (Note also that this is
+currently an experimental feature that we may change in the future.)
 
 Currently the following `$settings` are defined:
 
