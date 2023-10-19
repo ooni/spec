@@ -6,7 +6,7 @@
 
 # Specification name
 
-STUN reachability (`stun_reachability`)
+STUN reachability (`stunreachability`)
 
 # Test preconditions
 
