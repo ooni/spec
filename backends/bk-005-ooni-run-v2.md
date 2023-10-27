@@ -329,7 +329,7 @@ dashboard as follows.
 
 In order to support the above workflow the OONI API needs to support the following operations:
 
-* CREATE a new OONI Run link, returning the OONI Run link ID (see 4.1)
+* CREATE a new OONI Run link or a translation or other changes (see 4.1)
 
 * ARCHIVE an existing OONI Run link (see 4.2)
 
@@ -346,21 +346,31 @@ A certain OONI Run link can rendered ineffective by setting the `is_archived`
 flag to true. In this case the OONI Run link still remains available, but it
 will not lead to tests being initiated.
 
+Various API responses contain a response format version. It is an incremental
+integer under the key "v". It is used to identify changes in the response format
+and enable non-breaking rollouts of updates of the API and the web UIs.
+
 ## 4.1 CREATE a new OONI Run link
 
-This creates a new oonirun link or a new version for an existing one.
+This creates a new oonirun link or a new version or translation for an existing one.
 
-Then an OONI Run link is first created a new ID is assigned. In order to create
-new versions for an existing OONI Run link the argument `id` must be passed.
+Then an OONI Run link is first created a new ID is assigned by the API. In order to create
+new versions for an existing OONI Run link the argument `ooni_run_link_id` must be passed.
 Creating a new version may involve adding or changing translations, adding or
 removing tests, editing targets of existing ones or making changes to the OONI Run
 link metadata.
 
+The API allows keeping history of previous versions in case users want to fetch an older
+version instead of the latest one.
+
+The fields `descriptor_creation_time` and `translation_creation_time` are automatically
+updated by the API as needed when a new version or a new translation are created.
+
 The web UI should discourage users from making changes to the title, icon and
-descriptions of OONI Run links as to not confused volunteers that have installed
+descriptions of OONI Run links as to not confuse volunteers that have installed
 a link.
 
-This operation will be performed by a logged in user that is interested in
+This operation will be performed by a logged-in user that is interested in
 performing an OONI Run link based measurement campaign.
 
 It is outside of the scope of this document to specify how registration and
@@ -371,7 +381,9 @@ authentication should be handled.
 When you `CREATE` a new OONI RUN link, the client sends a HTTP `POST`
 request conforming to the following:
 
-`POST /api/_/ooni_run/create` with optional `id` argument
+`POST /api/_/ooni_run/create` with optional `ooni_run_link_id` argument
+
+If the optional argument is not passed, the API will automatically assign a new OONI Run link ID.
 
 ```JavaScript
 {
@@ -429,7 +441,7 @@ following JSON body:
 ```JavaScript
 {
 
-"oonirun_id": "", // `string` OONI Run link identifier.
+"ooni_run_link_id": "", // `string` OONI Run link identifier.
 
 "v": 1,
 
