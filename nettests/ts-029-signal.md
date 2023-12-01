@@ -1,6 +1,6 @@
 # Specification version number
 
-2023-11-13-001
+2023-12-01-001
 
 -   _status_: current
 
@@ -30,18 +30,10 @@ GET request.
 
 The endpoints used for testing are the following:
 
--   https://api.backup.signal.org/
--   https://cdn.signal.org/
--   https://cdn2.signal.org/
--   https://cdn3.signal.org/
 -   https://cdsi.signal.org/
 -   https://chat.signal.org/
 -   https://sfu.voip.signal.org/
 -   https://storage.signal.org/
--   https://svr2.signal.org/
--   https://ud-chat.signal.org/
--   https://updates.signal.org/
--   https://updates2.signal.org/
 
 The TLS certificate is validated against these custom Signal CA root certificates:
 
