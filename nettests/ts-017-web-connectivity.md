@@ -729,7 +729,7 @@ case of failure. The client code must correctly handle this case.
 
 # Limitations
 
-Web Connectivity does not handle correctly server-side blocking with `http://` like URLs, as
+Web Connectivity does not correctly handle server-side blocking with `http://` like URLs, as
 documented by [ooni/probe#2661](https://github.com/ooni/probe/issues/2661).
 
 # Privacy considerations
