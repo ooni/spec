@@ -1,6 +1,6 @@
 # Specification version number
 
-2021-11-05-001
+2024-01-30-001
 
 * _status_: current
 
@@ -726,6 +726,11 @@ case of failure. The client code must correctly handle this case.
   "test_version": "0.4.0"
 }
 ```
+
+# Limitations
+
+Web Connectivity does not correctly handle server-side blocking with `http://` like URLs, as
+documented by [ooni/probe#2661](https://github.com/ooni/probe/issues/2661).
 
 # Privacy considerations
 
