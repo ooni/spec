@@ -35,6 +35,7 @@ ooni/probe-engine and/or Mesurement Kit.
 |`"dns_servfail_error"`          |  PE   |`Servfail` RCode in DNS response|
 |`"dns_temporary_failure"`       |  PE   |temporary DNS failure (mostly when using Windows' `getaddrinfo`)|
 |`"eof_error"`                   |MK, PE |unexpected EOF on connection|
+|`"http_invalid_redirect_location_host"` | PE | the HTTP redirect URL has a malformed or empty host component|
 |`"http_request_failed"`         |MK, PE |HTTP request did not return a successful response code|
 |`"host_unreachable"`            |MK, PE |`EHOSTUNREACH`|
 |`"generic_timeout_error"`       |PL,MK,PE |error returned when a timeout expires|
