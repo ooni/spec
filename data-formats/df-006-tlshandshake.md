@@ -68,7 +68,10 @@ the TLS handshake.
 DER format represented using the `BinaryData` object described
 in `df-001-httpt.md`.
 
-- `server_name`: (`string`; optional): server_name used as part of the TLS handshake.
+- `server_name`: (`string`; optional): server name used as part of the TLS handshake
+to verify the server's X.509 certificate. Note that, when this field contains an IP
+address rather than a domain name, the corresponding value is not included in the TLS
+ClientHello as described by [RFC 6066, Section 3](https://datatracker.ietf.org/doc/html/rfc6066#section-3);
 
 - `t0` (`float`): number of seconds elapsed since `measurement_start_time`
 measured in the moment in which we started the operation (`t - t0` gives you
