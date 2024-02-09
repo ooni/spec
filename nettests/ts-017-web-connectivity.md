@@ -83,6 +83,164 @@ miniooni web_connectivity --input-file INPUT_FILE.txt
 
 ## Test description
 
+Since we first specified this test, its implementation has changed significantly
+to improve our censorship detection capabilities. We will first describe the "classic"
+algorithm implemented by Web Connectivity and then proceed to explain extensions
+designed to collect additional information useful to characterize censorship.
+
+### The classic algorithm
+
+Web Connectivity is strictly divided in three steps:
+
+1. a "connectivity" step for the URL provided in input, which aims to figure out
+all the IP addresses for the domain inside the URL and to measure all the related
+TCP endpoints, possibly including TLS handshakes;
+
+2. a "web" step where we fetch the URL provided in input, obtain a web page, and
+try to determine whether such a web page is legitimate for the URL;
+
+3. local processing of the measurement results.
+
+The "web" step will follow redirects. Additionally, the "web" step MAY use a
+connection previously established by the "connectivity" check for perform the
+first HTTP or HTTPS request for the URL. Connections for subsequent redirect
+are handled by the "web" step.
+
+### The connectivity step
+
+The following diagram illustrates what happens during the "connectivity" step
+when the input URL is `https://example.com`:
+
+```mermaid
+stateDiagram-v2
+  state "S2: getaddrinfo('www.example.com')" as S2
+  [*] --> S2
+  S1 --> S2
+  state S3 <<fork>>
+  S2 --> S3
+  state "S4: connect('93.184.216.34:443')" as S4
+  state "S5: connect('93.184.216.33:443')" as S5
+  S3 --> S4
+  S3 --> S5
+  state "S6: tls_handshake('example.com')" as S6
+  state "S7: tls_handshake('example.com')" as S7
+  S4 --> S6
+  S5 --> S7
+  state "S8: call_test_helper_api\naddrs = ['93.184.216.34', '93.184.216.33']\nurl = 'https://example.com/'" as S8
+  S3 --> S8
+  state S9 <<join>>
+  S6 --> S9
+  S7 --> S9
+  S8 --> S9
+  S9 --> [*]
+```
+
+Here's a description of the diagram:
+
+1. OONI Probe resolves the `www.example.com` domain name using getaddrinfo, which
+leads to either discovering a list of IP addresses or an error;
+
+2. we start operations in parallel: for each IP address we resolved we perform a TCP connect
+and a TLS handshake; in the meanwhile, we also invoke the test helper API and ask the test helper
+to collect information for the `https://example.com/` URL and to perform a control measurement
+for the IP addresses that we have resolved;
+
+3. we wait for all parallel operations to complete and then finish the connectivity step.
+
+We perform the DNS lookup using `getaddrinfo`, which uses the default resolver configured on
+the system. We record the results of the DNS lookup using `df-002-dnst.md` inside the `"queries"` key
+of the measurement result. In the same vein, we store the results of TCP connect using the
+`df-005-tcpconnect.md` format inside the `"tcp_connect"` key. And, we store the TLS handshake
+results under `"tls_handshakes"` using the `df-006-tlshandshake.md` data format. When performing
+TLS handshakes, we also record the I/O events occurring inside `"network_events"` using the
+`df-008-netevents.md` data format.
+
+All the DNS, TCP, and TLS events collected during this step will additionally have the
+`tcptls_experiment` tag inside of their `"tags"`. Additionally, if the experiment is collecting
+events for subsequent DNS, TCP, and TLS operations, they will have the `depth=0` tag as
+explained more in detail in the following section.
+
+If the URL uses the `http://` scheme, the algorithm is as follows:
+
+```mermaid
+stateDiagram-v2
+  state "S2: getaddrinfo('www.example.com')" as S2
+  [*] --> S2
+  S1 --> S2
+  state S3 <<fork>>
+  S2 --> S3
+  state "S4: connect('93.184.216.34:443')" as S4
+  state "S5: connect('93.184.216.33:443')" as S5
+  S3 --> S4
+  S3 --> S5
+  state "S8: call_test_helper_api\naddrs = ['93.184.216.34', '93.184.216.33']\nurl = 'https://example.com/'" as S8
+  S3 --> S8
+  state S9 <<join>>
+  S4 --> S9
+  S5 --> S9
+  S8 --> S9
+  S9 --> [*]
+```
+
+Basically the main difference is that we do not perform TLS handshakes by default.
+
+Whenever an implementation of Web Connectivity wants to perform additional checks beyond
+the ones specified by the classic algorithm, it should provide extra tags to mark the
+data collected for the purpose of fetching the body (which is the ultimate objective of
+the classic algorithm) and distinguish them from additional checks. To this end we use the
+`fetch_body=` tag as follows:
+
+* the results of all the operations aimed at fetching the body has `fetch_body=true`;
+
+* all the other results have the `fetch_body=false` tag.
+
+### The web step
+
+We perform an HTTP GET request for the input URL. As previously stated, this step MAY use
+a connection already established by the connectivity step.
+
+The headers sent in the request shall be a recent and popular user agent at the time when the
+measurement is run. We will configure cookies and honour them during redirects.
+
+In case of 302, 303, 307, or 308 redirect, this step will follow it, performing additional
+getaddrinfo lookups, TCP connects, and TLS handshakes as needed.
+
+We will record the requests and responses in the `"requests"` key using the data format
+specified by the `df-001-httpd.md` data format.
+
+We MAY also record information about additional DNS lookups, TCP connects, and TLS handshakes
+inside the respective keys named in the previous section. If we're doing this, we will also
+include a tag inside the `"tags"` field of each data format specifying the redirect depth. The
+first events included in the measurement (i.e., the ones collected by the connectivity step)
+will have the `depth=0` tag. The first redirect will use the `depth=1` tag, and so on.
+
+Whenever multiple connections are available to issue an HTTP request, we will just choose
+a single connection, and close all the remaining connections.
+
+### Local processing of the measurement results
+
+At the end of the web step, Web Connectivity analyzes its measurements and compares them to
+the similar measurements returned by the test helper API.
+
+For historical reasons and backward compatibility, Web Connectivity MUST only use the
+measurements collected by the classical algorithm to produce a measurement result. New
+versions of Web Connectivity MAY produce additional measurement results but those results
+MUST use different test keys than the one used by the classic algorithm.
+
+Therefore, the first order of business is to single out the DNS, TCP, TLS, and HTTP
+results produced by the classic algorithm. If the version of Web Connectivity is `< 0.5`,
+then all measurements results were produced by the classic algorithm. Otherwise, Web
+Connectivity MUST implement the following algorithm to obtain a subset of the measurement
+that is compatible with the classic algorithm:
+
+1. it MUST only consider the DNS lookups using getaddrinfo;
+
+2. it MUST only consider TCP connects and TLS handshakes using IP addresses
+that were discovered using getaddrinfo;
+
+3. it MUST only consider the TCP connects, TLS handshakes, and HTTP requests
+with the `fetch_body=true` tag.
+
 This test is divided into multiple steps that will each test a different aspect
 related to connectivity of the website in question.
 
