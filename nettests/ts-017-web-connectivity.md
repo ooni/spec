@@ -1,29 +1,31 @@
-# Specification version number
+# Web Connectivity
 
-2024-01-30-001
+## Specification version number
+
+2024-02-09-001
 
 * _status_: current
 
-# Specification name
+## Specification name
 
 Web connectivity
 
-# Test preconditions
+## Test preconditions
 
 * An internet connection
 
 * The ability to reach the web connectivity test helper
 
-# Expected impact
+## Expected impact
 
 Ability to detect if the websites being tested are reachable and if not what is
 the reason for them not being reachable.
 
-# Expected inputs
+## Expected inputs
 
 A list of URLs to be tested.
 
-## Semantics
+### Semantics
 
 One URL per line:
 
@@ -35,7 +37,7 @@ http://example-3.com/path2/
 
 URLs may contain IP addresses rather than domain names.
 
-# Test description
+## Test description
 
 This test is divided into multiple steps that will each test a different aspect
 related to connectivity of the website in question.
@@ -194,9 +196,9 @@ It will be set to "http" when DNS resolutions are consistent and we are able to
 establish a TCP connection to the IP ports of the control, but the HTTP request
 either fails or we get back a HTTP response that contains a page we don't expect.
 
-# Expected output
+## Expected output
 
-## Parent data format
+### Parent data format
 
 We will include data following these data formats.
 
@@ -211,7 +213,7 @@ particular that the `tcp_connect` key will include the "blocked" key, whose
 specification is not part of `df-005-tcpconnect` and is instead given
 above.
 
-## Semantics
+### Semantics
 
 In addition to the above specified common data formats, we will also
 include into the "test_keys" the following keys:
@@ -232,7 +234,7 @@ include into the "test_keys" the following keys:
 The meaning of the keys "dns_consistency", "body_length_match" and
 "tcp_connect" is described above.
 
-The flag "accessible" indicates if the site in question is overall considered to be 
+The flag "accessible" indicates if the site in question is overall considered to be
 accessible (DNS responses are consistent, at least one TCP connection succeeds
 and the expected HTTP response is received).
 
@@ -243,7 +245,7 @@ responses (dns), TCP/IP based blocking (tcp_ip), if the HTTP page response
 matches with the control (http-diff) or if the HTTP response failed
 (http-failure).
 
-## Possible conclusions
+### Possible conclusions
 
 * If the URL in question is accessible from the network vantage point of the probe.
 
@@ -251,7 +253,7 @@ matches with the control (http-diff) or if the HTTP response failed
   tampering, TCP connection RST/IP blocking or by having a transparent HTTP
   proxy.
 
-## Example control request and response
+### Example control request and response
 
 Request:
 
@@ -321,7 +323,7 @@ Response:
 *Note*: the control will set `body_length` and `status_code` to `-1` in
 case of failure. The client code must correctly handle this case.
 
-## Example output sample
+### Example output sample
 
 ```JSON
 {
@@ -727,12 +729,12 @@ case of failure. The client code must correctly handle this case.
 }
 ```
 
-# Limitations
+## Limitations
 
 Web Connectivity does not correctly handle server-side blocking with `http://` like URLs, as
 documented by [ooni/probe#2661](https://github.com/ooni/probe/issues/2661).
 
-# Privacy considerations
+## Privacy considerations
 
 If the client has opted out of providing the ASN of their probe the
 client_resolver key may give away extra information pertaining to the network
