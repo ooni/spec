@@ -115,7 +115,6 @@ when the input URL is `https://example.com`:
 stateDiagram-v2
   state "S2: getaddrinfo('www.example.com')" as S2
   [*] --> S2
-  S1 --> S2
   state S3 <<fork>>
   S2 --> S3
   state "S4: connect('93.184.216.34:443')" as S4
@@ -166,7 +165,6 @@ If the URL uses the `http://` scheme, the algorithm is as follows:
 stateDiagram-v2
   state "S2: getaddrinfo('www.example.com')" as S2
   [*] --> S2
-  S1 --> S2
   state S3 <<fork>>
   S2 --> S3
   state "S4: connect('93.184.216.34:443')" as S4
