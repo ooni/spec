@@ -297,9 +297,6 @@ matches with the control (http-diff) or if the HTTP response failed
   tampering, TCP connection RST/IP blocking or by having a transparent HTTP
   proxy.
 
-*Note*: the control will set `body_length` and `status_code` to `-1` in
-case of failure. The client code must correctly handle this case.
-
 ## Limitations
 
 Web Connectivity does not correctly handle server-side blocking with `http://` like URLs, as
@@ -382,6 +379,9 @@ Response:
     }
 }
 ```
+
+*Note*: the control will set `body_length` and `status_code` to `-1` in
+case of failure. The client code must correctly handle this case.
 
 ### Example output sample
 
