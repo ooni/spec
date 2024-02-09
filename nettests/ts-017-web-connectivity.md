@@ -297,6 +297,22 @@ matches with the control (http-diff) or if the HTTP response failed
   tampering, TCP connection RST/IP blocking or by having a transparent HTTP
   proxy.
 
+## Limitations
+
+Web Connectivity does not correctly handle server-side blocking with `http://` like URLs, as
+documented by [ooni/probe#2661](https://github.com/ooni/probe/issues/2661).
+
+## Privacy considerations
+
+If the client has opted out of providing the ASN of their probe the
+client_resolver key may give away extra information pertaining to the network
+they are on if they are using the resolver of their ISP. (Modern probes do
+not allow users to opt-out of providing their ANSs because that would
+lead to non-actionable measurements. It can still occurr that the ASN is
+set to zero if the ANS resolution mechanism failed.)
+
+## Examples
+
 ### Example control request and response
 
 Request:
@@ -772,17 +788,3 @@ case of failure. The client code must correctly handle this case.
   "test_version": "0.4.0"
 }
 ```
-
-## Limitations
-
-Web Connectivity does not correctly handle server-side blocking with `http://` like URLs, as
-documented by [ooni/probe#2661](https://github.com/ooni/probe/issues/2661).
-
-## Privacy considerations
-
-If the client has opted out of providing the ASN of their probe the
-client_resolver key may give away extra information pertaining to the network
-they are on if they are using the resolver of their ISP. (Modern probes do
-not allow users to opt-out of providing their ANSs because that would
-lead to non-actionable measurements. It can still occurr that the ASN is
-set to zero if the ANS resolution mechanism failed.)
