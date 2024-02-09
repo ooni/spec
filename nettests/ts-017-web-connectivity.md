@@ -8,13 +8,13 @@
 
 ## Specification name
 
-Web connectivity
+Web Connectivity (`web_connectivity`)
 
 ## Test preconditions
 
-* An internet connection
+* An internet connection;
 
-* The ability to reach the web connectivity test helper
+* The ability to reach the Web Connectivity test helper (TH).
 
 ## Expected impact
 
@@ -23,19 +23,63 @@ the reason for them not being reachable.
 
 ## Expected inputs
 
-A list of URLs to be tested.
+In OONI Probe CLI, you typically run Web Connectivity without any input as follows:
 
-### Semantics
-
-One URL per line:
-
-```
-http://example-1.com/
-http://example-2.com/path1/
-http://example-3.com/path2/
+```bash
+ooniprobe run websites
 ```
 
-URLs may contain IP addresses rather than domain names.
+which is equivalent to running the corresponding "websites" group in the Android,
+iOS, and Desktop OONI Probe applications.
+
+When you run Web Connectivity like this, it connects to the OONI backend before the beginning
+of the experiment and fetches the list of URLs to be tested. In such a case, you're getting
+a list of URLs based on [the citizenlab/test-lists repository](https://github.com/citizenlab/test-lists)
+that depend on your contry code, network, and URL prioritization algorithms.
+
+It is also possible for you to manually specify which URLs to test from the command line:
+
+```bash
+ooniprobe run websites --input https://www.example.com/
+```
+
+It is also possible for you to create a file containing one line for each URL, e.g.:
+
+```text
+https://example.com/
+https://example.it/path/
+https://example.fr/a/longer/path/
+https://example.org/
+https://93.184.216.34/
+https://[2606:2800:220:1:248:1893:25c8:1946]:443/
+```
+
+and run it as follows:
+
+```bash
+ooniprobe run websites --input-file FILE_NAME.txt
+```
+
+URLs may contain IP addresses rather than domain names. IPv6 addresses should be quoted using `[`
+and `]` when there's a need to also specify a port (as illustrated above).
+
+When using the `miniooni` research client, you run Web Connectivity as follows:
+
+```bash
+miniooni web_connectivity
+```
+
+You measure a specific URL as follows:
+
+```bash
+miniooni web_connectivity --input https://www.example.com/
+```
+
+You measure a list of URLs as follows:
+
+```bash
+miniooni web_connectivity --input-file INPUT_FILE.txt
+```
 
 ## Test description
 
