@@ -118,7 +118,7 @@ IP address, the first step of the algorithm just returns the IP address itself
 and we're using the address to validate the TLS certificate.
 
 The following diagram illustrates the set of operations performed by the
-classic algorithm when the input URL uses the `http` URL scheme:
+classic algorithm for `http://` like URLs:
 
 ```mermaid
 stateDiagram-v2
