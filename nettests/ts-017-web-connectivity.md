@@ -212,7 +212,7 @@ and so on, until we reach the final response.
 
 If Web Connectivity uses extensions, data collected by the classic algorithm
 MUST have the `classic` tag set, to distinguish it from ancillary data we
-collected. Additionally, Web Connectivity SHOULD use the `depth=N` tag for
+collect. Additionally, Web Connectivity SHOULD use the `depth=N` tag for
 each collected event, to map each piece of collected data to the proper
 redirect depth. Additionally, Web Connectivity SHOULD use the `transaction_id`
 field defined by all the relevant data formats such that:
