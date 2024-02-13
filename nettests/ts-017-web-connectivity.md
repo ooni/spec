@@ -86,7 +86,8 @@ miniooni web_connectivity --input-file INPUT_FILE.txt
 Since we first specified this test, its implementation has changed significantly
 to improve our censorship detection capabilities. We will first describe the "classic"
 algorithm implemented by Web Connectivity and then proceed to explain extensions
-designed to collect additional information useful to characterize censorship.
+designed to collect additional information useful to characterize censorship. After
+that, we specify how OONI Probe should process Web Connectivity results.
 
 ### The classic algorithm
 
@@ -320,6 +321,104 @@ the system resolver fails.
 
 ### Local processing of the measurement results
 
+Web Connectivity measurement comples when one of the following happens:
+
+1. we obtain a response that is not a redirect (the "final" webpage);
+
+2. a network or protocol error prevents us from obtaining a final webpage (e.g., DNS
+failures, TCP connect failures, TLS failures, HTTP failures);
+
+3. we are redirected ten times.
+
+At the end of the measurement, Web Connectivity has the following information
+obtained either from the classic algorithm of the test helper:
+
+1. DNS lookups for the domain in the input URL (obtained using the "classic" tag if
+the Web Connectivity implementation is using extensions);
+
+2. TCP connects and possibly TLS handshakes towards TCP endpoints constructed
+using the URL scheme or an explicit port and IP addresses resolved by "classic"
+DNS lookups (we can extract these results by checking for the "classic" tag
+if Web Connectivity implements extensions);
+
+3. the result of each HTTP request that was attempted possibly including
+a final webpage (right inside the `requests` key);
+
+4. results of DNS lookups, TCP connects, and TLS handshakes performed by the
+test helper and directly comparable to the information in point 2 above;
+
+5. the final response obtained by the test helper, if any;
+
+6. possibly additional information obtained through extensions.
+
+Based on this information, Web Connectivity needs to compute the following test keys.
+
+| Name                | Type                     | Semantics                                                           |
+| ------------------- | ------------------------ | ------------------------------------------------------------------- |
+| `dns_consistency`   | `optional<string>`       | Consistency of probe and TH DNS lookups                             |
+| `body_proportion`   | `optional<float64>`      | Proportion of probe and TH's final response body                    |
+| `body_length_match` | `optional<bool>`         | Whether probe and TH's final response body are close enough in size |
+| `headers_match`     | `optional<bool>`         | Whether probe and TH's final response are similar enough            |
+| `status_code_match` | `optional<bool>`         | Whether probe and TH's final response status code are ~same         |
+| `title_match`       | `optional<bool>`         | Whether probe and TH's final response title are ~same               |
+| `blocking`          | `optional<string\|bool>` | Whether we think there's some blocking in place                     |
+| `accessible`        | `optional<bool>`         | Whether the website seems accessible                                |
+
+We discuss each of these test keys in subsequent subsections.
+
+#### Preliminary definitions
+
+Given a specific operation (e.g., a TLS handshake with a given TLS endpoint), we define:
+
+**Expected success**: when both the probe and the TH succeeded in performing the given operation.
+
+**Unexpected failure**: when the probe failed and the TH succeeded.
+
+**Expected failure**: when both the probe and the TH failed.
+
+**Unexpected success**: when the probe succeded and the TH failed.
+
+**Unexplained success**: when the probe succeeded and there is no related TH data.
+
+**Unexplained failure**: when the probe failed and there is no related TH data.
+
+With these definitions, we can now discuss specific test keys.
+
+#### dns_consistency
+
+Broadly speaking, we set this field to `"consistent"` when the result of "classic" DNS lookups
+match the DNS lookups performed by the TH. This include cases where we see expected
+successes and failures as well as cases where the resolved addresses are compatible with
+each other. This is the case when one of the following happens:
+
+1. the probe and the TH failed in similar ways (we do not perform exact failure
+matching because of potential implementation differences of resolvers);
+
+2. the probe and the TH resolved the same addresses;
+
+3. the addresses resolved by the probe and the TH belong to the same ASNs;
+
+4. we did not see any bogon resolved exclusively by the probe;
+
+5. (optionally) we concluded that some IP addresses are good because we could
+successfully perform TLS handshakes for the domain we were using.
+
+The specifics of how this rough algorithm is actually implemented depends on the
+current implementation, which we may tweak to avoid false positives.
+
+Conversely, we set this field to `"inconsistent"` when we could not determine
+consistency and we were able to resolve some IP addresses.
+
+We leave this field `null` if we cannot determine either consistency or
+inconsistency of the results. Historically, Web Connectivity also assigned
+the `"reverse_match"` value when there was a match between the reverse
+lookup of addresses resolved by the probe and the TH.
+
+Keep in mind that, for backwards compatibility, this result only evaluates
+the results of the "classic" measurement algorithm. A future version of Web
+Connectibity may include additional fields taking into account the results
+of all the DNS lookups performed while measuring the URL.
+
 At the end of the web step, Web Connectivity analyzes its measurements and compares them to
 the similar measurements returned by the test helper API.
 
@@ -327,6 +426,14 @@ For historical reasons and backward compatibility, Web Connectivity MUST only us
 measurements collected by the classical algorithm to produce a measurement result. New
 versions of Web Connectivity MAY produce additional measurement results but those results
 MUST use different test keys than the one used by the classic algorithm.
+
+#### body_proportion
+
+TODO
+
+XXX
+
+HINC SUNT LEONES
 
 Therefore, the first order of business is to single out the DNS, TCP, TLS, and HTTP
 results produced by the classic algorithm. If the version of Web Connectivity is `< 0.5`,
