@@ -330,7 +330,7 @@ DNS, TCP, TLS, or HTTP failure);
 
 3. we are redirected ten times.
 
-At the end of the measurement, Web Connectivity has the following information
+At the end of the measurement, we have the following information
 obtained either from the classic algorithm of the test helper:
 
 1. DNS lookups for the domain in the input URL (obtained using the "classic" tag if
