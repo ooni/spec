@@ -90,26 +90,59 @@ designed to collect additional information useful to characterize censorship.
 
 ### The classic algorithm
 
-Web Connectivity is strictly divided in three steps:
+As a preliminary step, Web Connectivity performs an IPv4 resolver lookup step. We
+query for `whoami.v4.powerdns.org` using the system resolver and we record the resolved
+address in the `client_resolver` test key. Because modern OONI Probe implementations
+perform this step by default for all experiments, modern implementations of
+Web Connectivity read the `client_resolver` from the measurement session.
 
-1. a "connectivity" step for the URL provided in input, which aims to figure out
-all the IP addresses for the domain inside the URL and to measure all the related
-TCP endpoints, possibly including TLS handshakes;
+The classic algorithm then performs a "connectivity" step. The objectives of this
+step are the following:
 
-2. a "web" step where we fetch the URL provided in input, obtain a web page, and
-try to determine whether such a web page is legitimate for the URL;
+1. to discover IP addresses for the domain in the URL to measure using a specific
+resolver (typically, the "system" resolver using `getaddrinfo` on Unix, so that we
+end up using the DNS resolver configured on the system);
 
-3. local processing of the measurement results.
+2. to query the Web Connectivity test helper (TH) providing to it the URL to
+measure as well as the resolved IP addresses, such that we can have control
+information to which to compare our measurement;
 
-The "web" step will follow redirects. Additionally, the "web" step MAY use a
-connection previously established by the "connectivity" check for perform the
-first HTTP or HTTPS request for the URL. Connections for subsequent redirect
-are handled by the "web" step.
+3. to establish TCP connections to all the endpoints constructed by appending
+the scheme's port (`80` for `http` and `443` for `tcp`) or the custom port
+specified in the URL;
 
-### The connectivity step
+4. when the URL scheme is `https`, to perform TLS handshakes with each endpoint
+using as the SNI the hostname included into the URL.
 
-The following diagram illustrates what happens during the "connectivity" step
-when the input URL is `https://example.com`:
+We call this step the "connectivity" step because it determines whether we're
+able to establish connections with the IP addresses associated with the domain
+inside the URL. When the URL does not contain a domain but rather contains an
+IP address, the first step of the algorithm just returns the IP address itself
+and we're using the address to validate the TLS certificate.
+
+The following diagram illustrates the set of operations performed by the
+classic algorithm when the input URL uses the `http` URL scheme:
+
+```mermaid
+stateDiagram-v2
+  state "S2: getaddrinfo('www.example.com')" as S2
+  [*] --> S2
+  state S3 <<fork>>
+  S2 --> S3
+  state "S4: connect('93.184.216.34:443')" as S4
+  state "S5: connect('93.184.216.33:443')" as S5
+  S3 --> S4
+  S3 --> S5
+  state "S8: call_test_helper_api\naddrs = ['93.184.216.34', '93.184.216.33']\nurl = 'https://example.com/'" as S8
+  S3 --> S8
+  state S9 <<join>>
+  S4 --> S9
+  S5 --> S9
+  S8 --> S9
+  S9 --> [*]
+```
+
+Instead, the following diagram illustrates what happens for `https` URLs:
 
 ```mermaid
 stateDiagram-v2
@@ -134,86 +167,141 @@ stateDiagram-v2
   S9 --> [*]
 ```
 
-Here's a description of the diagram:
+When the `getaddrinfo` lookup fails, the algorithm still invokes the test helper
+and passes an empty array of discovered IP addresses. Historically, Web Connectivity
+does not use IP addresses returned by the test helper to measure connectivity, but
+modern versions do that as an extension to the classic algorithm.
 
-1. OONI Probe resolves the `www.example.com` domain name using getaddrinfo, which
-leads to either discovering a list of IP addresses or an error;
+Once the connectivity step is done, the "web" step begins. Web Connectivity constructs
+an HTTP client configured to honour cookies and to follow redirects, and uses such a client
+to fetch the webpage associated with the input URL. Historically, Web Connectivity
+does not reuse the connections established during the connectivity step to GET
+the provided URL, but modern versions do that as an extension, to avoid the need
+to re-establish new connections from scratch.
 
-2. we start operations in parallel: for each IP address we resolved we perform a TCP connect
-and a TLS handshake; in the meanwhile, we also invoke the test helper API and ask the test helper
-to collect information for the `https://example.com/` URL and to perform a control measurement
-for the IP addresses that we have resolved;
+The connectivity step collects these information:
 
-3. we wait for all parallel operations to complete and then finish the connectivity step.
+1. `df-002-dns.md` information (stored inside the `queries` test key) when
+performing the DNS lookup. Note that, when the URL already contains an IP address,
+Web Connectivity MAY fake a DNS lookup, however, this behavior is NOT RECOMMENDED
+because it could possibly lead to confusion when looking at the data.
 
-We perform the DNS lookup using `getaddrinfo`, which uses the default resolver configured on
-the system. We record the results of the DNS lookup using `df-002-dnst.md` inside the `"queries"` key
-of the measurement result. In the same vein, we store the results of TCP connect using the
-`df-005-tcpconnect.md` format inside the `"tcp_connect"` key. And, we store the TLS handshake
-results under `"tls_handshakes"` using the `df-006-tlshandshake.md` data format. When performing
-TLS handshakes, we also record the I/O events occurring inside `"network_events"` using the
-`df-008-netevents.md` data format.
+2. `df-005-tcpconnect.md` information (stored inside the `tcp_connect` test
+key) and with the `tcptls_handshake` tag set. This information pertains to all
+the TCP connect operations performed during the connectivity step.
 
-All the DNS, TCP, and TLS events collected during this step will additionally have the
-`tcptls_experiment` tag inside of their `"tags"`. Additionally, if the experiment is collecting
-events for subsequent DNS, TCP, and TLS operations, they will have the `depth=0` tag as
-explained more in detail in the following section.
+3. `df-006-tlshandshake.md` information (stored inside the `tls_handshakes`
+test key) and with the `tcptls_handshake` tag set. This information pertains
+to all the TLS handshake operations performed during the connectivity step.
 
-If the URL uses the `http://` scheme, the algorithm is as follows:
+4. `df-008-netevents.md` information (stored inside the `network_events` test
+key) and with the `tcptls_handshake` tag set. This information pertains to all
+the socket I/O operations performed during the TLS handshakes of the connectivity
+step and could be used by the OONI backend to detect throttling.
 
-```mermaid
-stateDiagram-v2
-  state "S2: getaddrinfo('www.example.com')" as S2
-  [*] --> S2
-  state S3 <<fork>>
-  S2 --> S3
-  state "S4: connect('93.184.216.34:443')" as S4
-  state "S5: connect('93.184.216.33:443')" as S5
-  S3 --> S4
-  S3 --> S5
-  state "S8: call_test_helper_api\naddrs = ['93.184.216.34', '93.184.216.33']\nurl = 'https://example.com/'" as S8
-  S3 --> S8
-  state S9 <<join>>
-  S4 --> S9
-  S5 --> S9
-  S8 --> S9
-  S9 --> [*]
-```
+The web step collects these information:
 
-Basically the main difference is that we do not perform TLS handshakes by default.
+1. `df-001-http.md` information (stored inside the `requests` test key). This
+information pertains to the HTTP requests performed during the web step and MUST
+be sorted in time-reverse order. That is, in case of redirects, the last request
+in the list is the 0-th redirect, the penultimate request is the 1-th redirect,
+and so on, until we reach the final response.
 
-Whenever an implementation of Web Connectivity wants to perform additional checks beyond
-the ones specified by the classic algorithm, it should provide extra tags to mark the
-data collected for the purpose of fetching the body (which is the ultimate objective of
-the classic algorithm) and distinguish them from additional checks. To this end we use the
-`fetch_body=` tag as follows:
+If Web Connectivity uses extensions, data collected by the classic algorithm
+MUST have the `classic` tag set, to distinguish it from ancillary data we
+collected. Additionally, Web Connectivity SHOULD use the `depth=N` tag for
+each collected event, to map each piece of collected data to the proper
+redirect depth. Additionally, Web Connectivity SHOULD use the `transaction_id`
+field defined by all the relevant data formats such that:
 
-* the results of all the operations aimed at fetching the body has `fetch_body=true`;
+1. each DNS lookup (including the ones performed as part of extensions)
+SHOULD be on its own `transaction_id`).
 
-* all the other results have the `fetch_body=false` tag.
+2. Each operation using the same TCP endpoint as part of the same redirect
+depth SHOULD also be assigned its own `transaction_id`.  That is, a TCP
+connect to, say, `1.2.3.4:443/tcp` SHOULD have the same `transaction_id` of
+the corresponding TLS handshakes, network events, and requests.
 
-### The web step
+When Web Connectivity performs additional measurements (e.g., extra TLS
+handshakes to validate IP addresses), it SHOULD use the `fetch_body=bool`
+tag such that:
 
-We perform an HTTP GET request for the input URL. As previously stated, this step MAY use
-a connection already established by the connectivity step.
+1. all the operations whose objective is to _possibly_ fetch a response
+body according to the classic algorithm have `fetch_body=true`;
 
-The headers sent in the request shall be a recent and popular user agent at the time when the
-measurement is run. We will configure cookies and honour them during redirects.
+2. all the other operations (e.g., the ones to verify whether IP
+addresses are valid for the domain) have `fetch_body=false`.
 
-In case of 302, 303, 307, or 308 redirect, this step will follow it, performing additional
-getaddrinfo lookups, TCP connects, and TLS handshakes as needed.
+Having discussed the main algorithm, let us now discuss extensions.
 
-We will record the requests and responses in the `"requests"` key using the data format
-specified by the `df-001-httpd.md` data format.
+### Extension E001: TLS-based IP address validation
 
-We MAY also record information about additional DNS lookups, TCP connects, and TLS handshakes
-inside the respective keys named in the previous section. If we're doing this, we will also
-include a tag inside the `"tags"` field of each data format specifying the redirect depth. The
-first events included in the measurement (i.e., the ones collected by the connectivity step)
-will have the `depth=0` tag. The first redirect will use the `depth=1` tag, and so on.
+When the input URL has the `http` scheme, Web Connectivity additionally
+performs TLS handshakes with the corresponding `443/tcp` endpoints to
+gather data useful to determine whether the resolved IP addresses are valid
+for the domain. A successful TLS handhsake, in fact, tells us that the
+resolved IP addresses are valid for the domain.
 
-Whenever multiple connections are available to issue an HTTP request, we will just choose
-a single connection, and close all the remaining connections.
+### Extension E002: Connectivity step for each redirect
+
+Rather than using an HTTP client to fetch a webpage, Web Connectivity
+follows the following algorithm:
+
+1. at the end of the connectivity step, choose one endpoint that
+we could successfully establish a connection to and issue a GET request
+using such an endpoint, collecting `df-001-http.md` data as well as
+I/O data according to `df-008-netevents.md`;
+
+2. parse the response and follow the redirect included into the `Location`
+in case of `302`, `303,` `307`, and `308` redirects, making sure we also
+record and honour the cookies;
+
+3. follow the redirect by performing a connectivity step for the
+redirect URL, then perform the first step of this algorithm with one
+of the connections that we could successfully establish;
+
+4. stop with an error after ten redirects.
+
+If using this algorithm, the implementation MUST correctly set the
+`depth=N` tag. By using this algorithm, we get extra visibility of
+what happens in the network while following reedirecs.
+
+### Extension E003: DNS-over-UDP lookups
+
+Whenever it performs a DNS lookup, Web Connectivity runs a secondary
+lookup using a DNS-over-UDP resolver using a well-known endpoint (e.g.,
+`8.8.8.8:53`). The results collected by this resolver MUST NOT set
+the `classic` tag, given that this is an extension.
+
+Web Connectivity SHOULD try to prioritize IP addresses resolved
+by the system resolver but MAY use IP addresses used by this extra
+resolver when the system resolver fails.
+
+### Extension E004: DNS-over-HTTPS lookups
+
+Web Connectivity MAY run a lookup using a DNS-over-HTTPS resolver
+such as `https://dns.google/dns-query`. Web Connectivity saves the
+results of this lookup inside the `queries` test key.
+
+When analyzing data, be careful that the results of this lookup
+are not informative of DNS blocking of the input URL's domain, rather,
+they show whether the given DNS-over-HTTPS endpoint is blocked.
+
+In other words, this extension enables us to perform opportunistic
+DNS-over-HTTPS measurements as part of Web Connectivity.
+
+Web Connectivity SHOULD try to prioritize IP addresses resolved
+by the system resolver but MAY use IP addresses used by this extra
+resolver when the system resolver fails.
+
+### Extension E005: Using addresses resolved by the TH
+
+The Web Connectivity test helper (TH) returns the results of
+looking up the hostname inside the URL.
+
+Web Connectivity SHOULD try to prioritize IP addresses resolved
+by the TH but MAY use IP addresses used by this extra resolver when
+the system resolver fails.
 
 ### Local processing of the measurement results
 
@@ -418,7 +506,7 @@ above.
 In addition to the above specified common data formats, we will also
 include into the "test_keys" the following keys:
 
-```
+```text
 {
     "client_resolver": "xxx.xxx.xxx.xxx",
     "dns_consistency": "consistent" | "reverse_match" | "inconsistent",
