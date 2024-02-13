@@ -109,10 +109,7 @@ information to which to compare our measurement;
 
 3. to establish TCP connections to all the endpoints constructed by appending
 the scheme's port (`80` for `http` and `443` for `tcp`) or the custom port
-specified in the URL;
-
-4. when the URL scheme is `https`, to perform TLS handshakes with each endpoint
-using as the SNI the hostname included into the URL.
+specified in the URL and, OPTIONALLY, TLS connections using the URL's domain as the SNI.
 
 We call this step the "connectivity" step because it determines whether we're
 able to establish connections with the IP addresses associated with the domain
