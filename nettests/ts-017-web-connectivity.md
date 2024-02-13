@@ -397,9 +397,6 @@ matching because of potential implementation differences of resolvers);
 5. (optionally) we concluded that some IP addresses are good because we could
 successfully perform TLS handshakes for the domain we were using.
 
-The specifics of how this rough algorithm is actually implemented depends on the
-current implementation, which we may tweak to avoid false positives.
-
 Conversely, we set this field to `"inconsistent"` when we could not determine
 consistency and we were able to resolve some IP addresses. We leave this field `null`
 if we cannot determine either consistency or inconsistency of the results. Historically,
