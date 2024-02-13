@@ -239,7 +239,7 @@ extra TLS handshakes performed when the URL is `http://` like).
 
 Having discussed the main algorithm, let us now discuss extensions.
 
-### Extension E001: TLS-based IP address validation
+#### Extension E001: TLS-based IP address validation
 
 When the input URL has the `http` scheme, Web Connectivity additionally
 performs TLS handshakes with the corresponding `443/tcp` endpoints to
@@ -247,7 +247,10 @@ gather data useful to determine whether the resolved IP addresses are valid
 for the domain. A successful TLS handhsake, in fact, tells us that the
 resolved IP addresses are valid for the domain.
 
-### Extension E002: Connectivity step for each redirect
+Web Connectivity MUST NOT perform these checks when the input URL is
+`http://` and an explicit port has been specified.
+
+#### Extension E002: Connectivity step for each redirect
 
 Rather than using an HTTP client to fetch a webpage, Web Connectivity
 follows the following algorithm:
@@ -263,15 +266,19 @@ record and honour the cookies;
 
 3. follow the redirect by performing a connectivity step for the
 redirect URL, then perform the first step of this algorithm with one
-of the connections that we could successfully establish;
+of the connections that we could successfully establish except that
+we do not issue a TH request in this case (motivation: the current TH
+protocol cannot accommodate for that and we would create excessive
+TH load if we did that);
 
 4. stop with an error after ten redirects.
 
-If using this algorithm, the implementation MUST correctly set the
+When using this algorithm, the implementation MUST correctly set the
 `depth=N` tag. By using this algorithm, we get extra visibility of
-what happens in the network while following reedirecs.
+what happens in the network while following redirects. Hence, we are
+able to more precisely figure out the reason for blocking.
 
-### Extension E003: DNS-over-UDP lookups
+#### Extension E003: DNS-over-UDP lookups
 
 Whenever it performs a DNS lookup, Web Connectivity runs a secondary
 lookup using a DNS-over-UDP resolver using a well-known endpoint (e.g.,
@@ -282,7 +289,7 @@ Web Connectivity SHOULD try to prioritize IP addresses resolved
 by the system resolver but MAY use IP addresses used by this extra
 resolver when the system resolver fails.
 
-### Extension E004: DNS-over-HTTPS lookups
+#### Extension E004: DNS-over-HTTPS lookups
 
 Web Connectivity MAY run a lookup using a DNS-over-HTTPS resolver
 such as `https://dns.google/dns-query`. Web Connectivity saves the
@@ -299,7 +306,7 @@ Web Connectivity SHOULD try to prioritize IP addresses resolved
 by the system resolver but MAY use IP addresses used by this extra
 resolver when the system resolver fails.
 
-### Extension E005: Using addresses resolved by the TH
+#### Extension E005: Using addresses resolved by the TH
 
 The Web Connectivity test helper (TH) returns the results of
 looking up the hostname inside the URL.
