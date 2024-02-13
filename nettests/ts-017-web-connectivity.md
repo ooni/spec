@@ -401,20 +401,10 @@ The specifics of how this rough algorithm is actually implemented depends on the
 current implementation, which we may tweak to avoid false positives.
 
 Conversely, we set this field to `"inconsistent"` when we could not determine
-consistency and we were able to resolve some IP addresses.
-
-We leave this field `null` if we cannot determine either consistency or
-inconsistency of the results. Historically, Web Connectivity also assigned
-the `"reverse_match"` value when there was a match between the reverse
-lookup of addresses resolved by the probe and the TH.
-
-Keep in mind that, for backwards compatibility, this result only evaluates
-the results of the "classic" measurement algorithm. A future version of Web
-Connectibity may include additional fields taking into account the results
-of all the DNS lookups performed while measuring the URL.
-
-At the end of the web step, Web Connectivity analyzes its measurements and compares them to
-the similar measurements returned by the test helper API.
+consistency and we were able to resolve some IP addresses. We leave this field `null`
+if we cannot determine either consistency or inconsistency of the results. Historically,
+Web Connectivity also assigned the `"reverse_match"` value when there was a match
+between the reverse lookup of addresses resolved by the probe and the TH.
 
 For historical reasons and backward compatibility, Web Connectivity MUST only use the
 measurements collected by the classical algorithm to produce a measurement result. New
