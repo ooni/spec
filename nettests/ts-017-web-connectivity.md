@@ -360,23 +360,21 @@ Based on this information, Web Connectivity needs to compute the following test 
 | `blocking`          | `optional<string\|bool>` | Whether we think there's some blocking in place                     |
 | `accessible`        | `optional<bool>`         | Whether the website seems accessible                                |
 
-We discuss each of these test keys in subsequent subsections.
-
 #### Preliminary definitions
 
 Given a specific operation (e.g., a TLS handshake with a given TLS endpoint), we define:
 
-**Expected success**: when both the probe and the TH succeeded in performing the given operation.
+* _Expected success_: when both the probe and the TH succeeded in performing the given operation.
 
-**Unexpected failure**: when the probe failed and the TH succeeded.
+* _Unexpected failure_: when the probe failed and the TH succeeded.
 
-**Expected failure**: when both the probe and the TH failed.
+* _Expected failure_: when both the probe and the TH failed.
 
-**Unexpected success**: when the probe succeded and the TH failed.
+* _Unexpected success_: when the probe succeded and the TH failed.
 
-**Unexplained success**: when the probe succeeded and there is no related TH data.
+* _Unexplained success_: when the probe succeeded and there is no related TH data.
 
-**Unexplained failure**: when the probe failed and there is no related TH data.
+* _Unexplained failure_: when the probe failed and there is no related TH data.
 
 With these definitions, we can now discuss specific test keys.
 
