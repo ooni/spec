@@ -346,7 +346,7 @@ test helper and directly comparable to the corresponding "classic" results;
 
 6. possibly additional non-"classic" information obtained through extensions.
 
-Based on this information, Web Connectivity needs to compute the following test keys.
+Based on this information, Web Connectivity needs to compute the following test keys:
 
 | Name                | Type                     | Semantics                                                           |
 | ------------------- | ------------------------ | ------------------------------------------------------------------- |
