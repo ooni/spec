@@ -397,7 +397,7 @@ matching because of potential implementation differences of resolvers);
 5. (optionally) we concluded that some IP addresses are good because we could
 successfully perform TLS handshakes for the domain we were using.
 
-Conversely, we set this field to `"inconsistent"` when we could not determine
+We set this field to `"inconsistent"` when we could not determine
 consistency and we were able to resolve some IP addresses. We leave this field `null`
 if we cannot determine either consistency or inconsistency of the results. Historically,
 Web Connectivity also assigned the `"reverse_match"` value when there was a match
