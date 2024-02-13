@@ -337,8 +337,7 @@ At the end of the measurement, we have the following information:
 2. "classic" TCP connects and possibly TLS handshakes towards TCP endpoints constructed
 using the URL scheme or an explicit port and IP addresses resolved by "classic" DNS lookups;
 
-3. the result of each HTTP request that was attempted possibly including
-a final webpage (right inside the `requests` key);
+3. the result of each HTTP request that was attempted possibly including a final webpage;
 
 4. results of DNS lookups, TCP connects, and TLS handshakes performed by the
 test helper and directly comparable to the corresponding "classic" results;
