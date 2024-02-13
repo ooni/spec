@@ -99,7 +99,7 @@ Web Connectivity read the `client_resolver` from the measurement session.
 The classic algorithm then performs a "connectivity" step. The objectives of this
 step are the following:
 
-1. to discover IP addresses for the domain in the URL to measure using a specific
+1. to discover IP addresses for the domain in the input URL using a specific
 resolver (typically, the "system" resolver using `getaddrinfo` on Unix, so that we
 end up using the DNS resolver configured on the system);
 
