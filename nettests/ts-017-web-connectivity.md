@@ -401,7 +401,8 @@ Conversely, we set this field to `"inconsistent"` when we could not determine
 consistency and we were able to resolve some IP addresses. We leave this field `null`
 if we cannot determine either consistency or inconsistency of the results. Historically,
 Web Connectivity also assigned the `"reverse_match"` value when there was a match
-between the reverse lookup of addresses resolved by the probe and the TH.
+between the reverse lookup of addresses resolved by the probe and the TH, but current
+versions do not implement this functionality currently.
 
 For historical reasons and backward compatibility, Web Connectivity MUST only use the
 measurements collected by the classical algorithm to produce a measurement result. New
