@@ -282,7 +282,8 @@ able to more precisely figure out the reason for blocking.
 
 Whenever it performs a DNS lookup, Web Connectivity runs a secondary
 lookup using a DNS-over-UDP resolver using a well-known endpoint (e.g.,
-`8.8.8.8:53`). The results collected by this resolver MUST NOT set
+`8.8.8.8:53`). Web Connectivity saves the results of this lookup inside the
+`queries` test key. The results collected by this resolver MUST NOT set
 the `classic` tag, given that this is an extension.
 
 Web Connectivity SHOULD try to prioritize IP addresses resolved
@@ -293,7 +294,9 @@ resolver when the system resolver fails.
 
 Web Connectivity MAY run a lookup using a DNS-over-HTTPS resolver
 such as `https://dns.google/dns-query`. Web Connectivity saves the
-results of this lookup inside the `queries` test key.
+results of this lookup inside the `queries` test key. The results
+collected by this resolver MUST NOT set the `classic` tag, given
+that this is an extension.
 
 When analyzing data, be careful that the results of this lookup
 are not informative of DNS blocking of the input URL's domain, rather,
