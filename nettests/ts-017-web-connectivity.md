@@ -96,6 +96,8 @@ address in the `client_resolver` test key. Because modern OONI Probe implementat
 perform this step by default for all experiments, modern implementations of
 Web Connectivity read the `client_resolver` from the measurement session.
 
+#### The connectivity step
+
 The classic algorithm then performs a "connectivity" step. The objectives of this
 step are the following:
 
@@ -169,12 +171,16 @@ and passes an empty array of discovered IP addresses. Historically, Web Connecti
 does not use IP addresses returned by the test helper to measure connectivity, but
 modern versions do that as an extension to the classic algorithm.
 
+#### The web step
+
 Once the connectivity step is done, the "web" step begins. Web Connectivity constructs
 an HTTP client configured to honour cookies and to follow redirects, and uses such a client
 to fetch the webpage associated with the input URL. Historically, Web Connectivity
 does not reuse the connections established during the connectivity step to GET
 the provided URL, but modern versions do that as an extension, to avoid the need
 to re-establish new connections from scratch.
+
+#### Data collected by these steps
 
 The connectivity step collects these information:
 
