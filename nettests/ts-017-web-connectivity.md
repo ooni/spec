@@ -218,7 +218,7 @@ redirect depth. Additionally, Web Connectivity SHOULD use the `transaction_id`
 field defined by all the relevant data formats such that:
 
 1. each DNS lookup (including the ones performed as part of extensions)
-SHOULD be on its own `transaction_id`).
+SHOULD be on its own `transaction_id`.
 
 2. Each operation using the same TCP endpoint as part of the same redirect
 depth SHOULD also be assigned its own `transaction_id`.  That is, a TCP
@@ -230,10 +230,12 @@ handshakes to validate IP addresses), it SHOULD use the `fetch_body=bool`
 tag such that:
 
 1. all the operations whose objective is to _possibly_ fetch a response
-body according to the classic algorithm have `fetch_body=true`;
+body according to the classic algorithm have `fetch_body=true` (e.g., all
+the TLS handshakes related to the input `https://` like URL);
 
 2. all the other operations (e.g., the ones to verify whether IP
-addresses are valid for the domain) have `fetch_body=false`.
+addresses are valid for the domain) have `fetch_body=false` (e.g., the
+extra TLS handshakes performed when the URL is `http://` like).
 
 Having discussed the main algorithm, let us now discuss extensions.
 
