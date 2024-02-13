@@ -130,7 +130,7 @@ stateDiagram-v2
   state "S5: connect('93.184.216.33:443')" as S5
   S3 --> S4
   S3 --> S5
-  state "S8: call_test_helper_api\naddrs = ['93.184.216.34', '93.184.216.33']\nurl = 'https://example.com/'" as S8
+  state "S8: call_test_helper_api\naddrs = ['93.184.216.34', '93.184.216.33']\nurl = 'http://example.com/'" as S8
   S3 --> S8
   state S9 <<join>>
   S4 --> S9
