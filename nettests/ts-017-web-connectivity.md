@@ -383,7 +383,7 @@ With these definitions, we can now discuss specific test keys.
 Broadly speaking, we set this field to `"consistent"` when the result of "classic" DNS lookups
 match the DNS lookups performed by the TH. This include cases where we see expected
 successes and failures as well as cases where the resolved addresses are compatible with
-each other. This is the case when one of the following happens:
+each other; i.e., the case when one of the following happens:
 
 1. the probe and the TH failed in similar ways (we do not perform exact failure
 matching because of potential implementation differences of resolvers);
