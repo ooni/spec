@@ -323,7 +323,7 @@ the system resolver fails.
 
 Web Connectivity measurement completes when one of the following happens:
 
-1. we obtain a response that is not a redirect (the "final" webpage);
+1. we obtain a response that is not a redirect (the "final" response);
 
 2. a network or protocol error prevents us from obtaining a final webpage (e.g., a
 DNS, TCP, TLS, or HTTP failure);
