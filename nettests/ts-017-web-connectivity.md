@@ -87,7 +87,10 @@ Since we first specified this test, its implementation has changed significantly
 to improve our censorship detection capabilities. We will first describe the "classic"
 algorithm implemented by Web Connectivity and then proceed to explain extensions
 designed to collect additional information useful to characterize censorship. After
-that, we specify how OONI Probe should process Web Connectivity results.
+that, we specify how OONI Probe should process Web Connectivity results, to determine
+whether the URL is accessible or there's blocking in place. (Keep in mind that the
+OONI backend is better positioned to determine blocking and accessibility given that
+it can cross compare with other measurements and apply fingerprints.)
 
 ### The classic algorithm
 
