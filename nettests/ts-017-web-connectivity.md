@@ -330,26 +330,22 @@ DNS, TCP, TLS, or HTTP failure);
 
 3. we are redirected ten times.
 
-At the end of the measurement, we have the following information
-obtained either from the classic algorithm of the test helper:
+At the end of the measurement, we have the following information:
 
-1. DNS lookups for the domain in the input URL (obtained using the "classic" tag if
-the Web Connectivity implementation is using extensions);
+1. "classic" DNS lookups for the domain in the input URL;
 
-2. TCP connects and possibly TLS handshakes towards TCP endpoints constructed
-using the URL scheme or an explicit port and IP addresses resolved by "classic"
-DNS lookups (we can extract these results by checking for the "classic" tag
-if Web Connectivity implements extensions);
+2. "classic" TCP connects and possibly TLS handshakes towards TCP endpoints constructed
+using the URL scheme or an explicit port and IP addresses resolved by "classic" DNS lookups;
 
 3. the result of each HTTP request that was attempted possibly including
 a final webpage (right inside the `requests` key);
 
 4. results of DNS lookups, TCP connects, and TLS handshakes performed by the
-test helper and directly comparable to the information in point 2 above;
+test helper and directly comparable to the corresponding "classic" results;
 
 5. the final response obtained by the test helper, if any;
 
-6. possibly additional information obtained through extensions.
+6. possibly additional non-"classic" information obtained through extensions.
 
 Based on this information, Web Connectivity needs to compute the following test keys.
 
