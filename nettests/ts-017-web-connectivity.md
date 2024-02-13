@@ -122,46 +122,46 @@ classic algorithm for `http://` like URLs:
 
 ```mermaid
 stateDiagram-v2
-  state "S2: getaddrinfo('www.example.com')" as S2
-  [*] --> S2
-  state S3 <<fork>>
+  state "S1: getaddrinfo('www.example.com')" as S1
+  [*] --> S1
+  state S2 <<fork>>
+  S1 --> S2
+  state "S3: connect('93.184.216.34:443')" as S3
+  state "S4: connect('93.184.216.33:443')" as S4
   S2 --> S3
-  state "S4: connect('93.184.216.34:443')" as S4
-  state "S5: connect('93.184.216.33:443')" as S5
-  S3 --> S4
-  S3 --> S5
-  state "S8: call_test_helper_api\naddrs = ['93.184.216.34', '93.184.216.33']\nurl = 'http://example.com/'" as S8
-  S3 --> S8
-  state S9 <<join>>
-  S4 --> S9
-  S5 --> S9
-  S8 --> S9
-  S9 --> [*]
+  S2 --> S4
+  state "S5: call_test_helper_api\naddrs = ['93.184.216.34', '93.184.216.33']\nurl = 'http://example.com/'" as S5
+  S2 --> S5
+  state S6 <<join>>
+  S3 --> S6
+  S4 --> S6
+  S5 --> S6
+  S6 --> [*]
 ```
 
 Instead, the following diagram illustrates what happens for `https://` like URLs:
 
 ```mermaid
 stateDiagram-v2
-  state "S2: getaddrinfo('www.example.com')" as S2
-  [*] --> S2
-  state S3 <<fork>>
+  state "S1: getaddrinfo('www.example.com')" as S1
+  [*] --> S1
+  state S2 <<fork>>
+  S1 -->S2
+  state "S3: connect('93.184.216.34:443')" as S3
+  state "S4: connect('93.184.216.33:443')" as S4
   S2 --> S3
-  state "S4: connect('93.184.216.34:443')" as S4
-  state "S5: connect('93.184.216.33:443')" as S5
-  S3 --> S4
-  S3 --> S5
+  S2 --> S4
+  state "S5: tls_handshake('example.com')" as S5
   state "S6: tls_handshake('example.com')" as S6
-  state "S7: tls_handshake('example.com')" as S7
+  S3 --> S5
   S4 --> S6
-  S5 --> S7
-  state "S8: call_test_helper_api\naddrs = ['93.184.216.34', '93.184.216.33']\nurl = 'https://example.com/'" as S8
-  S3 --> S8
-  state S9 <<join>>
-  S6 --> S9
-  S7 --> S9
-  S8 --> S9
-  S9 --> [*]
+  state "S7: call_test_helper_api\naddrs = ['93.184.216.34', '93.184.216.33']\nurl = 'https://example.com/'" as S7
+  S2 --> S7
+  state S8 <<join>>
+  S5 --> S8
+  S6 --> S8
+  S7 --> S8
+  S8 --> [*]
 ```
 
 When the `getaddrinfo` lookup fails, the algorithm still invokes the test helper
