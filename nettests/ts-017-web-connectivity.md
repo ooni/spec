@@ -325,8 +325,8 @@ Web Connectivity measurement completes when one of the following happens:
 
 1. we obtain a response that is not a redirect (the "final" webpage);
 
-2. a network or protocol error prevents us from obtaining a final webpage (e.g., DNS
-failures, TCP connect failures, TLS failures, HTTP failures);
+2. a network or protocol error prevents us from obtaining a final webpage (e.g., a
+DNS, TCP, TLS, or HTTP failure);
 
 3. we are redirected ten times.
 
