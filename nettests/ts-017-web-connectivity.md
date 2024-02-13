@@ -321,7 +321,7 @@ the system resolver fails.
 
 ### Local processing of the measurement results
 
-Web Connectivity measurement comples when one of the following happens:
+Web Connectivity measurement completes when one of the following happens:
 
 1. we obtain a response that is not a redirect (the "final" webpage);
 
