@@ -139,7 +139,7 @@ stateDiagram-v2
   S9 --> [*]
 ```
 
-Instead, the following diagram illustrates what happens for `https` URLs:
+Instead, the following diagram illustrates what happens for `https://` like URLs:
 
 ```mermaid
 stateDiagram-v2
