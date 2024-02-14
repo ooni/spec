@@ -121,7 +121,7 @@ specified in the URL;
 4. optionally, to establish TLS connections to all these endpoints.
 
 We call this step the "connectivity" step because it determines whether we're
-able to establish connections with the IP addresses associated with the domain
+able to establish TCP/TLS connections with the IP addresses associated with the domain
 inside the URL. When the URL does not contain a domain but rather contains an
 IP address, the first step of the algorithm just returns the IP address itself
 and we're using the address to validate the TLS certificate.
