@@ -149,7 +149,8 @@ stateDiagram-v2
 ```
 
 The two small black squares in the diagram represent, respectively, starting several
-operations in parallel and awaiting for these operations to complete.
+operations in parallel and awaiting for these operations to complete. We set specific
+timeouts for each parallel operation.
 
 Instead, the following diagram illustrates what happens for `https://` like URLs:
 
