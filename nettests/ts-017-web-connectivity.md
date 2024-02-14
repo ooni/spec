@@ -131,8 +131,10 @@ classic algorithm for `http://` like URLs:
 
 ```mermaid
 stateDiagram-v2
+  state "depth=0, URL=http://www.example.com/" as S0
   state "getaddrinfo('www.example.com')" as S1
-  [*] --> S1
+  [*] --> S0
+  S0 --> S1
   state S2 <<fork>>
   S1 --> S2
   state "connect('93.184.216.34:443')" as S3
@@ -156,8 +158,10 @@ Instead, the following diagram illustrates what happens for `https://` like URLs
 
 ```mermaid
 stateDiagram-v2
+  state "depth=0, URL=https://www.example.com/" as S0
   state "getaddrinfo('www.example.com')" as S1
-  [*] --> S1
+  [*] --> S0
+  S0 --> S1
   state S2 <<fork>>
   S1 -->S2
   state "connect('93.184.216.34:443')" as S3
@@ -272,9 +276,8 @@ using such an endpoint, collecting `df-001-http.md` data as well as
 I/O data according to `df-008-netevents.md`;
 
 2. parse the HTTP response and, in case of `302`, `303,` `307`, and `308`
-redirects, follow the redirect included
-into the `Location` in case of  making sure we also
-record and honour the cookies;
+redirects, prepare for measuring the URL included into the `Location` making
+sure we also record and honour the cookies;
 
 3. follow the redirect by performing a connectivity step for the
 redirect URL, then perform the first step of this algorithm with one
@@ -284,6 +287,57 @@ protocol cannot accommodate for that and we would create excessive
 TH load if we did that);
 
 4. stop with an error after ten redirects.
+
+To illustrate the overall algorithm, the following diagram shows what it would do in
+case we're measuring `https://www.example.com/` that redirects to `http://blocked.com`:
+
+```mermaid
+stateDiagram-v2
+  state "depth=0, URL=https://www.example.com" as S0
+  state "getaddrinfo('www.example.com')" as S1
+  [*] --> S0
+  S0 --> S1
+  state S2 <<fork>>
+  S1 -->S2
+  state "connect('93.184.216.34:443')" as S3
+  state "connect('93.184.216.33:443')" as S4
+  S2 --> S3
+  S2 --> S4
+  state "tls_handshake('example.com')" as S5
+  state "tls_handshake('example.com')" as S6
+  S3 --> S5
+  S4 --> S6
+  state "call_test_helper_api\naddrs = ['93.184.216.34', '93.184.216.33']\nurl = 'https://www.example.com/'" as S7
+  S2 --> S7
+  state S8 <<join>>
+  S5 --> S8
+  S6 --> S8
+  S7 --> S8
+  state "Pick one established connection" as S9
+  S8 --> S9
+  state "GET / with 93.184.216.33:443" as S10
+  S9 --> S10
+  state "depth=1, URL=https://blocked.com" as S11
+  S10 --> S11
+  state "getaddrinfo('blocked.com')" as S12
+  S11 --> S12
+  state S13 <<fork>>
+  S12 --> S13
+  state "connect('192.124.249.15:443')" as S14
+  state "connect('192.124.248.15:443')" as S15
+  S13 --> S14
+  S13 --> S15
+  state "tls_handshake('blocked.com')" as S16
+  state "tls_handshake('blocked.com')" as S17
+  S14 --> S16
+  S15 --> S17
+  state S18 <<join>>
+  state "Pick one established connection" as S19
+  S18 --> S19
+  state "GET / with 192.125.249.15:443" as S20
+  S19 --> S20
+  S20 --> [*]
+```
 
 When using this algorithm, the implementation MUST correctly set the
 `depth=N` tag. By using this algorithm, we get extra visibility of
