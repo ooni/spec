@@ -116,7 +116,9 @@ information to which to compare our measurement;
 
 3. to establish TCP connections to all the endpoints constructed by appending
 the scheme's port (`80` for `http` and `443` for `tcp`) or the custom port
-specified in the URL and, OPTIONALLY, TLS connections.
+specified in the URL;
+
+4. optionally, to establish TLS connections to all these endpoints.
 
 We call this step the "connectivity" step because it determines whether we're
 able to establish connections with the IP addresses associated with the domain
