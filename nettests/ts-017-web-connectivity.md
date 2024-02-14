@@ -188,9 +188,8 @@ Web Connectivity constructs an HTTP client configured to honour cookies and to f
 and uses such a client to fetch the webpage associated with the input URL. Historically, Web
 Connectivity does not reuse the connections established during the connectivity step to GET
 the provided URL, but modern versions do that as an extension, to avoid the need
-to re-establish new connections from scratch.
-
-We call this step the "web" step because its goal is to fetch a webpage for the input URL.
+to re-establish new connections from scratch. We call this step the "web" step because
+its goal is to fetch a webpage for the input URL.
 
 #### Data collected by these steps
 
