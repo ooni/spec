@@ -200,16 +200,16 @@ performing the DNS lookup. Note that, when the URL already contains an IP addres
 Web Connectivity MAY fake a DNS lookup, however, this behavior is NOT RECOMMENDED
 because it could possibly lead to confusion when looking at the data.
 
-2. `df-005-tcpconnect.md` information (stored inside the `tcp_connect` test
-key) and with the `tcptls_handshake` tag set. This information pertains to all
+2. `df-005-tcpconnect.md` information (stored inside `tcp_connect`) and with
+the `tcptls_handshake` tag set. This information pertains to all
 the TCP connect operations performed during the connectivity step.
 
-3. `df-006-tlshandshake.md` information (stored inside the `tls_handshakes`
-test key) and with the `tcptls_handshake` tag set. This information pertains
+3. `df-006-tlshandshake.md` information (stored inside `tls_handshakes`)
+and with the `tcptls_handshake` tag set. This information pertains
 to all the TLS handshake operations performed during the connectivity step.
 
-4. `df-008-netevents.md` information (stored inside the `network_events` test
-key) and with the `tcptls_handshake` tag set. This information pertains to all
+4. `df-008-netevents.md` information (stored inside `network_events`)
+and with the `tcptls_handshake` tag set. This information pertains to all
 the socket I/O operations performed during the TLS handshakes of the connectivity
 step and could be used by the OONI backend to detect throttling.
 
