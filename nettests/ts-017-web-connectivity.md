@@ -426,6 +426,11 @@ Based on this information, Web Connectivity needs to compute the following test 
 | `blocking`          | `optional<string\|bool>` | Whether we think there's some blocking in place                     |
 | `accessible`        | `optional<bool>`         | Whether the website seems accessible                                |
 
+For historical reasons and backward compatibility, Web Connectivity MUST only use the
+measurements collected by the classical algorithm to produce a measurement result. New
+versions of Web Connectivity MAY produce additional measurement results but those results
+MUST use different test keys than the one used by the classic algorithm.
+
 #### Preliminary definitions
 
 Given a specific operation (e.g., a TLS handshake with a given TLS endpoint), we define:
@@ -467,189 +472,131 @@ Web Connectivity also assigned the `"reverse_match"` value when there was a matc
 between the reverse lookup of addresses resolved by the probe and the TH, but current
 versions do not implement this functionality at present.
 
-For historical reasons and backward compatibility, Web Connectivity MUST only use the
-measurements collected by the classical algorithm to produce a measurement result. New
-versions of Web Connectivity MAY produce additional measurement results but those results
-MUST use different test keys than the one used by the classic algorithm.
-
 #### body_proportion
 
-TODO
+This field is the minimum ratio between the final response body obtained by the probe
+over the one obtained by the test helper and the inverse of such a ratio.
 
-XXX
+That is:
 
-HINC SUNT LEONES
+```Python
+body_proportion = None
+if probe.body_length > 0 and th.body_length > 0:
+    ratio = probe.body_length / th.body_length
+    inverse = th.body_length / probe.body_length
+    body_proportion = min(ratio, inverse)
+```
 
-Therefore, the first order of business is to single out the DNS, TCP, TLS, and HTTP
-results produced by the classic algorithm. If the version of Web Connectivity is `< 0.5`,
-then all measurements results were produced by the classic algorithm. Otherwise, Web
-Connectivity MUST implement the following algorithm to obtain a subset of the measurement
-that is compatible with the classic algorithm:
+We use this value to compute the following test key. Obviously, we cannot compute
+this value unless both the probe and the test helper obtained a final HTTP response.
 
-1. it MUST only consider the DNS lookups using getaddrinfo;
+#### body_length_match
 
-2. it MUST only consider TCP connects and TLS handshakes using IP addresses
-that were discovered using getaddrinfo;
+We say that the two body lenghts match if their ratio is greater than 0.7:
 
-3. it MUST only consider the TCP connects, TLS handshakes, and HTTP requests
-with the `fetch_body=true` tag.
+```Python
+if body_proportion is not None:
+    body_length_match = body_proportion > 0.7
+```
 
-This test is divided into multiple steps that will each test a different aspect
-related to connectivity of the website in question.
+The underlying reason for saying that there is a match is that the two final
+webpages should have similar lengths, otherwise it's possible that we've fetched
+a blockpage with the probe.
 
-We describe the steps below. An orthogonal
-step is to inform the web_connectivity test helper of our intention
-to run the measurement against the URL in question and hence have it perform a
-control measurement from an un-censored vantage point.
+#### headers_match
 
-The control measurement shall include in the response the following information:
+We set this value to `true` if the probe and the TH have seen similar uncommon
+headers inside their final response. We set to `false` if there's a final response
+but no uncommon headers. We leave this filed `null` otherwise.
 
-* The list of A/AAAA records for a DNS query related to the hostname in question
+We define uncommon headers the set of headers keys obtained by subtracting the
+set of header keys in a final response and the set of headers commonly observed
+inside HTTP responses.
 
-* Wether or not it is able to establish a TCP session to the IP
-  addresses returned by the DNS
+#### status_code_match
 
-* The body length of the result of a HTTP GET request for the path in question
+We set this value to `true` if the final responses have the same status
+code and the TH's status code is `2xx`. We set this value to `false` if
+the two status codes are different and the TH's status code is `2xx`. We
+leave this field `null` otherwise.
 
-(We provide an example of the request to the control server and of the
-response from the control server below.)
+#### title_match
 
-The request for the control measurement may start at any time once we
-performed the DNS lookup step. It cannot start earlier because the control
-vantage point will check the IP addresses returned by the DNS lookup.
-The comparison of the control and experiment is done at the end of the
-experiment.
+We take the probe's final response title and the TH's final response title
+and, for each of them, only keep words longer than 4 characters, which is the
+average word length in English. If the two sets are not empty, we set the
+`title_match` to whether they have at least one word in common. Otherwise, we
+leave this field `null`.
 
-The experiment itself consists of the following steps:
+#### blocking
 
-1. **Resolver identification**
-   Determine what is the default resolver being used by the probe by performing
-   an A lookup for a special domain that will contain in the A lookup answer
-   section the IP of the resolver of the requester.
-   An example of this is the service `whoami.akamai.com`, but also a specialised
-   test-helper may be used.
-   The result of this will be stored inside of the "client_resolver" key of the
-   "test_keys" in the report.
+By default, this field's value is `null`. We set the value to `false` if
+we're able to get a final response and this final response matches the one
+obtained by the test helper (more on this below). In case we cannot get a
+final response, we set this value to one of the following:
 
-2. **DNS lookup**
-   Perform an A/AAAA query to the default resolver for the hostname of the URL to be
-   tested, if that hostname is a domain name.
-   Record the list of A/AAAA records in a list inside the report under the
-   "queries" key (see df-002-dnst.md).
-   Otherwise, if the hostname is an IP address, the just skip this step and
-   insert such IP address into the "queries" key. (This behavior matches
-   the behavior of `getaddrinfo`, which returns an IP address if you pass to it
-   as input an IP address.)
+* `"dns"`, if it seems the reason why we cannot obtain a final response
+is DNS interference (e.g., injection of invalid IP addresses);
 
-3. **TCP connect**
-   If the URL begins with HTTP, attempt to establish a TCP session on port
-   80 for the list of IPs identified
-   at step 2. If the URL begins with HTTPS then establish a TCP session
-   towards port 443.
-   Optionally, a probe COULD test for HTTPS when the URL is HTTP (this was
-   the behavior of the ooniprobe 2.x).
-   The results of connecting end up into the "tcp_connect" key
-   (see df-005-tcpconnect.md).
+* `"tcp_ip"`, if it seems the reason why we cannot obtain a final
+response is TCP/IP blocking of the server's IP addresses;
 
-   Optionally, if the URL beings with HTTPS then also perform a TLS
-   handshake using the above established connections. The results
-   of the TLS handshake end up in the "tls_handshakes" key
-   (see df-006-tlshandshake.md). We will tag network events and
-   TLS handshakes produced by this step of the experiment
-   using the `"tcptls_experiment"` tag. This is the behavior of ooniprobe
-   3.x since August 2020.
+* `"http-failure"`, if it seems the reason why we cannot obtain a final
+response is TLS or HTTP blocking (this is for historical reasons, as the
+original Web Connectivity implementation did not specify what to use
+in case of TLS interference).
 
-   Probes SHOULD also record the network events (see df-netevents.md)
-   occurring during the TCP connect / TLS handshakes. This is the
-   behavior of ooniprobe 3.x since April 2021.
+When we have a final response, and the scheme of the corresponding
+request is `https`, we always set this field to `false`.
 
-4. **HTTP GET request**
-   Perform a HTTP GET request for the path specified in the URI and record the
-   response.
-   The headers sent in the request shall be a recent and popular
-   user agent at the time when the measurement is run.
-   If the original URL redirects us, then we will follow the
-   redirect. We will record all the requests and responses
-   in the chain. This data will be stored into the
-   "requests" key (see `df-001-httpt.md`).
+Otherwise, we run the following "HTTP diff" algorithm to determine
+the value of the `blocking` test key:
 
-5. **Control comparison**
-   Once we obtain a result from the test-helper we shall do
-   the following comparisons:
+```Python
+if status_code_match is not None and status_code_match:
 
-   * Are the DNS responses from the control consistent with those from the
-     probe?
-     The value of the report key "dns_consistency" can be the one of the following:
+    if body_length_match is not None and body_length_match:
+        blocking = False
+        return
 
-        * 'consistent' if the IP addresses of the A/AAA lookup from the control
-          match exactly those of the experiment, or if the URL contains
-          an IP address rather than a domain name. We will also mark the
-          result as consistent if the IP addresses in the measurement and
-          the ones in the control belong to the same ASN. We will also
-          mark the result as consistent if the failure reported by the
-          control is compatible with the one observed by the probe.
+    if headers_match is not None and headers_match:
+        blocking = False
+        return
 
-        * 'reverse_match' if the reverse lookup for any of the IPs in the DNS
-          answer match (a match is defined as having part of the domain.tld section
-          in common).
+    if title_match is not None and title_match:
+        blocking = False
+        return
 
-        * 'inconsistent' if none of the above conditions are met.
+blocking = "http-diff"
+```
 
-    * Did we succeed in establishing a TCP session to the IP:port combinations
-      found by doing A/AAAA lookups? Did we succeded in establishing TLS
-      connections (if applicable)?
+#### accessible
 
-      The value of the report key "tcp_connect" will be a list with 1 item per
-      IP:port combination. This value will follow `df-005-tcpconnect` with
-      the addition of the "blocked" flag.
+This value is `true` if we think we obtained a legitimate final response, `false`
+if we could not, and `null` if we could not determine whether there was a legitimate
+final response.
 
-      In particular, "blocked" shall be
-      a boolean flag to indicate if blocking is happening on a
-      TCP basis, this is determined by comparing the tcp_connect result
-      from the control to that of the experiment. For example if both the
-      control and the experiment produce a failure that host is assumed
-      to be offline and hence no blocking is occurring, while if the
-      experiment demonstrates an offline status, while the control
-      succeeds we assume blocking is occuring.
+#### Notable blocking and accessible combinations
 
-    * Does the body length of the experiment match that of the control?
-      The value of the report key "body_length_match" is set to true if
-      body_length_control/body_length_experiment > 0.7, null if we failed to
-      connect, false if body_length_control/body_length_experiment < 0.7.
+The following table summarizes some common blocking and accessible combinations:
 
-    * Do the HTTP headers match for the control and the experiment?
-      The value of the report key "headers_match" is set to false if the header
-      names are not consistent with the control request.
+| blocking         | accessible | what we think is happening                 |
+| ---------------- | ---------- | ------------------------------------------ |
+| `null`           | `null`     | We could not assign values to the fields   |
+| `false`          | `false`    | Expected failures (e.g., the website down) |
+| `false`          | `true`     | Expected success (i.e., no censorship)     |
+| `"dns"`          | `false`    | DNS-based blocking                         |
+| `"tcp_ip"`       | `false`    | TCP-based blocking                         |
+| `"http-failure"` | `false`    | HTTP or TLS based blocking                 |
+| `"http-diff"`    | `false`    | Blockpage rather than legit page           |
 
-    * Does the HTTP status code match between the control and the experiment?
-      The report key "status_code_match" is set to false if the status code
-      of the experiment is inconsistent with the control.
+Obviously, false positives may happen. Additionally, note that it is possible for
+a website to be blocked in multiple ways. For example, there may be DNS blocking but
+Web Connectivity could obtain and use IP addresses from the test helper, only to
+discover that there's TLS or TCP based blocking.
 
-    * Does the HTML title tag match between the control and experiment?
-      The report key "title_match" is set to false if the first word in the title
-      is longer than 5 characters and matches the first word in the title tag of
-      the experiment.
-
-6. **Reason for blocking**
-
-The report key **blocking** is used to identify the reason for blocking. This
-can be one of "tcp_ip", "dns" or "http".
-
-It will be set to "dns" if the DNS query answers are inconsistent and when
-doing the HTTP request we don't get the expected page
-`((headers_match == false and body_length_match == false) or status_code_match == false)`.
-
-Moreover "dns" will be the reason for blocking when doing the HTTP request we
-get a failure of type "dns_lookup_error".
-
-It will be set to "tcp_ip" when the DNS query answers are consistent, but we
-have failed to connect to the IP:PORT combinations that have been resolved in
-the experiment, while the control has succeeded. Moreover the HTTP request must
-have failed.
-
-It will be set to "http" when DNS resolutions are consistent and we are able to
-establish a TCP connection to the IP ports of the control, but the HTTP request
-either fails or we get back a HTTP response that contains a page we don't expect.
+A future version of this specification will describe additional test keys aimed at
+providing a more fine grained characterization of blocking.
 
 ## Expected output
 
