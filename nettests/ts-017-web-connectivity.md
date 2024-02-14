@@ -264,7 +264,7 @@ Web Connectivity MUST NOT perform these checks when the input URL is
 #### Extension E002: Connectivity step for each redirect
 
 Rather than using an HTTP client to fetch a webpage, Web Connectivity
-follows the following algorithm:
+follows this algorithm:
 
 1. at the end of the connectivity step, choose one endpoint that
 we could successfully establish a connection to and issue a GET request
