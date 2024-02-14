@@ -455,7 +455,7 @@ each other; i.e., the case when one of the following happens:
 
 2. the addresses resolved by the probe and the TH belong to the same ASNs;
 
-3. we did not see any bogon resolved exclusively by the probe;
+3. (optionally) we did not see any bogon resolved exclusively by the probe;
 
 4. (optionally) we concluded that some IP addresses are good because we could
 successfully perform TLS handshakes for the domain we were using.
