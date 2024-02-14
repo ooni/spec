@@ -2,7 +2,7 @@
 
 ## Specification version number
 
-2024-02-09-001
+2024-02-14-001
 
 * _status_: current
 
@@ -18,8 +18,8 @@ Web Connectivity (`web_connectivity`)
 
 ## Expected impact
 
-Ability to detect if the websites being tested are reachable and if not what is
-the reason for them not being reachable.
+Ability to detect if the websites being tested are reachable and if not what are
+some of the reasons for them not being reachable.
 
 ## Expected inputs
 
