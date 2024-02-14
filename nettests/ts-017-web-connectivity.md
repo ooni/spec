@@ -332,6 +332,8 @@ stateDiagram-v2
   S14 --> S16
   S15 --> S17
   state S18 <<join>>
+  S16 --> S18
+  S17 --> S18
   state "Pick one established connection" as S19
   S18 --> S19
   state "GET / with 192.125.249.15:443" as S20
