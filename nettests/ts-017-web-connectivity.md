@@ -148,6 +148,9 @@ stateDiagram-v2
   S6 --> [*]
 ```
 
+The two small black squares in the diagram represent, respectively, starting several
+operations in parallel and awaiting for these operations to complete.
+
 Instead, the following diagram illustrates what happens for `https://` like URLs:
 
 ```mermaid
