@@ -431,9 +431,9 @@ measurements collected by the classical algorithm to produce a measurement resul
 versions of Web Connectivity MAY produce additional measurement results but those results
 MUST use different test keys than the one used by the classic algorithm.
 
-Also, note that this specification attempts to clarify the general idea behing scoring
-measurements, however the actual implementation is most likely going to be more complex,
-as we need to deal with false positives and avoid corner cases.
+Finally, note that this specification aims to describe the general idea behind the
+algorithms, which may be more complex of this because they typically need to deal with
+(a) avoiding false positives and (b) correctly flagging corner cases.
 
 #### Preliminary definitions
 
