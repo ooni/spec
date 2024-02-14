@@ -451,16 +451,13 @@ match the DNS lookups performed by the TH. This include cases where we see expec
 successes and failures as well as cases where the resolved addresses are compatible with
 each other; i.e., the case when one of the following happens:
 
-1. the probe and the TH failed in similar ways (we do not perform exact failure
-matching because of potential implementation differences of resolvers);
+1. the probe and the TH resolved the same addresses;
 
-2. the probe and the TH resolved the same addresses;
+2. the addresses resolved by the probe and the TH belong to the same ASNs;
 
-3. the addresses resolved by the probe and the TH belong to the same ASNs;
+3. we did not see any bogon resolved exclusively by the probe;
 
-4. we did not see any bogon resolved exclusively by the probe;
-
-5. (optionally) we concluded that some IP addresses are good because we could
+4. (optionally) we concluded that some IP addresses are good because we could
 successfully perform TLS handshakes for the domain we were using.
 
 We set this field to `"inconsistent"` when we could not determine
