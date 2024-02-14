@@ -431,6 +431,10 @@ measurements collected by the classical algorithm to produce a measurement resul
 versions of Web Connectivity MAY produce additional measurement results but those results
 MUST use different test keys than the one used by the classic algorithm.
 
+Also, note that this specification attempts to clarify the general idea behing scoring
+measurements, however the actual implementation is most likely going to be more complex
+and tricky, as we need to deal with false positives and avoid corner cases.
+
 #### Preliminary definitions
 
 Given a specific operation (e.g., a TLS handshake with a given TLS endpoint), we define:
