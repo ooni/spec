@@ -343,8 +343,8 @@ stateDiagram-v2
 
 When using this algorithm, the implementation MUST correctly set the
 `depth=N` tag. By using this algorithm, we get extra visibility of
-what happens in the network while following redirects. Hence, we are
-able to more precisely figure out the reason for blocking.
+what happens in the network while following redirects. Hence, we can
+more precisely figure out the reason for blocking.
 
 #### Extension E003: DNS-over-UDP lookups
 
