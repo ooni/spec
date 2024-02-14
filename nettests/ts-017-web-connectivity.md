@@ -432,8 +432,8 @@ versions of Web Connectivity MAY produce additional measurement results but thos
 MUST use different test keys than the one used by the classic algorithm.
 
 Also, note that this specification attempts to clarify the general idea behing scoring
-measurements, however the actual implementation is most likely going to be more complex
-and tricky, as we need to deal with false positives and avoid corner cases.
+measurements, however the actual implementation is most likely going to be more complex,
+as we need to deal with false positives and avoid corner cases.
 
 #### Preliminary definitions
 
