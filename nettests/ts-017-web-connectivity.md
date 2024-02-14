@@ -597,10 +597,9 @@ The following table summarizes some common blocking and accessible combinations:
 Obviously, false positives may happen. Additionally, note that it is possible for
 a website to be blocked in multiple ways. For example, there may be DNS blocking but
 Web Connectivity could obtain and use IP addresses from the test helper, only to
-discover that there's TLS or TCP based blocking.
-
-A future version of this specification will describe additional test keys aimed at
-providing a more fine grained characterization of blocking.
+discover that there's TLS or TCP based blocking. A future version of this specification
+will describe additional test keys aimed at providing a more fine grained
+characterization of blocking.
 
 ## Expected output
 
