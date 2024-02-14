@@ -271,8 +271,9 @@ we could successfully establish a connection to and issue a GET request
 using such an endpoint, collecting `df-001-http.md` data as well as
 I/O data according to `df-008-netevents.md`;
 
-2. parse the response and follow the redirect included into the `Location`
-in case of `302`, `303,` `307`, and `308` redirects, making sure we also
+2. parse the HTTP response and, in case of `302`, `303,` `307`, and `308`
+redirects, follow the redirect included
+into the `Location` in case of  making sure we also
 record and honour the cookies;
 
 3. follow the redirect by performing a connectivity step for the
