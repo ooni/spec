@@ -64,8 +64,11 @@ measured in the moment in which we started the operation (`t - t0` gives you
 the amount of time spent performing the operation);
 
 - `t` (`float`): number of seconds elapsed since `measurement_start_time`
-measured in the moment in which `failure` is determined (`t - t0` gives you
-the amount of time spent performing the operation);
+measured at the end of the operation at hand. If there was an error, this is the
+moment in which `failure` is determined; otherwise it's the moment marked by the successfully
+completion of the operation: as an example, consider a blocking call to `read`
+or `write`. In any case, `t - t0` gives you the amount of time spent performing
+the operation;
 
 - `tags` (`[]string`): list of tags for this event. This is useful to
 understand what part of a complex measurement generated an event.
