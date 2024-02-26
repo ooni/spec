@@ -365,7 +365,7 @@ request conforming to the following:
 
 "description": "", // (required) `string` describing the scope of this OONI Run link system
 
-"author": "", // (required) `string` name of the creator of this OONI Run link
+"author": "", // `string` email address of the creator of this OONI Run link
 
 "name_intl": {"it": ""}, // (optional) `string` is the display name for the OONI Run link
 
