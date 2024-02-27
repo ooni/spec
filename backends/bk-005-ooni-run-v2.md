@@ -120,7 +120,7 @@ An OONI Run link descriptor is a JSON file with the following semantics:
 
   "author": "(optional) `string` name of the creator of this OONI Run link",
 
-  "is_archived": "(optional) `bool` a boolean flag used to indicate if this OONI Run link is archived. When an OONI Run link is archived, it does not run",
+  "is_expired": "(optional) `bool` a boolean flag used to indicate if this OONI Run link is expired. When an OONI Run link is archived, it does not run",
 
   // `array` provides a JSON array of tests to be run.
   "nettests":[{
@@ -365,14 +365,19 @@ request conforming to the following:
 
 "description": "", // (required) `string` describing the scope of this OONI Run link system
 
+"short_description": "(optional) `string` short_description for the OONI Run link.",
+
 "author": "", // `string` email address of the creator of this OONI Run link
 
 "name_intl": {"it": ""}, // (optional) `string` is the display name for the OONI Run link
+
+"short_description_intl": {}, // (optional) `map` of translations to language codes for the short_description
 
 "description_intl": {"it": ""}, // (optional) `string` describing the scope of this OONI Run link system
 
 "icon": "", // (optional) `string` the ID of any icon part of the OONI icon set
 
+"color": "", // (optional) `string` hex encoding of the 6 hex digit color used for the card prefixed by # (eg. #000000)
 
 "nettests": // `array` provides a JSON array of tests to be run.
    [
@@ -425,14 +430,12 @@ following JSON body:
 // Additional fields that are added by the backend are:
 
 "oonirun_link_id": "", // `string` OONI Run link identifier.
-"is_archived": false,
+"is_expired": false, // `string` indicates if the OONI run link has expired
 "date_created": "",
 "date_updated": "",
-"creator_account_id": "",
-"revision": 1,
-"is_mine": false,
-"v": 1,
-
+"expiration_date": "", // `string` timestamp indiciating at what time the link will expire
+"revision": 1, // `int` incremental number indication what revision of the link this is. Whenever changes to the nettests occur a new revision will be generated.
+"is_mine": false, // `bool` flag indiciating if the link is owned by the requester
 }
 ```
 
@@ -576,7 +579,6 @@ following JSON body:
 
       // List of OONI Run links, see CREATE response format for full format.
    ]
-   "v": 1
 }
 ```
 
