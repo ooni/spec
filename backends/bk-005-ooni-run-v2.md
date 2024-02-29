@@ -340,9 +340,10 @@ In the following sections we will specify how these operations should be done.
 By design, we don't specify a delete operation. This is because we want to
 ensure there is a permanent record of all OONI Run links that ever existed.
 
-A certain OONI Run link can rendered ineffective by setting the `is_archived`
-flag to true. In this case the OONI Run link still remains available, but it
-will not lead to tests being initiated.
+A certain OONI Run link can rendered ineffective by setting the
+`expiration_date` to a past date.
+In this case the OONI Run link still remains available, but it will not lead to
+tests being initiated.
 
 ## 4.1 CREATE a new OONI Run link
 
@@ -378,6 +379,8 @@ request conforming to the following:
 "icon": "", // (optional) `string` the ID of any icon part of the OONI icon set
 
 "color": "", // (optional) `string` hex encoding of the 6 hex digit color used for the card prefixed by # (eg. #000000)
+
+"expiration_date": "", // `string` timestamp indiciating at what time the link will expire
 
 "nettests": // `array` provides a JSON array of tests to be run.
    [
@@ -467,9 +470,6 @@ not settable during CREATE.
 ```JavaScript
 {
    // See create for full semantics
-
-   // In addition to those fields, it's possible to specify the is_archived to set a link as archived.
-   "is_archived": false,
 }
 ```
 
