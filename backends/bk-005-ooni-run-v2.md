@@ -551,7 +551,7 @@ Authentication for this endpoint is optional.
 
 To retrieve an OONI Run link descriptor, the client issues a request compliant with:
 
-`GET /api/v2/oonirun?only_latest=true&only_mine=true&include_archived=true`
+`GET /api/v2/oonirun_links?only_latest=true&only_mine=true&include_archived=true`
 
 -   `only_latest`, boolean flag to filter only by the latest revision of an OONI
     Run link. If unset or set to false, it will instead include all revisions as
@@ -575,7 +575,7 @@ following JSON body:
 
 ```JavaScript
 {
-   "descriptors": [
+   "links": [
 
       // List of OONI Run links, see CREATE response format for full format.
    ]
