@@ -1,8 +1,8 @@
 # OONI Run v2 specification
 
-* author: Norbel Ambanumben, Arturo Filastò
-* version: 2023.10.18
-* status: _draft_
+-   author: Norbel Ambanumben, Arturo Filastò
+-   version: 2024.02.23
+-   status: release-candidate
 
 This document provides a functional specification for OONI Run.
 
@@ -120,7 +120,7 @@ An OONI Run link descriptor is a JSON file with the following semantics:
 
   "author": "(optional) `string` name of the creator of this OONI Run link",
 
-  "is_archived": "(optional) `bool` a boolean flag used to indicate if this OONI Run link is archived. When an OONI Run link is archived, it does not run",
+  "is_expired": "(optional) `bool` a boolean flag used to indicate if this OONI Run link is expired. When an OONI Run link is archived, it does not run",
 
   // `array` provides a JSON array of tests to be run.
   "nettests":[{
@@ -340,9 +340,10 @@ In the following sections we will specify how these operations should be done.
 By design, we don't specify a delete operation. This is because we want to
 ensure there is a permanent record of all OONI Run links that ever existed.
 
-A certain OONI Run link can rendered ineffective by setting the `is_archived`
-flag to true. In this case the OONI Run link still remains available, but it
-will not lead to tests being initiated.
+A certain OONI Run link can rendered ineffective by setting the
+`expiration_date` to a past date.
+In this case the OONI Run link still remains available, but it will not lead to
+tests being initiated.
 
 ## 4.1 CREATE a new OONI Run link
 
@@ -357,17 +358,29 @@ authentication should be handled.
 When you `CREATE` a new OONI RUN link, the client sends a HTTP `POST`
 request conforming to the following:
 
-`POST /api/v1/ooni_run`
+`POST /api/v2/oonirun`
 
 ```JavaScript
 {
 "name": "", // (required) `string` is the display name for the OONI Run link
 
-"description": "", // (optional) `string` describing the scope of this OONI Run link system
+"description": "", // (required) `string` describing the scope of this OONI Run link system
+
+"short_description": "(optional) `string` short_description for the OONI Run link.",
+
+"author": "", // `string` email address of the creator of this OONI Run link
+
+"name_intl": {"it": ""}, // (optional) `string` is the display name for the OONI Run link
+
+"short_description_intl": {}, // (optional) `map` of translations to language codes for the short_description
+
+"description_intl": {"it": ""}, // (optional) `string` describing the scope of this OONI Run link system
 
 "icon": "", // (optional) `string` the ID of any icon part of the OONI icon set
 
-"author": "", // (optional) `string` name of the creator of this OONI Run link
+"color": "", // (optional) `string` hex encoding of the 6 hex digit color used for the card prefixed by # (eg. #000000)
+
+"expiration_date": "", // `string` timestamp indiciating at what time the link will expire
 
 "nettests": // `array` provides a JSON array of tests to be run.
    [
@@ -408,7 +421,6 @@ following JSON body:
 
 ```JavaScript
 {
-"ooni_run_link_id": "", // `string` OONI Run link identifier.
 
 "title": "",
 
@@ -418,6 +430,15 @@ following JSON body:
 
 // [... rest of the OONI Run link payload]
 
+// Additional fields that are added by the backend are:
+
+"oonirun_link_id": "", // `string` OONI Run link identifier.
+"is_expired": false, // `string` indicates if the OONI run link has expired
+"date_created": "",
+"date_updated": "",
+"expiration_date": "", // `string` timestamp indiciating at what time the link will expire
+"revision": 1, // `int` incremental number indication what revision of the link this is. Whenever changes to the nettests occur a new revision will be generated.
+"is_mine": false, // `bool` flag indiciating if the link is owned by the requester
 }
 ```
 
@@ -439,37 +460,16 @@ a link.
 
 ### Request
 
-To update an OONI Run Link, the client issues a request compliant with:
+To update an OONI Run Link, the client issues a request compliant the same as the create request.
 
-`PUT /api/v1/ooni_run/{ooni_run_link_id}`
+Below we list the extra fields that are settable from the edit request that are
+not settable during CREATE.
+
+`PUT /api/v2/oonirun/{ooni_run_link_id}`
 
 ```JavaScript
 {
-"name": "", // (required) `string` is the display name for the OONI Run link
-
-"description": "", // (optional) `string` describing the scope of this OONI Run link system
-
-"icon": "", // (optional) `string` the ID of any icon part of the OONI icon set
-
-"author": "", // (optional) `string` name of the creator of this OONI Run link
-
-"nettests": // `array` provides a JSON array of tests to be run.
-   [
-      {
-         "inputs": [
-            "https://example.com/",
-            "https://ooni.org/",
-            "https://torproject.org/"
-         ],
-         "options": {
-            "HTTP3Enabled": true,
-         },
-         "test_name": "web_connectivity"
-      },
-      {
-         "test_name": "dnscheck"
-      }
-   ]
+   // See create for full semantics
 }
 ```
 
@@ -477,7 +477,7 @@ To update an OONI Run Link, the client issues a request compliant with:
 
 Upon receiving this request, the OONI Run backend:
 
-1. SHOULD check whether the `${ooni_run_id}` exists and they have permission to
+1. SHOULD check whether the `${oonirun_link_id}` exists and they have permission to
    edit it and reject the request with a `4xx` status otherwise.
 
 2. SHOULD reject the request with a `4xx` if the JSON does not
@@ -495,7 +495,7 @@ following JSON body:
 
 ```JavaScript
 {
-"ooni_run_link_id": "", // `string` OONI Run link identifier.
+"oonirun_link_id": "", // `string` OONI Run link identifier.
 
 "title": "",
 
@@ -519,13 +519,13 @@ As such, this request does not require any authentication.
 
 To retrieve an OONI Run link descriptor, the client issues a request compliant with:
 
-`GET /api/v1/ooni_run/{ooni_run_link_id}`
+`GET /api/v2/oonirun/{oonirun_link_id}`
 
 ### Response status code
 
 Upon receiving this request, the OONI Run backend:
 
-1. SHOULD check whether the `${ooni_run_id}` exists and return 404 if it does
+1. SHOULD check whether the `${oonirun_link_id}` exists and return 404 if it does
    not.
 
 2. if everything is okay, returns `200` to the client (see below).
@@ -537,31 +537,47 @@ following JSON body:
 
 ```JavaScript
 {
-"ooni_run_link_id": "", // `string` OONI Run link identifier.
+   // See CREATE response format for full format.
+}
+```
 
-"name": "", // (required) `string` is the display name for the OONI Run link
+## 4.4 LIST the OONI Run descriptors
 
-"description": "", // (optional) `string` describing the scope of this OONI Run link system
+This operation is performed by users of the OONI Run platform to list all the existing OONI Run links.
 
-"icon": "", // (optional) `string` the ID of any icon part of the OONI icon set
+Authentication for this endpoint is optional.
 
-"author": "", // (optional) `string` name of the creator of this OONI Run link
+### Request
 
-"nettests": // `array` provides a JSON array of tests to be run.
-   [
-      {
-         "inputs": [
-            "https://example.com/",
-            "https://ooni.org/"
-         ],
-         "options": {
-            "HTTP3Enabled": true,
-         },
-         "test_name": "web_connectivity"
-      },
-      {
-         "test_name": "dnscheck"
-      }
+To retrieve an OONI Run link descriptor, the client issues a request compliant with:
+
+`GET /api/v2/oonirun_links?only_latest=true&only_mine=true&include_archived=true`
+
+-   `only_latest`, boolean flag to filter only by the latest revision of an OONI
+    Run link. If unset or set to false, it will instead include all revisions as
+    separate entries.
+-   `only_mine` , boolean flag to filter only the links of the logged in user. Will only work when the Authentication header is used.
+-   `include_archived` , boolean flag used to indicate if the listing should include archived links as well.
+
+### Response status code
+
+Upon receiving this request, the OONI Run backend:
+
+1. SHOULD check whether the `${oonirun_link_id}` exists and return 404 if it does
+   not.
+
+2. if everything is okay, returns `200` to the client (see below).
+
+### Response body
+
+In case of success (i.e. `200` response), the OONI Run Service MUST return the
+following JSON body:
+
+```JavaScript
+{
+   "links": [
+
+      // List of OONI Run links, see CREATE response format for full format.
    ]
 }
 ```
