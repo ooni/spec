@@ -42,6 +42,7 @@ These access points have the following IP addresses:
 * 149.154.175.100
 * 149.154.167.91
 * 149.154.171.5
+* 95.161.76.100
 
 The test establishes TCP connection to all the access point IP addresses and
 then attempts to issue a POST HTTP request to each of them.
