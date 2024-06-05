@@ -1,6 +1,6 @@
 # Specification version number
 
-2024-04-05
+2024-06-03
 
 * _status_: experimental.
 
@@ -11,6 +11,8 @@
 # Test preconditions
 
 * An internet connection
+* Configuration and Inputs for the given targets; provided by any means like
+  the OONI API, `miniooni` cli options, `oonirunv2` descriptors or Richer Input.
 
 # Expected impact
 
@@ -136,9 +138,13 @@ Where:
 The `openvpn_handshake` entry contains information about the result of every
 openvpn connection attempt performed during the experiment.
 
-- `bootstrap_time` (`float`): the total time until successful handshake or failure, relative to the beginning of the handshake (`t - t0`). Do note that, for TCP, the effective time should include the time for the TCP connection.
+- `bootstrap_time` (`float`): the total time until successful handshake or
+  failure, relative to the beginning of the handshake (`t - t0`). Do note that,
+  for TCP, the effective time should include the time for the TCP connection.
 
 - `endpoint` (`string`): a URI representing the probed endpoint. This is a different encoding than the input URI format.
+
+- `failure` (`string|null`): any failure returned by the operation.
 
 - `ip` (`string`): the IP address of the endpoint.
 
@@ -152,12 +158,6 @@ openvpn connection attempt performed during the experiment.
 - `openvpn_options`: a map from `string` to `string`, containing the relevant
    subset of the openvpn options used in the connection, for comparison
    purposes.
-
-- `status` summarizes the result and possible failures of the connection:
-
-   - `failure` (`string`): any failure returned by the operation.
-
-   - `success` (`boolean`): if true, it marks a sucessful tunnel initialization.
 
 - `t0` (`float`): the beginning of the openvpn handshake, in seconds, relative to `measurement_start_time`. In TCP
   mode, this is right after a successful TCP three-way-handhsake.
@@ -174,6 +174,7 @@ Example:
   {
     "bootstrap_time": 0.177719632,
     "endpoint": "openvpn://51.15.187.53:1194/tcp",
+    "failure": null,
     "ip": "51.15.187.53",
     "port": 1194,
     "transport": "tcp",
@@ -181,10 +182,6 @@ Example:
     "openvpn_options": {
       "auth": "SHA512",
       "cipher": "AES-256-GCM"
-    },
-    "status": {
-      "failure": "",
-      "success": true
     },
     "t0": 0.033876298,
     "t": 0.21159593,
@@ -583,6 +580,7 @@ The `network_events` array follows `df-008-netevents` semantics, with some diffe
       {
         "bootstrap_time": 0.177719632,
         "endpoint": "openvpn://51.15.187.53:1194/tcp",
+        "failure": null,
         "ip": "51.15.187.53",
         "port": 1194,
         "transport": "tcp",
@@ -590,10 +588,6 @@ The `network_events` array follows `df-008-netevents` semantics, with some diffe
         "openvpn_options": {
           "auth": "SHA512",
           "cipher": "AES-256-GCM"
-        },
-        "status": {
-          "failure": "",
-          "success": true
         },
         "t0": 0.033876298,
         "t": 0.21159593,
