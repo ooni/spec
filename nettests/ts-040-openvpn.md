@@ -136,7 +136,7 @@ Where:
 ### openvpn_handshake
 
 The `openvpn_handshake` entry contains information about the result of every
-openvpn connection attempt performed during the experiment.
+openvpn connection attempt performed during the experiment:
 
 - `bootstrap_time` (`float`): the total time until successful handshake or
   failure, relative to the beginning of the handshake (`t - t0`). Do note that,
