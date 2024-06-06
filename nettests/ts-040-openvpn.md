@@ -216,7 +216,7 @@ The `network_events` array follows `df-008-netevents` semantics, with some diffe
     Some values mark inconsistent internal state:
 
     - ERROR: protocol error.
-	- UNDEF: the state machine is in an ambiguous state.
+    - UNDEF: the state machine is in an ambiguous state.
 
 - `tags`: contains annotations to some events. Right now, two values are used in tags:
 
