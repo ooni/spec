@@ -39,7 +39,7 @@ used. Omit or set to `null` if no SOCKS proxy is being used. The format
 to be used is `1.2.3.4:54321` for IPv4 and `[::1234]:54321` for IPv6.
 
 - `tunnel` (`string`; optional): not provided if there is no tunnel, otherwise
-one of `"psiphon"` or `"tor"` when there is a tunnel.
+one of `"psiphon"`, `"tor"` or `"openvpn"` when there is a tunnel.
 
 ## Example
 
