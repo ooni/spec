@@ -1,6 +1,6 @@
 # Specification version number
 
-2024-06-03
+2024-07-03
 
 * _status_: experimental.
 
@@ -141,7 +141,7 @@ Where:
    might change after the experiment evolves to include other network activity using the 
    tunnel.
 
-- `bootstrap_time` (`float`; optional): number of seconds it took to bootstrap the tunnel. As defined by `df-009-tunnel` data format.
+- `bootstrap_time` (`float`): number of seconds it took to bootstrap the tunnel. As defined by `df-009-tunnel` data format. If the openvpn tunnel fails to bootstrap, this field is set to 0.
 
 - `failure` (`string`; nullable);  if there was an error, this field is a string indicating the error, otherwise it MUST be null. Note that this field is also defined by other specifications. When there is an error in bootstrapping the tunnel, bootstrap_time is present and set to zero. As defined by `df-009-tunnel` data format.
 
