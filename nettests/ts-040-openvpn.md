@@ -1,6 +1,6 @@
 # Specification version number
 
-2024-06-03
+2024-07-03
 
 * _status_: experimental.
 
@@ -103,6 +103,8 @@ We include data from the following parent formats:
 
 - `df-008-netevents`: for the `network_events` array.
 
+- `df-009-tunnel`: defines `tunnel` to be `openvpn`; it also specifies the semantics of `bootstrap_time`.
+
 ## Semantics
 
 These are the expected `test_keys` in the output measurement (arrays have been
@@ -112,9 +114,12 @@ abbreviated for clarity):
 ```JavaScript
 "test_keys": {
     "success": true,
-    "openvpn_handshake": [...]
-    "tcp_connect": [...]
-    "network_events": [...]
+    "openvpn_handshake": [...],
+    "tcp_connect": [...],
+    "network_events": [...],
+    "bootstrap_time": 0.16,
+    "tunnel": "openvpn",
+    "failure": null
 }
 ```
 
@@ -131,16 +136,25 @@ Where:
    OpenVPN handshake, conforming to `df-008-netevents`. As in the case above,
   `transaction_id` contains an index that allows to reference
    events with the handshakes in the `openvpn_handshake` array. Do note that
-   timing information is relative to the beginning of each handshake.
+   timing information is relative to the beginning of each handshake. Also, for the time being,
+   the events in this array are pertaining exclusively to the openvpn handshake - this
+   might change after the experiment evolves to include other network activity using the 
+   tunnel.
+
+- `bootstrap_time` (`float`): number of seconds it took to bootstrap the tunnel. As defined by `df-009-tunnel` data format. If the openvpn tunnel fails to bootstrap, this field is set to 0.
+
+- `failure` (`string`; nullable);  if there was an error, this field is a string indicating the error, otherwise it MUST be null. Note that this field is also defined by other specifications. When there is an error in bootstrapping the tunnel, bootstrap_time is present and set to zero. As defined by `df-009-tunnel` data format.
+
+- `tunnel` (`string`); defined to be `openvpn` for this experiment. According to `df-009-tunnel`.
 
 ### openvpn_handshake
 
 The `openvpn_handshake` entry contains information about the result of every
 openvpn connection attempt performed during the experiment:
 
-- `bootstrap_time` (`float`): the total time until successful handshake or
+- `handshake_time` (`float`): the total time until successful handshake or
   failure, relative to the beginning of the handshake (`t - t0`). Do note that,
-  for TCP, the effective time should include the time for the TCP connection.
+  for TCP, the effective time should exclude the time for the TCP connection.
 
 - `endpoint` (`string`): a URI representing the probed endpoint. This is a different encoding than the input URI format.
 
