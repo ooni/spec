@@ -32,6 +32,7 @@ code. See this directory's [README](README.md) for the basic concepts.
     "no_tls_verify": false,
     "peer_certificates": [],
     "server_name": "example.com",
+    "echconfig": "",
     "t0": 1.001,
     "t": 1.11,
     "tags": [],
@@ -72,6 +73,12 @@ in `df-001-httpt.md`.
 to verify the server's X.509 certificate. Note that, when this field contains an IP
 address rather than a domain name, the corresponding value is not included in the TLS
 ClientHello as described by [RFC 6066, Section 3](https://datatracker.ietf.org/doc/html/rfc6066#section-3);
+
+- `echconfig`: (`string`; optional): echconfig as defined in [TLS ECH
+  Spec](https://www.ietf.org/archive/id/draft-ietf-tls-esni-22.html#name-encrypted-clienthello-confi)
+base64 encoded as it would be presented inside of an SVCB HTTPS SvcParam as per
+[RFC9460](https://www.rfc-editor.org/rfc/rfc9460.html). In the event that only
+[GREASEd ECH](https://www.ietf.org/archive/id/draft-ietf-tls-esni-22.html#name-grease-psk) is being used, it will contain the string litteral `GREASE`.
 
 - `t0` (`float`): number of seconds elapsed since `measurement_start_time`
 measured in the moment in which we started the operation (`t - t0` gives you

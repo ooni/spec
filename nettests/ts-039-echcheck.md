@@ -54,15 +54,19 @@ We will include data following these data formats:
 ```JSON
 {
     "test_keys": {
-        "control": {},
-        "target": {}
+        "tls_handshakes": {},
     }
 }
 ```
 
-- `control` : follows the `df-006-tlshandshake` data format
+- `tls_handshakes` : (since 0.2.0) follows the `df-006-tlshandshake` data format
 
-- `target` : follows the `df-006-tlshandshake` data format
+- `control` : (deprecated since: 0.2.0) follows the `df-006-tlshandshake` data format
+- `target` : (deprecated since: 0.2.0) follows the `df-006-tlshandshake` data format
+
+To distinguish between the tls handshake with ECH or without, you can look at
+the `echconfig` field of the `tls_handshakes` list and check if it's empty or
+not.
 
 ## Possible conclusions
 
