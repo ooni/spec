@@ -74,6 +74,8 @@ to verify the server's X.509 certificate. Note that, when this field contains an
 address rather than a domain name, the corresponding value is not included in the TLS
 ClientHello as described by [RFC 6066, Section 3](https://datatracker.ietf.org/doc/html/rfc6066#section-3);
 
+- `outer_server_name`: (`string`; optional): server name used in the OuterClientHello when [TLS ECH](https://www.ietf.org/archive/id/draft-ietf-tls-esni-22.html) is being used. When this is set, the `server_name` field indicates the field used inside of the encrypted client hello.
+
 - `echconfig`: (`string`; optional): echconfig as defined in [TLS ECH
   Spec](https://www.ietf.org/archive/id/draft-ietf-tls-esni-22.html#name-encrypted-clienthello-confi)
 base64 encoded as it would be presented inside of an SVCB HTTPS SvcParam as per
