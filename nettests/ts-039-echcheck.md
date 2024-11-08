@@ -29,9 +29,14 @@ the `input`.
 # Test description
 
 Before performing the test, this experiment will resolve the given target URL
-and establish a TCP connection. It will then attempt two TLS handshakes - one
-with an ECH extension, and another control handshake without an ECH extension
-present.
+and establish a TCP connection. It will then attempt three TLS handshakes - one
+with an ECH extension and the `public_name` (see: [ECH spec](https://datatracker.ietf.org/doc/html/draft-ietf-tls-esni-22#section-6.1-6)) of the `echconfig` for the domain
+in the OuterClientHello, secondly ECH with a different `public_name` than that
+advertised in the `public_name` field, finally a control handshake without an
+ECH extension present.
+
+The SNI used inside of the OuterClientHello can be distinguished by looking at
+the value of `outer_client_hello`.
 
 This experiment does not actually encrypt the Client Hello, but instead
 attempts a GREASE’d (Generate Random Extensions And Sustain Extensibility) ECH
