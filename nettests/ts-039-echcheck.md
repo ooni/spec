@@ -32,8 +32,18 @@ Before performing the test, this experiment will resolve the given target URL
 and establish a TCP connection. It will then attempt three TLS handshakes - one
 with an ECH extension and the `public_name` (see: [ECH spec](https://datatracker.ietf.org/doc/html/draft-ietf-tls-esni-22#section-6.1-6)) of the `echconfig` for the domain
 in the `ClientHelloOuter`, secondly ECH with a different `public_name` than that
-advertised in the `public_name` field, finally a control handshake without an
-ECH extension present.
+advertised in the `public_name` field (`public_name_alt`), finally a control
+handshake without an ECH extension present.
+
+Currently the above values are hardcoded to the following:
+* `URL`: https://cloudflare-ech.com/cdn-cgi/trace
+* `ClientHelloOuter->public_name`: `cloudflare-ech.com`
+* `ClientHelloOuter->public_name_alt`: `cloudflare.com`
+
+If the input is overriden with a custom URL, we will still use as the
+`public_name_alt` the fqdn `cloudflare.com`.
+
+This behaviour may change in future versions of the test.
 
 The SNI used inside of the `ClientHelloOuter` can be distinguished by looking at
 the value of `outer_server_name`.
