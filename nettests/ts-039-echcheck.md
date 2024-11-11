@@ -33,7 +33,8 @@ and establish a TCP connection. It will then attempt three TLS handshakes - one
 with an ECH extension and the `public_name` (see: [ECH spec](https://datatracker.ietf.org/doc/html/draft-ietf-tls-esni-22#section-6.1-6)) of the `echconfig` for the domain
 in the `ClientHelloOuter`, secondly ECH with a different `public_name` than that
 advertised in the `public_name` field (`public_name_alt`), finally a control
-handshake without an ECH extension present.
+handshake without an ECH extension present. The order of these operations is randomized to account for
+residual censorship.
 
 Currently the above values are hardcoded to the following:
 * `URL`: https://cloudflare-ech.com/cdn-cgi/trace
