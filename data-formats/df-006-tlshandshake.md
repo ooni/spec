@@ -74,13 +74,17 @@ to verify the server's X.509 certificate. Note that, when this field contains an
 address rather than a domain name, the corresponding value is not included in the TLS
 ClientHello as described by [RFC 6066, Section 3](https://datatracker.ietf.org/doc/html/rfc6066#section-3);
 
-- `outer_server_name`: (`string`; optional): server name used in the OuterClientHello when [TLS ECH](https://www.ietf.org/archive/id/draft-ietf-tls-esni-22.html) is being used. When this is set, the `server_name` field indicates the field used inside of the encrypted client hello.
+- `outer_server_name`: (`string`; optional): server name used in the
+`ClientHelloOuter` when [TLS ECH](https://www.ietf.org/archive/id/draft-ietf-tls-esni-22.html)
+is being used. When this is set, the `server_name` field indicates the field
+used inside of the encrypted client hello.
 
-- `echconfig`: (`string`; optional): echconfig as defined in [TLS ECH
+- `echconfig`: (`string`; optional): ECHConfig as defined in [TLS ECH
   Spec](https://www.ietf.org/archive/id/draft-ietf-tls-esni-22.html#name-encrypted-clienthello-confi)
 base64 encoded as it would be presented inside of an SVCB HTTPS SvcParam as per
 [RFC9460](https://www.rfc-editor.org/rfc/rfc9460.html). In the event that only
-[GREASEd ECH](https://www.ietf.org/archive/id/draft-ietf-tls-esni-22.html#name-grease-psk) is being used, it will contain the string litteral `GREASE`.
+[GREASE ECH](https://www.ietf.org/archive/id/draft-ietf-tls-esni-22.html#name-grease-psk) is being used, it will contain the
+string literal `GREASE`.
 
 - `t0` (`float`): number of seconds elapsed since `measurement_start_time`
 measured in the moment in which we started the operation (`t - t0` gives you

@@ -24,25 +24,25 @@ handshake.
  to connect to (e.g. `google.com`)
 
 The default implementation will use the domain `example.org` as
-the `input`.  
+the `input`.
 
 # Test description
 
 Before performing the test, this experiment will resolve the given target URL
 and establish a TCP connection. It will then attempt three TLS handshakes - one
 with an ECH extension and the `public_name` (see: [ECH spec](https://datatracker.ietf.org/doc/html/draft-ietf-tls-esni-22#section-6.1-6)) of the `echconfig` for the domain
-in the OuterClientHello, secondly ECH with a different `public_name` than that
+in the `ClientHelloOuter`, secondly ECH with a different `public_name` than that
 advertised in the `public_name` field, finally a control handshake without an
 ECH extension present.
 
-The SNI used inside of the OuterClientHello can be distinguished by looking at
-the value of `outer_client_hello`.
+The SNI used inside of the `ClientHelloOuter` can be distinguished by looking at
+the value of `outer_server_name`.
 
 This experiment does not actually encrypt the Client Hello, but instead
-attempts a GREASE’d (Generate Random Extensions And Sustain Extensibility) ECH
+attempts a GREASE (Generate Random Extensions And Sustain Extensibility) ECH
 connection as per [draft-ietf-tls-esni-14](https://datatracker.ietf.org/doc/draft-ietf-tls-esni/).
 This entails placing mocked ECH extension with random values in the
-Client Hello. As passive network observers cannot tell a GREASE’d ECH connection
+Client Hello. As passive network observers cannot tell a GREASE ECH connection
 apart from a regular one, this test helps detect if there is any interference
 to TLS handshakes that possess this field.
 
@@ -157,14 +157,14 @@ present
 }
 ```
 
-# Privacy considerations                                     
+# Privacy considerations
 
 This nettest may be less intrusive than other nettests as it encourages
 connections to URLs that are unlikely to be censored. We are not issuing DNS
 queries for the sensitive domain and we are not connecting to the sensitive
 IP address.
 
-# Packet capture considerations                      
+# Packet capture considerations
 
 This test does not capture packets by default.
 
