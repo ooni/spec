@@ -609,6 +609,20 @@ Upon receiving this request, the OONI Run backend:
 
 2. if everything is okay, returns `200` to the client (see below).
 
+A client should also include the following headers to allow the server to
+properly generate dynamic target lists:
+
+* `X-OONI-ProbeCc`: Two letter, uppercase country code (eg. IT)
+* `X-OONI-ProbeAsn`: ASN, two uppercase letters followed by number (eg. AS1234)
+* `X-OONI-Platform`: platform name (eg. android)
+* `X-OONI-SoftwareName`: software_name (eg. ooniprobe-android)
+* `X-OONI-SoftwareVersion`: software_version (eg. 3.14.0)
+* `X-OONI-NetworkType`: flag used to indicate the network type where the
+  measurement is run: 0 unknown, 1 for wifi, 2 mobile
+* `X-OONI-Charging`: 1 yes, 0 no. Set only for devices with batteries.
+* `X-OONI-RunType`: 1 timed, 0 manual
+* `X-OONI-WebsiteCategoryCodes`: comma separated list of category codes that user has chosen to test (eg. NEWS,HUMR)
+
 ### Response body
 
 In case of success (i.e. `200` response), the OONI Run Service MUST return the
