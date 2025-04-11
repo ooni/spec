@@ -212,7 +212,7 @@ that should be elapsed before the zone should be retried in case of failure.
 - `serial_number` (`int`; only for SOA answers): version number
 of the original copy of the zone.
 
-- `svcb`: (only for SCVB answers): the SVCB record, see below.
+- `svcb`: (`map[string]string`; only for SCVB answers): the SVCB record, see below.
 
 - `ttl` (`int`; nullable): the TTL if known, otherwise `null`.
 
@@ -239,7 +239,7 @@ The svcb object follows the SVCB specifation in RFC9460.
   
 - `target_name`: (`string`) The TargetName as it appears in the record.
 
-- `params`: The SvcParams, as an object with string values.
+- `params`: (`map[string]string`) The SvcParams, as an map from string to string.
 
 ## Example
 

@@ -63,7 +63,7 @@ A svcb record in an answer of the queries object looks like this:
 ```
 
 The priority and target_name keys are directly from the SVCB record, where priority specifies the priority among the records at which use this record and target specifies the designated resolver. The key `params` is a map from string to string, that includes the keys that were specified for the SVCB record.
-In the case of this example, the `parmas` map includes this information:
+In the case of this example, the `params` map includes this information:
 
 - `alpn`: The protocol this designated resolver uses, so in this case HTTP2 or HTTP3 for DNS over HTTPS
 - `dohpath`: How the URL needs to be constructed to send a DoH query to the designated resolver.
