@@ -19,7 +19,7 @@ Below are definitions for important components of the system:
   with the OONI Probe app installed allows the user to instrument their probe to
   run the nettests configured by the link creator. If the OONI Probe app is not
   installed, it will display a web page asking them to download the app.
-  
+
 * **OONI Run descriptor** contains the metadata for a specific OONI Run link and
   the nettest definitions: what nettests should be run and how they should be
   configured (ex. what URLs should be tested)
@@ -600,7 +600,7 @@ list.
 
 To retrieve an OONI Run link descriptor, the client issues a request compliant with:
 
-`GET /api/v2/oonirun/links/{oonirun_link_id}/engine-descriptor/{revision}`
+`GET /api/v2/oonirun/links/{oonirun_link_id}/engine-descriptor/{revision}?run_type={timed|manual}&is_charging={true|false}`
 
 Upon receiving this request, the OONI Run backend:
 
@@ -611,17 +611,16 @@ Upon receiving this request, the OONI Run backend:
 
 A client should also include the following headers to allow the server to
 properly generate dynamic target lists:
-
-* `X-OONI-ProbeCc`: Two letter, uppercase country code (eg. IT)
-* `X-OONI-ProbeAsn`: ASN, two uppercase letters followed by number (eg. AS1234)
-* `X-OONI-Platform`: platform name (eg. android)
-* `X-OONI-SoftwareName`: software_name (eg. ooniprobe-android)
-* `X-OONI-SoftwareVersion`: software_version (eg. 3.14.0)
-* `X-OONI-NetworkType`: flag used to indicate the network type where the
-  measurement is run: 0 unknown, 1 for wifi, 2 mobile
-* `X-OONI-Charging`: 1 yes, 0 no. Set only for devices with batteries.
-* `X-OONI-RunType`: 1 timed, 0 manual
+* `X-OONI-NetworkInfo`: `<probe_asn>,<probe_cc> (<network_type>)`, eg `AS1234,IT (wifi)`
 * `X-OONI-WebsiteCategoryCodes`: comma separated list of category codes that user has chosen to test (eg. NEWS,HUMR)
+* `X-OONI-Credentials`: base64 encoded OONI anonymous credentials
+
+The the `platform`, `software_name`, `software_name`, `engine_name` and
+`engine_version` are encoded inside of the `User-Agent` string using the following
+format:
+```
+<software_name>/<software_version> (<platform>) <engine_name>/<engine_version> (<engine_version_full>)
+```
 
 ### Response body
 
@@ -646,6 +645,13 @@ following JSON body:
    ]
 }
 ```
+
+Additionally, the `Vary` header should specify the list of headers that affect
+the response body caching, which are all headers starting with the `X-OONI-`
+prefix.
+
+The server might also return an updated version of the submitted anonymous
+credentials using the `X-OONI-Credentials` header.
 
 ## 4.7 LIST the OONI Run descriptors
 
