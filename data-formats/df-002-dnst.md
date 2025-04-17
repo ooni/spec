@@ -239,7 +239,7 @@ The svcb object follows the SVCB specifation in RFC9460.
   
 - `target_name`: (`string`) The TargetName as it appears in the record.
 
-- `params`: (`map[string]string`) The SvcParams, as an map from string to string.
+- `params`: (`map[string]string`) The SvcParams, as a map from string to string.
 
 ## Example
 
