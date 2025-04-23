@@ -159,13 +159,14 @@ the name because we changed our way of representing getaddrinfo-like resolutions
 
 ```JavaScript
 {
-    // fields currently used as 2022-09-08
+    // fields currently used as 2025-01-31
     "answer_type": "AAAA",
     "asn": 13335
     "as_org_name": "Cloudflare, Inc."
     "hostname": "",
     "ipv4": "1.1.1.1",
     "ipv6": "",
+    "svcb": null,
     "ttl": null,
 
     // specified but unused or deprecated fields
@@ -180,9 +181,9 @@ the name because we changed our way of representing getaddrinfo-like resolutions
 
 - `answer_type`: (`string`) like `Query.query_type`.
 
-- `asn`: (`int`) the Authonomous System Number of the returned ipv4 or ipv6 address.
+- `asn`: (`int`) the Autonomous System Number of the returned ipv4 or ipv6 address.
 
-- `as_org_name`: (`int`) the Authonomous System organisation name of the returned ipv4 or ipv6 address.
+- `as_org_name`: (`string`) the Autonomous System organisation name of the returned ipv4 or ipv6 address.
 
 - `expiration_limit` (`string`; only for SOA answers): the time
 after which this zone should no longer be authoritative.
@@ -211,7 +212,34 @@ that should be elapsed before the zone should be retried in case of failure.
 - `serial_number` (`int`; only for SOA answers): version number
 of the original copy of the zone.
 
+- `svcb`: (`map[string]string`; only for SCVB answers): the SVCB record, see below.
+
 - `ttl` (`int`; nullable): the TTL if known, otherwise `null`.
+
+### SVCB answer
+
+Answers with the SVCB record contain the `svcb` key that is an object like this:
+
+```Javascript
+{
+    "priority": 1,
+    "target_name": "dns.quad9.net.",
+    "params": {
+        "alpn": "h2",
+        "dohpath": "/dns-query{?dns}",
+        "ipv4hint": "9.9.9.9,149.112.112.112",
+        "ipv6hint": "2620:fe::fe",
+        "port": "443"
+    }
+}
+```
+The svcb object follows the SVCB specifation in RFC9460.
+
+- `priority`: (`string`) The SvcPriority
+  
+- `target_name`: (`string`) The TargetName as it appears in the record.
+
+- `params`: (`map[string]string`) The SvcParams, as a map from string to string.
 
 ## Example
 
