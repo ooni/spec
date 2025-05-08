@@ -133,10 +133,11 @@ An OONI Run link descriptor is a JSON file with the following semantics:
 
     // (optional) `array` provides a richer JSON array containing targets for the specified experiment.
     // One of either `inputs` or `targets` can be specified, but not both.
-    "targets": [
-      "input": "https://example.com/",
-      "extra": {
-         "category_code": "HUMR",
+    "targets": [{
+        "input": "https://example.com/",
+        "extra": {
+           "category_code": "HUMR",
+        }
       }
     ],
 
@@ -166,12 +167,12 @@ An OONI Run link descriptor is a JSON file with the following semantics:
     "test_name": "web_connectivity"
   }, {
     "test_name": "openvpn",
-    "targets": [
+    "targets": [{
       "input": "https://foo.com/",
       "extra": {
          "provider": "riseupvpn",
       }
-    ],
+    }],
   }]
 }
 ```
@@ -209,12 +210,12 @@ dashboard as follows.
 "nettests":
    [
       {
-         "targets": [
+         "targets": [{
             "input": "https://example.com/",
             "extra": {
                "category_code": "HUMR",
             }
-         ],
+         }],
          "is_manual_run_enabled": true,
          "is_background_run_enabled": false,
          "test_name": "web_connectivity"
@@ -634,12 +635,12 @@ following JSON body:
    "nettests": [
       {
          // See CREATE response format for other fields
-         "targets": [
+         "targets": [{
             "input": "https://example.com/",
             "extra": {
                "category_code": "HUMR",
             }
-         ],
+         }],
          "test_name": "web_connectivity"
       }
    ]
