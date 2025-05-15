@@ -131,26 +131,14 @@ An OONI Run link descriptor is a JSON file with the following semantics:
       "https://ooni.org/"
     ],
 
-    // (optional) `array` provides a richer JSON array containing targets for the specified experiment.
-    // One of either `inputs` or `targets` can be specified, but not both.
-    "targets": [{
-        "input": "https://example.com/",
-        "extra": {
+    // (optional) `array` provides a richer JSON array containing extra parameters for each input.
+    // If provided, the length of inputs_extra should match the length of inputs.
+    "inputs_extra": [{
            "category_code": "HUMR",
-        }
-      }
-    ],
+    }],
 
-   // (optional) string used to specify during creation what is the label for targets to use.
+   // (optional) string used to specify during creation that the input list should be dynamically generated. The semantics of each string is up to the backend implementation.
    "targets_name": "websites_list_prioritized",
-
-    // (optional) `map` options arguments provided to the specified test_name
-    //
-    // Note: this field is currently experimental. A future version of the specification
-    // may modify the field name or its semantics if we discover it needs changes.
-    "options": {
-      "HTTP3Enabled": true
-    },
 
     // (optional) `bool` indicates if this test should be run as part of autoruns. Defaults to true.
     //
@@ -167,11 +155,11 @@ An OONI Run link descriptor is a JSON file with the following semantics:
     "test_name": "web_connectivity"
   }, {
     "test_name": "openvpn",
-    "targets": [{
-      "input": "https://foo.com/",
-      "extra": {
+    "inputs": [
+      "https://riseup-vpn-address.com/"
+    ],
+    "inputs_extra": [{
          "provider": "riseupvpn",
-      }
     }],
   }]
 }
@@ -192,9 +180,6 @@ card. The OONI Run descriptor, as specified from the link creator, is saying
 application will then receive a prioritized and sorted list which will change
 every time a new run is performed.
 
-To achieve this we need 2 different views on the link, one for the creation
-phase (`target_name`) and another for the retrieval phase (`targets`).
-
 Based on the above specification it would be possible to re-implement the cards for the OONI Probe
 dashboard as follows.
 
@@ -210,11 +195,11 @@ dashboard as follows.
 "nettests":
    [
       {
-         "targets": [{
-            "input": "https://example.com/",
-            "extra": {
-               "category_code": "HUMR",
-            }
+         "inputs": [
+            "https://example.com/"
+         ],
+         "inputs_extra": [{
+            "category_code": "HUMR",
          }],
          "is_manual_run_enabled": true,
          "is_background_run_enabled": false,
@@ -399,9 +384,10 @@ request conforming to the following:
             "https://example.com/",
             "https://ooni.org/"
          ],
-         "options": {
-            "HTTP3Enabled": true,
-         },
+         "inputs_extra": [
+            {},
+            {}
+         ]
          "test_name": "web_connectivity"
       },
       {
@@ -411,11 +397,12 @@ request conforming to the following:
 }
 ```
 
-Moreover it's possible to specify `targets` as rich JSON structure or
-`target_name` indicating the name of the target list which will result in the
-target list being generated dynamically.
-
-`target`, `target_name` and `inputs` are mutually exclusive.
+The `inputs_extra` field should can be a list of JSON objects, with each object
+corresponding to an entry in the `inputs` list. This allows you to attach
+additional metadata to each input. The `targets_name` field specifies the name
+of a predefined target list that will be used to dynamically generate the inputs
+list. This name must be recognized by the backend and agreed upon in advance
+between the link creator and the backend system.
 
 ### Response status code
 
@@ -556,9 +543,6 @@ following JSON body:
 }
 ```
 
-Note: for dynamically generated run links, this view will only return the
-`target_name` and not the `targets` list.
-
 ## 4.4 GET the OONI Run full descriptor by revision
 
 This operation is performed by OONI Probe clients to retrieve the descriptor of
@@ -580,8 +564,8 @@ Same as 4.3 GET the OONI Run descriptor
 
 Same as 4.3 GET the OONI Run descriptor
 
-Note: for dynamically generated run links, this view will only return the
-`target_name` and not the `targets` list.
+When the specified OONI Run link contains dynamic targets, the `inputs` list may
+contain different targets.
 
 ## 4.4 GET the OONI Run engine descriptor revision
 
@@ -593,9 +577,8 @@ As such, this request does not require any authentication.
 This method is used to return just the nettests, revision and date_created
 sections of a descriptor to be used by the measurement engine.
 
-When the specified OONI Run link contains dynamic targets, it will return the
-generated `targets` list and hence every request might return a different target
-list.
+When the specified OONI Run link contains dynamic targets, the `inputs` list may
+contain different targets.
 
 ### Request
 
@@ -635,11 +618,11 @@ following JSON body:
    "nettests": [
       {
          // See CREATE response format for other fields
-         "targets": [{
-            "input": "https://example.com/",
-            "extra": {
-               "category_code": "HUMR",
-            }
+         "inputs": [
+            "https://example.com/"
+         ],
+         "inputs_extra": [{
+            "category_code": "HUMR",
          }],
          "test_name": "web_connectivity"
       }
