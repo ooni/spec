@@ -19,7 +19,7 @@ Below are definitions for important components of the system:
   with the OONI Probe app installed allows the user to instrument their probe to
   run the nettests configured by the link creator. If the OONI Probe app is not
   installed, it will display a web page asking them to download the app.
-  
+
 * **OONI Run descriptor** contains the metadata for a specific OONI Run link and
   the nettest definitions: what nettests should be run and how they should be
   configured (ex. what URLs should be tested)
@@ -125,31 +125,20 @@ An OONI Run link descriptor is a JSON file with the following semantics:
   // `array` provides a JSON array of tests to be run.
   "nettests":[{
 
-    // (optional) `array` provides a JSON array of tests to be run.
+    // (optional) `array` provides a JSON array of inputs for the specified test.
     "inputs": [
       "https://example.com/",
       "https://ooni.org/"
     ],
 
-    // (optional) `map` options arguments provided to the specified test_name
-    //
-    // Note: this field is currently experimental. A future version of the specification
-    // may modify the field name or its semantics if we discover it needs changes.
-    "options": {
-      "HTTP3Enabled": true
-    },
+    // (optional) `array` provides a richer JSON array containing extra parameters for each input.
+    // If provided, the length of inputs_extra should match the length of inputs.
+    "inputs_extra": [{
+           "category_code": "HUMR",
+    }],
 
-    // (optional) `map` settings which are sent to probe_services for retrieving the inputs vector
-    // It's possible to reference user configured settings by accessing the 
-    // $settings special variable.
-    // In particular the content of the backend_options will be sent to the /api/v1/check-in call nested 
-    // under the relative test_name.
-    //
-    // Note: this field is currently experimental. A future version of the specification
-    // may modify the field name or its semantics if we discover it needs changes.
-    "backend_options": {
-      "category_codes": "$settings.category_codes"
-    },
+   // (optional) string used to specify during creation that the input list should be dynamically generated. The semantics of each string is up to the backend implementation.
+   "targets_name": "websites_list_prioritized",
 
     // (optional) `bool` indicates if this test should be run as part of autoruns. Defaults to true.
     //
@@ -166,21 +155,30 @@ An OONI Run link descriptor is a JSON file with the following semantics:
     "test_name": "web_connectivity"
   }, {
     "test_name": "openvpn",
-    "backend_options": {
-       "provider": "riseupvpn"
-    },
+    "inputs": [
+      "https://riseup-vpn-address.com/"
+    ],
+    "inputs_extra": [{
+         "provider": "riseupvpn",
+    }],
   }]
 }
 ```
 
-In particular values starting with the `$settings` prefix should be mapped
-based on user-configured preferences in the app. (Note also that this is
-currently an experimental feature that we may change in the future.)
+In reality there are two different views onto an OONI Run link descriptor. One
+is the view from the perspective of the creator and owner of the link, the
+second is from the perspective of measurement applications that need to consume
+these links.
 
-Currently the following `$settings` are defined:
+The reason for this is that certain target lists need to be generated
+dynamically and at runtime, while the parameters for generating these dynamic
+links are specified by the creator of the link.
 
-* `$settings.category_codes` should be replaced with the list of category codes
-  the user has enabled (ex. `["HUMR", "NEWS"]`.
+A prime example of this would be the OONI Run link for the stock OONI Websites
+card. The OONI Run descriptor, as specified from the link creator, is saying
+"run the test-lists with weights applied based on coverage", while the mobile
+application will then receive a prioritized and sorted list which will change
+every time a new run is performed.
 
 Based on the above specification it would be possible to re-implement the cards for the OONI Probe
 dashboard as follows.
@@ -197,20 +195,17 @@ dashboard as follows.
 "nettests":
    [
       {
-         "options": {
-            "MaxRuntime": "$settings.max_runtime",
-         },
-         "backend_settings": {
-            "category_codes": "$settings.category_codes"
-         },
+         "inputs": [
+            "https://example.com/"
+         ],
+         "inputs_extra": [{
+            "category_code": "HUMR",
+         }],
          "is_manual_run_enabled": true,
          "is_background_run_enabled": false,
          "test_name": "web_connectivity"
       },
       {
-         "backend_settings": {
-            "category_codes": "$settings.category_codes"
-         },
          "is_manual_run_enabled": false,
          "is_background_run_enabled": true,
          "test_name": "web_connectivity"
@@ -358,7 +353,7 @@ authentication should be handled.
 When you `CREATE` a new OONI RUN link, the client sends a HTTP `POST`
 request conforming to the following:
 
-`POST /api/v2/oonirun`
+`POST /api/v2/oonirun/links`
 
 ```JavaScript
 {
@@ -389,9 +384,10 @@ request conforming to the following:
             "https://example.com/",
             "https://ooni.org/"
          ],
-         "options": {
-            "HTTP3Enabled": true,
-         },
+         "inputs_extra": [
+            {},
+            {}
+         ]
          "test_name": "web_connectivity"
       },
       {
@@ -401,13 +397,20 @@ request conforming to the following:
 }
 ```
 
+The `inputs_extra` field should be a list of JSON objects, with each object
+corresponding to an entry in the `inputs` list. This allows you to attach
+additional metadata to each input. The `targets_name` field specifies the name
+of a predefined target list that will be used to dynamically generate the inputs
+list. This name must be recognized by the backend and agreed upon in advance
+between the link creator and the backend system.
 
 ### Response status code
 
 Upon receiving a request to create a link, the API will respond:
 
 1. SHOULD fail with `4xx` if the request body does not parse, it is not a JSON object,
-   any required field is missing and/or if any present field has an invalid value.
+   any required field is missing and/or if any present field has an invalid value. In particular,
+   note that it will error when `targets_name` and `inputs` are provided at the same time in any nettest
 
 2. if everything is okay, MUST return a `200` response.
 
@@ -465,7 +468,7 @@ To update an OONI Run Link, the client issues a request compliant the same as th
 Below we list the extra fields that are settable from the edit request that are
 not settable during CREATE.
 
-`PUT /api/v2/oonirun/{ooni_run_link_id}`
+`PUT /api/v2/oonirun/links/{ooni_run_link_id}`
 
 ```JavaScript
 {
@@ -510,8 +513,8 @@ following JSON body:
 
 ## 4.3 GET the OONI Run descriptor
 
-This operation is performed by OONI Probe clients to retrieve the descriptor of
-a certain OONI Run link given the ID.
+This operation is performed by OONI Probe clients to retrieve the latest
+revision for a descriptor of a certain OONI Run link given the ID.
 
 As such, this request does not require any authentication.
 
@@ -519,7 +522,7 @@ As such, this request does not require any authentication.
 
 To retrieve an OONI Run link descriptor, the client issues a request compliant with:
 
-`GET /api/v2/oonirun/{oonirun_link_id}`
+`GET /api/v2/oonirun/links/{oonirun_link_id}`
 
 ### Response status code
 
@@ -541,7 +544,120 @@ following JSON body:
 }
 ```
 
-## 4.4 LIST the OONI Run descriptors
+Note: This endpoint does not compute dynamic test lists. As a result, 
+nettests with `target_name` will always have an empty `inputs` field.
+
+
+## 4.4 GET the OONI Run full descriptor by revision
+
+This operation is performed by OONI Probe clients to retrieve the descriptor of
+a certain OONI Run link given the ID and revision
+
+As such, this request does not require any authentication.
+
+### Request
+
+To retrieve an OONI Run link descriptor, the client issues a request compliant with:
+
+`GET /api/v2/oonirun/links/{oonirun_link_id}/full-descriptor/{revision}`
+
+### Response status code
+
+Same as 4.3 GET the OONI Run descriptor
+
+### Response body
+
+Same as 4.3 GET the OONI Run descriptor
+
+When the specified OONI Run link contains dynamic targets, the `inputs` list may
+contain different targets.
+
+## 4.4 GET the OONI Run engine descriptor revision
+
+This operation is performed by OONI Probe clients to retrieve the engine descriptor of
+a certain OONI Run link given the ID and revision
+
+As such, this request does not require any authentication.
+
+This method is used to return just the nettests, revision and date_created
+sections of a descriptor to be used by the measurement engine.
+
+When the specified OONI Run link contains dynamic targets, the `inputs` list may
+contain different targets.
+
+### Request
+
+To retrieve an OONI Run link descriptor, the client issues a request compliant with:
+
+`POST /api/v2/oonirun/links/{oonirun_link_id}/engine-descriptor/{revision}`
+```
+{
+    "is_charging" : true, // `bool` if the probe is charging or not
+    "run_type" : "manual", // `string` valid options: timed | manual
+
+    // The following fields are required for the dynamic tests list calculation
+    "probe_cc" : "IT", // `string` country code of the probe
+    "probe_asn" : "AS1234", // `string` ASN for the probe,
+    "network_type" : "wifi", // `string`
+    "website_category_codes" : ["NEWS"], // `array` of strings with category codes used for filtering
+}
+```
+Upon receiving this request, the OONI Run backend:
+
+1. SHOULD check whether the `${oonirun_link_id}` exists and return 404 if it does
+   not.
+
+2. if everything is okay, returns `200` to the client (see below).
+
+A client should also include the following headers to allow the server to
+properly generate dynamic target lists:
+
+* `X-OONI-Credentials`: base64 encoded OONI anonymous credentials
+
+The `platform`, `software_name`, `software_name`, `engine_name` and
+`engine_version` are encoded inside of the `User-Agent` string using the following
+format:
+```
+<software_name>/<software_version> (<platform>) <engine_name>/<engine_version> (<engine_version_full>)
+```
+
+### Response body
+
+In case of success (i.e. `200` response), the OONI Run Service MUST return the
+following JSON body:
+
+```JavaScript
+{
+   "revision": "1",
+   "date_created": ""
+   "nettests": [
+      {
+         // See CREATE response format for other fields
+         "inputs": [
+            "https://example.com/"
+         ],
+         "inputs_extra": [{
+            "category_code": "HUMR",
+         }],
+         "test_name": "web_connectivity"
+      }
+   ]
+}
+```
+Note: While nettests can't include both `inputs` and `target_name` during creation, 
+this endpoint may show both since the backend dynamically populates 
+`inputs` based on `target_name`.
+
+The backend computes dynamic test lists only for this request. Other requests will return an empty `inputs` list.
+
+Additionally, the `Vary` header should specify the list of headers that affect
+the response body caching, which are all headers starting with the `X-OONI-`
+prefix.
+
+The server might also return an updated version of the submitted anonymous
+credentials using the `X-OONI-Credentials` header.
+
+## 4.7 LIST the OONI Run descriptors
 
 This operation is performed by users of the OONI Run platform to list all the existing OONI Run links.
 
@@ -551,13 +667,10 @@ Authentication for this endpoint is optional.
 
 To retrieve an OONI Run link descriptor, the client issues a request compliant with:
 
-`GET /api/v2/oonirun_links?only_latest=true&only_mine=true&include_archived=true`
+`GET /api/v2/oonirun/links?is_mine=true&is_expired=true`
 
--   `only_latest`, boolean flag to filter only by the latest revision of an OONI
-    Run link. If unset or set to false, it will instead include all revisions as
-    separate entries.
--   `only_mine` , boolean flag to filter only the links of the logged in user. Will only work when the Authentication header is used.
--   `include_archived` , boolean flag used to indicate if the listing should include archived links as well.
+-   `is_mine` , boolean flag to filter only the links of the logged in user. Will only work when the Authentication header is used.
+-   `is_expired` , boolean flag used to indicate if the listing should include archived links as well.
 
 ### Response status code
 
