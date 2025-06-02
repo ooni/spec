@@ -397,7 +397,7 @@ request conforming to the following:
 }
 ```
 
-The `inputs_extra` field should can be a list of JSON objects, with each object
+The `inputs_extra` field should be a list of JSON objects, with each object
 corresponding to an entry in the `inputs` list. This allows you to attach
 additional metadata to each input. The `targets_name` field specifies the name
 of a predefined target list that will be used to dynamically generate the inputs
@@ -409,9 +409,10 @@ between the link creator and the backend system.
 Upon receiving a request to create a link, the API will respond:
 
 1. SHOULD fail with `4xx` if the request body does not parse, it is not a JSON object,
-   any required field is missing and/or if any present field has an invalid value.
+   any required field is missing and/or if any present field has an invalid value. In particular,
+   note that it will error when `targets_name` and `inputs` are provided at the same time in any nettest
 
-2. if everything is okay, MUST return a `200` response.
+3. if everything is okay, MUST return a `200` response.
 
 ### Response body
 
@@ -543,6 +544,10 @@ following JSON body:
 }
 ```
 
+Note: This endpoint does not compute dynamic test lists. As a result, 
+nettests with `target_name` will always have an empty `inputs` field.
+
+
 ## 4.4 GET the OONI Run full descriptor by revision
 
 This operation is performed by OONI Probe clients to retrieve the descriptor of
@@ -639,6 +644,11 @@ following JSON body:
    ]
 }
 ```
+Note: While nettests can't include both `inputs` and `target_name` during creation, 
+this endpoint may show both since the backend dynamically populates 
+`inputs` based on `target_name`.
+
+The backend computes dynamic test lists only for this request. Other requests will return an empty `inputs` list.
 
 Additionally, the `Vary` header should specify the list of headers that affect
 the response body caching, which are all headers starting with the `X-OONI-`
