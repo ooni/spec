@@ -584,7 +584,7 @@ contain different targets.
 
 To retrieve an OONI Run link descriptor, the client issues a request compliant with:
 
-`GET /api/v2/oonirun/links/{oonirun_link_id}/engine-descriptor/{revision}`
+`POST /api/v2/oonirun/links/{oonirun_link_id}/engine-descriptor/{revision}`
 ```
 {
     "is_charging" : true, // `bool` if the probe is charging or not
