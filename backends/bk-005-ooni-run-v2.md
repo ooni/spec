@@ -667,11 +667,8 @@ Authentication for this endpoint is optional.
 
 To retrieve an OONI Run link descriptor, the client issues a request compliant with:
 
-`GET /api/v2/oonirun/links?only_latest=true&is_mine=true&is_expired=true`
+`GET /api/v2/oonirun/links?is_mine=true&is_expired=true`
 
--   `only_latest`, boolean flag to filter only by the latest revision of an OONI
-    Run link. If unset or set to false, it will instead include all revisions as
-    separate entries.
 -   `is_mine` , boolean flag to filter only the links of the logged in user. Will only work when the Authentication header is used.
 -   `is_expired` , boolean flag used to indicate if the listing should include archived links as well.
 
