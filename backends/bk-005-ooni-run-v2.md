@@ -584,8 +584,19 @@ contain different targets.
 
 To retrieve an OONI Run link descriptor, the client issues a request compliant with:
 
-`GET /api/v2/oonirun/links/{oonirun_link_id}/engine-descriptor/{revision}?run_type={timed|manual}&is_charging={true|false}`
+`GET /api/v2/oonirun/links/{oonirun_link_id}/engine-descriptor/{revision}`
+```
+{
+    "is_charging" : true, // `bool` if the probe is charging or not
+    "run_type" : "manual", // `string` valid options: timed | manual
 
+    // The following fields are required for the dynamic tests list calculation
+    "probe_cc" : "IT", // `string` country code of the probe
+    "probe_asn" : "AS1234", // `string` ASN for the probe,
+    "network_type" : "wifi", // `string`
+    "website_category_codes" : ["NEWS"], // `array` of strings with category codes used for filtering
+}
+```
 Upon receiving this request, the OONI Run backend:
 
 1. SHOULD check whether the `${oonirun_link_id}` exists and return 404 if it does
@@ -595,11 +606,10 @@ Upon receiving this request, the OONI Run backend:
 
 A client should also include the following headers to allow the server to
 properly generate dynamic target lists:
-* `X-OONI-NetworkInfo`: `<probe_asn>,<probe_cc> (<network_type>)`, eg `AS1234,IT (wifi)`
-* `X-OONI-WebsiteCategoryCodes`: comma separated list of category codes that user has chosen to test (eg. NEWS,HUMR)
+
 * `X-OONI-Credentials`: base64 encoded OONI anonymous credentials
 
-The the `platform`, `software_name`, `software_name`, `engine_name` and
+The `platform`, `software_name`, `software_name`, `engine_name` and
 `engine_version` are encoded inside of the `User-Agent` string using the following
 format:
 ```
