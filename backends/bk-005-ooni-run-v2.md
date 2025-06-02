@@ -412,7 +412,7 @@ Upon receiving a request to create a link, the API will respond:
    any required field is missing and/or if any present field has an invalid value. In particular,
    note that it will error when `targets_name` and `inputs` are provided at the same time in any nettest
 
-3. if everything is okay, MUST return a `200` response.
+2. if everything is okay, MUST return a `200` response.
 
 ### Response body
 
