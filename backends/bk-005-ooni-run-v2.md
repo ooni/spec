@@ -226,15 +226,24 @@ dashboard as follows.
 "nettests":
    [
       {
-         "test_name": "whatsapp"
+         "test_name": "whatsapp",
+         "is_manual_run_enabled": true,
+         "is_background_run_enabled": true,
+
       },
       {
+         "is_manual_run_enabled": true,
+         "is_background_run_enabled": true,
          "test_name": "telegram"
       },
       {
+         "is_manual_run_enabled": true,
+         "is_background_run_enabled": true,
          "test_name": "facebook_messenger"
       },
       {
+         "is_manual_run_enabled": true,
+         "is_background_run_enabled": true,
          "test_name": "signal"
       },
    ]
@@ -253,12 +262,18 @@ dashboard as follows.
 "nettests":
    [
       {
+         "is_manual_run_enabled": true,
+         "is_background_run_enabled": true,
          "test_name": "psiphon"
       },
       {
+         "is_manual_run_enabled": true,
+         "is_background_run_enabled": true,
          "test_name": "tor"
       },
       {
+         "is_manual_run_enabled": true,
+         "is_background_run_enabled": true,
          "test_name": "riseupvpn"
       }
    ]
@@ -277,15 +292,23 @@ dashboard as follows.
 "nettests":
    [
       {
+         "is_manual_run_enabled": true,
+         "is_background_run_enabled": true,
          "test_name": "http_invalid_request_line"
       },
       {
+         "is_manual_run_enabled": true,
+         "is_background_run_enabled": true,
          "test_name": "http_header_field_manipulation"
       },
       {
+         "is_manual_run_enabled": true,
+         "is_background_run_enabled": false,
          "test_name": "ndt"
       },
       {
+         "is_manual_run_enabled": true,
+         "is_background_run_enabled": false,
          "test_name": "dash"
       },
    ]
@@ -303,17 +326,23 @@ dashboard as follows.
 "nettests":
    [
       {
+         "is_manual_run_enabled": true,
+         "is_background_run_enabled": true,
          "test_name": "stun_reachability"
       },
       {
+         "is_manual_run_enabled": true,
+         "is_background_run_enabled": true,
          "test_name": "dnscheck"
       },
       {
          "is_manual_run_enabled": false,
+         "is_background_run_enabled": true,
          "test_name": "tor_snowflake"
       },
       {
          "is_manual_run_enabled": false,
+         "is_background_run_enabled": true,
          "test_name": "vanilla_tor"
       },
    ]
