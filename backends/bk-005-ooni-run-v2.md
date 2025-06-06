@@ -1,7 +1,7 @@
 # OONI Run v2 specification
 
 -   author: Norbel Ambanumben, Arturo Filastò
--   version: 2024.02.23
+-   version: 2025.06.03
 -   status: release-candidate
 
 This document provides a functional specification for OONI Run.
