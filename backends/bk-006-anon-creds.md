@@ -86,9 +86,9 @@ All assumed to be performed over HTTPS.
 
   **Example manifest**
 
-```json
+```js
 {
-    "public_key": "some_key" // A string used as public key for signing credentials 
+    "public_key": "some_key", // A string used as public key for signing credentials 
     "nym_scope": "ooni.org/{probe_cc}/{probe_asn}",
     "public_parameters": "0xdeadbeef",
  	"submission_policy": {
