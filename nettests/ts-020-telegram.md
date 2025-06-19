@@ -33,7 +33,7 @@ This test will check if 2 services are working as they should:
 
 ## Telegram access points check
 
-The Telegram access points (DCs) are those used by the [Telegram desktop client](https://github.com/telegramdesktop/tdesktop/blob/e6d94b5ee7d96a97ee5976dacb87bafd00beac1d/Telegram/SourceFiles/config.h#L205).
+The Telegram access points (DCs) are those used by the [Telegram desktop client](https://github.com/telegramdesktop/tdesktop/blob/520de600a0ee4edaf0a8047ba6fb0371a7e3d939/Telegram/SourceFiles/mtproto/mtproto_dc_options.cpp#L31).
 
 These access points have the following IP addresses:
 
