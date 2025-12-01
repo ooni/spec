@@ -43,6 +43,10 @@ the following features. Ndt5 tests have a `"test_s2c"` key that is not
 present inside of ndt7 tests. Ndt7 clients also include a key that is
 called `"protocol"` and is set to `7`.
 
+Response size of each segment is limited to 128 megabytes in order to not
+consume excessive memory on the host device. This is believed to be a
+conservative maximum bounds which should not be exceeded in normal usage.
+
 # Expected output
 
 ## Parent data format

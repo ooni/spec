@@ -207,6 +207,12 @@ headers not present in both the sent and received headers.
 }
 ```
 
+# Limitations
+
+The maximum response size is limited to 128 megabytes in order to not consume excessive
+memory on the host device. This is believed to be a conservative maximum bounds
+which should not be exceeded in normal usage.
+
 # Privacy considerations
 
 If the user is behind a transparent HTTP proxy that sets the X-Forwarded-For
