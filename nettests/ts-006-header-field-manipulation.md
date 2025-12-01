@@ -1,6 +1,6 @@
 # Specification version number
 
-0.2.1
+0.2.2
 
 * _status_: current
 
@@ -206,6 +206,12 @@ headers not present in both the sent and received headers.
     "test_version": "0.1.5"
 }
 ```
+
+# Limitations
+
+The maximum response size is limited to 128 megabytes in order to not consume excessive
+memory on the host device. This is believed to be a conservative maximum bounds
+which should not be exceeded in normal usage.
 
 # Privacy considerations
 
