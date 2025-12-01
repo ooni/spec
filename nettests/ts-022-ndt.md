@@ -1,6 +1,6 @@
 # Specification version number
 
-2020-04-08-001
+2025-12-01-001
 
 * _status_: current
 
