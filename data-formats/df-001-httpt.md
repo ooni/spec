@@ -1,231 +1,350 @@
-# HTTPTest template data format
+# HTTP Data Format
 
-Data Format Version: 0.2.0
+This document describes the keys with `test_keys` that all experiments
+using HTTP SHOULD populate, possibly using directly the specific template
+code. See this directory's [README](README.md) for the basic concepts.
 
-This is the specification of the data format that every test that is
-based on ooni.templates.httpt.HTTPTest shall be using.
-
-Third party tests that run HTTP related measurements SHOULD also be using such
-data format.
+| Name       | `httpt` |
+|------------|---------|
+| Version    | 0       |
 
 ## Specification
 
+```JSON
+{
+  "agent": "redirect",
+  "requests": [],
+  "socksproxy": null
+}
 ```
-"agent": "agent|redirect depending on weither the client "
-    "will ignore 30X redirects or follow them.",
 
-"socksproxy": "null | IP:PORT of the socksproxy to be used to "
-    "perform the experiment requests on",
+- `agent` (`string`): set to `agent` if the HTTP client code doesn't
+follow redirects, set to `redirect` otherwise.
 
-"requests": [
-    {
-        "failure": "This will contain an error string for why the "
-            "request failed or null if no failure occurred",
+- `request` (`[]Transaction`): list of transaction objects. See below.
 
-        "request": {
-            "body": "If the request of the client contains some payload it "
-                "will be in here, otherwise it is set to null",
+- `socksproxy` (`string`; optional; legacy): address of the SOCKS proxy being
+used in a nettest. Note that this proxy is different from the one used to contact the backend. Omit or set to `null` if no SOCKS proxy is being used. The format
+to be used is `1.2.3.4:54321` for IPv4 and `[::1234]:54321` for IPv6. Modern
+probes always set this field to `null`.
 
-            "headers": {
-                "Header-Name": "Header-Value"
-            },
+## Transaction
 
-            "method": "GET|POST|PUT",
-            "tor": {
-                "exit_ip": "The address of the Tor exit used for the request or "
-                    "null if Tor was not used or the test was run with an older version of ooniprobe.",
+```JSON
+{
+    "network": "tcp",
+    "address": "1.1.1.1:443",
+    "alpn": "h2",
+    "failure": "dns_nxdomain_error",
+    "request": {},
+    "response": {},
+    "response_length": 1234,
+    "t0": 0.9,
+    "t": 1.0,
+    "tags": [],
+    "transaction_id": 1
+}
+```
 
-                "exit_name": "The name of the Tor exit used for the request or "
-                    "null if Tor was not used or the test was run with an older version of ooniprobe.",
+- `network` (`string`; optional): if available, the network of the
+underlying connection we are using: either `"tcp"` or `"udp"`. Until 2022-09-08, we used
+`"tcp"` or `"quic"` but we realized that using `"udp"` instead of `"quic"` would
+be more consistent, so we also changed `"quic"` to always become `"udp"`. These
+changes occurred during the OONI Probe v3.16.0 release cycle in
+[ooni/probe-cli#946](https://github.com/ooni/probe-cli/pull/946).
 
-                "is_tor": "true|false depending on wether or not "
-                    "this request was done over Tor or not."
-            },
-            "url": "The URL of the request that has been performed."
-        },
-        "response": {
-            "body": "The body of the response or null if not response was found. If the response is binary "
-                "then this will be a dictionary containing the format in which the binary data is encoded and "
-                "the encoded data (ex. {"format": "base64", "data": "AQI="}). "
-                "Currently the only type of format supported is base64.",
+- `address` (`string`; optional): if available, the endpoint of the
+underlying connection we are using (e.g., `"[::1]:443"`).
 
-            "headers": {
-                "Header-Name": "Header-Value"
-            }
-        },
-        "response_length": null
-    }
+- `alpn` (`string`; optional): if available and applicable, the ALPN
+that was negotiated with the server, typically `"http/1.1"`, `"h2"` or `"h3"`.
+
+- `failure` (`string`; nullable): if there was an error, this field is
+a string indicating the error, otherwise it MUST be `null`.
+
+- `request` (`Request`): object describing the request.
+
+- `response` (`Response`): object describing the response.
+
+- `response_length` (`int`; optional; deprecated): this is a legacy field that
+contains the response length and is typically set to `null` or directly
+omitted by modern clients (e.g. from Measurement Kit onwards).
+
+- `t0` (`float`): number of seconds elapsed since `measurement_start_time`
+measured in the moment in which we started the operation (`t - t0` gives you
+the amount of time spent performing the operation);
+
+- `t` (`float`): number of seconds elapsed since `measurement_start_time`
+measured in the moment in which `failure` is determined (`t - t0` gives you
+the amount of time spent performing the operation);
+
+- `tags` (`[]string`; optional): list of tags for this event. This is useful to
+understand what part of a complex measurement generated an event.
+
+- `transaction_id` (`int`; optional; since 2020-01-11): the set of operations
+to which this event belongs to (typically an HTTP transaction or a DNS
+round trip). A zero or missing value means we don't know the transaction
+to which this code belongs to.
+
+## Request
+
+```JavaScript
+{
+    "url": "https://example.com/",
+    "body": MaybeBinaryData(),
+    "body_is_truncated": false,
+    "headers": {},
+    "headers_list": [],
+    "method": "GET",
+    "tor": {},
+    "x_transport": "tcp"
+}
+```
+
+- `url` (`string`): this is the URL that was used for issuing the request.
+
+- `body` (`string` or `BinaryData`): this is the request body. The body is a
+`string` if it can be represented using UTF-8. Otherwise it is a `BinaryData`
+instance, as described below. See also `MaybeBinaryData` below.
+
+- `body_is_truncated` (`bool`; optional; since 2019-12-02): `true` if the body
+has been truncated, `false` or omitted otherwise.
+
+- `headers` (`map[string]MaybeBinaryData`): legacy map containing HTTP headers
+where the value is `string` if it can be represented using UTF-8 and a
+`BinaryData` instance otherwise. In case multiple headers have the same key,
+the map SHOULD only contain the first value.
+
+- `headers_list` (`[]HeaderValue`); since 2019-12-02): this is a better
+representation of headers that allows us to represent the case where there
+are multiple values for the same header key. See below the definition of
+`HeaderValue`, which in the value-is-UTF-8 case boils down to the
+`[string, string]` tuple.
+
+- `method` (`string`): the request method.
+
+- `tor` (`TorInfo`): this is an object containing information on the
+instance of `tor` that we may be using for measuring.
+
+- `x_transport` (`string`; deprecated): indicates what transports was used for
+issuing the request. Typically `"tcp"` or `"udp"`. Until 2022-09-08, we used
+`"tcp"` or `"quic"` but we realized that using `"udp"` instead of `"quic"` would
+be more consistent, so we also changed `"quic"` to always become `"udp"`. These
+changes occurred during the OONI Probe v3.16.0 release cycle in
+[ooni/probe-cli#946](https://github.com/ooni/probe-cli/pull/946).
+
+In case we have the following headers:
+
+```bash
+> Foo: bar
+> Foo: <binary-data-here>
+```
+
+consistently with `MaybeBinaryData`'s definition,
+the headers representation would be:
+
+```JSON
+{
+  "headers": {
+    "Foo": "bar"
+  },
+  "headers_list": [[
+    "Foo", "bar",
+  ], [
+    "Foo", {"format": "base64", "data": "..."}
+  ]]
+}
+```
+
+Note how the `headers` map only gets the first value.
+
+## HeaderValue
+
+```JavaScript
+[
+  "key",
+  MaybeBinaryData() // value
 ]
 ```
 
-## Example output
+The first element is the header key. The second element is the header
+value. Because the value may in principle be binary, we use
+`MaybeBinaryData` (see below).
 
-```
+## Response
+
+```JavaScript
 {
-    "bucket_date": "2015-11-22",
-    "data_format_version": "0.2.0",
-    "id": "07873c37-9441-47e3-93b8-94db10444c64",
-    "input": "http://googleusercontent.com/",
-    "options": [
-        "-f",
-        "37e60e13536f6afe47a830bfb6b371b5cf65da66d7ad65137344679b24fdccd1"
+    "body": MaybeBinaryData(),
+    "body_is_truncated": false,
+    "code": 501,
+    "headers": {},
+    "headers_list": [],
+}
+```
+
+- `body`: like `Request.body`.
+
+- `body_is_truncated`: like `Request.body_is_truncated`.
+
+- `code` (`int`): response status code.
+
+- `headers`: like `Request.headers`.
+
+- `headers_list`: like `Request.headers_list`.
+
+## MaybeBinaryData
+
+This is either `string`, if the value can be represented using `UTF-8`, or
+a `BinaryData` instance otherwise.
+
+## BinaryData
+
+```JSON
+{"format": "base64", "data": "AQI="}
+```
+
+- `format` (`string`): MUST be `base64`.
+
+- `data` (`string`): the `base64` representation of the value that
+we could not represent using `UTF-8`.
+
+## TorInfo
+
+```JSON
+{
+    "exit_ip": null,
+    "exit_name": null,
+    "is_tor": false
+}
+```
+
+- `exit_ip` (`string`; nullable): the IP of the exit node or `null`
+if we're not using tor or this information is not available.
+
+- `exit_name` (`string`; nullable): the name of the exit node or `null`
+if we're not using tor or this information is not available.
+
+- `is_tor` (`bool`): true if we're using tor, false otherwise.
+
+## Example
+
+In the following example we've omitted all the keys that are
+not relevant to the HTTP data format:
+
+```JSON
+{
+  "network": "tcp",
+  "address": "93.184.216.34:443",
+  "alpn": "h2",
+  "failure": null,
+  "request": {
+    "body": "",
+    "body_is_truncated": false,
+    "headers_list": [
+      [
+        "Accept",
+        "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+      ],
+      [
+        "Accept-Language",
+        "en-US,en;q=0.9"
+      ],
+      [
+        "Host",
+        "example.com"
+      ],
+      [
+        "Referer",
+        ""
+      ],
+      [
+        "User-Agent",
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36"
+      ]
     ],
-    "probe_asn": "AS0",
-    "probe_cc": "CH",
-    "probe_ip": "127.0.0.1",
-    "report_filename": "2015-11-22/20151122T103202Z-CH-AS0-http_requests-XsQk40qrhgvJEdbXAUFzYjbbGCBuEsc1UV5RAAFXo4hysiUo3qyTfo4NTr7MjiwN-0.1.0-probe.json",
-    "report_id": "XsQk40qrhgvJEdbXAUFzYjbbGCBuEsc1UV5RAAFXo4hysiUo3qyTfo4NTr7MjiwN",
-    "software_name": "ooniprobe",
-    "software_version": "1.3.1",
-    "test_helpers": {},
-    "backend_version": "1.1.4",
-    "input_hashes": [
-        "37e60e13536f6afe47a830bfb6b371b5cf65da66d7ad65137344679b24fdccd1"
+    "headers": {
+      "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+      "Accept-Language": "en-US,en;q=0.9",
+      "Host": "example.com",
+      "Referer": "",
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36"
+    },
+    "method": "GET",
+    "tor": {
+      "exit_ip": null,
+      "exit_name": null,
+      "is_tor": false
+    },
+    "x_transport": "tcp",
+    "url": "https://example.com"
+  },
+  "response": {
+    "body": "<!doctype html>\n<html>\n<head>\n    <title>Example Domain</title>\n\n    <meta charset=\"utf-8\" />\n    <meta http-equiv=\"Content-type\" content=\"text/html; charset=utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n    <style type=\"text/css\">\n    body {\n        background-color: #f0f0f2;\n        margin: 0;\n        padding: 0;\n        font-family: -apple-system, system-ui, BlinkMacSystemFont, \"Segoe UI\", \"Open Sans\", \"Helvetica Neue\", Helvetica, Arial, sans-serif;\n        \n    }\n    div {\n        width: 600px;\n        margin: 5em auto;\n        padding: 2em;\n        background-color: #fdfdff;\n        border-radius: 0.5em;\n        box-shadow: 2px 3px 7px 2px rgba(0,0,0,0.02);\n    }\n    a:link, a:visited {\n        color: #38488f;\n        text-decoration: none;\n    }\n    @media (max-width: 700px) {\n        div {\n            margin: 0 auto;\n            width: auto;\n        }\n    }\n    </style>    \n</head>\n\n<body>\n<div>\n    <h1>Example Domain</h1>\n    <p>This domain is for use in illustrative examples in documents. You may use this\n    domain in literature without prior coordination or asking for permission.</p>\n    <p><a href=\"https://www.iana.org/domains/example\">More information...</a></p>\n</div>\n</body>\n</html>\n",
+    "body_is_truncated": false,
+    "code": 200,
+    "headers_list": [
+      [
+        "Age",
+        "590050"
+      ],
+      [
+        "Cache-Control",
+        "max-age=604800"
+      ],
+      [
+        "Content-Length",
+        "1256"
+      ],
+      [
+        "Content-Type",
+        "text/html; charset=UTF-8"
+      ],
+      [
+        "Date",
+        "Thu, 08 Sep 2022 09:47:49 GMT"
+      ],
+      [
+        "Etag",
+        "\"3147526947+ident\""
+      ],
+      [
+        "Expires",
+        "Thu, 15 Sep 2022 09:47:49 GMT"
+      ],
+      [
+        "Last-Modified",
+        "Thu, 17 Oct 2019 07:18:26 GMT"
+      ],
+      [
+        "Server",
+        "ECS (dcb/7F5B)"
+      ],
+      [
+        "Vary",
+        "Accept-Encoding"
+      ],
+      [
+        "X-Cache",
+        "HIT"
+      ]
     ],
-    "probe_city": null,
-    "test_name": "http_requests",
-    "test_runtime": 0.1842639446,
-    "test_start_time": "2015-11-22 10:32:02",
-    "test_version": "0.2.4"
-    "test_keys": {
-        "agent": "agent",
-        "body_length_match": null,
-        "body_proportion": null,
-        "control_failure": "socks_host_unreachable",
-        "experiment_failure": "dns_lookup_error",
-        "factor": 0.8,
-        "headers_diff": null,
-        "headers_match": null,
-        "requests": [
-            {
-                "failure": "dns_lookup_error",
-                "request": {
-                    "body": null,
-                    "headers": {
-                        "User-Agent": "Mozilla/5.0 (Windows; U; Windows NT 6.1; de; rv:1.9.2) Gecko/20100115 Firefox/3.6"
-                    },
-                    "method": "GET",
-                    "tor": {
-                        "exit_ip": false,
-                        "exit_name": false,
-                        "is_tor": false
-                    },
-                    "url": "http://googleusercontent.com/"
-                },
-                "response": {
-                    "body": null,
-                    "headers": {}
-                },
-                "response_length": null
-            },
-            {
-                "failure": "socks_host_unreachable",
-                "request": {
-                    "body": null,
-                    "headers": {
-                        "User-Agent": "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.1.7) Gecko/20091221 Firefox/3.5.7"
-                    },
-                    "method": "GET",
-                    "tor": {
-                        "exit_ip": null,
-                        "exit_name": null,
-                        "is_tor": true
-                    },
-                    "url": "http://googleusercontent.com/"
-                },
-                "response": {
-                    "body": null,
-                    "headers": {}
-                },
-                "response_length": null
-            },
-            {
-                "failure": "dns_lookup_error",
-                "request": {
-                    "body": null,
-                    "headers": {
-                        "User-Agent": "Mozilla/5.0 (Windows; U; Windows NT 6.1; de; rv:1.9.2) Gecko/20100115 Firefox/3.6"
-                    },
-                    "method": "GET",
-                    "tor": {
-                        "exit_ip": null,
-                        "exit_name": null,
-                        "is_tor": false
-                    },
-                    "url": "http://googleusercontent.com/"
-                },
-                "response": {
-                    "body": null,
-                    "headers": {}
-                },
-                "response_length": null
-            },
-            {
-                "failure": "dns_lookup_error",
-                "request": {
-                    "body": null,
-                    "headers": {
-                        "User-Agent": "Mozilla/5.0 (Windows; U; Windows NT 6.1; de; rv:1.9.2) Gecko/20100115 Firefox/3.6"
-                    },
-                    "method": "GET",
-                    "tor": {
-                        "exit_ip": null,
-                        "exit_name": null,
-                        "is_tor": false
-                    },
-                    "url": "http://googleusercontent.com/"
-                },
-                "response": {
-                    "body": null,
-                    "headers": {}
-                },
-                "response_length": null
-            },
-            {
-                "failure": "socks_host_unreachable",
-                "request": {
-                    "body": null,
-                    "headers": {
-                        "User-Agent": "Mozilla/5.0 (Windows; U; Windows NT 6.1; de; rv:1.9.2) Gecko/20100115 Firefox/3.6"
-                    },
-                    "method": "GET",
-                    "tor": {
-                        "exit_ip": null,
-                        "exit_name": null,
-                        "is_tor": true
-                    },
-                    "url": "http://googleusercontent.com/"
-                },
-                "response": {
-                    "body": null,
-                    "headers": {}
-                },
-                "response_length": null
-            },
-            {
-                "failure": "socks_host_unreachable",
-                "request": {
-                    "body": null,
-                    "headers": {
-                        "User-Agent": "Mozilla/5.0 (Windows; U; Windows NT 6.1; de; rv:1.9.2) Gecko/20100115 Firefox/3.6"
-                    },
-                    "method": "GET",
-                    "tor": {
-                        "exit_ip": null,
-                        "exit_name": null,
-                        "is_tor": true
-                    },
-                    "url": "http://googleusercontent.com/"
-                },
-                "response": {
-                    "body": null,
-                    "headers": {}
-                },
-                "response_length": null
-            }
-        ],
-        "socksproxy": null,
-        "start_time": 1448184722.0
+    "headers": {
+      "Age": "590050",
+      "Cache-Control": "max-age=604800",
+      "Content-Length": "1256",
+      "Content-Type": "text/html; charset=UTF-8",
+      "Date": "Thu, 08 Sep 2022 09:47:49 GMT",
+      "Etag": "\"3147526947+ident\"",
+      "Expires": "Thu, 15 Sep 2022 09:47:49 GMT",
+      "Last-Modified": "Thu, 17 Oct 2019 07:18:26 GMT",
+      "Server": "ECS (dcb/7F5B)",
+      "Vary": "Accept-Encoding",
+      "X-Cache": "HIT"
     }
+  },
+  "t0": 0.900978,
+  "t": 1.051177,
+  "transaction_id": 4
 }
 ```

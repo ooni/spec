@@ -1,84 +1,60 @@
-# ScapyTest data format
+# Scapy Data Format
 
-Data Format Version: 0.2.0
-
-This specifies the data format for tests that are based on
-`ooni.templates.scapyt.ScapyTest`.
+This document describes the keys with `test_keys` that all experiments
+sending and receiving data using Scapy template SHOULD populate, possibly
+using directly the specific template code. See this directory's
+[README](README.md) for the basic concepts.
 
 ## Specification
 
-**sent_packets** are the packets that have been generated and sent over the
-network by the probe.
-
-**answered_packets** are the packets that match up as answers according to the
-rules defined in the **answers_flags** options.
-
-```
+```JSON
 {
-    "answer_flags": [
-          "List of options that are set for determining how to understand if a"
-          "received packet is answer to a sent packet (these only apply to ICMP"
-          "messages)"
-
-          "'ipsrc' means that we check to see if the src and destination ports in"
-          "the ICMP IP citation match."
-
-          "'ipid' means that we look at the IPID in the response to match it up"
-          "to sent packets."
-
-          "'seqack' means that we check if TCP sequence number and ACK match in"
-          "the ICMP citation when processing TCP inside of ICMP."
-
-    ],
-    "answered_packets": [
-        {
-            "raw_packet": {
-                "data": "Encoding of packet the packet inclusive of IP header. "
-                    "The type of encoding is specified in the format field."
-                "format": "The encoding of the data field. Currently only supports base64."
-            },
-            "summary":
-                "A human readable representation of the packet as is the output "
-                "of repr on the scapy.packet object."
-        },
-    ],
-    "sent_packets": [
-        {
-            "raw_packet": {
-                "data": "Encoding of packet the packet inclusive of IP header. "
-                    "The type of encoding is specified in the format field."
-                "format": "The encoding of the data field. Currently only supports base64."
-            },
-            "summary":
-                "A human readable representation of the packet as is the output "
-                "of repr on the scapy.packet object."
-        },
-    ],
+    "answer_flags": [],
+    "answered_packets": [],
+    "sent_packets": []
 }
 ```
 
-## Example output
+- `answer_flags` (`[]string`): List of options that are set for determining
+how to understand if a received packet is answer to a sent packet (these
+only apply to ICMP messages). Zero or more of the following:
 
-```
+    - `ipsrc` means that we check to see if the src and destination ports
+    in the ICMP IP citation match.
+
+    - `ipid` means that we look at the IPID in the response to match it up
+    to sent packets.
+
+    - `seqack` means that we check if TCP sequence number and ACK match in
+    the ICMP citation when processing TCP inside of ICMP.
+
+- `answered_packets` (`[]Packet`): are the packets that match up as
+answers according to the rules defined in the `answers_flags` options.
+
+- `sent_packets` is like `answered_packets` except that of course it
+contains the packets that have been sent.
+
+## Packet
+
+```JavaScript
 {
-    "bucket_date": "2015-11-13",
-    "data_format_version": "0.2.0",
-    "id": "ea9f588b-49ca-4261-babf-0111307877c4",
-    "input": null,
-    "options": [],
-    "probe_asn": "AS8048",
-    "probe_cc": "VE",
-    "probe_ip": "127.0.0.1",
-    "report_filename": "2015-11-13/20151113T104654Z-VE-AS8048-multi_protocol_traceroute-iq0hFnbx4ex7bAvysJBenb9uJAuh7LT02BhDrvIhK6Lpwe7PdCvJ7BHFzm4voYe7-0.1.0-probe.json",
-    "report_id": "iq0hFnbx4ex7bAvysJBenb9uJAuh7LT02BhDrvIhK6Lpwe7PdCvJ7BHFzm4voYe7",
-    "software_name": "ooniprobe",
-    "software_version": "1.3.1",
-    "test_helpers": {
-        "backend": "213.138.109.232"
-    },
-    "backend_version": "1.1.4",
-    "input_hashes": [],
-    "probe_city": null,
+    "raw_packet": BinaryData(),
+    "summary": "string"
+}
+```
+
+- `raw_packet` (`BinaryData`): encoding of the packet inclusive of IP header
+using the `BinaryData` object defined in `df-001-httpt.md`.
+
+- `summary` (`string`): human readable representation of the packet.
+
+## Example
+
+In the following example we've omitted all the keys that are
+not relevant to the Scapy data format:
+
+```JSON
+{
     "test_keys": {
         "answer_flags": [
             "ipsrc"
@@ -191,394 +167,8 @@ rules defined in the **answers_flags** options.
                 },
                 "summary": "[<IP  id=56528 frag=0 ttl=1 proto=tcp dst=213.138.109.232 |<TCP  sport=55752 dport=ntp seq=65077 flags=S |>>]"
             }
-        ],
-        "test_icmp_traceroute": {
-            "hops": [
-                {
-                    "address": "141.136.98.238",
-                    "rtt": 2.039386034,
-                    "ttl": 10
-                },
-                {
-                    "address": "91.223.58.79",
-                    "rtt": 2.2439029217,
-                    "ttl": 11
-                },
-                {
-                    "address": "213.138.109.232",
-                    "rtt": 2.4453678131,
-                    "ttl": 12
-                }
-            ]
-        },
-        "test_tcp_traceroute": {
-            "hops_0": [
-                {
-                    "address": "141.136.98.238",
-                    "rtt": 2.0464248657,
-                    "sport": 34854,
-                    "ttl": 10
-                },
-                {
-                    "address": "91.223.58.79",
-                    "rtt": 2.2470018864,
-                    "sport": 10415,
-                    "ttl": 11
-                },
-                {
-                    "address": "213.138.109.232",
-                    "rtt": 2.4521570206,
-                    "sport": 0,
-                    "ttl": 12
-                }
-            ],
-            "hops_123": [
-                {
-                    "address": "141.136.98.238",
-                    "rtt": 2.0381779671,
-                    "sport": 50988,
-                    "ttl": 10
-                },
-                {
-                    "address": "91.223.58.79",
-                    "rtt": 2.240860939,
-                    "sport": 7867,
-                    "ttl": 11
-                },
-                {
-                    "address": "213.138.109.232",
-                    "rtt": 2.4443869591,
-                    "sport": 123,
-                    "ttl": 12
-                }
-            ],
-            "hops_22": [
-                {
-                    "address": "141.136.98.238",
-                    "rtt": 2.0354959965,
-                    "sport": 36980,
-                    "ttl": 10
-                },
-                {
-                    "address": "91.223.58.79",
-                    "rtt": 2.2357189655,
-                    "sport": 26447,
-                    "ttl": 11
-                },
-                {
-                    "address": "213.138.109.232",
-                    "rtt": 2.4381670952,
-                    "sport": 22,
-                    "ttl": 12
-                }
-            ],
-            "hops_23": [
-                {
-                    "address": "141.136.98.238",
-                    "rtt": 2.0388379097,
-                    "sport": 4690,
-                    "ttl": 10
-                },
-                {
-                    "address": "91.223.58.79",
-                    "rtt": 2.2384901047,
-                    "sport": 51177,
-                    "ttl": 11
-                },
-                {
-                    "address": "213.138.109.232",
-                    "rtt": 2.4421479702,
-                    "sport": 23,
-                    "ttl": 12
-                }
-            ],
-            "hops_443": [
-                {
-                    "address": "141.136.98.238",
-                    "rtt": 2.0386300087,
-                    "sport": 11218,
-                    "ttl": 10
-                },
-                {
-                    "address": "91.223.58.79",
-                    "rtt": 2.240696907,
-                    "sport": 26319,
-                    "ttl": 11
-                },
-                {
-                    "address": "213.138.109.232",
-                    "rtt": 2.4430809021,
-                    "sport": 443,
-                    "ttl": 12
-                }
-            ],
-            "hops_53": [
-                {
-                    "address": "141.136.98.238",
-                    "rtt": 2.0381169319,
-                    "sport": 36901,
-                    "ttl": 10
-                },
-                {
-                    "address": "91.223.58.79",
-                    "rtt": 2.2402248383,
-                    "sport": 60900,
-                    "ttl": 11
-                },
-                {
-                    "address": "213.138.109.232",
-                    "rtt": 2.4425189495,
-                    "sport": 53,
-                    "ttl": 12
-                }
-            ],
-            "hops_65535": [
-                {
-                    "address": "141.136.98.238",
-                    "rtt": 2.0387971401,
-                    "sport": 57248,
-                    "ttl": 10
-                },
-                {
-                    "address": "91.223.58.79",
-                    "rtt": 2.2455801964,
-                    "sport": 52285,
-                    "ttl": 11
-                },
-                {
-                    "address": "213.138.109.232",
-                    "rtt": 2.4457411766,
-                    "sport": 65535,
-                    "ttl": 12
-                }
-            ],
-            "hops_80": [
-                {
-                    "address": "141.136.108.130",
-                    "rtt": 1.8421959877,
-                    "sport": 23745,
-                    "ttl": 9
-                },
-                {
-                    "address": "141.136.98.238",
-                    "rtt": 2.0382699966,
-                    "sport": 22618,
-                    "ttl": 10
-                },
-                {
-                    "address": "91.223.58.79",
-                    "rtt": 2.2403969765,
-                    "sport": 45566,
-                    "ttl": 11
-                },
-                {
-                    "address": "213.138.109.232",
-                    "rtt": 2.4452321529,
-                    "sport": 80,
-                    "ttl": 12
-                }
-            ],
-            "hops_8080": [
-                {
-                    "address": "141.136.98.238",
-                    "rtt": 2.0389461517,
-                    "sport": 57892,
-                    "ttl": 10
-                },
-                {
-                    "address": "91.223.58.79",
-                    "rtt": 2.2410969734,
-                    "sport": 51593,
-                    "ttl": 11
-                },
-                {
-                    "address": "213.138.109.232",
-                    "rtt": 2.4440560341,
-                    "sport": 8080,
-                    "ttl": 12
-                }
-            ]
-        },
-        "test_udp_traceroute": {
-            "hops_0": [],
-            "hops_123": [
-                {
-                    "address": "141.136.108.130",
-                    "rtt": 1.920017004,
-                    "sport": 57583,
-                    "ttl": 9
-                },
-                {
-                    "address": "91.223.58.79",
-                    "rtt": 2.24168396,
-                    "sport": 18721,
-                    "ttl": 11
-                },
-                {
-                    "address": "213.138.109.232",
-                    "rtt": 2.4463579655,
-                    "sport": 25517,
-                    "ttl": 12
-                }
-            ],
-            "hops_22": [
-                {
-                    "address": "141.136.108.130",
-                    "rtt": 1.9136769772,
-                    "sport": 45625,
-                    "ttl": 9
-                },
-                {
-                    "address": "141.136.98.238",
-                    "rtt": 2.0372998714,
-                    "sport": 50609,
-                    "ttl": 10
-                },
-                {
-                    "address": "91.223.58.79",
-                    "rtt": 2.2419588566,
-                    "sport": 14160,
-                    "ttl": 11
-                },
-                {
-                    "address": "213.138.109.232",
-                    "rtt": 2.4428777695,
-                    "sport": 23686,
-                    "ttl": 12
-                }
-            ],
-            "hops_23": [
-                {
-                    "address": "141.136.108.130",
-                    "rtt": 1.9202280045,
-                    "sport": 58718,
-                    "ttl": 9
-                },
-                {
-                    "address": "141.136.98.238",
-                    "rtt": 2.0369830132,
-                    "sport": 39310,
-                    "ttl": 10
-                },
-                {
-                    "address": "91.223.58.79",
-                    "rtt": 2.2406070232,
-                    "sport": 9348,
-                    "ttl": 11
-                },
-                {
-                    "address": "213.138.109.232",
-                    "rtt": 2.4436769485,
-                    "sport": 56507,
-                    "ttl": 12
-                }
-            ],
-            "hops_443": [
-                {
-                    "address": "141.136.108.130",
-                    "rtt": 1.9194400311,
-                    "sport": 61062,
-                    "ttl": 9
-                },
-                {
-                    "address": "141.136.98.238",
-                    "rtt": 2.0356152058,
-                    "sport": 57814,
-                    "ttl": 10
-                },
-                {
-                    "address": "91.223.58.79",
-                    "rtt": 2.2425971031,
-                    "sport": 36493,
-                    "ttl": 11
-                },
-                {
-                    "address": "213.138.109.232",
-                    "rtt": 2.4469130039,
-                    "sport": 20708,
-                    "ttl": 12
-                }
-            ],
-            "hops_53": [
-                {
-                    "address": "141.136.108.130",
-                    "rtt": 1.9192700386,
-                    "sport": 63309,
-                    "ttl": 9
-                },
-                {
-                    "address": "141.136.98.238",
-                    "rtt": 2.0371799469,
-                    "sport": 44259,
-                    "ttl": 10
-                },
-                {
-                    "address": "91.223.58.79",
-                    "rtt": 2.2417399883,
-                    "sport": 32840,
-                    "ttl": 11
-                },
-                {
-                    "address": "213.138.109.232",
-                    "rtt": 2.4441540241,
-                    "sport": 6946,
-                    "ttl": 12
-                }
-            ],
-            "hops_65535": [
-                {
-                    "address": "141.136.108.130",
-                    "rtt": 1.9188029766,
-                    "sport": 16637,
-                    "ttl": 9
-                },
-                {
-                    "address": "91.223.58.79",
-                    "rtt": 2.2441849709,
-                    "sport": 56282,
-                    "ttl": 11
-                }
-            ],
-            "hops_80": [
-                {
-                    "address": "141.136.108.130",
-                    "rtt": 1.9194018841,
-                    "sport": 26666,
-                    "ttl": 9
-                },
-                {
-                    "address": "91.223.58.79",
-                    "rtt": 2.2409110069,
-                    "sport": 47993,
-                    "ttl": 11
-                },
-                {
-                    "address": "213.138.109.232",
-                    "rtt": 2.4452769756,
-                    "sport": 43930,
-                    "ttl": 12
-                }
-            ],
-            "hops_8080": [
-                {
-                    "address": "141.136.108.130",
-                    "rtt": 1.9188380241,
-                    "sport": 53083,
-                    "ttl": 9
-                },
-                {
-                    "address": "91.223.58.79",
-                    "rtt": 2.2436709404,
-                    "sport": 62686,
-                    "ttl": 11
-                }
-            ]
-        }
-    },
-    "test_name": "multi_protocol_traceroute",
-    "test_runtime": 57.7884280682,
-    "test_start_time": "2015-11-13 10:46:54",
-    "test_version": "0.3"
+        ]
+    }
 }
 ```
 
@@ -588,9 +178,11 @@ When the user has configured to not include their IP Address in the reports we
 will replace the src IP address of the IP Header with "127.0.0.1" of sent
 packets and the dst field of the IP header of received packets with
 "127.0.0.1".
+
 Note though that such strategy will not fully prevent the leaking of the users
 IP address via the IP packet payload (for example ICMP error messages will cite
 the packet they are referring to and it will contain the non anonymized user IP
 address).
+
 On this specific issue there is an open ticket here:
 https://trac.torproject.org/projects/tor/ticket/7933.
