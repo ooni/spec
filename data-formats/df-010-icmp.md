@@ -22,13 +22,24 @@ code. See this directory's [README](README.md) for the basic concepts.
 
 ```Javascript
 {
+    "timeout": "no",
+    "connected": "no",
+    "error": "no",
     "source_ip": "1.2.3.4",
     "destination_ip": "5.6.7.8",
     "type": 0,
     "code": 0,
-    "quote": {}
+    "quote": {},
+    "t0": 1785153856079
+    "t": 1785153856080
 }
 ```
+
+- `timeout` (`string`): string describing whether the TTL-limited probe timed out without receiving an ICMP message in response
+
+- `connected` (`string`): string describing whether the TTL-limited probe successfully connected to the destination IP address of the probe
+
+- `error` (`string`): string describing any errors that occur on the socket
 
 - `source_ip` (`string`): the source IP address of the ICMP message
 
@@ -39,6 +50,10 @@ code. See this directory's [README](README.md) for the basic concepts.
 - `code` (`int`): the code of the ICMP message
 
 - `quote` (`Quote`): object describing the IP header and subsequent 8 bytes of the original packet
+
+- `t0` (`float64`): the time when the TTL-limited probe is sent
+
+- `t` (`float64`): the time when the ICMP message triggered via the TTL-limited probe is received
 
 ## Quote
 
@@ -55,19 +70,37 @@ code. See this directory's [README](README.md) for the basic concepts.
 }
 ```
 
-- `source_ip` (`string`): the source IP address of the original packet
+- `source_ip` (`string`): the source IP address of the original quoted packet
 
-- `destination_ip` (`string`): the destination IP address of the original packet
+- `destination_ip` (`string`): the destination IP address of the original quoted packet
+
+- `protocol` (`string`): the protocol of the original quoted packet
+
+- `source_port` (`int`): the source port of the original quoted packet
+
+- `destination_port` (`int`): the destination port of the original quoted packet
+
+- `tcp_sequence_number` (`int`): the TCP sequence number of the original quoted packet, if the protocol is tcp
+
+- `udp_length` (`int`): the length of the original quoted packet, if the protocol is udp
+
+- `udp_checksum` (`int`): the checksum of the original quoted packet, if the protocol is udp
 
 ## Example
 
 In the following example we've omitted all the keys that are not relevant to the ICMP data format:
 
-```Javascript
+```JSON
 {
-    "messages": [{
-        
-    }
-    ]
+    "timeout": "no",
+    "connected": "",
+    "error": "",
+    "source_ip": "206.126.237.205",
+    "destination_ip": "",
+    "type": 11,
+    "code": 0,
+    "quote": null,
+    "t0": 1785153856980,
+    "t": 1785153856993
 }
 ```
