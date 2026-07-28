@@ -26,7 +26,6 @@ code. See this directory's [README](README.md) for the basic concepts.
     "connected": "no",
     "error": "no",
     "source_ip": "1.2.3.4",
-    "destination_ip": "5.6.7.8",
     "type": 0,
     "code": 0,
     "quote": {},
@@ -43,17 +42,15 @@ code. See this directory's [README](README.md) for the basic concepts.
 
 - `source_ip` (`string`): the source IP address of the ICMP message
 
-- `destination_ip` (`string`): the destination IP address of the ICMP message
-
 - `type` (`int`): the type of the ICMP message
 
 - `code` (`int`): the code of the ICMP message
 
 - `quote` (`Quote`): object describing the IP header and subsequent 8 bytes of the original packet
 
-- `t0` (`float64`): the time when the TTL-limited probe is sent
+- `t0` (`float64`): the time when the TTL-limited probe is sent, represented in terms of the UNIX epoch
 
-- `t` (`float64`): the time when the ICMP message triggered via the TTL-limited probe is received
+- `t` (`float64`): the time when the ICMP message triggered via the TTL-limited probe is received, represented in terms of the UNIX epoch
 
 ## Quote
 
@@ -95,12 +92,18 @@ In the following example we've omitted all the keys that are not relevant to the
     "timeout": "no",
     "connected": "",
     "error": "",
-    "source_ip": "206.126.237.205",
-    "destination_ip": "",
+    "source_ip": "148.113.176.252",
     "type": 11,
     "code": 0,
-    "quote": null,
-    "t0": 1785153856980,
-    "t": 1785153856993
+    "quote": {
+        "protocol": 6,
+        "source_port": 46828,
+        "destination_port": 443,
+        "tcp_sequence_number": 2972880068,
+        "udp_length": 0,
+        "udp_checksum": 0
+    },
+    "t0": 1785236311439,
+    "t": 1785236311439
 }
 ```
