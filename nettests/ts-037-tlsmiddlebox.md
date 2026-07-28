@@ -1,6 +1,6 @@
 # Specification version number
 
-2022-08-24
+2026-07-28
 
 *_status_: current
 
@@ -45,14 +45,20 @@ The main steps of the experiment are:
     testhelper) for the list of IPs identified at step 1. The results of the connecting end up
     in the "tcp_connect" key. (see df-005-tcpconnect.md).
 
-3. **TLS Handshake**
+3. **TCP Traceroute**
+    Attempt to conduct a TCP traceroute towards the list of filtered IPs. The results of the 
+    traceroute end ip in `tcp_traceroute` within the `trace` key. The traceroute is run until
+    the maximum TTL is reached. The outcome of each TTL-limited probe can either be a timeout,
+    a successful connection, an error, or an ICMP message with the initial quoted packet.
+
+4. **TLS Handshake**
     Attempt to perform a tls handshake for the list of filtered IPs (for which the TCP session 
     can successfully established) obtained at step 2. The handshake is performed iteratively 
     for each IP with an increment in the TTL for each successive iteration. 
 
     The entire tracing is done twice: using the `control_sni` and the `target`. Each iteration
     records the handshake results along with the corresponding TTL. The results of the trace end
-    up in the `trace` key which is divided into two: `control_trace` (the trace for the `control_sni`)
+    up in the `trace` key which is divided into: `control_trace` (the trace for the `control_sni`)
     and `target_trace` (the trace for the `target_sni`). Each `trace` field records the iterations
     for a single servername till we receive a `null` failure (a successful handshake) or a 
     `connection_reset`. The handshake results are recorded in the `handshake` field. (see 
@@ -66,6 +72,7 @@ We will include data following these data formats:
 
 * `df-002-dnst`
 * `df-005-tcpconnect`
+* `df-010-icmp`
 * `df-006-tlshandshake`
 
 ## Semantics
@@ -76,6 +83,7 @@ We will include data following these data formats:
    "tcp_connect": [],
    "iterative_trace": {
       "address": "",
+      "tcp_traceroute": {},
       "control_trace": {},
       "target_trace": {}
    }
@@ -87,6 +95,21 @@ where:
 - `queries` contains a list of `df-002-dnst` instances
 
 - `tcp_connect` contains a list of `df-005-tcpconnect` instances
+
+- `tcp_traceroute` contains the TCP traceroute of the form:
+
+```JSON
+{
+  "ttl": ,
+  "icmp_error": {}
+}
+```
+
+where:
+
+- `ttl` is a positive integer
+
+- `icmp_error` follows the `df-010-icmp` data format
 
 - `iterative_trace` contains the SNI-based iterative trace of the form:
 
@@ -108,7 +131,9 @@ where:
 * If there is a middlebox attempting to censor content in the network route 
 
 * If the blocking of a particular servername is due to the presence of a middlebox
-in the network route.
+in the network route and where the middlebox is located with respect to
+the forward network path
+
 
 ## Example output sample
 
@@ -257,6 +282,261 @@ Response:
       },
       {
         "address": "93.184.216.34:443",
+        "tcp_traceroute": {
+          "server_name": "example.com",
+          "iterations": [
+            {
+              "ttl": 1,
+              "icmp_error": {
+                "timeout": "no",
+                "connected": "",
+                "error": "",
+                "source_ip": "10.95.81.1",
+                "type": 11,
+                "code": 0,
+                "quote": {
+                  "protocol": 6,
+                  "source_port": 46828,
+                  "destination_port": 443,
+                  "tcp_sequence_number": 2972880068,
+                  "udp_length": 0,
+                  "udp_checksum": 0
+                },
+                "t0": 1785236311439,
+                "t": 1785236311439
+              }
+            },
+            {
+              "ttl": 2,
+              "icmp_error": {
+                "timeout": "no",
+                "connected": "",
+                "error": "",
+                "source_ip": "10.165.11.60",
+                "type": 11,
+                "code": 0,
+                "quote": {
+                  "protocol": 6,
+                  "source_port": 46842,
+                  "destination_port": 443,
+                  "tcp_sequence_number": 1698323038,
+                  "udp_length": 0,
+                  "udp_checksum": 0
+                },
+                "t0": 1785236311540,
+                "t": 1785236311540
+              }
+            },
+            {
+              "ttl": 3,
+              "icmp_error": {
+                "timeout": "no",
+                "connected": "",
+                "error": "",
+                "source_ip": "10.34.116.78",
+                "type": 11,
+                "code": 0,
+                "quote": {
+                  "protocol": 6,
+                  "source_port": 46844,
+                  "destination_port": 443,
+                  "tcp_sequence_number": 141401476,
+                  "udp_length": 0,
+                  "udp_checksum": 0
+                },
+                "t0": 1785236311639,
+                "t": 1785236311640
+              }
+            },
+            {
+              "ttl": 4,
+              "icmp_error": {
+                "timeout": "no",
+                "connected": "",
+                "error": "",
+                "source_ip": "10.74.10.4",
+                "type": 11,
+                "code": 0,
+                "quote": {
+                  "protocol": 6,
+                  "source_port": 46856,
+                  "destination_port": 443,
+                  "tcp_sequence_number": 416585972,
+                  "udp_length": 0,
+                  "udp_checksum": 0
+                },
+                "t0": 1785236311739,
+                "t": 1785236311739
+              }
+            },
+            {
+              "ttl": 5,
+              "icmp_error": {
+                "timeout": "no",
+                "connected": "",
+                "error": "",
+                "source_ip": "10.95.81.8",
+                "type": 11,
+                "code": 0,
+                "quote": {
+                  "protocol": 6,
+                  "source_port": 46868,
+                  "destination_port": 443,
+                  "tcp_sequence_number": 1806413950,
+                  "udp_length": 0,
+                  "udp_checksum": 0
+                },
+                "t0": 1785236311839,
+                "t": 1785236311841
+              }
+            },
+            {
+              "ttl": 6,
+              "icmp_error": {
+                "timeout": "no",
+                "connected": "",
+                "error": "",
+                "source_ip": "10.92.81.8",
+                "type": 11,
+                "code": 0,
+                "quote": {
+                  "protocol": 6,
+                  "source_port": 46870,
+                  "destination_port": 443,
+                  "tcp_sequence_number": 796341276,
+                  "udp_length": 0,
+                  "udp_checksum": 0
+                },
+                "t0": 1785236311940,
+                "t": 1785236311950
+              }
+            },
+            {
+              "ttl": 7,
+              "icmp_error": {
+                "timeout": "no",
+                "connected": "",
+                "error": "",
+                "source_ip": "10.200.3.129",
+                "type": 11,
+                "code": 0,
+                "quote": {
+                  "protocol": 6,
+                  "source_port": 46872,
+                  "destination_port": 443,
+                  "tcp_sequence_number": 3212898109,
+                  "udp_length": 0,
+                  "udp_checksum": 0
+                },
+                "t0": 1785236312039,
+                "t": 1785236312050
+              }
+            },
+            {
+              "ttl": 8,
+              "icmp_error": {
+                "timeout": "no",
+                "connected": "",
+                "error": "",
+                "source_ip": "10.100.2.209",
+                "type": 11,
+                "code": 0,
+                "quote": {
+                  "protocol": 6,
+                  "source_port": 46876,
+                  "destination_port": 443,
+                  "tcp_sequence_number": 2369944495,
+                  "udp_length": 0,
+                  "udp_checksum": 0
+                },
+                "t0": 1785236312139,
+                "t": 1785236312152
+              }
+            },
+            {
+              "ttl": 9,
+              "icmp_error": {
+                "timeout": "no",
+                "connected": "",
+                "error": "",
+                "source_ip": "10.200.2.209",
+                "type": 11,
+                "code": 0,
+                "quote": {
+                  "protocol": 6,
+                  "source_port": 46888,
+                  "destination_port": 443,
+                  "tcp_sequence_number": 1337557307,
+                  "udp_length": 0,
+                  "udp_checksum": 0
+                },
+                "t0": 1785236312239,
+                "t": 1785236312255
+              }
+            },
+            {
+              "ttl": 10,
+              "icmp_error": {
+                "timeout": "no",
+                "connected": "",
+                "error": "",
+                "source_ip": "10.221.2.209",
+                "type": 11,
+                "code": 0,
+                "quote": {
+                  "protocol": 6,
+                  "source_port": 46890,
+                  "destination_port": 443,
+                  "tcp_sequence_number": 3913720748,
+                  "udp_length": 0,
+                  "udp_checksum": 0
+                },
+                "t0": 1785236312340,
+                "t": 1785236312353
+              }
+            },
+            {
+              "ttl": 11,
+              "icmp_error": {
+                "timeout": "yes",
+                "connected": "",
+                "error": "",
+                "source_ip": "",
+                "type": 0,
+                "code": 0,
+                "quote": {
+                  "protocol": 0,
+                  "source_port": 0,
+                  "destination_port": 0,
+                  "tcp_sequence_number": 0,
+                  "udp_length": 0,
+                  "udp_checksum": 0
+                },
+                "t": 0
+              }
+            },
+            {
+              "ttl": 12,
+              "icmp_error": {
+                "timeout": "",
+                "connected": "yes",
+                "error": "",
+                "source_ip": "",
+                "type": 0,
+                "code": 0,
+                "quote": {
+                  "protocol": 0,
+                  "source_port": 0,
+                  "destination_port": 0,
+                  "tcp_sequence_number": 0,
+                  "udp_length": 0,
+                  "udp_checksum": 0
+                },
+                "t": 0
+              }
+            },
+          ]
+        },
         "control_trace": {
           "server_name": "example.com",
           "iterations": [
