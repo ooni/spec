@@ -1,7 +1,7 @@
 # OONI Run v2 specification
 
 -   author: Norbel Ambanumben, Arturo Filastò
--   version: 2024.02.23
+-   version: 2026.08.05
 -   status: release-candidate
 
 This document provides a functional specification for OONI Run.
@@ -36,19 +36,19 @@ sequenceDiagram
     actor Volunteer
 
     CampaignOrganizer->>OONIAPI: Create OONI Run link to run web_connectivity with http://example.com
-    OONIAPI->>CampaignOrganizer: OONI Run link: https://run.ooni.io/v2/deadbeef
-    CampaignOrganizer-->>Volunteer: Hey, can you open the link https://run.ooni.io/v2/deadbeef with OONI Probe?
+    OONIAPI->>CampaignOrganizer: OONI Run link: https://run.ooni.org/v2/deadbeef
+    CampaignOrganizer-->>Volunteer: Hey, can you open the link https://run.ooni.org/v2/deadbeef with OONI Probe?
     Volunteer-)OONIAPI: What is the descriptor for OONI Run link with ID "deadbeef"
     OONIAPI->>Volunteer: Here is the descriptor for "deadbeef"
 ```
 
 It's important to notice how, in the event that the user has the OONI Probe app
-installed, a web request to `https://run.ooni.org/io/v2/deadbeef` will never be
+installed, a web request to `https://run.ooni.org/v2/deadbeef` will never be
 issued on the network, but rather the metadata encoded in the URL itself is used
 to retrieve the OONI Run descriptor from a different OONI API endpoint.
 
 When a Volunteer taps on an OONI Run link (in the above example
-`https://run.ooni.io/v2/deadbeef`) the OONI Probe app is opened and a they are
+`https://run.ooni.org/v2/deadbeef`) the OONI Probe app is opened and a they are
 presented with the metadata of the OONI Run link as well as the nettests it is
 configured with.
 At this point, assuming they feel confortable with running the nettests they see
@@ -73,7 +73,22 @@ such as TLS or onion services.
 
 Whenever a change is made to an OONI Run link, it's important that the end user
 is informed about them and the OONI Run link is disabled until they agree with
-them.
+them. Consent binds to the link *revision*: a new revision (any change to the
+metadata, the nettests, their configuration or their `targets_name`) requires
+renewed consent, while a new *resolution* of a dynamic target list (see
+4.5) does not, because the volunteer consented to the named list, not to the
+specific inputs it yielded on a given day. Probes MUST therefore detect changes
+by comparing revisions, never by comparing resolved descriptors.
+
+Nettest configuration options whose name starts with `safe_` MAY carry secrets
+(for example VPN credentials). Probes MUST make these values available to the
+experiment but MUST NOT serialize them into the submitted measurement.
+
+Since the default OONI Probe cards are themselves OONI Run links, a malicious
+or compromised revision could redirect a large probe population against
+arbitrary endpoints. Stock links MUST be authored by OONI and validated at
+creation and update time against the shared target registry (see 3.2); the
+revision consent mechanism above applies to them like to any other link.
 
 It is outside of the current scope of this document to prescribe if and how some
 level of blocking resistance should be implemented or provided by the system.
@@ -120,7 +135,7 @@ An OONI Run link descriptor is a JSON file with the following semantics:
 
   "author": "(optional) `string` name of the creator of this OONI Run link",
 
-  "is_expired": "(optional) `bool` a boolean flag used to indicate if this OONI Run link is expired. When an OONI Run link is archived, it does not run",
+  "is_expired": "(optional) `bool` flag indicating that this OONI Run link is expired. An expired link remains retrievable, but it does not lead to tests being initiated",
 
   // `array` provides a JSON array of tests to be run.
   "nettests":[{
@@ -131,9 +146,19 @@ An OONI Run link descriptor is a JSON file with the following semantics:
       "https://ooni.org/"
     ],
 
+    // (optional) `map` of default configuration options for this nettest,
+    // applied to every input. For nettests that take no input this is the only
+    // configuration surface. See section 3.1 for the configuration model.
+    "options": {
+      "http3_enabled": false
+    },
+
     // (optional) `array` provides a richer JSON array containing extra parameters for each input.
-    // If provided, the length of inputs_extra should match the length of inputs.
+    // If provided, the length of inputs_extra MUST match the length of inputs.
+    // Each entry is overlaid on top of `options` for its input (section 3.1)
+    // and MAY carry the reserved target-identity keys of section 3.2.
     "inputs_extra": [{
+           "target_id": "example/website",
            "category_code": "HUMR",
     }],
 
@@ -179,6 +204,108 @@ card. The OONI Run descriptor, as specified from the link creator, is saying
 "run the test-lists with weights applied based on coverage", while the mobile
 application will then receive a prioritized and sorted list which will change
 every time a new run is performed.
+
+## 3.1 Configuration model
+
+A nettest is configured through two levels of the same mechanism:
+
+* `options` (optional) is a JSON object of configuration options applied to
+  every input of the nettest. For nettests that take no input, it is the only
+  configuration surface.
+
+* `inputs_extra` (optional) is an array of JSON objects, index-aligned with
+  `inputs`, whose entries are overlaid on top of `options` for the
+  corresponding input.
+
+The effective configuration for input *i* is computed by a shallow, field-wise
+merge: engine defaults, then `options`, then `inputs_extra[i]`, with later
+values winning. Nested objects are replaced, not merged.
+
+Option names and their meaning are defined by each nettest. The following
+rules keep authoring mistakes loud and probes forward-compatible:
+
+* Backends MUST reject at CREATE and UPDATE time (with a `4xx`) any option
+  name that is not known for the declared `test_name`, whether it appears in
+  `options` or in an `inputs_extra` entry. The reserved keys of section 3.2
+  are exempt. Without this check, a misspelled option silently does nothing
+  in the field.
+
+* Probes MUST ignore option names they do not recognize, so that older probes
+  keep working when new options are introduced.
+
+* Option names starting with `safe_` MAY carry secrets and are subject to the
+  scrubbing rule of section 2.0.
+
+* Probes MUST record the effective per-input configuration — after the merge,
+  excluding `safe_` options — in the submitted measurement, so that data
+  analysis can condition on what actually ran.
+
+## 3.2 Target identity
+
+An input is an *address*: a URL, hostname or IP endpoint that may rotate
+freely between revisions as infrastructure changes. A *target* is the durable
+name of the thing being measured. Keeping the two distinct is what allows
+measurement series to stay longitudinally comparable while the addresses
+underneath them churn.
+
+The following `inputs_extra` keys are reserved across all nettests. They are
+consumed by probes and by the data pipeline, are never passed to the
+experiment as options, and experiments MUST NOT define options with these
+names:
+
+* `target_id` (string, optional): the durable name of the target this input
+  belongs to, expressed as a service role (ex. `signal/chat`,
+  `whatsapp/endpoints`), never as an address. Multiple inputs sharing one
+  `target_id` form a *pool* of redundant members. Distinct `target_id`s
+  within one link describe distinct components of a larger service.
+
+* `breaks_service` (bool, optional, defaults to `false`): when true, this
+  *target* being down or blocked means the overall service is broken for the
+  user, regardless of the state of the other targets. Although it is written
+  per input, the flag is a property of the target, which is why all entries
+  sharing a `target_id` MUST agree on it.
+
+* `category_code` (string, optional): display metadata following the
+  [Citizen Lab category codes](https://github.com/citizenlab/test-lists).
+  It is informational only: data analysis derives categorization from its own
+  reference data, and this field is not authoritative for it.
+
+The state of a composed link is evaluated in two steps, inputs to targets and
+targets to service:
+
+1. A target is reachable if any one of its member inputs is reachable, and it
+   is down or blocked only when every member fails. A pool is therefore "one
+   working member is enough" by construction.
+
+2. The service is broken when any target with `breaks_service: true` is down
+   or blocked. Failures of targets without the flag mean the service is
+   degraded rather than broken; how to render degradation is left to the
+   probe.
+
+Both classic shapes fall out of this without further vocabulary. Telegram's
+datacentre pool is many inputs sharing `telegram/dc_pool`, each with
+`breaks_service: true`: reaching a single datacentre means Telegram works,
+and only losing all of them breaks it. WhatsApp's registration endpoint is a
+single-member target with `breaks_service: true`, which breaks the service on
+its own even while the chat pool stays reachable.
+
+The `target_id` vocabulary is maintained in a shared, versioned target
+registry, in the same way test lists and blockpage fingerprints are maintained
+as community reference data. Within the registry, target ids are append-only:
+new ids may be added and old ones deprecated, but an id is never renamed or
+re-pointed at a different service role, because measurement series key on it.
+A revision that only rotates the addresses under stable `target_id`s changes
+what probes contact without changing the identity of what is measured.
+
+Backends MUST validate stock links (the OONI-authored links implementing the
+default OONI Probe cards) against the registry at CREATE and UPDATE time,
+rejecting unknown `target_id`s. For other links the registry SHOULD be used to
+warn rather than reject, since campaign authors may legitimately measure
+services the registry does not describe yet.
+
+Probes MAY use `target_id` and `breaks_service` to compute and display the
+outcome of a composed link, for example rendering a single card status for a
+messaging app whose link measures several pools and services.
 
 Based on the above specification it would be possible to re-implement the cards for the OONI Probe
 dashboard as follows.
@@ -402,7 +529,9 @@ corresponding to an entry in the `inputs` list. This allows you to attach
 additional metadata to each input. The `targets_name` field specifies the name
 of a predefined target list that will be used to dynamically generate the inputs
 list. This name must be recognized by the backend and agreed upon in advance
-between the link creator and the backend system.
+between the link creator and the backend system. The semantics of `options` and
+`inputs_extra` are specified in section 3.1, and the reserved target-identity
+keys in section 3.2.
 
 ### Response status code
 
@@ -412,7 +541,13 @@ Upon receiving a request to create a link, the API will respond:
    any required field is missing and/or if any present field has an invalid value. In particular,
    note that it will error when `targets_name` and `inputs` are provided at the same time in any nettest
 
-2. if everything is okay, MUST return a `200` response.
+2. MUST fail with `4xx` if `inputs_extra` is present and its length does not
+   match the length of `inputs`; if `options` or any `inputs_extra` entry
+   contains an option name unknown for the declared `test_name` (section 3.1);
+   if entries sharing a `target_id` disagree on `breaks_service` (section 3.2); or,
+   for stock links, if a `target_id` is unknown to the target registry.
+
+3. if everything is okay, MUST return a `200` response.
 
 ### Response body
 
@@ -544,8 +679,8 @@ following JSON body:
 }
 ```
 
-Note: This endpoint does not compute dynamic test lists. As a result, 
-nettests with `target_name` will always have an empty `inputs` field.
+Note: This endpoint does not compute dynamic test lists. As a result,
+nettests with `targets_name` will always have an empty `inputs` field.
 
 
 ## 4.4 GET the OONI Run full descriptor by revision
@@ -572,7 +707,7 @@ Same as 4.3 GET the OONI Run descriptor
 When the specified OONI Run link contains dynamic targets, the `inputs` list may
 contain different targets.
 
-## 4.4 GET the OONI Run engine descriptor revision
+## 4.5 POST the OONI Run engine descriptor
 
 This operation is performed by OONI Probe clients to retrieve the engine descriptor of
 a certain OONI Run link given the ID and revision
@@ -614,7 +749,7 @@ properly generate dynamic target lists:
 
 * `X-OONI-Credentials`: base64 encoded OONI anonymous credentials
 
-The `platform`, `software_name`, `software_name`, `engine_name` and
+The `platform`, `software_name`, `software_version`, `engine_name` and
 `engine_version` are encoded inside of the `User-Agent` string using the following
 format:
 ```
@@ -629,7 +764,7 @@ following JSON body:
 ```JavaScript
 {
    "revision": "1",
-   "date_created": ""
+   "date_created": "",
    "nettests": [
       {
          // See CREATE response format for other fields
@@ -644,11 +779,20 @@ following JSON body:
    ]
 }
 ```
-Note: While nettests can't include both `inputs` and `target_name` during creation, 
-this endpoint may show both since the backend dynamically populates 
-`inputs` based on `target_name`.
+Note: While nettests can't include both `inputs` and `targets_name` during creation,
+this endpoint may show both since the backend dynamically populates
+`inputs` based on `targets_name`.
 
 The backend computes dynamic test lists only for this request. Other requests will return an empty `inputs` list.
+
+Resolutions are ephemeral by design: they are the output of the
+prioritization system, and retaining every served list would grow without
+bound. The durable record of what a probe did is the measurements it
+submitted, which carry the link id, revision and attempt id (see 5.0). The
+tradeoff this accepts is that the *unmeasured* remainder of a served list is
+not reconstructible after the fact; questions about why a target went
+unmeasured are answered from the prioritization system's own configuration
+and rules, not from a log of individual resolutions.
 
 Additionally, the `Vary` header should specify the list of headers that affect
 the response body caching, which are all headers starting with the `X-OONI-`
@@ -657,7 +801,7 @@ prefix.
 The server might also return an updated version of the submitted anonymous
 credentials using the `X-OONI-Credentials` header.
 
-## 4.7 LIST the OONI Run descriptors
+## 4.6 LIST the OONI Run descriptors
 
 This operation is performed by users of the OONI Run platform to list all the existing OONI Run links.
 
@@ -670,7 +814,7 @@ To retrieve an OONI Run link descriptor, the client issues a request compliant w
 `GET /api/v2/oonirun/links?is_mine=true&is_expired=true`
 
 -   `is_mine` , boolean flag to filter only the links of the logged in user. Will only work when the Authentication header is used.
--   `is_expired` , boolean flag used to indicate if the listing should include archived links as well.
+-   `is_expired` , boolean flag used to indicate if the listing should include expired links as well.
 
 ### Response status code
 
@@ -695,7 +839,26 @@ following JSON body:
 }
 ```
 
-# 5.0 Implementation considerations
+# 5.0 Measurement attribution
+
+Probes MUST annotate every measurement produced while running an OONI Run link
+with the following annotations:
+
+| annotation | value |
+| --- | --- |
+| `ooni_run_link_id` | the OONI Run link id |
+| `ooni_run_link_revision` | the revision of the descriptor that was run |
+| `ooni_run_attempt` | a random UUID minted once per link run and shared by all measurements produced by that run |
+
+This is what ties measurements back to the campaign that produced them. It is
+what allows aggregate results to be scoped to a link ("what did the volunteers
+of this campaign find") and a link composing several nettests to be
+reconstructed after the fact as a single logical check. For dynamically
+generated target lists, the measurements submitted under one
+`ooni_run_attempt` are also the record of what the resolution served, up to
+the inputs the probe did not reach (see 4.5).
+
+# 6.0 Implementation considerations
 
 Special attention should be placed in ensuring the OONI Run links (which are
 mobile deep links) are sharable though various apps.
@@ -709,7 +872,7 @@ numbers + spaces or dashes to make it easier to type.
 
 Mobile deep links can be registered using two different methods, one is a custom
 prefix (ex. `ooni://`), the other is a custom URL prefix (ex.
-`https://run.ooni.io/1234`). In our testing we have seen that the custom prefix
+`https://run.ooni.org/v2/1234`). In our testing we have seen that the custom prefix
 is more reliable, yet it has the tradeoff of not allowing us to display a web
 page when the user does not have the app installed. As such the recommended
 strategy is to encourage users to share the custom URL prefix OONI Run link, but
@@ -719,13 +882,19 @@ have a link to the custom prefix approach to "force" the opening of the app
 
 As such we recommend using the following addresses for OONI Run link and OONI Run descriptor URLs:
 
-* `https://run.ooni.io/{ooni_run_link_id}`, where `{ooni_run_link_id}` is a number
+* `https://run.ooni.org/v2/{ooni_run_link_id}`, where `{ooni_run_link_id}` is a number
 
 * `ooni://runv2/{ooni_run_link_id}`
 
-* `https://api.ooni.io/api/v1/ooni_run/{ooni_run_link_id}`
+* `https://api.ooni.io/api/v2/oonirun/links/{ooni_run_link_id}`
 
-# 6.0 Future work
+# 7.0 Future work
+
+The combination semantics of section 3.2 are deliberately limited to pools
+plus the `breaks_service` flag. If a real service ever needs more, such as a
+k-of-n threshold over a pool or a service that works when either of two
+distinct targets does, that is the trigger for a richer combination grammar;
+until then, the two-step model stays.
 
 We could at some point host these links on s3 or github and have them
 be accessible via URLs in the form:
