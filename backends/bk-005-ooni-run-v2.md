@@ -549,10 +549,12 @@ request conforming to the following:
 
 The `inputs_extra` field should be a list of JSON objects, with each object
 corresponding to an entry in the `inputs` list. This allows you to attach
-additional metadata to each input. The `targets_name` field names a
-backend-generated dynamic input list, as specified in section 3.3. The
-semantics of `options` and `inputs_extra` are specified in section 3.1, and
-the reserved target-identity keys in section 3.2.
+additional metadata to each input. The `targets_name` field specifies the name
+of a predefined target list that will be used to dynamically generate the inputs
+list. This name must be recognized by the backend and agreed upon in advance
+between the link creator and the backend system. The semantics of `options` and
+`inputs_extra` are specified in section 3.1, and the reserved target-identity
+keys in section 3.2.
 
 ### Response status code
 
