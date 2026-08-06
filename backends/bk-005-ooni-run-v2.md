@@ -143,7 +143,9 @@ An OONI Run link descriptor is a JSON file with the following semantics:
     // (optional) `array` provides a JSON array of inputs for the specified test.
     "inputs": [
       "https://example.com/",
-      "https://ooni.org/"
+      "https://ooni.org/",
+      "https://ooni.io/",
+      "https://explorer.ooni.org/",
     ],
 
     // (optional) `map` of default configuration options for this nettest,
@@ -160,6 +162,18 @@ An OONI Run link descriptor is a JSON file with the following semantics:
     "inputs_extra": [{
            "target_id": "example/website",
            "category_code": "HUMR",
+    },
+    {
+        "target_id": "ooni/website",
+        "category_code": "HUMR",
+    },
+    {
+        "target_id": "ooni/website",
+        "category_code": "HUMR",
+    },
+    {
+        "target_id": "ooni/explorer",
+        "category_code": "HUMR",
     }],
 
    // (optional) `string` naming a backend-generated dynamic input list (see
@@ -239,9 +253,9 @@ rules keep authoring mistakes loud and probes forward-compatible:
 * Option names starting with `safe_` MAY carry secrets and are subject to the
   scrubbing rule of section 2.0.
 
-* Probes MUST record the effective per-input configuration — after the merge,
-  excluding `safe_` options — in the submitted measurement, so that data
-  analysis can condition on what actually ran.
+* Probes MUST record the effective per-input configuration, after the merge,
+  excluding `safe_` options, in the submitted measurement inside of the
+  `config` key, so that data analysis can condition on what actually ran.
 
 ## 3.2 Target identity
 
@@ -885,6 +899,34 @@ reconstructed after the fact as a single logical check. For dynamically
 generated target lists, the measurements submitted under one
 `ooni_run_attempt` are also the record of what the resolution served, up to
 the inputs the probe did not reach (see 4.5).
+
+Additionally, a top level key called `config` should include the configuration for
+the test that was resolved at the `input` level. For example given the following:
+```
+"options": {
+    "http3_enabled": false
+}
+
+"inputs_extra": {
+    "category_code": "HUMR",
+    "safe_value": "something_sekrit"
+}
+```
+
+and the engine having a default setting for `dot_enabled=true`
+
+The config key shall contain:
+```
+{
+    "config": {
+        "http3_enabled": false,
+        "category_code": "HUMR",
+        "dot_enabled": true
+    }
+}
+```
+
+Note that the `inputs_extra` that was prefixed with `safe_` got stripped.
 
 # 6.0 Implementation considerations
 
