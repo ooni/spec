@@ -165,7 +165,8 @@ list of input URLs.
   "network_type": "wifi",
   "ooni_run_link_id": "123456",
   "platform": "ios",
-  "architecture": "arm64"
+  "architecture": "arm64",
+  "resolver_type": "private_dns"
 }
 ```
 
@@ -208,6 +209,16 @@ that caused this measurement to be performed.
   - `macos`
 
   - `windows`
+
+- `resolver_type` (`string`): type of DNS resolver configured / used on the device. One of:
+
+  - `private_dns`: when Private DNS (e.g., Android DNS-over-TLS) is enabled/active.
+
+  - `vpn`: when the active network transport is a VPN.
+
+  - `system`: when Private DNS is false and VPN is false.
+
+  - `unknown`: for all other cases (e.g., Private DNS state is unknown or unsupported, and VPN is false).
 
 - `vcs_modified` (`string`): `"true"` or `"false"` depending on
 whether the tree used for building was dirty
