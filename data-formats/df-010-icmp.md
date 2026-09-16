@@ -25,12 +25,15 @@ code. See this directory's [README](README.md) for the basic concepts.
     "timeout": "no",
     "connected": "no",
     "error": "no",
-    "source_ip": "1.2.3.4",
+    "source_ip_prefix": "1.2.3.4/24",
+    "source_ip_country_code": "ZZ",
+    "source_ip_asn": 123,
+    "source_ip_asn_org": "ABC",
     "type": 0,
     "code": 0,
     "quote": {},
-    "t0": 1785153856079
-    "t": 1785153856080
+    "t0": 0.12,
+    "t": 0.34,
 }
 ```
 
@@ -40,36 +43,37 @@ code. See this directory's [README](README.md) for the basic concepts.
 
 - `error` (`string`): string describing any errors that occur on the socket
 
-- `source_ip` (`string`): the source IP address of the ICMP message
+- `source_ip_prefix` (`string`): the source IP address's /24 prefix of the ICMP message (will not be populated if PrivacyMode is `unsafe`)
+
+- `source_ip_country_code` (`string`): the geolocated country of the source IP address
+
+- `source_ip_asn` (`int`): the AS of the source IP address
+
+- `source_ip_asn_org` (`string`): the AS organization of the source IP address
 
 - `type` (`int`): the type of the ICMP message
 
 - `code` (`int`): the code of the ICMP message
 
-- `quote` (`Quote`): object describing the IP header and subsequent 8 bytes of the original packet
+- `quote` (`Quote`): object describing the IP header and subsequent 8 bytes of the original packet (will not be populated if PrivacyMode is `unsafe`)
 
-- `t0` (`float64`): the time when the TTL-limited probe is sent, represented in terms of the UNIX epoch
-
-- `t` (`float64`): the time when the ICMP message triggered via the TTL-limited probe is received, represented in terms of the UNIX epoch
+- `t0` (`float64`): number of seconds elapsed since `measurement_start_time` measured in the moment in which we started the operation (`t - t0` gives you the amount of time spent performing the operation)
+ 
+- `t` (`float64`): number of seconds elapsed since `measurement_start_time` measured in the moment in which `failure` is determined (`t - t0` gives you the amount of time spent performing the operation) (will not be populated if PrivacyMode is `unsafe`)
 
 ## Quote
 
 ```Javascript
 {
-    "source_ip": "1.2.3.4",
-    "destination_ip": "5.6.7.8",
     "protocol": "tcp",
     "source_port": 7342,
     "destination_port": 80,
     "tcp_sequence_number": 123456789,
     "udp_length": null,
     "udp_checksum": null
+    "remaining_payload": null,
 }
 ```
-
-- `source_ip` (`string`): the source IP address of the original quoted packet
-
-- `destination_ip` (`string`): the destination IP address of the original quoted packet
 
 - `protocol` (`string`): the protocol of the original quoted packet
 
@@ -83,16 +87,21 @@ code. See this directory's [README](README.md) for the basic concepts.
 
 - `udp_checksum` (`int`): the checksum of the original quoted packet, if the protocol is udp
 
+- `remaining_payload` (`string`): the bytes of the remaining payload encoded as a Base64 string
+
 ## Example
 
-In the following example we've omitted all the keys that are not relevant to the ICMP data format:
+In the following example we've omitted all the keys that are not relevant to the ICMP data format and assume that the PrivacyMode for the test is `unsafe:`
 
 ```JSON
 {
     "timeout": "no",
     "connected": "",
     "error": "",
-    "source_ip": "148.113.176.252",
+    "source_ip_prefix": "148.113.176.0/24",
+    "source_ip_country_code": "CA",
+    "source_ip_asn": 16276,
+    "source_ip_asn_org": "OVH SAS",
     "type": 11,
     "code": 0,
     "quote": {
@@ -101,9 +110,10 @@ In the following example we've omitted all the keys that are not relevant to the
         "destination_port": 443,
         "tcp_sequence_number": 2972880068,
         "udp_length": 0,
-        "udp_checksum": 0
+        "udp_checksum": 0,
+        "remaining_payload": null
     },
-    "t0": 1785236311439,
-    "t": 1785236311439
+    "t0": 0.065568323,
+    "t": 0.06592912
 }
 ```

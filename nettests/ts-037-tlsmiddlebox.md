@@ -291,7 +291,10 @@ Response:
                 "timeout": "no",
                 "connected": "",
                 "error": "",
-                "source_ip": "10.95.81.1",
+                "source_ip_prefix": "10.95.81.0/24",
+                "source_ip_country_code": "ZZ",
+                "source_ip_asn": 0,
+                "source_ip_asn_org": "",
                 "type": 11,
                 "code": 0,
                 "quote": {
@@ -300,10 +303,11 @@ Response:
                   "destination_port": 443,
                   "tcp_sequence_number": 2972880068,
                   "udp_length": 0,
-                  "udp_checksum": 0
+                  "udp_checksum": 0,
+                  "remaining_payload": null,
                 },
-                "t0": 1785236311439,
-                "t": 1785236311439
+                "t0": 0.068504739,
+                "t": 0.068886028
               }
             },
             {
@@ -312,7 +316,10 @@ Response:
                 "timeout": "no",
                 "connected": "",
                 "error": "",
-                "source_ip": "10.165.11.60",
+                "source_ip_prefix": "10.165.11.0/24",
+                "source_ip_country_code": "ZZ",
+                "source_ip_asn": 0,
+                "source_ip_asn_org": "",
                 "type": 11,
                 "code": 0,
                 "quote": {
@@ -321,10 +328,11 @@ Response:
                   "destination_port": 443,
                   "tcp_sequence_number": 1698323038,
                   "udp_length": 0,
-                  "udp_checksum": 0
+                  "udp_checksum": 0,
+                  "remaining_payload": null
                 },
-                "t0": 1785236311540,
-                "t": 1785236311540
+                "t0": 0.169412564,
+                "t": 0.169618341
               }
             },
             {
@@ -333,7 +341,10 @@ Response:
                 "timeout": "no",
                 "connected": "",
                 "error": "",
-                "source_ip": "10.34.116.78",
+                "source_ip_prefix": "10.34.116.0/24",
+                "source_ip_country_code": "ZZ",
+                "source_ip_asn": 0,
+                "source_ip_asn_org": "",
                 "type": 11,
                 "code": 0,
                 "quote": {
@@ -342,10 +353,11 @@ Response:
                   "destination_port": 443,
                   "tcp_sequence_number": 141401476,
                   "udp_length": 0,
-                  "udp_checksum": 0
+                  "udp_checksum": 0,
+                  "remaining_payload": null
                 },
-                "t0": 1785236311639,
-                "t": 1785236311640
+                "t0": 0.269099097,
+                "t": 0.269504316
               }
             },
             {
@@ -354,7 +366,10 @@ Response:
                 "timeout": "no",
                 "connected": "",
                 "error": "",
-                "source_ip": "10.74.10.4",
+                "source_ip_prefix": "10.74.10.0/24",
+                "source_ip_country_code": "ZZ",
+                "source_ip_asn": 0,
+                "source_ip_asn_org": "",
                 "type": 11,
                 "code": 0,
                 "quote": {
@@ -363,10 +378,11 @@ Response:
                   "destination_port": 443,
                   "tcp_sequence_number": 416585972,
                   "udp_length": 0,
-                  "udp_checksum": 0
+                  "udp_checksum": 0,
+                  "remaining_payload": null
                 },
-                "t0": 1785236311739,
-                "t": 1785236311739
+                "t0": 0.369318438,
+                "t": 0.369450737
               }
             },
             {
@@ -375,7 +391,10 @@ Response:
                 "timeout": "no",
                 "connected": "",
                 "error": "",
-                "source_ip": "10.95.81.8",
+                "source_ip_prefix": "10.95.81.0/24",
+                "source_ip_country_code": "ZZ",
+                "source_ip_asn": 0,
+                "source_ip_asn_org": "",
                 "type": 11,
                 "code": 0,
                 "quote": {
@@ -384,10 +403,11 @@ Response:
                   "destination_port": 443,
                   "tcp_sequence_number": 1806413950,
                   "udp_length": 0,
-                  "udp_checksum": 0
+                  "udp_checksum": 0,
+                  "remaining_payload": null
                 },
-                "t0": 1785236311839,
-                "t": 1785236311841
+                "t0": 0.46952822,
+                "t": 0.470489935
               }
             },
             {
@@ -396,7 +416,10 @@ Response:
                 "timeout": "no",
                 "connected": "",
                 "error": "",
-                "source_ip": "10.92.81.8",
+                "source_ip_prefix": "10.92.81.0/24",
+                "source_ip_country_code": "ZZ",
+                "source_ip_asn": 0,
+                "source_ip_asn_org": "",
                 "type": 11,
                 "code": 0,
                 "quote": {
@@ -405,10 +428,11 @@ Response:
                   "destination_port": 443,
                   "tcp_sequence_number": 796341276,
                   "udp_length": 0,
-                  "udp_checksum": 0
+                  "udp_checksum": 0,
+                  "remaining_payload": null
                 },
-                "t0": 1785236311940,
-                "t": 1785236311950
+                "t0": 0.5688265,
+                "t": 0.578128939
               }
             },
             {
@@ -417,7 +441,10 @@ Response:
                 "timeout": "no",
                 "connected": "",
                 "error": "",
-                "source_ip": "10.200.3.129",
+                "source_ip_prefix": "10.200.3.0/24",
+                "source_ip_country_code": "ZZ",
+                "source_ip_asn": 0,
+                "source_ip_asn_org": "",
                 "type": 11,
                 "code": 0,
                 "quote": {
@@ -426,10 +453,11 @@ Response:
                   "destination_port": 443,
                   "tcp_sequence_number": 3212898109,
                   "udp_length": 0,
-                  "udp_checksum": 0
+                  "udp_checksum": 0,
+                  "remaining_payload": null
                 },
-                "t0": 1785236312039,
-                "t": 1785236312050
+                "t0": 0.669015514,
+                "t": 0.679566179
               }
             },
             {
@@ -438,7 +466,10 @@ Response:
                 "timeout": "no",
                 "connected": "",
                 "error": "",
-                "source_ip": "10.100.2.209",
+                "source_ip_prefix": "10.100.2.0/24",
+                "source_ip_country_code": "ZZ",
+                "source_ip_asn": 0,
+                "source_ip_asn_org": "",
                 "type": 11,
                 "code": 0,
                 "quote": {
@@ -447,10 +478,11 @@ Response:
                   "destination_port": 443,
                   "tcp_sequence_number": 2369944495,
                   "udp_length": 0,
-                  "udp_checksum": 0
+                  "udp_checksum": 0,
+                  "remaining_payload": "AAAAAKAC+vBBzQAAAgQFtAQCCApcdipbAAAAAAEDAwcAAAAAAAAAAA=="
                 },
-                "t0": 1785236312139,
-                "t": 1785236312152
+                "t0": 0.769256653,
+                "t": 0.782505596
               }
             },
             {
@@ -459,7 +491,10 @@ Response:
                 "timeout": "no",
                 "connected": "",
                 "error": "",
-                "source_ip": "10.200.2.209",
+                "source_ip_prefix": "10.200.2.0/24",
+                "source_ip_country_code": "ZZ",
+                "source_ip_asn": 0,
+                "source_ip_asn_org": "",
                 "type": 11,
                 "code": 0,
                 "quote": {
@@ -468,10 +503,11 @@ Response:
                   "destination_port": 443,
                   "tcp_sequence_number": 1337557307,
                   "udp_length": 0,
-                  "udp_checksum": 0
+                  "udp_checksum": 0,
+                  "remaining_payload": null,
                 },
-                "t0": 1785236312239,
-                "t": 1785236312255
+                "t0": 0.869436421,
+                "t": 0.885637243
               }
             },
             {
@@ -480,7 +516,10 @@ Response:
                 "timeout": "no",
                 "connected": "",
                 "error": "",
-                "source_ip": "10.221.2.209",
+                "source_ip_prefix": "10.221.2.0/24",
+                "source_ip_country_code": "ZZ",
+                "source_ip_asn": 0,
+                "source_ip_asn_org": "",
                 "type": 11,
                 "code": 0,
                 "quote": {
@@ -489,10 +528,11 @@ Response:
                   "destination_port": 443,
                   "tcp_sequence_number": 3913720748,
                   "udp_length": 0,
-                  "udp_checksum": 0
+                  "udp_checksum": 0,
+                  "remaining_payload": null
                 },
-                "t0": 1785236312340,
-                "t": 1785236312353
+                "t0": 0.968586779,
+                "t": 0.981907104
               }
             },
             {
@@ -501,7 +541,10 @@ Response:
                 "timeout": "yes",
                 "connected": "",
                 "error": "",
-                "source_ip": "",
+                "source_ip_prefix": "",
+                "source_ip_country_code": "",
+                "source_ip_asn": 0,
+                "source_ip_asn_org": "",
                 "type": 0,
                 "code": 0,
                 "quote": {
@@ -510,9 +553,11 @@ Response:
                   "destination_port": 0,
                   "tcp_sequence_number": 0,
                   "udp_length": 0,
-                  "udp_checksum": 0
+                  "udp_checksum": 0,
+                  "remaining_payload": null
                 },
-                "t": 0
+                "t0": 7.075504581,
+                "t": 10.078594999
               }
             },
             {
@@ -521,7 +566,10 @@ Response:
                 "timeout": "",
                 "connected": "yes",
                 "error": "",
-                "source_ip": "",
+                "source_ip_prefix": "",
+                "source_ip_country_code": "",
+                "source_ip_asn": 0,
+                "source_ip_asn_org": "",
                 "type": 0,
                 "code": 0,
                 "quote": {
@@ -530,9 +578,11 @@ Response:
                   "destination_port": 0,
                   "tcp_sequence_number": 0,
                   "udp_length": 0,
-                  "udp_checksum": 0
+                  "udp_checksum": 0,
+                  "remaining_payload": null
                 },
-                "t": 0
+                "t0": 10.669002671,
+                "t": 10.68273159
               }
             },
           ]
