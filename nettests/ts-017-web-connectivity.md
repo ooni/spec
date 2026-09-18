@@ -383,7 +383,7 @@ The Web Connectivity test helper (TH) returns the results of
 looking up the hostname inside the URL.
 
 Web Connectivity SHOULD try to prioritize IP addresses resolved
-by the TH but MAY use IP addresses used by this extra resolver when
+by the system resolver but MAY use IP addresses used by this extra resolver when
 the system resolver fails.
 
 ### Local processing of the measurement results
