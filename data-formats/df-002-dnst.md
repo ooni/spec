@@ -166,7 +166,7 @@ the name because we changed our way of representing getaddrinfo-like resolutions
     "hostname": "",
     "ipv4": "1.1.1.1",
     "ipv6": "",
-    "svcb": null,
+    "svcb": {},  // only for SVCB answers, see below
     "ttl": null,
 
     // specified but unused or deprecated fields
@@ -212,7 +212,10 @@ that should be elapsed before the zone should be retried in case of failure.
 - `serial_number` (`int`; only for SOA answers): version number
 of the original copy of the zone.
 
-- `svcb`: (`map[string]string`; only for SCVB answers): the SVCB record, see below.
+- `svcb` (`SVCB`; optional; only for SVCB answers): the SVCB record
+carried by this answer. This key is omitted for any other
+answer type. A response containing multiple SVCB records is represented
+using one answer per record.
 
 - `ttl` (`int`; nullable): the TTL if known, otherwise `null`.
 
@@ -233,13 +236,16 @@ Answers with the SVCB record contain the `svcb` key that is an object like this:
     }
 }
 ```
-The svcb object follows the SVCB specifation in RFC9460.
+The svcb object follows the SVCB specification in [RFC 9460](
+https://www.rfc-editor.org/rfc/rfc9460).
 
-- `priority`: (`string`) The SvcPriority
-  
-- `target_name`: (`string`) The TargetName as it appears in the record.
+- `priority` (`int`): the SvcPriority, where `0` means AliasMode and any
+other value means ServiceMode.
 
-- `params`: (`map[string]string`) The SvcParams, as a map from string to string.
+- `target_name` (`string`): the TargetName as it appears in the record.
+
+- `params` (`map[string]string`): the SvcParams, as a map from the
+SvcParamKey name to its value serialized as a string.
 
 ## Example
 
@@ -267,4 +273,48 @@ not relevant to the DNS data format:
     "t": 0.06544,
     "transaction_id": 2
 },
+```
+
+The following example shows an `SVCB` query for `_dns.resolver.arpa.` where the
+resolver returned two SVCB records, hence two answers:
+
+```JSON
+{
+    "answers": [{
+        "answer_type": "SVCB",
+        "ttl": null,
+        "svcb": {
+            "priority": 1,
+            "target_name": "one.one.one.one.",
+            "params": {
+                "alpn": "h2,h3",
+                "dohpath": "/dns-query{?dns}",
+                "ipv4hint": "1.1.1.1,1.0.0.1",
+                "ipv6hint": "2606:4700:4700::1111,2606:4700:4700::1001",
+                "port": "443"
+            }
+        }
+    }, {
+        "answer_type": "SVCB",
+        "ttl": null,
+        "svcb": {
+            "priority": 2,
+            "target_name": "one.one.one.one.",
+            "params": {
+                "alpn": "dot",
+                "ipv4hint": "1.1.1.1,1.0.0.1",
+                "ipv6hint": "2606:4700:4700::1111,2606:4700:4700::1001",
+                "port": "853"
+            }
+        }
+    }],
+    "engine": "udp",
+    "failure": null,
+    "hostname": "_dns.resolver.arpa.",
+    "query_type": "SVCB",
+    "resolver_hostname": null,
+    "resolver_port": null,
+    "resolver_address": "1.1.1.1:53",
+    "t": 0.07212
+}
 ```
