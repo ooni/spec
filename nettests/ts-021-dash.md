@@ -1,6 +1,6 @@
 # Specification version number
 
-2020-04-20-001
+2025-12-01-001
 
 * _status_: current
 
@@ -164,6 +164,8 @@ used by OONI Probe:
   in reality because a server cannot encode a video into all the possible
   bitrates, but is useful to measure network performance, as explained below).
 
+- each response may not exceed 128 megabytes in size.
+
 ## Rationale of selected parameters
 
 The initial bitrate estimate is set to 3,000 kbit/s because that
@@ -193,6 +195,10 @@ selecting the highest available bitrate that was lower than the
 speed with which the last segment was downloaded. In OONI Probe,
 we decided to disable this behavior by default, so to better measure
 the network quality.
+
+Response sizes are limited to 128 megabytes in order to not consume excessive
+memory on the host device. This is believed to be a conservative maximum bounds
+which should not be exceeded in normal usage.
 
 # Expected output
 
