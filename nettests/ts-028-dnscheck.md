@@ -1,6 +1,6 @@
 # Specification version number
 
-2020-12-14-000
+2026-09-22-000
 
 * _status_: experimental
 
@@ -64,6 +64,19 @@ By manually supplying valid addresses for the domain, users can ensure
 that we measure whether the specified resolver works also when the system
 resolver fails with NXDOMAIN or return bogons. 
 
+Since `test_version` 0.9.4, during the lookup phase, after resolving the
+domain, we also send an `SVCB` query to the same resolver endpoint to find
+out whether it supports [RFC 9462](https://www.rfc-editor.org/rfc/rfc9462)
+Discovery of Designated Resolvers (DDR). The name we query depends on the
+scheme of the input URL:
+
+- for `udp://`, `tcp://` and `system://` inputs, we query `_dns.resolver.arpa.`, which asks
+the resolver to tell us about the encrypted resolvers it designates;
+
+- for `https://` and `dot://` URLs, we query `_dns.<domain>`, where `<domain>`
+is the hostname in the input URL, which asks the resolver about the
+encrypted DNS services offered by that name.
+
 # Expected output
 
 ## Parent data format
@@ -98,7 +111,10 @@ that occurred during the bootstrap (or `nil`);
 the endpoints being used. We will have a single endpoint here in case the DNS
 server URL contains an IP address; zero or more endpoints if, instead, it
 contains a domain name. Each endpoint, in this case, will correspond to one
-of the IP addresses discovered during the bootstrap phase.
+of the IP addresses discovered during the bootstrap phase. Since
+`test_version` 0.9.4, the `queries` of each lookup also include the
+`SVCB` query described above, in the `df-002-dnst` format. There is one
+answer for each SVCB record returned, and its `svcb` key holds the record.
 
 ## Possible conclusions
 
