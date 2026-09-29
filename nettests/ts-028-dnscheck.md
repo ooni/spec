@@ -70,7 +70,7 @@ out whether it supports [RFC 9462](https://www.rfc-editor.org/rfc/rfc9462)
 Discovery of Designated Resolvers (DDR). The name we query depends on the
 scheme of the input URL:
 
-- for `udp://` and `tcp://` URLs, we query `_dns.resolver.arpa.`, which asks
+- for `udp://`, `tcp://` and `system://` inputs, we query `_dns.resolver.arpa.`, which asks
 the resolver to tell us about the encrypted resolvers it designates;
 
 - for `https://` and `dot://` URLs, we query `_dns.<domain>`, where `<domain>`
