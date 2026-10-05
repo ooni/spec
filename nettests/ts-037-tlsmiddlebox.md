@@ -33,6 +33,10 @@ the `control_sni` and the testhelper's hostname as the target.
 This test is divided into multiple steps that will each ensure that we can successfully 
 perform iterative tracing on the `target` and return early in case of failure.
 
+This test consists of two privacy modes: `safe` and `'advanced`. These privacy modes only
+pertain to the **TCP Traceroute** step of the test. The default privacy mode for all tests
+is `safe`.
+
 The main steps of the experiment are:
 
 1. **DNS lookup**
@@ -50,6 +54,11 @@ The main steps of the experiment are:
     traceroute end ip in `tcp_traceroute` within the `trace` key. The traceroute is run until
     the maximum TTL is reached. The outcome of each TTL-limited probe can either be a timeout,
     a successful connection, an error, or an ICMP message with the initial quoted packet.
+
+    When the privacy mode is set to `safe`, only country and AS information of routers on the
+    forward network path between the client and server will be collected. When the privacy mode
+    is set to `advanced`, additional IP address and RTT information of routers on the forward 
+    network path between the client and server will be collected
 
 4. **TLS Handshake**
     Attempt to perform a tls handshake for the list of filtered IPs (for which the TCP session 
@@ -135,7 +144,7 @@ in the network route and where the middlebox is located with respect to
 the forward network path
 
 
-## Example output sample
+## Example output sample for `safe` privacy mode
 
 Response:
 
@@ -144,53 +153,64 @@ Response:
   "annotations": {
     "architecture": "amd64",
     "engine_name": "ooniprobe-engine",
-    "engine_version": "3.16.0-alpha.2",
-    "platform": "linux"
+    "engine_version": "3.31.0-alpha",
+    "go_version": "go1.26.8",
+    "platform": "linux",
+    "vcs_modified": "false",
+    "vcs_revision": "6eaad0ed0048d3ed19980655f4a3ab743a951218",
+    "vcs_time": "2026-10-05T10:34:23Z",
+    "vcs_tool": "git"
   },
   "data_format_version": "0.2.0",
-  "input": "tlstrace://1337x.be",
-  "measurement_start_time": "2022-09-01 16:37:55",
+  "input": "tlstrace://github.com",
+  "measurement_start_time": "2026-10-05 12:45:57",
   "options": [
-    "TestHelper=tlshandshake://example.com"
+    "MaxTTL=12"
   ],
-  "probe_asn": "AS24560",
-  "probe_cc": "IN",
+  "probe_asn": "AS16276",
+  "probe_cc": "CA",
   "probe_ip": "127.0.0.1",
-  "probe_network_name": "Bharti Airtel Limited",
-  "report_id": "20220901T163755Z_tlsmiddlebox_IN_24560_n1_zUFu0wK85oGNlnbG",
-  "resolver_asn": "AS13335",
-  "resolver_ip": "162.158.45.17",
-  "resolver_network_name": "Cloudflare, Inc.",
+  "probe_network_name": "OVH SAS",
+  "resolver_asn": "AS16276",
+  "resolver_ip": "158.69.169.9",
+  "resolver_network_name": "OVH SAS",
   "software_name": "miniooni",
-  "software_version": "3.16.0-alpha.2",
+  "software_version": "3.31.0-alpha",
   "test_keys": {
     "queries": [
       {
         "answers": [
           {
             "asn": 13335,
-            "as_org_name": "Cloudflare, Inc.",
-            "answer_type": "A",
-            "ipv4": "104.16.249.249",
-            "ttl": null
-          },
-          {
-            "asn": 13335,
-            "as_org_name": "Cloudflare, Inc.",
-            "answer_type": "A",
-            "ipv4": "104.16.248.249",
-            "ttl": null
-          },
-          {
-            "asn": 13335,
-            "as_org_name": "Cloudflare, Inc.",
+            "as_org_name": "Cloudflare Inc",
             "answer_type": "AAAA",
-            "ipv6": "2606:4700:83b3:8ced:8739:0:1827:bcee",
+            "ipv6": "2a06:98c1:52::4",
+            "ttl": null
+          },
+          {
+            "asn": 13335,
+            "as_org_name": "Cloudflare Inc",
+            "answer_type": "AAAA",
+            "ipv6": "2803:f800:53::4",
+            "ttl": null
+          },
+          {
+            "asn": 13335,
+            "as_org_name": "Cloudflare Inc",
+            "answer_type": "A",
+            "ipv4": "162.159.61.4",
+            "ttl": null
+          },
+          {
+            "asn": 13335,
+            "as_org_name": "Cloudflare Inc",
+            "answer_type": "A",
+            "ipv4": "172.64.41.4",
             "ttl": null
           },
           {
             "answer_type": "CNAME",
-            "hostname": "mozilla.cloudflare-dns.com",
+            "hostname": "mozilla.cloudflare-dns.com.",
             "ttl": null
           }
         ],
@@ -201,345 +221,321 @@ Response:
         "resolver_hostname": null,
         "resolver_port": null,
         "resolver_address": "",
-        "t0": 0.000127901,
-        "t": 0.000422598,
-        "transaction_id": 0
+        "t0": 0.000347891,
+        "t": 0.001174443,
+        "tags": []
       },
       {
         "answers": [
           {
-            "asn": 15133,
-            "as_org_name": "Edgecast Inc.",
+            "asn": 36459,
+            "as_org_name": "GitHub, Inc.",
             "answer_type": "A",
-            "ipv4": "93.184.216.34",
+            "ipv4": "140.82.112.3",
             "ttl": null
           }
         ],
         "engine": "doh",
         "failure": null,
-        "hostname": "example.com",
+        "hostname": "github.com",
         "query_type": "A",
-        "raw_response": "72KBoAABAAIAAAABB2V4YW1wbGUDY29tAAABAAHADAABAAEAAUMIAARduNgiwAwALgABAAFDCACfAAEIAgABUYBjHAvgYwDk6AaWB2V4YW1wbGUDY29tABKm/2/eVl7Xqf/0X1iKOlFbF8vNFewGZUvOEd/19pMMC4hzqmMz3wDbU4e/SoTUb6rRzKxciolbYu5tDCGuysl7bMBpduGW0vzXShus0J4sjRT1XZyWa9ahtDy9juNeen+3Szo+zJuGiS+TfbXhxk9NS1QrPK1n3+w1SDsINq0PAAApBNAAAIAAAPEADADtAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "raw_response": "vymBgAABAAEAAAABBmdpdGh1YgNjb20AAAEAAcAMAAEAAQAAADEABIxScAMAACkE0AAAgAABnQAMAZkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
         "resolver_hostname": null,
         "resolver_port": null,
         "resolver_address": "https://mozilla.cloudflare-dns.com/dns-query",
-        "t0": 0.000098138,
-        "t": 0.121407471,
-        "transaction_id": 0
+        "t0": 0.000211828,
+        "t": 0.036852686,
+        "tags": []
       },
       {
-        "answers": [
-          {
-            "asn": 15133,
-            "as_org_name": "Edgecast Inc.",
-            "answer_type": "AAAA",
-            "ipv6": "2606:2800:220:1:248:1893:25c8:1946",
-            "ttl": null
-          }
-        ],
+        "answers": null,
         "engine": "doh",
-        "failure": null,
-        "hostname": "example.com",
+        "failure": "dns_no_answer",
+        "hostname": "github.com",
         "query_type": "AAAA",
-        "raw_response": "f4WBoAABAAIAAAABB2V4YW1wbGUDY29tAAAcAAHADAAcAAEAAVGAABAmBigAAiAAAQJIGJMlyBlGwAwALgABAAFRgACfABwIAgABUYBjHTHnYwEdKgaWB2V4YW1wbGUDY29tAGewwJzy9va8IhAIedDOGo0Ckq4k4m66WJgiJavq+aGEWEMzZOXYMv6B5em4fU0nLM/VHwXng9fVPJnORL0PAfRuM3y9ljlrmTPu+ymCCo2pzNI0XqGE9DglaoGyzPdctkT9EPFsD+pVSWoQEoANZCLPWPMblcBiDn24kY9OKbc6AAApBNAAAIAAAOUADADhAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "raw_response": "zZiBgAABAAAAAQABBmdpdGh1YgNjb20AABwAAcAMAAYAAQAAA3IASAducy0xNzA3CWF3c2Rucy0yMQJjbwJ1awARYXdzZG5zLWhvc3RtYXN0ZXIGYW1hem9uwBMAAAABAAAcIAAAA4QAEnUAAAFRgAAAKQTQAACAAAFZAAwBVQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
         "resolver_hostname": null,
         "resolver_port": null,
         "resolver_address": "https://mozilla.cloudflare-dns.com/dns-query",
-        "t0": 0.000052631,
-        "t": 0.34243427,
-        "transaction_id": 0
+        "t0": 0.000142517,
+        "t": 0.037201114,
+        "tags": []
       }
     ],
     "tcp_connect": [
       {
-        "ip": "2606:2800:220:1:248:1893:25c8:1946",
-        "port": 443,
-        "status": {
-          "failure": "network_unreachable",
-          "success": false
-        },
-        "t0": 0.342688667,
-        "t": 0.342975162,
-        "transaction_id": 1
-      },
-      {
-        "ip": "93.184.216.34",
+        "ip": "140.82.112.3",
         "port": 443,
         "status": {
           "failure": null,
           "success": true
         },
-        "t0": 0.34271378,
-        "t": 0.560168233,
-        "transaction_id": 0
+        "t0": 0.037391663,
+        "t": 0.051356225,
+        "tags": []
       }
     ],
     "iterative_trace": [
       {
-        "address": "[2606:2800:220:1:248:1893:25c8:1946]:443",
-        "control_trace": null,
-        "target_trace": null
-      },
-      {
-        "address": "93.184.216.34:443",
+        "address": "140.82.112.3:443",
         "tcp_traceroute": {
-          "server_name": "example.com",
+          "server_name": "github.com",
           "iterations": [
             {
               "ttl": 1,
               "icmp_error": {
-                "timeout": "no",
-                "connected": "",
+                "timeout": false,
+                "connected": false,
                 "error": "",
-                "source_ip_prefix": "10.95.81.0/24",
-                "source_ip_country_code": "ZZ",
-                "source_ip_asn": 0,
-                "source_ip_asn_org": "",
+                "source_ip_prefix": "",
+                "source_ip_country_code": "CA",
+                "source_ip_asn": 16276,
+                "source_ip_asn_org": "OVH SAS",
                 "type": 11,
                 "code": 0,
                 "quote": {
-                  "protocol": 6,
-                  "source_port": 46828,
-                  "destination_port": 443,
-                  "tcp_sequence_number": 2972880068,
+                  "protocol": 0,
+                  "source_port": 0,
+                  "destination_port": 0,
+                  "tcp_sequence_number": 0,
                   "udp_length": 0,
                   "udp_checksum": 0,
-                  "remaining_payload": null,
+                  "remaining_payload": null
                 },
-                "t0": 0.068504739,
-                "t": 0.068886028
+                "t0": 0.051487013,
+                "t": 0
               }
             },
             {
               "ttl": 2,
               "icmp_error": {
-                "timeout": "no",
-                "connected": "",
+                "timeout": false,
+                "connected": false,
                 "error": "",
-                "source_ip_prefix": "10.165.11.0/24",
+                "source_ip_prefix": "",
                 "source_ip_country_code": "ZZ",
                 "source_ip_asn": 0,
                 "source_ip_asn_org": "",
                 "type": 11,
                 "code": 0,
                 "quote": {
-                  "protocol": 6,
-                  "source_port": 46842,
-                  "destination_port": 443,
-                  "tcp_sequence_number": 1698323038,
+                  "protocol": 0,
+                  "source_port": 0,
+                  "destination_port": 0,
+                  "tcp_sequence_number": 0,
                   "udp_length": 0,
                   "udp_checksum": 0,
                   "remaining_payload": null
                 },
-                "t0": 0.169412564,
-                "t": 0.169618341
+                "t0": 0.152389069,
+                "t": 0
               }
             },
             {
               "ttl": 3,
               "icmp_error": {
-                "timeout": "no",
-                "connected": "",
+                "timeout": false,
+                "connected": false,
                 "error": "",
-                "source_ip_prefix": "10.34.116.0/24",
+                "source_ip_prefix": "",
                 "source_ip_country_code": "ZZ",
                 "source_ip_asn": 0,
                 "source_ip_asn_org": "",
                 "type": 11,
                 "code": 0,
                 "quote": {
-                  "protocol": 6,
-                  "source_port": 46844,
-                  "destination_port": 443,
-                  "tcp_sequence_number": 141401476,
+                  "protocol": 0,
+                  "source_port": 0,
+                  "destination_port": 0,
+                  "tcp_sequence_number": 0,
                   "udp_length": 0,
                   "udp_checksum": 0,
                   "remaining_payload": null
                 },
-                "t0": 0.269099097,
-                "t": 0.269504316
+                "t0": 0.251540123,
+                "t": 0
               }
             },
             {
               "ttl": 4,
               "icmp_error": {
-                "timeout": "no",
-                "connected": "",
+                "timeout": false,
+                "connected": false,
                 "error": "",
-                "source_ip_prefix": "10.74.10.0/24",
+                "source_ip_prefix": "",
                 "source_ip_country_code": "ZZ",
                 "source_ip_asn": 0,
                 "source_ip_asn_org": "",
                 "type": 11,
                 "code": 0,
                 "quote": {
-                  "protocol": 6,
-                  "source_port": 46856,
-                  "destination_port": 443,
-                  "tcp_sequence_number": 416585972,
+                  "protocol": 0,
+                  "source_port": 0,
+                  "destination_port": 0,
+                  "tcp_sequence_number": 0,
                   "udp_length": 0,
                   "udp_checksum": 0,
                   "remaining_payload": null
                 },
-                "t0": 0.369318438,
-                "t": 0.369450737
+                "t0": 0.351764356,
+                "t": 0
               }
             },
             {
               "ttl": 5,
               "icmp_error": {
-                "timeout": "no",
-                "connected": "",
+                "timeout": false,
+                "connected": false,
                 "error": "",
-                "source_ip_prefix": "10.95.81.0/24",
+                "source_ip_prefix": "",
                 "source_ip_country_code": "ZZ",
                 "source_ip_asn": 0,
                 "source_ip_asn_org": "",
                 "type": 11,
                 "code": 0,
                 "quote": {
-                  "protocol": 6,
-                  "source_port": 46868,
-                  "destination_port": 443,
-                  "tcp_sequence_number": 1806413950,
+                  "protocol": 0,
+                  "source_port": 0,
+                  "destination_port": 0,
+                  "tcp_sequence_number": 0,
                   "udp_length": 0,
                   "udp_checksum": 0,
                   "remaining_payload": null
                 },
-                "t0": 0.46952822,
-                "t": 0.470489935
+                "t0": 0.451993338,
+                "t": 0
               }
             },
             {
               "ttl": 6,
               "icmp_error": {
-                "timeout": "no",
-                "connected": "",
+                "timeout": false,
+                "connected": false,
                 "error": "",
-                "source_ip_prefix": "10.92.81.0/24",
-                "source_ip_country_code": "ZZ",
-                "source_ip_asn": 0,
-                "source_ip_asn_org": "",
+                "source_ip_prefix": "",
+                "source_ip_country_code": "CA",
+                "source_ip_asn": 16276,
+                "source_ip_asn_org": "OVH SAS",
                 "type": 11,
                 "code": 0,
                 "quote": {
-                  "protocol": 6,
-                  "source_port": 46870,
-                  "destination_port": 443,
-                  "tcp_sequence_number": 796341276,
+                  "protocol": 0,
+                  "source_port": 0,
+                  "destination_port": 0,
+                  "tcp_sequence_number": 0,
                   "udp_length": 0,
                   "udp_checksum": 0,
                   "remaining_payload": null
                 },
-                "t0": 0.5688265,
-                "t": 0.578128939
+                "t0": 0.552303441,
+                "t": 0
               }
             },
             {
               "ttl": 7,
               "icmp_error": {
-                "timeout": "no",
-                "connected": "",
+                "timeout": false,
+                "connected": false,
                 "error": "",
-                "source_ip_prefix": "10.200.3.0/24",
+                "source_ip_prefix": "",
                 "source_ip_country_code": "ZZ",
                 "source_ip_asn": 0,
                 "source_ip_asn_org": "",
                 "type": 11,
                 "code": 0,
                 "quote": {
-                  "protocol": 6,
-                  "source_port": 46872,
-                  "destination_port": 443,
-                  "tcp_sequence_number": 3212898109,
+                  "protocol": 0,
+                  "source_port": 0,
+                  "destination_port": 0,
+                  "tcp_sequence_number": 0,
                   "udp_length": 0,
                   "udp_checksum": 0,
                   "remaining_payload": null
                 },
-                "t0": 0.669015514,
-                "t": 0.679566179
+                "t0": 0.652567929,
+                "t": 0
               }
             },
             {
               "ttl": 8,
               "icmp_error": {
-                "timeout": "no",
-                "connected": "",
+                "timeout": false,
+                "connected": false,
                 "error": "",
-                "source_ip_prefix": "10.100.2.0/24",
-                "source_ip_country_code": "ZZ",
-                "source_ip_asn": 0,
-                "source_ip_asn_org": "",
+                "source_ip_prefix": "",
+                "source_ip_country_code": "CA",
+                "source_ip_asn": 16276,
+                "source_ip_asn_org": "OVH SAS",
                 "type": 11,
                 "code": 0,
                 "quote": {
-                  "protocol": 6,
-                  "source_port": 46876,
-                  "destination_port": 443,
-                  "tcp_sequence_number": 2369944495,
+                  "protocol": 0,
+                  "source_port": 0,
+                  "destination_port": 0,
+                  "tcp_sequence_number": 0,
                   "udp_length": 0,
                   "udp_checksum": 0,
-                  "remaining_payload": "AAAAAKAC+vBBzQAAAgQFtAQCCApcdipbAAAAAAEDAwcAAAAAAAAAAA=="
+                  "remaining_payload": null
                 },
-                "t0": 0.769256653,
-                "t": 0.782505596
+                "t0": 0.751759974,
+                "t": 0
               }
             },
             {
               "ttl": 9,
               "icmp_error": {
-                "timeout": "no",
-                "connected": "",
+                "timeout": false,
+                "connected": false,
                 "error": "",
-                "source_ip_prefix": "10.200.2.0/24",
+                "source_ip_prefix": "",
                 "source_ip_country_code": "ZZ",
                 "source_ip_asn": 0,
                 "source_ip_asn_org": "",
                 "type": 11,
                 "code": 0,
                 "quote": {
-                  "protocol": 6,
-                  "source_port": 46888,
-                  "destination_port": 443,
-                  "tcp_sequence_number": 1337557307,
+                  "protocol": 0,
+                  "source_port": 0,
+                  "destination_port": 0,
+                  "tcp_sequence_number": 0,
                   "udp_length": 0,
                   "udp_checksum": 0,
-                  "remaining_payload": null,
+                  "remaining_payload": null
                 },
-                "t0": 0.869436421,
-                "t": 0.885637243
+                "t0": 0.851983748,
+                "t": 0
               }
             },
             {
               "ttl": 10,
               "icmp_error": {
-                "timeout": "no",
-                "connected": "",
+                "timeout": false,
+                "connected": false,
                 "error": "",
-                "source_ip_prefix": "10.221.2.0/24",
-                "source_ip_country_code": "ZZ",
+                "source_ip_prefix": "",
+                "source_ip_country_code": "CA",
                 "source_ip_asn": 0,
                 "source_ip_asn_org": "",
                 "type": 11,
                 "code": 0,
                 "quote": {
-                  "protocol": 6,
-                  "source_port": 46890,
-                  "destination_port": 443,
-                  "tcp_sequence_number": 3913720748,
+                  "protocol": 0,
+                  "source_port": 0,
+                  "destination_port": 0,
+                  "tcp_sequence_number": 0,
                   "udp_length": 0,
                   "udp_checksum": 0,
                   "remaining_payload": null
                 },
-                "t0": 0.968586779,
-                "t": 0.981907104
+                "t0": 0.952198982,
+                "t": 0
               }
             },
             {
               "ttl": 11,
               "icmp_error": {
-                "timeout": "yes",
-                "connected": "",
+                "timeout": true,
+                "connected": false,
                 "error": "",
                 "source_ip_prefix": "",
                 "source_ip_country_code": "",
@@ -556,15 +552,15 @@ Response:
                   "udp_checksum": 0,
                   "remaining_payload": null
                 },
-                "t0": 7.075504581,
-                "t": 10.078594999
+                "t0": 1.052467762,
+                "t": 4.05558034
               }
             },
             {
               "ttl": 12,
               "icmp_error": {
-                "timeout": "",
-                "connected": "yes",
+                "timeout": true,
+                "connected": false,
                 "error": "",
                 "source_ip_prefix": "",
                 "source_ip_country_code": "",
@@ -581,10 +577,10 @@ Response:
                   "udp_checksum": 0,
                   "remaining_payload": null
                 },
-                "t0": 10.669002671,
-                "t": 10.68273159
+                "t0": 4.055771778,
+                "t": 7.058863605
               }
-            },
+            }
           ]
         },
         "control_trace": {
@@ -593,317 +589,902 @@ Response:
             {
               "ttl": 1,
               "handshake": {
-                "network": "tls",
-                "address": "93.184.216.34:443",
+                "network": "",
+                "address": "",
                 "cipher_suite": "",
-                "failure": "generic_timeout_error",
-                "so_error": "host_unreachable",
+                "failure": "host_unreachable",
+                "failure_chain": [
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:39868->140.82.112.3:443: read: no route to host"
+                  },
+                  {
+                    "type": "*os.SyscallError",
+                    "error": "read: no route to host"
+                  },
+                  {
+                    "type": "syscall.Errno",
+                    "error": "no route to host"
+                  }
+                ],
                 "negotiated_protocol": "",
-                "no_tls_verify": true,
-                "peer_certificates": [],
+                "no_tls_verify": false,
+                "peer_certificates": null,
                 "server_name": "example.com",
-                "t0": 0.806588718,
-                "t": 10.807752529,
-                "tags": [],
-                "tls_version": "",
-                "transaction_id": 0
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
               }
             },
             {
               "ttl": 2,
               "handshake": {
-                "network": "tls",
-                "address": "93.184.216.34:443",
+                "network": "",
+                "address": "",
                 "cipher_suite": "",
-                "failure": "generic_timeout_error",
-                "so_error": "host_unreachable",
+                "failure": "host_unreachable",
+                "failure_chain": [
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:39874->140.82.112.3:443: read: no route to host"
+                  },
+                  {
+                    "type": "*os.SyscallError",
+                    "error": "read: no route to host"
+                  },
+                  {
+                    "type": "syscall.Errno",
+                    "error": "no route to host"
+                  }
+                ],
                 "negotiated_protocol": "",
-                "no_tls_verify": true,
-                "peer_certificates": [],
+                "no_tls_verify": false,
+                "peer_certificates": null,
                 "server_name": "example.com",
-                "t0": 0.914062501,
-                "t": 10.915233266,
-                "tags": [],
-                "tls_version": "",
-                "transaction_id": 0
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
               }
             },
             {
               "ttl": 3,
               "handshake": {
-                "network": "tls",
-                "address": "93.184.216.34:443",
+                "network": "",
+                "address": "",
                 "cipher_suite": "",
-                "failure": "generic_timeout_error",
-                "so_error": "host_unreachable",
+                "failure": "host_unreachable",
+                "failure_chain": [
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:39890->140.82.112.3:443: read: no route to host"
+                  },
+                  {
+                    "type": "*os.SyscallError",
+                    "error": "read: no route to host"
+                  },
+                  {
+                    "type": "syscall.Errno",
+                    "error": "no route to host"
+                  }
+                ],
                 "negotiated_protocol": "",
-                "no_tls_verify": true,
-                "peer_certificates": [],
+                "no_tls_verify": false,
+                "peer_certificates": null,
                 "server_name": "example.com",
-                "t0": 1.01293851,
-                "t": 11.013575444,
-                "tags": [],
-                "tls_version": "",
-                "transaction_id": 0
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
               }
             },
             {
               "ttl": 4,
               "handshake": {
-                "network": "tls",
-                "address": "93.184.216.34:443",
+                "network": "",
+                "address": "",
                 "cipher_suite": "",
-                "failure": "generic_timeout_error",
-                "so_error": "host_unreachable",
+                "failure": "host_unreachable",
+                "failure_chain": [
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:39896->140.82.112.3:443: read: no route to host"
+                  },
+                  {
+                    "type": "*os.SyscallError",
+                    "error": "read: no route to host"
+                  },
+                  {
+                    "type": "syscall.Errno",
+                    "error": "no route to host"
+                  }
+                ],
                 "negotiated_protocol": "",
-                "no_tls_verify": true,
-                "peer_certificates": [],
+                "no_tls_verify": false,
+                "peer_certificates": null,
                 "server_name": "example.com",
-                "t0": 1.080355309,
-                "t": 11.080976051,
-                "tags": [],
-                "tls_version": "",
-                "transaction_id": 0
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
               }
             },
             {
               "ttl": 5,
               "handshake": {
-                "network": "tls",
-                "address": "93.184.216.34:443",
+                "network": "",
+                "address": "",
                 "cipher_suite": "",
-                "failure": "generic_timeout_error",
-                "so_error": "host_unreachable",
+                "failure": "host_unreachable",
+                "failure_chain": [
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:39908->140.82.112.3:443: read: no route to host"
+                  },
+                  {
+                    "type": "*os.SyscallError",
+                    "error": "read: no route to host"
+                  },
+                  {
+                    "type": "syscall.Errno",
+                    "error": "no route to host"
+                  }
+                ],
                 "negotiated_protocol": "",
-                "no_tls_verify": true,
-                "peer_certificates": [],
+                "no_tls_verify": false,
+                "peer_certificates": null,
                 "server_name": "example.com",
-                "t0": 1.185732563,
-                "t": 11.186405305,
-                "tags": [],
-                "tls_version": "",
-                "transaction_id": 0
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
               }
             },
             {
               "ttl": 6,
               "handshake": {
-                "network": "tls",
-                "address": "93.184.216.34:443",
+                "network": "",
+                "address": "",
                 "cipher_suite": "",
-                "failure": "generic_timeout_error",
-                "so_error": "host_unreachable",
+                "failure": "host_unreachable",
+                "failure_chain": [
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:39918->140.82.112.3:443: read: no route to host"
+                  },
+                  {
+                    "type": "*os.SyscallError",
+                    "error": "read: no route to host"
+                  },
+                  {
+                    "type": "syscall.Errno",
+                    "error": "no route to host"
+                  }
+                ],
                 "negotiated_protocol": "",
-                "no_tls_verify": true,
-                "peer_certificates": [],
+                "no_tls_verify": false,
+                "peer_certificates": null,
                 "server_name": "example.com",
-                "t0": 1.30764149,
-                "t": 11.308075848,
-                "tags": [],
-                "tls_version": "",
-                "transaction_id": 0
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
               }
             },
             {
               "ttl": 7,
               "handshake": {
-                "network": "tls",
-                "address": "93.184.216.34:443",
+                "network": "",
+                "address": "",
                 "cipher_suite": "",
-                "failure": "generic_timeout_error",
-                "so_error": "host_unreachable",
+                "failure": "host_unreachable",
+                "failure_chain": [
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:39926->140.82.112.3:443: read: no route to host"
+                  },
+                  {
+                    "type": "*os.SyscallError",
+                    "error": "read: no route to host"
+                  },
+                  {
+                    "type": "syscall.Errno",
+                    "error": "no route to host"
+                  }
+                ],
                 "negotiated_protocol": "",
-                "no_tls_verify": true,
-                "peer_certificates": [],
+                "no_tls_verify": false,
+                "peer_certificates": null,
                 "server_name": "example.com",
-                "t0": 1.408247724,
-                "t": 11.408401526,
-                "tags": [],
-                "tls_version": "",
-                "transaction_id": 0
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
               }
             },
             {
               "ttl": 8,
               "handshake": {
-                "network": "tls",
-                "address": "93.184.216.34:443",
+                "network": "",
+                "address": "",
                 "cipher_suite": "",
-                "failure": "generic_timeout_error",
-                "so_error": "host_unreachable",
+                "failure": "host_unreachable",
+                "failure_chain": [
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:39942->140.82.112.3:443: read: no route to host"
+                  },
+                  {
+                    "type": "*os.SyscallError",
+                    "error": "read: no route to host"
+                  },
+                  {
+                    "type": "syscall.Errno",
+                    "error": "no route to host"
+                  }
+                ],
                 "negotiated_protocol": "",
-                "no_tls_verify": true,
-                "peer_certificates": [],
+                "no_tls_verify": false,
+                "peer_certificates": null,
                 "server_name": "example.com",
-                "t0": 1.483209508,
-                "t": 11.483764881,
-                "tags": [],
-                "tls_version": "",
-                "transaction_id": 0
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
               }
             },
             {
               "ttl": 9,
               "handshake": {
-                "network": "tls",
-                "address": "93.184.216.34:443",
+                "network": "",
+                "address": "",
                 "cipher_suite": "",
-                "failure": "generic_timeout_error",
-                "so_error": "host_unreachable",
+                "failure": "host_unreachable",
+                "failure_chain": [
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:39944->140.82.112.3:443: read: no route to host"
+                  },
+                  {
+                    "type": "*os.SyscallError",
+                    "error": "read: no route to host"
+                  },
+                  {
+                    "type": "syscall.Errno",
+                    "error": "no route to host"
+                  }
+                ],
                 "negotiated_protocol": "",
-                "no_tls_verify": true,
-                "peer_certificates": [],
+                "no_tls_verify": false,
+                "peer_certificates": null,
                 "server_name": "example.com",
-                "t0": 1.592801069,
-                "t": 11.593133327,
-                "tags": [],
-                "tls_version": "",
-                "transaction_id": 0
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
               }
             },
             {
               "ttl": 10,
               "handshake": {
-                "network": "tls",
-                "address": "93.184.216.34:443",
+                "network": "",
+                "address": "",
                 "cipher_suite": "",
-                "failure": "generic_timeout_error",
-                "so_error": "host_unreachable",
+                "failure": "host_unreachable",
+                "failure_chain": [
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:39946->140.82.112.3:443: read: no route to host"
+                  },
+                  {
+                    "type": "*os.SyscallError",
+                    "error": "read: no route to host"
+                  },
+                  {
+                    "type": "syscall.Errno",
+                    "error": "no route to host"
+                  }
+                ],
                 "negotiated_protocol": "",
-                "no_tls_verify": true,
-                "peer_certificates": [],
+                "no_tls_verify": false,
+                "peer_certificates": null,
                 "server_name": "example.com",
-                "t0": 1.681079291,
-                "t": 11.681597026,
-                "tags": [],
-                "tls_version": "",
-                "transaction_id": 0
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
               }
             },
             {
               "ttl": 11,
               "handshake": {
-                "network": "tls",
-                "address": "93.184.216.34:443",
+                "network": "",
+                "address": "",
                 "cipher_suite": "",
                 "failure": "generic_timeout_error",
-                "so_error": "host_unreachable",
+                "failure_chain": [
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "generic_timeout_error"
+                  },
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "generic_timeout_error"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:39958->140.82.112.3:443: i/o timeout"
+                  },
+                  {
+                    "type": "*poll.DeadlineExceededError",
+                    "error": "i/o timeout"
+                  }
+                ],
                 "negotiated_protocol": "",
-                "no_tls_verify": true,
-                "peer_certificates": [],
+                "no_tls_verify": false,
+                "peer_certificates": null,
                 "server_name": "example.com",
-                "t0": 1.80795438,
-                "t": 11.808075717,
-                "tags": [],
-                "tls_version": "",
-                "transaction_id": 0
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
               }
             },
             {
               "ttl": 12,
               "handshake": {
-                "network": "tls",
-                "address": "93.184.216.34:443",
-                "cipher_suite": "TLS_AES_256_GCM_SHA384",
-                "failure": null,
-                "negotiated_protocol": "h2",
-                "no_tls_verify": true,
-                "peer_certificates": [
+                "network": "",
+                "address": "",
+                "cipher_suite": "",
+                "failure": "generic_timeout_error",
+                "failure_chain": [
                   {
-                    "data": "MIIHRzCCBi+gAwIBAgIQD6pjEJMHvD1BSJJkDM1NmjANBgkqhkiG9w0BAQsFADBPMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMSkwJwYDVQQDEyBEaWdpQ2VydCBUTFMgUlNBIFNIQTI1NiAyMDIwIENBMTAeFw0yMjAzMTQwMDAwMDBaFw0yMzAzMTQyMzU5NTlaMIGWMQswCQYDVQQGEwJVUzETMBEGA1UECBMKQ2FsaWZvcm5pYTEUMBIGA1UEBxMLTG9zIEFuZ2VsZXMxQjBABgNVBAoMOUludGVybmV0wqBDb3Jwb3JhdGlvbsKgZm9ywqBBc3NpZ25lZMKgTmFtZXPCoGFuZMKgTnVtYmVyczEYMBYGA1UEAxMPd3d3LmV4YW1wbGUub3JnMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlV2WY5rlGn1fpwvuBhj0nVBcNxCxkHUG/pJG4HvaJen7YIZ1mLc7/P4snOJZiEfwWFTikHNbcUCcYiKG8JkFebZOYMc1U9PiEtVWGU4kuYuxiXpD8oMPin1B0SgrF7gKfO1//I2weJdAUjgZuXBCPAlhz2EnHddzXUtwm9XuOLO/Y6LATVMsbp8/lXnfo/bX0UgJ7C0aVqOu07A0Vr6OkPxwWmOvF3cRKhVCM7U4B51KK+IsWRLm8cVW1IaXjwhGzW7BR6EI3sxCQ4Wnc6HVPSgmomLWWWkIGFPAwcWUB4NC12yhCO5iW/dxNMWNLMRVtnZAyq6FpZ8wFK6j4OMwMwIDAQABo4ID1TCCA9EwHwYDVR0jBBgwFoAUt2ui6qiqhIx56rTaD5iyxZV2ufQwHQYDVR0OBBYEFPcqCdAkWxFx7rq+9D4cPVYSiBa7MIGBBgNVHREEejB4gg93d3cuZXhhbXBsZS5vcmeCC2V4YW1wbGUubmV0ggtleGFtcGxlLmVkdYILZXhhbXBsZS5jb22CC2V4YW1wbGUub3Jngg93d3cuZXhhbXBsZS5jb22CD3d3dy5leGFtcGxlLmVkdYIPd3d3LmV4YW1wbGUubmV0MA4GA1UdDwEB/wQEAwIFoDAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwgY8GA1UdHwSBhzCBhDBAoD6gPIY6aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0VExTUlNBU0hBMjU2MjAyMENBMS00LmNybDBAoD6gPIY6aHR0cDovL2NybDQuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0VExTUlNBU0hBMjU2MjAyMENBMS00LmNybDA+BgNVHSAENzA1MDMGBmeBDAECAjApMCcGCCsGAQUFBwIBFhtodHRwOi8vd3d3LmRpZ2ljZXJ0LmNvbS9DUFMwfwYIKwYBBQUHAQEEczBxMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wSQYIKwYBBQUHMAKGPWh0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydFRMU1JTQVNIQTI1NjIwMjBDQTEtMS5jcnQwCQYDVR0TBAIwADCCAXwGCisGAQQB1nkCBAIEggFsBIIBaAFmAHUA6D7Q2j71BjUy51covIlryQPTy9ERa+zraeF3fW0GvW4AAAF/ip6hdQAABAMARjBEAiAxePNT60Z/vTJTPVryiGzXrLxCNJQqteULkguBEMbG/gIgR3QwvILJIWAUfvSfJQ/zMmqr2JDanWE8uzbC4EWbcwAAdQA1zxkbv7FsV78PrUxtQsu7ticgJlHqP+Eq76gDwzvWTAAAAX+KnqF8AAAEAwBGMEQCIDspTxwkUBpEoeA+IolNYwOKl9Yxmwk816yd0O2IJPZcAiAV8TWhoOLiiqGKnY02CdcGXOzAzC7tT6m7OtLAku2+WAB2ALNzdwfhhFD4Y4bWBancEQlKeS2xZwwLh9zwAw55NqWaAAABf4qeoYcAAAQDAEcwRQIgKR7qwPLQb6UT2+S7w7uQsbsDZfZVX/g8FkBtAltaTpACIQDLdtedRNGNhuzYpB6gmBBydhtSQi5YZLspFvaVHpeW1zANBgkqhkiG9w0BAQsFAAOCAQEAqp++XZEbreROTsyPB2RENbStOxM/wSnYtKvzQlFJRjvWzx5Bg+ELVy+DaXllB29ZA4xRlIkYED4eXO26PY5PGhSS0yv/1JjLp5MOvLcbk6RCQkbZ5bEaa2gqmy5IqS8dKrDj+CCUVIFQLu7X4CB6ey5n+/rYF6Rb3MoAYu8jr3pY8Hp0DL1NQ/GMAofc464J0vf6NzzSS6sE5UOl0lURDkGHXzio5XpeTEa4tvo/w0vNQDX/4KRxdArBIIvjVEeE1Ri9UZtAXd1CMBLROqVjmq+QCNYb0XELBnGQ666tr7pfx9trHniitNEGI6dj87VD+laMUBd7HBtOEGsiDoRSlA==",
-                    "format": "base64"
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "generic_timeout_error"
                   },
                   {
-                    "data": "MIIEvjCCA6agAwIBAgIQBtjZBNVYQ0b2ii+nVCJ+xDANBgkqhkiG9w0BAQsFADBhMQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3d3cuZGlnaWNlcnQuY29tMSAwHgYDVQQDExdEaWdpQ2VydCBHbG9iYWwgUm9vdCBDQTAeFw0yMTA0MTQwMDAwMDBaFw0zMTA0MTMyMzU5NTlaME8xCzAJBgNVBAYTAlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxKTAnBgNVBAMTIERpZ2lDZXJ0IFRMUyBSU0EgU0hBMjU2IDIwMjAgQ0ExMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwUuzZUdwvN1PWNvsnO3DZuUfMRNUrUpmRh8sCuxkB+Uu3Ny5CiDt3+PE0J6aqXodgojlEVbbHp9YwlHnLDQNLtKS4VbL8Xlfs7uHyiUDe5pSQWYQYE9XE0nw6Ddng9/n00tnTCJRpt8OmRDtV1F0JuJ9x8piLhMbfyOIJVNvwTRYAIuE//i+p1hJInuWraKImxW8oHzf6VGo1bDtN+I2tIJLYrVJmuzHZ9bjPvXj1hJeRPG/cUJ9WIQDgLGBAfr5yjK7tI4nhyfFK3TUqNaX3sNk+crOU6JWvHgXjkkDKa77SU+kFbnO8lwZV21reacroicgE7XQPUDTITAHk+qZ9QIDAQABo4IBgjCCAX4wEgYDVR0TAQH/BAgwBgEB/wIBADAdBgNVHQ4EFgQUt2ui6qiqhIx56rTaD5iyxZV2ufQwHwYDVR0jBBgwFoAUA95QNVbRTLtm8KPiGxvDl7I90VUwDgYDVR0PAQH/BAQDAgGGMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjB2BggrBgEFBQcBAQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0R2xvYmFsUm9vdENBLmNydDBCBgNVHR8EOzA5MDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vRGlnaUNlcnRHbG9iYWxSb290Q0EuY3JsMD0GA1UdIAQ2MDQwCwYJYIZIAYb9bAIBMAcGBWeBDAEBMAgGBmeBDAECATAIBgZngQwBAgIwCAYGZ4EMAQIDMA0GCSqGSIb3DQEBCwUAA4IBAQCAMs5eC91uWg0Kr+HWhMvAjvqFcO3aXbMM9yt1QP6FCvrzMXi3cEsaiVi6gL3zax3pfs8LulicWdSQ0/1s/dCYbbdxglvPbQtaCdB73sRD2Cqk3p5BJl+7j5nL3a7hqG+fh/50tx8bIKuxT8b1Z11dmzzp/2n3YWzW2fP9NsarA4h20ksudYbj/NhVfSbCEXffPgK2fPOre3qGNm+499iTcc+G33Mw+nur7SpZyEKEOxEXGlLzyQ4UfaJbcme6ce1XR2bFuAJKZTRei9AqPCCcUZlM51Ke92sRKw2Sfh3oius2FkOH6ipjv3U/697EA7sKPPcw7+uvTPyLNhBzPvOk",
-                    "format": "base64"
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "generic_timeout_error"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:39960->140.82.112.3:443: i/o timeout"
+                  },
+                  {
+                    "type": "*poll.DeadlineExceededError",
+                    "error": "i/o timeout"
                   }
                 ],
+                "negotiated_protocol": "",
+                "no_tls_verify": false,
+                "peer_certificates": null,
                 "server_name": "example.com",
-                "t0": 1.904429709,
-                "t": 2.37451115,
-                "tags": [],
-                "tls_version": "TLSv1.3",
-                "transaction_id": 0
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
               }
             }
           ]
         },
         "target_trace": {
-          "server_name": "1337x.be",
+          "server_name": "github.com",
           "iterations": [
             {
               "ttl": 1,
               "handshake": {
-                "network": "tls",
-                "address": "93.184.216.34:443",
+                "network": "",
+                "address": "",
                 "cipher_suite": "",
-                "failure": "generic_timeout_error",
-                "so_error": "host_unreachable",
+                "failure": "host_unreachable",
+                "failure_chain": [
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:45926->140.82.112.3:443: read: no route to host"
+                  },
+                  {
+                    "type": "*os.SyscallError",
+                    "error": "read: no route to host"
+                  },
+                  {
+                    "type": "syscall.Errno",
+                    "error": "no route to host"
+                  }
+                ],
                 "negotiated_protocol": "",
-                "no_tls_verify": true,
-                "peer_certificates": [],
-                "server_name": "1337x.be",
-                "t0": 12.057799537,
-                "t": 22.058602821,
-                "tags": [],
-                "tls_version": "",
-                "transaction_id": 0
+                "no_tls_verify": false,
+                "peer_certificates": null,
+                "server_name": "github.com",
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
               }
             },
             {
               "ttl": 2,
               "handshake": {
-                "network": "tls",
-                "address": "93.184.216.34:443",
+                "network": "",
+                "address": "",
                 "cipher_suite": "",
-                "failure": "generic_timeout_error",
-                "so_error": "host_unreachable",
+                "failure": "host_unreachable",
+                "failure_chain": [
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:45928->140.82.112.3:443: read: no route to host"
+                  },
+                  {
+                    "type": "*os.SyscallError",
+                    "error": "read: no route to host"
+                  },
+                  {
+                    "type": "syscall.Errno",
+                    "error": "no route to host"
+                  }
+                ],
                 "negotiated_protocol": "",
-                "no_tls_verify": true,
-                "peer_certificates": [],
-                "server_name": "1337x.be",
-                "t0": 12.158662773,
-                "t": 22.159214986,
-                "tags": [],
-                "tls_version": "",
-                "transaction_id": 0
+                "no_tls_verify": false,
+                "peer_certificates": null,
+                "server_name": "github.com",
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
               }
             },
             {
               "ttl": 3,
               "handshake": {
-                "network": "tls",
-                "address": "93.184.216.34:443",
+                "network": "",
+                "address": "",
                 "cipher_suite": "",
-                "failure": "generic_timeout_error",
-                "so_error": "host_unreachable",
+                "failure": "host_unreachable",
+                "failure_chain": [
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:45938->140.82.112.3:443: read: no route to host"
+                  },
+                  {
+                    "type": "*os.SyscallError",
+                    "error": "read: no route to host"
+                  },
+                  {
+                    "type": "syscall.Errno",
+                    "error": "no route to host"
+                  }
+                ],
                 "negotiated_protocol": "",
-                "no_tls_verify": true,
-                "peer_certificates": [],
-                "server_name": "1337x.be",
-                "t0": 12.262444805,
-                "t": 22.263151325,
-                "tags": [],
-                "tls_version": "",
-                "transaction_id": 0
+                "no_tls_verify": false,
+                "peer_certificates": null,
+                "server_name": "github.com",
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
               }
             },
             {
               "ttl": 4,
               "handshake": {
-                "network": "tls",
-                "address": "93.184.216.34:443",
+                "network": "",
+                "address": "",
                 "cipher_suite": "",
-                "failure": "connection_reset",
+                "failure": "host_unreachable",
+                "failure_chain": [
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:45944->140.82.112.3:443: read: no route to host"
+                  },
+                  {
+                    "type": "*os.SyscallError",
+                    "error": "read: no route to host"
+                  },
+                  {
+                    "type": "syscall.Errno",
+                    "error": "no route to host"
+                  }
+                ],
                 "negotiated_protocol": "",
-                "no_tls_verify": true,
-                "peer_certificates": [],
-                "server_name": "1337x.be",
-                "t0": 12.361798829,
-                "t": 12.451137716,
-                "tags": [],
-                "tls_version": "",
-                "transaction_id": 0
+                "no_tls_verify": false,
+                "peer_certificates": null,
+                "server_name": "github.com",
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
+              }
+            },
+            {
+              "ttl": 5,
+              "handshake": {
+                "network": "",
+                "address": "",
+                "cipher_suite": "",
+                "failure": "host_unreachable",
+                "failure_chain": [
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:45948->140.82.112.3:443: read: no route to host"
+                  },
+                  {
+                    "type": "*os.SyscallError",
+                    "error": "read: no route to host"
+                  },
+                  {
+                    "type": "syscall.Errno",
+                    "error": "no route to host"
+                  }
+                ],
+                "negotiated_protocol": "",
+                "no_tls_verify": false,
+                "peer_certificates": null,
+                "server_name": "github.com",
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
+              }
+            },
+            {
+              "ttl": 6,
+              "handshake": {
+                "network": "",
+                "address": "",
+                "cipher_suite": "",
+                "failure": "host_unreachable",
+                "failure_chain": [
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:45954->140.82.112.3:443: read: no route to host"
+                  },
+                  {
+                    "type": "*os.SyscallError",
+                    "error": "read: no route to host"
+                  },
+                  {
+                    "type": "syscall.Errno",
+                    "error": "no route to host"
+                  }
+                ],
+                "negotiated_protocol": "",
+                "no_tls_verify": false,
+                "peer_certificates": null,
+                "server_name": "github.com",
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
+              }
+            },
+            {
+              "ttl": 7,
+              "handshake": {
+                "network": "",
+                "address": "",
+                "cipher_suite": "",
+                "failure": "host_unreachable",
+                "failure_chain": [
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:45956->140.82.112.3:443: read: no route to host"
+                  },
+                  {
+                    "type": "*os.SyscallError",
+                    "error": "read: no route to host"
+                  },
+                  {
+                    "type": "syscall.Errno",
+                    "error": "no route to host"
+                  }
+                ],
+                "negotiated_protocol": "",
+                "no_tls_verify": false,
+                "peer_certificates": null,
+                "server_name": "github.com",
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
+              }
+            },
+            {
+              "ttl": 8,
+              "handshake": {
+                "network": "",
+                "address": "",
+                "cipher_suite": "",
+                "failure": "host_unreachable",
+                "failure_chain": [
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:45972->140.82.112.3:443: read: no route to host"
+                  },
+                  {
+                    "type": "*os.SyscallError",
+                    "error": "read: no route to host"
+                  },
+                  {
+                    "type": "syscall.Errno",
+                    "error": "no route to host"
+                  }
+                ],
+                "negotiated_protocol": "",
+                "no_tls_verify": false,
+                "peer_certificates": null,
+                "server_name": "github.com",
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
+              }
+            },
+            {
+              "ttl": 9,
+              "handshake": {
+                "network": "",
+                "address": "",
+                "cipher_suite": "",
+                "failure": "host_unreachable",
+                "failure_chain": [
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:45984->140.82.112.3:443: read: no route to host"
+                  },
+                  {
+                    "type": "*os.SyscallError",
+                    "error": "read: no route to host"
+                  },
+                  {
+                    "type": "syscall.Errno",
+                    "error": "no route to host"
+                  }
+                ],
+                "negotiated_protocol": "",
+                "no_tls_verify": false,
+                "peer_certificates": null,
+                "server_name": "github.com",
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
+              }
+            },
+            {
+              "ttl": 10,
+              "handshake": {
+                "network": "",
+                "address": "",
+                "cipher_suite": "",
+                "failure": "host_unreachable",
+                "failure_chain": [
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:45990->140.82.112.3:443: read: no route to host"
+                  },
+                  {
+                    "type": "*os.SyscallError",
+                    "error": "read: no route to host"
+                  },
+                  {
+                    "type": "syscall.Errno",
+                    "error": "no route to host"
+                  }
+                ],
+                "negotiated_protocol": "",
+                "no_tls_verify": false,
+                "peer_certificates": null,
+                "server_name": "github.com",
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
+              }
+            },
+            {
+              "ttl": 11,
+              "handshake": {
+                "network": "",
+                "address": "",
+                "cipher_suite": "",
+                "failure": "generic_timeout_error",
+                "failure_chain": [
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "generic_timeout_error"
+                  },
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "generic_timeout_error"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:46000->140.82.112.3:443: i/o timeout"
+                  },
+                  {
+                    "type": "*poll.DeadlineExceededError",
+                    "error": "i/o timeout"
+                  }
+                ],
+                "negotiated_protocol": "",
+                "no_tls_verify": false,
+                "peer_certificates": null,
+                "server_name": "github.com",
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
+              }
+            },
+            {
+              "ttl": 12,
+              "handshake": {
+                "network": "",
+                "address": "",
+                "cipher_suite": "",
+                "failure": "generic_timeout_error",
+                "failure_chain": [
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "generic_timeout_error"
+                  },
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "generic_timeout_error"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:46006->140.82.112.3:443: i/o timeout"
+                  },
+                  {
+                    "type": "*poll.DeadlineExceededError",
+                    "error": "i/o timeout"
+                  }
+                ],
+                "negotiated_protocol": "",
+                "no_tls_verify": false,
+                "peer_certificates": null,
+                "server_name": "github.com",
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
               }
             }
           ]
@@ -912,8 +1493,1363 @@ Response:
     ]
   },
   "test_name": "tlsmiddlebox",
-  "test_runtime": 22.457373373,
-  "test_start_time": "2022-09-01 16:37:32",
-  "test_version": "0.1.0"
+  "test_runtime": 29.289105532,
+  "test_start_time": "2026-10-05 12:45:57",
+  "test_version": "0.1.3"
 }
+```
+
+## Example output sample for `advanced` privacy mode
+
+```JSON
+{
+  "annotations": {
+    "architecture": "amd64",
+    "engine_name": "ooniprobe-engine",
+    "engine_version": "3.31.0-alpha",
+    "go_version": "go1.26.8",
+    "platform": "linux",
+    "vcs_modified": "false",
+    "vcs_revision": "6eaad0ed0048d3ed19980655f4a3ab743a951218",
+    "vcs_time": "2026-10-05T10:34:23Z",
+    "vcs_tool": "git"
+  },
+  "data_format_version": "0.2.0",
+  "input": "tlstrace://github.com",
+  "measurement_start_time": "2026-10-05 12:50:12",
+  "options": [
+    "MaxTTL=12",
+    "PrivacyMode=advanced"
+  ],
+  "probe_asn": "AS16276",
+  "probe_cc": "CA",
+  "probe_ip": "127.0.0.1",
+  "probe_network_name": "OVH SAS",
+  "resolver_asn": "AS16276",
+  "resolver_ip": "158.69.169.16",
+  "resolver_network_name": "OVH SAS",
+  "software_name": "miniooni",
+  "software_version": "3.31.0-alpha",
+  "test_keys": {
+    "queries": [
+      {
+        "answers": [
+          {
+            "asn": 13335,
+            "as_org_name": "Cloudflare Inc",
+            "answer_type": "AAAA",
+            "ipv6": "2a06:98c1:52::4",
+            "ttl": null
+          },
+          {
+            "asn": 13335,
+            "as_org_name": "Cloudflare Inc",
+            "answer_type": "AAAA",
+            "ipv6": "2803:f800:53::4",
+            "ttl": null
+          },
+          {
+            "asn": 13335,
+            "as_org_name": "Cloudflare Inc",
+            "answer_type": "A",
+            "ipv4": "172.64.41.4",
+            "ttl": null
+          },
+          {
+            "asn": 13335,
+            "as_org_name": "Cloudflare Inc",
+            "answer_type": "A",
+            "ipv4": "162.159.61.4",
+            "ttl": null
+          },
+          {
+            "answer_type": "CNAME",
+            "hostname": "mozilla.cloudflare-dns.com.",
+            "ttl": null
+          }
+        ],
+        "engine": "getaddrinfo",
+        "failure": null,
+        "hostname": "mozilla.cloudflare-dns.com",
+        "query_type": "ANY",
+        "resolver_hostname": null,
+        "resolver_port": null,
+        "resolver_address": "",
+        "t0": 0.000517956,
+        "t": 0.001430246,
+        "tags": []
+      },
+      {
+        "answers": [
+          {
+            "asn": 36459,
+            "as_org_name": "GitHub, Inc.",
+            "answer_type": "A",
+            "ipv4": "140.82.112.3",
+            "ttl": null
+          }
+        ],
+        "engine": "doh",
+        "failure": null,
+        "hostname": "github.com",
+        "query_type": "A",
+        "raw_response": "TiOBgAABAAEAAAABBmdpdGh1YgNjb20AAAEAAcAMAAEAAQAAABgABIxScAMAACkE0AAAgAABnQAMAZkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "resolver_hostname": null,
+        "resolver_port": null,
+        "resolver_address": "https://mozilla.cloudflare-dns.com/dns-query",
+        "t0": 0.000259497,
+        "t": 0.03943692,
+        "tags": []
+      },
+      {
+        "answers": null,
+        "engine": "doh",
+        "failure": "dns_no_answer",
+        "hostname": "github.com",
+        "query_type": "AAAA",
+        "raw_response": "bUOBgAABAAAAAQABBmdpdGh1YgNjb20AABwAAcAMAAYAAQAADgsANQRkbnMxA3AwOAVuc29uZQNuZXQACmhvc3RtYXN0ZXLAMWK7sjcAAKjAAAAcIAASdQAAAA4QAAApBNAAAIAAAWwADAFoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+        "resolver_hostname": null,
+        "resolver_port": null,
+        "resolver_address": "https://mozilla.cloudflare-dns.com/dns-query",
+        "t0": 0.000231906,
+        "t": 0.039740939,
+        "tags": []
+      }
+    ],
+    "tcp_connect": [
+      {
+        "ip": "140.82.112.3",
+        "port": 443,
+        "status": {
+          "failure": null,
+          "success": true
+        },
+        "t0": 0.039926601,
+        "t": 0.054221657,
+        "tags": []
+      }
+    ],
+    "iterative_trace": [
+      {
+        "address": "140.82.112.3:443",
+        "tcp_traceroute": {
+          "server_name": "github.com",
+          "iterations": [
+            {
+              "ttl": 1,
+              "icmp_error": {
+                "timeout": false,
+                "connected": false,
+                "error": "",
+                "source_ip_prefix": "148.113.176.252",
+                "source_ip_country_code": "CA",
+                "source_ip_asn": 16276,
+                "source_ip_asn_org": "OVH SAS",
+                "type": 11,
+                "code": 0,
+                "quote": {
+                  "protocol": 6,
+                  "source_port": 53676,
+                  "destination_port": 443,
+                  "tcp_sequence_number": 4095625418,
+                  "udp_length": 0,
+                  "udp_checksum": 0,
+                  "remaining_payload": null
+                },
+                "t0": 0.054354953,
+                "t": 0.054706712
+              }
+            },
+            {
+              "ttl": 2,
+              "icmp_error": {
+                "timeout": false,
+                "connected": false,
+                "error": "",
+                "source_ip_prefix": "10.165.11.60",
+                "source_ip_country_code": "ZZ",
+                "source_ip_asn": 0,
+                "source_ip_asn_org": "",
+                "type": 11,
+                "code": 0,
+                "quote": {
+                  "protocol": 6,
+                  "source_port": 53684,
+                  "destination_port": 443,
+                  "tcp_sequence_number": 2501184286,
+                  "udp_length": 0,
+                  "udp_checksum": 0,
+                  "remaining_payload": "AAAAAKAC+vDlsAAAAgQFtAQCCAqgxRGCAAAAAAEDAwc="
+                },
+                "t0": 0.155239289,
+                "t": 0.155439834
+              }
+            },
+            {
+              "ttl": 3,
+              "icmp_error": {
+                "timeout": false,
+                "connected": false,
+                "error": "",
+                "source_ip_prefix": "10.34.116.74",
+                "source_ip_country_code": "ZZ",
+                "source_ip_asn": 0,
+                "source_ip_asn_org": "",
+                "type": 11,
+                "code": 0,
+                "quote": {
+                  "protocol": 6,
+                  "source_port": 53688,
+                  "destination_port": 443,
+                  "tcp_sequence_number": 797244013,
+                  "udp_length": 0,
+                  "udp_checksum": 0,
+                  "remaining_payload": null
+                },
+                "t0": 0.255410296,
+                "t": 0.255971642
+              }
+            },
+            {
+              "ttl": 4,
+              "icmp_error": {
+                "timeout": false,
+                "connected": false,
+                "error": "",
+                "source_ip_prefix": "10.74.10.6",
+                "source_ip_country_code": "ZZ",
+                "source_ip_asn": 0,
+                "source_ip_asn_org": "",
+                "type": 11,
+                "code": 0,
+                "quote": {
+                  "protocol": 6,
+                  "source_port": 53704,
+                  "destination_port": 443,
+                  "tcp_sequence_number": 3544527072,
+                  "udp_length": 0,
+                  "udp_checksum": 0,
+                  "remaining_payload": "AAAAAKAC+vCA4wAAAgQFtAQCCAqgxRJJAAAAAAEDAwc="
+                },
+                "t0": 0.354637846,
+                "t": 0.35478255
+              }
+            },
+            {
+              "ttl": 5,
+              "icmp_error": {
+                "timeout": false,
+                "connected": false,
+                "error": "",
+                "source_ip_prefix": "10.95.81.8",
+                "source_ip_country_code": "ZZ",
+                "source_ip_asn": 0,
+                "source_ip_asn_org": "",
+                "type": 11,
+                "code": 0,
+                "quote": {
+                  "protocol": 6,
+                  "source_port": 53720,
+                  "destination_port": 443,
+                  "tcp_sequence_number": 291007086,
+                  "udp_length": 0,
+                  "udp_checksum": 0,
+                  "remaining_payload": "AAAAAKAC+vAIzwAAAgQFtAQCCAqgxRKtAAAAAAEDAwcAAAAAAAAAAA=="
+                },
+                "t0": 0.454862312,
+                "t": 0.481119917
+              }
+            },
+            {
+              "ttl": 6,
+              "icmp_error": {
+                "timeout": false,
+                "connected": false,
+                "error": "",
+                "source_ip_prefix": "198.27.73.205",
+                "source_ip_country_code": "CA",
+                "source_ip_asn": 16276,
+                "source_ip_asn_org": "OVH SAS",
+                "type": 11,
+                "code": 0,
+                "quote": {
+                  "protocol": 6,
+                  "source_port": 53722,
+                  "destination_port": 443,
+                  "tcp_sequence_number": 1077918402,
+                  "udp_length": 0,
+                  "udp_checksum": 0,
+                  "remaining_payload": "AAAAAKAC+vCJLAAAAgQFtAQCCAqgxRMSAAAAAAEDAwcAAAAAAAAAAA=="
+                },
+                "t0": 0.555171312,
+                "t": 0.564973274
+              }
+            },
+            {
+              "ttl": 7,
+              "icmp_error": {
+                "timeout": false,
+                "connected": false,
+                "error": "",
+                "source_ip_prefix": "192.99.146.219",
+                "source_ip_country_code": "CA",
+                "source_ip_asn": 16276,
+                "source_ip_asn_org": "OVH SAS",
+                "type": 11,
+                "code": 0,
+                "quote": {
+                  "protocol": 6,
+                  "source_port": 53732,
+                  "destination_port": 443,
+                  "tcp_sequence_number": 2339561224,
+                  "udp_length": 0,
+                  "udp_checksum": 0,
+                  "remaining_payload": "AAAAAKAC+vAZRQAAAgQFtAQCCAqgxRN2AAAAAAEDAwcAAAAAAAAAAA=="
+                },
+                "t0": 0.655350959,
+                "t": 0.665820959
+              }
+            },
+            {
+              "ttl": 8,
+              "icmp_error": {
+                "timeout": false,
+                "connected": false,
+                "error": "",
+                "source_ip_prefix": "198.27.73.203",
+                "source_ip_country_code": "CA",
+                "source_ip_asn": 16276,
+                "source_ip_asn_org": "OVH SAS",
+                "type": 11,
+                "code": 0,
+                "quote": {
+                  "protocol": 6,
+                  "source_port": 53746,
+                  "destination_port": 443,
+                  "tcp_sequence_number": 2605417823,
+                  "udp_length": 0,
+                  "udp_checksum": 0,
+                  "remaining_payload": "AAAAAKAC+vBipAAAAgQFtAQCCAqgxRPZAAAAAAEDAwcAAAAAAAAAAA=="
+                },
+                "t0": 0.754610642,
+                "t": 0.768000691
+              }
+            },
+            {
+              "ttl": 9,
+              "icmp_error": {
+                "timeout": false,
+                "connected": false,
+                "error": "",
+                "source_ip_prefix": "10.200.2.209",
+                "source_ip_country_code": "ZZ",
+                "source_ip_asn": 0,
+                "source_ip_asn_org": "",
+                "type": 11,
+                "code": 0,
+                "quote": {
+                  "protocol": 6,
+                  "source_port": 53748,
+                  "destination_port": 443,
+                  "tcp_sequence_number": 4177358491,
+                  "udp_length": 0,
+                  "udp_checksum": 0,
+                  "remaining_payload": "AAAAAKAC+vAbUAAAAgQFtAQCCAqgxRQ9AAAAAAEDAwcAAAAAAAAAAA=="
+                },
+                "t0": 0.854787644,
+                "t": 0.869618758
+              }
+            },
+            {
+              "ttl": 10,
+              "icmp_error": {
+                "timeout": false,
+                "connected": false,
+                "error": "",
+                "source_ip_prefix": "206.126.237.205",
+                "source_ip_country_code": "CA",
+                "source_ip_asn": 0,
+                "source_ip_asn_org": "",
+                "type": 11,
+                "code": 0,
+                "quote": {
+                  "protocol": 6,
+                  "source_port": 53760,
+                  "destination_port": 443,
+                  "tcp_sequence_number": 3060716111,
+                  "udp_length": 0,
+                  "udp_checksum": 0,
+                  "remaining_payload": null
+                },
+                "t0": 0.955035432,
+                "t": 0.968472598
+              }
+            },
+            {
+              "ttl": 11,
+              "icmp_error": {
+                "timeout": true,
+                "connected": false,
+                "error": "",
+                "source_ip_prefix": "",
+                "source_ip_country_code": "",
+                "source_ip_asn": 0,
+                "source_ip_asn_org": "",
+                "type": 0,
+                "code": 0,
+                "quote": {
+                  "protocol": 0,
+                  "source_port": 0,
+                  "destination_port": 0,
+                  "tcp_sequence_number": 0,
+                  "udp_length": 0,
+                  "udp_checksum": 0,
+                  "remaining_payload": null
+                },
+                "t0": 1.055312263,
+                "t": 4.058201113
+              }
+            },
+            {
+              "ttl": 12,
+              "icmp_error": {
+                "timeout": true,
+                "connected": false,
+                "error": "",
+                "source_ip_prefix": "",
+                "source_ip_country_code": "",
+                "source_ip_asn": 0,
+                "source_ip_asn_org": "",
+                "type": 0,
+                "code": 0,
+                "quote": {
+                  "protocol": 0,
+                  "source_port": 0,
+                  "destination_port": 0,
+                  "tcp_sequence_number": 0,
+                  "udp_length": 0,
+                  "udp_checksum": 0,
+                  "remaining_payload": null
+                },
+                "t0": 4.058380348,
+                "t": 7.061466554
+              }
+            }
+          ]
+        },
+        "control_trace": {
+          "server_name": "example.com",
+          "iterations": [
+            {
+              "ttl": 1,
+              "handshake": {
+                "network": "",
+                "address": "",
+                "cipher_suite": "",
+                "failure": "host_unreachable",
+                "failure_chain": [
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:45996->140.82.112.3:443: read: no route to host"
+                  },
+                  {
+                    "type": "*os.SyscallError",
+                    "error": "read: no route to host"
+                  },
+                  {
+                    "type": "syscall.Errno",
+                    "error": "no route to host"
+                  }
+                ],
+                "negotiated_protocol": "",
+                "no_tls_verify": false,
+                "peer_certificates": null,
+                "server_name": "example.com",
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
+              }
+            },
+            {
+              "ttl": 2,
+              "handshake": {
+                "network": "",
+                "address": "",
+                "cipher_suite": "",
+                "failure": "host_unreachable",
+                "failure_chain": [
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:46000->140.82.112.3:443: read: no route to host"
+                  },
+                  {
+                    "type": "*os.SyscallError",
+                    "error": "read: no route to host"
+                  },
+                  {
+                    "type": "syscall.Errno",
+                    "error": "no route to host"
+                  }
+                ],
+                "negotiated_protocol": "",
+                "no_tls_verify": false,
+                "peer_certificates": null,
+                "server_name": "example.com",
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
+              }
+            },
+            {
+              "ttl": 3,
+              "handshake": {
+                "network": "",
+                "address": "",
+                "cipher_suite": "",
+                "failure": "host_unreachable",
+                "failure_chain": [
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:46002->140.82.112.3:443: read: no route to host"
+                  },
+                  {
+                    "type": "*os.SyscallError",
+                    "error": "read: no route to host"
+                  },
+                  {
+                    "type": "syscall.Errno",
+                    "error": "no route to host"
+                  }
+                ],
+                "negotiated_protocol": "",
+                "no_tls_verify": false,
+                "peer_certificates": null,
+                "server_name": "example.com",
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
+              }
+            },
+            {
+              "ttl": 4,
+              "handshake": {
+                "network": "",
+                "address": "",
+                "cipher_suite": "",
+                "failure": "host_unreachable",
+                "failure_chain": [
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:46008->140.82.112.3:443: read: no route to host"
+                  },
+                  {
+                    "type": "*os.SyscallError",
+                    "error": "read: no route to host"
+                  },
+                  {
+                    "type": "syscall.Errno",
+                    "error": "no route to host"
+                  }
+                ],
+                "negotiated_protocol": "",
+                "no_tls_verify": false,
+                "peer_certificates": null,
+                "server_name": "example.com",
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
+              }
+            },
+            {
+              "ttl": 5,
+              "handshake": {
+                "network": "",
+                "address": "",
+                "cipher_suite": "",
+                "failure": "host_unreachable",
+                "failure_chain": [
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:46022->140.82.112.3:443: read: no route to host"
+                  },
+                  {
+                    "type": "*os.SyscallError",
+                    "error": "read: no route to host"
+                  },
+                  {
+                    "type": "syscall.Errno",
+                    "error": "no route to host"
+                  }
+                ],
+                "negotiated_protocol": "",
+                "no_tls_verify": false,
+                "peer_certificates": null,
+                "server_name": "example.com",
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
+              }
+            },
+            {
+              "ttl": 6,
+              "handshake": {
+                "network": "",
+                "address": "",
+                "cipher_suite": "",
+                "failure": "host_unreachable",
+                "failure_chain": [
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:46032->140.82.112.3:443: read: no route to host"
+                  },
+                  {
+                    "type": "*os.SyscallError",
+                    "error": "read: no route to host"
+                  },
+                  {
+                    "type": "syscall.Errno",
+                    "error": "no route to host"
+                  }
+                ],
+                "negotiated_protocol": "",
+                "no_tls_verify": false,
+                "peer_certificates": null,
+                "server_name": "example.com",
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
+              }
+            },
+            {
+              "ttl": 7,
+              "handshake": {
+                "network": "",
+                "address": "",
+                "cipher_suite": "",
+                "failure": "host_unreachable",
+                "failure_chain": [
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:46040->140.82.112.3:443: read: no route to host"
+                  },
+                  {
+                    "type": "*os.SyscallError",
+                    "error": "read: no route to host"
+                  },
+                  {
+                    "type": "syscall.Errno",
+                    "error": "no route to host"
+                  }
+                ],
+                "negotiated_protocol": "",
+                "no_tls_verify": false,
+                "peer_certificates": null,
+                "server_name": "example.com",
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
+              }
+            },
+            {
+              "ttl": 8,
+              "handshake": {
+                "network": "",
+                "address": "",
+                "cipher_suite": "",
+                "failure": "host_unreachable",
+                "failure_chain": [
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:46044->140.82.112.3:443: read: no route to host"
+                  },
+                  {
+                    "type": "*os.SyscallError",
+                    "error": "read: no route to host"
+                  },
+                  {
+                    "type": "syscall.Errno",
+                    "error": "no route to host"
+                  }
+                ],
+                "negotiated_protocol": "",
+                "no_tls_verify": false,
+                "peer_certificates": null,
+                "server_name": "example.com",
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
+              }
+            },
+            {
+              "ttl": 9,
+              "handshake": {
+                "network": "",
+                "address": "",
+                "cipher_suite": "",
+                "failure": "host_unreachable",
+                "failure_chain": [
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:46050->140.82.112.3:443: read: no route to host"
+                  },
+                  {
+                    "type": "*os.SyscallError",
+                    "error": "read: no route to host"
+                  },
+                  {
+                    "type": "syscall.Errno",
+                    "error": "no route to host"
+                  }
+                ],
+                "negotiated_protocol": "",
+                "no_tls_verify": false,
+                "peer_certificates": null,
+                "server_name": "example.com",
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
+              }
+            },
+            {
+              "ttl": 10,
+              "handshake": {
+                "network": "",
+                "address": "",
+                "cipher_suite": "",
+                "failure": "host_unreachable",
+                "failure_chain": [
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:46062->140.82.112.3:443: read: no route to host"
+                  },
+                  {
+                    "type": "*os.SyscallError",
+                    "error": "read: no route to host"
+                  },
+                  {
+                    "type": "syscall.Errno",
+                    "error": "no route to host"
+                  }
+                ],
+                "negotiated_protocol": "",
+                "no_tls_verify": false,
+                "peer_certificates": null,
+                "server_name": "example.com",
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
+              }
+            },
+            {
+              "ttl": 11,
+              "handshake": {
+                "network": "",
+                "address": "",
+                "cipher_suite": "",
+                "failure": "generic_timeout_error",
+                "failure_chain": [
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "generic_timeout_error"
+                  },
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "generic_timeout_error"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:46066->140.82.112.3:443: i/o timeout"
+                  },
+                  {
+                    "type": "*poll.DeadlineExceededError",
+                    "error": "i/o timeout"
+                  }
+                ],
+                "negotiated_protocol": "",
+                "no_tls_verify": false,
+                "peer_certificates": null,
+                "server_name": "example.com",
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
+              }
+            },
+            {
+              "ttl": 12,
+              "handshake": {
+                "network": "",
+                "address": "",
+                "cipher_suite": "",
+                "failure": "generic_timeout_error",
+                "failure_chain": [
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "generic_timeout_error"
+                  },
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "generic_timeout_error"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:46072->140.82.112.3:443: i/o timeout"
+                  },
+                  {
+                    "type": "*poll.DeadlineExceededError",
+                    "error": "i/o timeout"
+                  }
+                ],
+                "negotiated_protocol": "",
+                "no_tls_verify": false,
+                "peer_certificates": null,
+                "server_name": "example.com",
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
+              }
+            }
+          ]
+        },
+        "target_trace": {
+          "server_name": "github.com",
+          "iterations": [
+            {
+              "ttl": 1,
+              "handshake": {
+                "network": "",
+                "address": "",
+                "cipher_suite": "",
+                "failure": "host_unreachable",
+                "failure_chain": [
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:48178->140.82.112.3:443: read: no route to host"
+                  },
+                  {
+                    "type": "*os.SyscallError",
+                    "error": "read: no route to host"
+                  },
+                  {
+                    "type": "syscall.Errno",
+                    "error": "no route to host"
+                  }
+                ],
+                "negotiated_protocol": "",
+                "no_tls_verify": false,
+                "peer_certificates": null,
+                "server_name": "github.com",
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
+              }
+            },
+            {
+              "ttl": 2,
+              "handshake": {
+                "network": "",
+                "address": "",
+                "cipher_suite": "",
+                "failure": "host_unreachable",
+                "failure_chain": [
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:48192->140.82.112.3:443: read: no route to host"
+                  },
+                  {
+                    "type": "*os.SyscallError",
+                    "error": "read: no route to host"
+                  },
+                  {
+                    "type": "syscall.Errno",
+                    "error": "no route to host"
+                  }
+                ],
+                "negotiated_protocol": "",
+                "no_tls_verify": false,
+                "peer_certificates": null,
+                "server_name": "github.com",
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
+              }
+            },
+            {
+              "ttl": 3,
+              "handshake": {
+                "network": "",
+                "address": "",
+                "cipher_suite": "",
+                "failure": "host_unreachable",
+                "failure_chain": [
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:48206->140.82.112.3:443: read: no route to host"
+                  },
+                  {
+                    "type": "*os.SyscallError",
+                    "error": "read: no route to host"
+                  },
+                  {
+                    "type": "syscall.Errno",
+                    "error": "no route to host"
+                  }
+                ],
+                "negotiated_protocol": "",
+                "no_tls_verify": false,
+                "peer_certificates": null,
+                "server_name": "github.com",
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
+              }
+            },
+            {
+              "ttl": 4,
+              "handshake": {
+                "network": "",
+                "address": "",
+                "cipher_suite": "",
+                "failure": "host_unreachable",
+                "failure_chain": [
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:48212->140.82.112.3:443: read: no route to host"
+                  },
+                  {
+                    "type": "*os.SyscallError",
+                    "error": "read: no route to host"
+                  },
+                  {
+                    "type": "syscall.Errno",
+                    "error": "no route to host"
+                  }
+                ],
+                "negotiated_protocol": "",
+                "no_tls_verify": false,
+                "peer_certificates": null,
+                "server_name": "github.com",
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
+              }
+            },
+            {
+              "ttl": 5,
+              "handshake": {
+                "network": "",
+                "address": "",
+                "cipher_suite": "",
+                "failure": "host_unreachable",
+                "failure_chain": [
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:48228->140.82.112.3:443: read: no route to host"
+                  },
+                  {
+                    "type": "*os.SyscallError",
+                    "error": "read: no route to host"
+                  },
+                  {
+                    "type": "syscall.Errno",
+                    "error": "no route to host"
+                  }
+                ],
+                "negotiated_protocol": "",
+                "no_tls_verify": false,
+                "peer_certificates": null,
+                "server_name": "github.com",
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
+              }
+            },
+            {
+              "ttl": 6,
+              "handshake": {
+                "network": "",
+                "address": "",
+                "cipher_suite": "",
+                "failure": "host_unreachable",
+                "failure_chain": [
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:48244->140.82.112.3:443: read: no route to host"
+                  },
+                  {
+                    "type": "*os.SyscallError",
+                    "error": "read: no route to host"
+                  },
+                  {
+                    "type": "syscall.Errno",
+                    "error": "no route to host"
+                  }
+                ],
+                "negotiated_protocol": "",
+                "no_tls_verify": false,
+                "peer_certificates": null,
+                "server_name": "github.com",
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
+              }
+            },
+            {
+              "ttl": 7,
+              "handshake": {
+                "network": "",
+                "address": "",
+                "cipher_suite": "",
+                "failure": "host_unreachable",
+                "failure_chain": [
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:48252->140.82.112.3:443: read: no route to host"
+                  },
+                  {
+                    "type": "*os.SyscallError",
+                    "error": "read: no route to host"
+                  },
+                  {
+                    "type": "syscall.Errno",
+                    "error": "no route to host"
+                  }
+                ],
+                "negotiated_protocol": "",
+                "no_tls_verify": false,
+                "peer_certificates": null,
+                "server_name": "github.com",
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
+              }
+            },
+            {
+              "ttl": 8,
+              "handshake": {
+                "network": "",
+                "address": "",
+                "cipher_suite": "",
+                "failure": "host_unreachable",
+                "failure_chain": [
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:48260->140.82.112.3:443: read: no route to host"
+                  },
+                  {
+                    "type": "*os.SyscallError",
+                    "error": "read: no route to host"
+                  },
+                  {
+                    "type": "syscall.Errno",
+                    "error": "no route to host"
+                  }
+                ],
+                "negotiated_protocol": "",
+                "no_tls_verify": false,
+                "peer_certificates": null,
+                "server_name": "github.com",
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
+              }
+            },
+            {
+              "ttl": 9,
+              "handshake": {
+                "network": "",
+                "address": "",
+                "cipher_suite": "",
+                "failure": "host_unreachable",
+                "failure_chain": [
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:48264->140.82.112.3:443: read: no route to host"
+                  },
+                  {
+                    "type": "*os.SyscallError",
+                    "error": "read: no route to host"
+                  },
+                  {
+                    "type": "syscall.Errno",
+                    "error": "no route to host"
+                  }
+                ],
+                "negotiated_protocol": "",
+                "no_tls_verify": false,
+                "peer_certificates": null,
+                "server_name": "github.com",
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
+              }
+            },
+            {
+              "ttl": 10,
+              "handshake": {
+                "network": "",
+                "address": "",
+                "cipher_suite": "",
+                "failure": "host_unreachable",
+                "failure_chain": [
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "host_unreachable"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:48280->140.82.112.3:443: read: no route to host"
+                  },
+                  {
+                    "type": "*os.SyscallError",
+                    "error": "read: no route to host"
+                  },
+                  {
+                    "type": "syscall.Errno",
+                    "error": "no route to host"
+                  }
+                ],
+                "negotiated_protocol": "",
+                "no_tls_verify": false,
+                "peer_certificates": null,
+                "server_name": "github.com",
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
+              }
+            },
+            {
+              "ttl": 11,
+              "handshake": {
+                "network": "",
+                "address": "",
+                "cipher_suite": "",
+                "failure": "generic_timeout_error",
+                "failure_chain": [
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "generic_timeout_error"
+                  },
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "generic_timeout_error"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:48286->140.82.112.3:443: i/o timeout"
+                  },
+                  {
+                    "type": "*poll.DeadlineExceededError",
+                    "error": "i/o timeout"
+                  }
+                ],
+                "negotiated_protocol": "",
+                "no_tls_verify": false,
+                "peer_certificates": null,
+                "server_name": "github.com",
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
+              }
+            },
+            {
+              "ttl": 12,
+              "handshake": {
+                "network": "",
+                "address": "",
+                "cipher_suite": "",
+                "failure": "generic_timeout_error",
+                "failure_chain": [
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "generic_timeout_error"
+                  },
+                  {
+                    "type": "*netxlite.ErrWrapper",
+                    "error": "generic_timeout_error"
+                  },
+                  {
+                    "type": "*net.OpError",
+                    "error": "read tcp [scrubbed]:48290->140.82.112.3:443: i/o timeout"
+                  },
+                  {
+                    "type": "*poll.DeadlineExceededError",
+                    "error": "i/o timeout"
+                  }
+                ],
+                "negotiated_protocol": "",
+                "no_tls_verify": false,
+                "peer_certificates": null,
+                "server_name": "github.com",
+                "t": 0,
+                "tags": null,
+                "tls_version": ""
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "test_name": "tlsmiddlebox",
+  "test_runtime": 29.293524585,
+  "test_start_time": "2026-10-05 12:50:12",
+  "test_version": "0.1.3"
+}
+
 ```

@@ -27,6 +27,7 @@ code. See this directory's [README](README.md) for the basic concepts.
     "cipher_suite": "",
     "conn_id": 1231,
     "failure": "ssl_invalid_hostname",
+    "failure_chain": "",
     "so_error": "host_unreachable",
     "negotiated_protocol": "",
     "no_tls_verify": false,
@@ -56,6 +57,9 @@ the discussion in `df-008-netevents.md`.
 
 - `failure` (`string`; nullable): if there was an error, this field is
 a string indicating the error, otherwise it MUST be `null`.
+
+- `failure_chain` (`[]FailureChainData`): list of errors within the error chain represented
+using the `FailureChainData` object described below.
 
 - `so_error` (`string`; optional): If there was a soft error (e.g. `ICMP Time Exceeded`), this 
 field is a string indicating the error, otherwise it is omitted.
@@ -103,6 +107,19 @@ understand what part of a complex measurement generated an event.
 to which this event belongs to (typically an HTTP transaction or a DNS
 round trip). A zero or missing value means we don't know the transaction
 to which this code belongs to.
+
+## FailureChainData
+
+```JSON
+{
+  "type": "syscall.Errno", 
+  "error": "no route to host"
+}
+```
+
+- `type` (`string`): The type of error.
+
+- `error` (`string`): The full error string.
 
 ## Example
 
