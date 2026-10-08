@@ -33,9 +33,9 @@ the `control_sni` and the testhelper's hostname as the target.
 This test is divided into multiple steps that will each ensure that we can successfully 
 perform iterative tracing on the `target` and return early in case of failure.
 
-This test consists of two privacy modes: `safe` and `'advanced`. These privacy modes only
+This test consists of two privacy modes: `default` and `'advanced`. These privacy modes only
 pertain to the **TCP Traceroute** step of the test. The default privacy mode for all tests
-is `safe`.
+is `default`.
 
 The main steps of the experiment are:
 
@@ -55,7 +55,7 @@ The main steps of the experiment are:
     the maximum TTL is reached. The outcome of each TTL-limited probe can either be a timeout,
     a successful connection, an error, or an ICMP message with the initial quoted packet.
 
-    When the privacy mode is set to `safe`, only country and AS information of routers on the
+    When the privacy mode is set to `default`, only country and AS information of routers on the
     forward network path between the client and server will be collected. When the privacy mode
     is set to `advanced`, additional IP address and RTT information of routers on the forward 
     network path between the client and server will be collected
@@ -144,7 +144,7 @@ in the network route and where the middlebox is located with respect to
 the forward network path
 
 
-## Example output sample for `safe` privacy mode
+## Example output sample for `default` privacy mode
 
 Response:
 
