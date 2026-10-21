@@ -162,7 +162,7 @@ Response:
     "vcs_tool": "git"
   },
   "data_format_version": "0.2.0",
-  "input": "tlstrace://github.com",
+  "input": "https://github.com",
   "measurement_start_time": "2026-10-05 12:45:57",
   "options": [
     "MaxTTL=12"
@@ -1515,7 +1515,7 @@ Response:
     "vcs_tool": "git"
   },
   "data_format_version": "0.2.0",
-  "input": "tlstrace://github.com",
+  "input": "https://github.com",
   "measurement_start_time": "2026-10-05 12:50:12",
   "options": [
     "MaxTTL=12",
