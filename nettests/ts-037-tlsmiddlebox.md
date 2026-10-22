@@ -1,6 +1,6 @@
 # Specification version number
 
-2026-07-28
+2026-10-22
 
 *_status_: current
 
@@ -604,7 +604,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:39868->140.82.112.3:443: read: no route to host"
+                    "error": "read tcp [scrubbed]->[scrubbed]: read: no route to host"
                   },
                   {
                     "type": "*os.SyscallError",
@@ -642,7 +642,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:39874->140.82.112.3:443: read: no route to host"
+                    "error": "read tcp [scrubbed]->[scrubbed]: read: no route to host"
                   },
                   {
                     "type": "*os.SyscallError",
@@ -680,7 +680,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:39890->140.82.112.3:443: read: no route to host"
+                    "error": "read tcp [scrubbed]->[scrubbed]: read: no route to host"
                   },
                   {
                     "type": "*os.SyscallError",
@@ -718,7 +718,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:39896->140.82.112.3:443: read: no route to host"
+                    "error": "read tcp [scrubbed]->[scrubbed]: read: no route to host"
                   },
                   {
                     "type": "*os.SyscallError",
@@ -756,7 +756,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:39908->140.82.112.3:443: read: no route to host"
+                    "error": "read tcp [scrubbed]->[scrubbed]: read: no route to host"
                   },
                   {
                     "type": "*os.SyscallError",
@@ -794,7 +794,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:39918->140.82.112.3:443: read: no route to host"
+                    "error": "read tcp [scrubbed]->[scrubbed]: read: no route to host"
                   },
                   {
                     "type": "*os.SyscallError",
@@ -832,7 +832,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:39926->140.82.112.3:443: read: no route to host"
+                    "error": "read tcp [scrubbed]->[scrubbed]: read: no route to host"
                   },
                   {
                     "type": "*os.SyscallError",
@@ -870,7 +870,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:39942->140.82.112.3:443: read: no route to host"
+                    "error": "read tcp [scrubbed]->[scrubbed]: read: no route to host"
                   },
                   {
                     "type": "*os.SyscallError",
@@ -908,7 +908,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:39944->140.82.112.3:443: read: no route to host"
+                    "error": "read tcp [scrubbed]->[scrubbed]: read: no route to host"
                   },
                   {
                     "type": "*os.SyscallError",
@@ -946,7 +946,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:39946->140.82.112.3:443: read: no route to host"
+                    "error": "read tcp [scrubbed]->[scrubbed]: read: no route to host"
                   },
                   {
                     "type": "*os.SyscallError",
@@ -984,7 +984,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:39958->140.82.112.3:443: i/o timeout"
+                    "error": "read tcp [scrubbed]->[scrubbed]: i/o timeout"
                   },
                   {
                     "type": "*poll.DeadlineExceededError",
@@ -1018,7 +1018,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:39960->140.82.112.3:443: i/o timeout"
+                    "error": "read tcp [scrubbed]->[scrubbed]: i/o timeout"
                   },
                   {
                     "type": "*poll.DeadlineExceededError",
@@ -1057,7 +1057,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:45926->140.82.112.3:443: read: no route to host"
+                    "error": "read tcp [scrubbed]->[scrubbed]: read: no route to host"
                   },
                   {
                     "type": "*os.SyscallError",
@@ -1095,7 +1095,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:45928->140.82.112.3:443: read: no route to host"
+                    "error": "read tcp [scrubbed]->[scrubbed]: read: no route to host"
                   },
                   {
                     "type": "*os.SyscallError",
@@ -1133,7 +1133,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:45938->140.82.112.3:443: read: no route to host"
+                    "error": "read tcp [scrubbed]->[scrubbed]: read: no route to host"
                   },
                   {
                     "type": "*os.SyscallError",
@@ -1171,7 +1171,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:45944->140.82.112.3:443: read: no route to host"
+                    "error": "read tcp [scrubbed]->[scrubbed]: read: no route to host"
                   },
                   {
                     "type": "*os.SyscallError",
@@ -1209,7 +1209,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:45948->140.82.112.3:443: read: no route to host"
+                    "error": "read tcp [scrubbed]->[scrubbed]: read: no route to host"
                   },
                   {
                     "type": "*os.SyscallError",
@@ -1247,7 +1247,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:45954->140.82.112.3:443: read: no route to host"
+                    "error": "read tcp [scrubbed]->[scrubbed]: read: no route to host"
                   },
                   {
                     "type": "*os.SyscallError",
@@ -1285,7 +1285,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:45956->140.82.112.3:443: read: no route to host"
+                    "error": "read tcp [scrubbed]->[scrubbed]: read: no route to host"
                   },
                   {
                     "type": "*os.SyscallError",
@@ -1323,7 +1323,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:45972->140.82.112.3:443: read: no route to host"
+                    "error": "read tcp [scrubbed]->[scrubbed]: read: no route to host"
                   },
                   {
                     "type": "*os.SyscallError",
@@ -1361,7 +1361,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:45984->140.82.112.3:443: read: no route to host"
+                    "error": "read tcp [scrubbed]->[scrubbed]: read: no route to host"
                   },
                   {
                     "type": "*os.SyscallError",
@@ -1399,7 +1399,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:45990->140.82.112.3:443: read: no route to host"
+                    "error": "read tcp [scrubbed]->[scrubbed]: read: no route to host"
                   },
                   {
                     "type": "*os.SyscallError",
@@ -1437,7 +1437,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:46000->140.82.112.3:443: i/o timeout"
+                    "error": "read tcp [scrubbed]->[scrubbed]: i/o timeout"
                   },
                   {
                     "type": "*poll.DeadlineExceededError",
@@ -1471,7 +1471,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:46006->140.82.112.3:443: i/o timeout"
+                    "error": "read tcp [scrubbed]->[scrubbed]: i/o timeout"
                   },
                   {
                     "type": "*poll.DeadlineExceededError",
@@ -1958,7 +1958,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:45996->140.82.112.3:443: read: no route to host"
+                    "error": "read tcp [scrubbed]->[scrubbed]: read: no route to host"
                   },
                   {
                     "type": "*os.SyscallError",
@@ -1996,7 +1996,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:46000->140.82.112.3:443: read: no route to host"
+                    "error": "read tcp [scrubbed]->[scrubbed]: read: no route to host"
                   },
                   {
                     "type": "*os.SyscallError",
@@ -2034,7 +2034,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:46002->140.82.112.3:443: read: no route to host"
+                    "error": "read tcp [scrubbed]->[scrubbed]: read: no route to host"
                   },
                   {
                     "type": "*os.SyscallError",
@@ -2072,7 +2072,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:46008->140.82.112.3:443: read: no route to host"
+                    "error": "read tcp [scrubbed]->[scrubbed]: read: no route to host"
                   },
                   {
                     "type": "*os.SyscallError",
@@ -2110,7 +2110,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:46022->140.82.112.3:443: read: no route to host"
+                    "error": "read tcp [scrubbed]->[scrubbed]: read: no route to host"
                   },
                   {
                     "type": "*os.SyscallError",
@@ -2148,7 +2148,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:46032->140.82.112.3:443: read: no route to host"
+                    "error": "read tcp [scrubbed]->[scrubbed]: read: no route to host"
                   },
                   {
                     "type": "*os.SyscallError",
@@ -2186,7 +2186,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:46040->140.82.112.3:443: read: no route to host"
+                    "error": "read tcp [scrubbed]->[scrubbed]: read: no route to host"
                   },
                   {
                     "type": "*os.SyscallError",
@@ -2224,7 +2224,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:46044->140.82.112.3:443: read: no route to host"
+                    "error": "read tcp [scrubbed]->[scrubbed]: read: no route to host"
                   },
                   {
                     "type": "*os.SyscallError",
@@ -2262,7 +2262,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:46050->140.82.112.3:443: read: no route to host"
+                    "error": "read tcp [scrubbed]->[scrubbed]: read: no route to host"
                   },
                   {
                     "type": "*os.SyscallError",
@@ -2300,7 +2300,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:46062->140.82.112.3:443: read: no route to host"
+                    "error": "read tcp [scrubbed]->[scrubbed]: read: no route to host"
                   },
                   {
                     "type": "*os.SyscallError",
@@ -2338,7 +2338,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:46066->140.82.112.3:443: i/o timeout"
+                    "error": "read tcp [scrubbed]->[scrubbed]: i/o timeout"
                   },
                   {
                     "type": "*poll.DeadlineExceededError",
@@ -2372,7 +2372,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:46072->140.82.112.3:443: i/o timeout"
+                    "error": "read tcp [scrubbed]->[scrubbed]: i/o timeout"
                   },
                   {
                     "type": "*poll.DeadlineExceededError",
@@ -2411,7 +2411,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:48178->140.82.112.3:443: read: no route to host"
+                    "error": "read tcp [scrubbed]->[scrubbed]: read: no route to host"
                   },
                   {
                     "type": "*os.SyscallError",
@@ -2449,7 +2449,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:48192->140.82.112.3:443: read: no route to host"
+                    "error": "read tcp [scrubbed]->[scrubbed]: read: no route to host"
                   },
                   {
                     "type": "*os.SyscallError",
@@ -2487,7 +2487,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:48206->140.82.112.3:443: read: no route to host"
+                    "error": "read tcp [scrubbed]->[scrubbed]: read: no route to host"
                   },
                   {
                     "type": "*os.SyscallError",
@@ -2525,7 +2525,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:48212->140.82.112.3:443: read: no route to host"
+                    "error": "read tcp [scrubbed]->[scrubbed]: read: no route to host"
                   },
                   {
                     "type": "*os.SyscallError",
@@ -2563,7 +2563,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:48228->140.82.112.3:443: read: no route to host"
+                    "error": "read tcp [scrubbed]->[scrubbed]: read: no route to host"
                   },
                   {
                     "type": "*os.SyscallError",
@@ -2601,7 +2601,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:48244->140.82.112.3:443: read: no route to host"
+                    "error": "read tcp [scrubbed]->[scrubbed]: read: no route to host"
                   },
                   {
                     "type": "*os.SyscallError",
@@ -2639,7 +2639,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:48252->140.82.112.3:443: read: no route to host"
+                    "error": "read tcp [scrubbed]->[scrubbed]: read: no route to host"
                   },
                   {
                     "type": "*os.SyscallError",
@@ -2677,7 +2677,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:48260->140.82.112.3:443: read: no route to host"
+                    "error": "read tcp [scrubbed]->[scrubbed]: read: no route to host"
                   },
                   {
                     "type": "*os.SyscallError",
@@ -2715,7 +2715,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:48264->140.82.112.3:443: read: no route to host"
+                    "error": "read tcp [scrubbed]->[scrubbed]: read: no route to host"
                   },
                   {
                     "type": "*os.SyscallError",
@@ -2753,7 +2753,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:48280->140.82.112.3:443: read: no route to host"
+                    "error": "read tcp [scrubbed]->[scrubbed]: read: no route to host"
                   },
                   {
                     "type": "*os.SyscallError",
@@ -2791,7 +2791,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:48286->140.82.112.3:443: i/o timeout"
+                    "error": "read tcp [scrubbed]->[scrubbed]: i/o timeout"
                   },
                   {
                     "type": "*poll.DeadlineExceededError",
@@ -2825,7 +2825,7 @@ Response:
                   },
                   {
                     "type": "*net.OpError",
-                    "error": "read tcp [scrubbed]:48290->140.82.112.3:443: i/o timeout"
+                    "error": "read tcp [scrubbed]->[scrubbed]: i/o timeout"
                   },
                   {
                     "type": "*poll.DeadlineExceededError",
